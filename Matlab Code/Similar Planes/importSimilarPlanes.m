@@ -40,10 +40,10 @@ switch type
         excelPayload = importFile(fileSP, sheetSP,strcat(initLetter,'41:',endLetter,'49'));
         
         %Load Wing from Excel
-        excelWing = importFile(fileSP, sheetSP,strcat(initLetter,'63:',endLetter,'79'));
+        excelWing = importFile(fileSP, sheetSP,strcat(initLetter,'63:',endLetter,'83'));
         
         %Load Actuations from Excel
-        excelActuations = importFile(fileSP, sheetSP,strcat(initLetter,'155:',endLetter,'169'));
+        excelActuations = importFile(fileSP, sheetSP,strcat(initLetter,'159:',endLetter,'175'));
         
     case 11
         
@@ -105,18 +105,28 @@ for i=1:numberSP
     SimilarPlanes{i}.Payload.bagVolume = double(excelPayload{9,i});
     
     %Wing
-    SimilarPlanes{i}.Wing.Sw          = double(excelWing{4,i});
-    SimilarPlanes{i}.Wing.WingSpan    = double(excelWing{5,i});
-    SimilarPlanes{i}.Wing.TipChord    = double(excelWing{6,i});
-    SimilarPlanes{i}.Wing.RootChord   = double(excelWing{7,i});
-    SimilarPlanes{i}.Wing.CMG         = double(excelWing{8,i});
-    SimilarPlanes{i}.Wing.CMA         = double(excelWing{9,i});
-    SimilarPlanes{i}.Wing.AspectRatio = double(excelWing{11,i});
-    SimilarPlanes{i}.Wing.TaperRatio  = double(excelWing{12,i});
-    SimilarPlanes{i}.Wing.Sweep       = double(excelWing{13,i});
-    SimilarPlanes{i}.Wing.Dihedral    = double(excelWing{14,i});
-    SimilarPlanes{i}.Wing.Airfoil     = string(excelWing{15,i});
-    SimilarPlanes{i}.Wing.WingLoading = double(excelWing{17,i});
+    SimilarPlanes{i}.Wing.Sw           = double(excelWing{4,i});
+    SimilarPlanes{i}.Wing.WingSpan     = double(excelWing{5,i});
+    SimilarPlanes{i}.Wing.RealSemiSpan = double(excelWing{6,i});
+    SimilarPlanes{i}.Wing.TipChord     = double(excelWing{7,i});
+    SimilarPlanes{i}.Wing.RootChord    = double(excelWing{8,i});
+    SimilarPlanes{i}.Wing.CMG          = double(excelWing{9,i});
+    SimilarPlanes{i}.Wing.CMA          = double(excelWing{10,i});
+    SimilarPlanes{i}.Wing.AspectRatio  = double(excelWing{15,i});
+    SimilarPlanes{i}.Wing.TaperRatio   = double(excelWing{16,i});
+    SimilarPlanes{i}.Wing.Sweep        = double(excelWing{17,i});
+    SimilarPlanes{i}.Wing.Dihedral     = double(excelWing{18,i});
+    SimilarPlanes{i}.Wing.Airfoil      = string(excelWing{19,i});
+    SimilarPlanes{i}.Wing.WingLoading  = double(excelWing{21,i});
+    SimilarPlanes{i}.Wing.LongPos      = double(excelWing{2,i});
+    SimilarPlanes{i}.Wing.Root_LE      = double(excelWing{3,i});
+    SimilarPlanes{i}.Wing.CMA_LE       = double(excelWing{11,i});
+    SimilarPlanes{i}.Wing.CMA_14       = double(excelWing{12,i});
+    SimilarPlanes{i}.Wing.CMA_b        = double(excelWing{13,i});
+    SimilarPlanes{i}.Wing.TipSweep     = double(excelWing{14,i});
+%     SimilarPlanes{i}.Wing.CLmax        = double(excelWing{17,i});
+%     SimilarPlanes{i}.Wing.CLmaxTO      = double(excelWing{17,i});
+%     SimilarPlanes{i}.Wing.CLmaxL       = double(excelWing{17,i});
     
     %Actuations
     SimilarPlanes{i}.Actuations.Vmax      = double(excelActuations{1,i});
@@ -124,15 +134,17 @@ for i=1:numberSP
     SimilarPlanes{i}.Actuations.Vcruise   = double(excelActuations{3,i});
     SimilarPlanes{i}.Actuations.Mcruise   = double(excelActuations{4,i});
     SimilarPlanes{i}.Actuations.Vstall    = double(excelActuations{5,i});
-    SimilarPlanes{i}.Actuations.Vto       = double(excelActuations{6,i});
-    SimilarPlanes{i}.Actuations.Vapprox   = double(excelActuations{7,i});
-    SimilarPlanes{i}.Actuations.Vasc      = double(excelActuations{8,i});
-    SimilarPlanes{i}.Actuations.Range     = double(excelActuations{9,i});
-    SimilarPlanes{i}.Actuations.Endurance = double(excelActuations{10,i});
-    SimilarPlanes{i}.Actuations.Hmax      = double(excelActuations{11,i});
-    SimilarPlanes{i}.Actuations.Hcruise   = double(excelActuations{12,i});
-    SimilarPlanes{i}.Actuations.Sto       = double(excelActuations{14,i});
-    SimilarPlanes{i}.Actuations.Sl        = double(excelActuations{15,i});
+    SimilarPlanes{i}.Actuations.Vstall_TO = double(excelActuations{6,i});
+    SimilarPlanes{i}.Actuations.Vstall_L  = double(excelActuations{7,i});
+    SimilarPlanes{i}.Actuations.Vto       = double(excelActuations{8,i});
+    SimilarPlanes{i}.Actuations.Vapprox   = double(excelActuations{9,i});
+    SimilarPlanes{i}.Actuations.Vasc      = double(excelActuations{10,i});
+    SimilarPlanes{i}.Actuations.Range     = double(excelActuations{11,i});
+    SimilarPlanes{i}.Actuations.Endurance = double(excelActuations{12,i});
+    SimilarPlanes{i}.Actuations.Hmax      = double(excelActuations{13,i});
+    SimilarPlanes{i}.Actuations.Hcruise   = double(excelActuations{14,i});
+    SimilarPlanes{i}.Actuations.Sto       = double(excelActuations{16,i});
+    SimilarPlanes{i}.Actuations.Sl        = double(excelActuations{17,i});
     
 end
 

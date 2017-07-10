@@ -31,6 +31,8 @@ classdef wing < handle
         Root_LE         double  %[double] Longitudinal Position of the Root Leading Edge 
         CMA_LE          double  %[double] Longitudinal Position of the Mean Aerodynamic Chord Leading Edge
         CMA_14          double  %[double] Longitudinal Position of the point 1/4 of the Mean Aerodynamic Chord
+        CMA_b           double  %[double] Distancia del fuselaje a la CMA de forma horizontal (Distancia entre Croot-->CMA)
+        TipSweep        double  %[double] Distancia longitudinal del borde de ataque de la raiz, al borde de ataque en la punta debido a la flecha
     end
     
     methods

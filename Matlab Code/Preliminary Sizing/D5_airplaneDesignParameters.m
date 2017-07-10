@@ -8,6 +8,7 @@
 %*                                                                                                      *
 %********************************************************************************************************
 
+%Definimos un rango de cargas alares al despegue para representar las gráficas
 Wto_S= linspace(10,1000,100);
 
 %% POLAR ESTIMATION
