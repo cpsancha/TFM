@@ -1,0 +1,24 @@
+% Encoding: UTF-8
+
+@Book{RoskI85,
+  title     = {Airplane Design. Part I: Preliminary Sizing of Airplanes.},
+  publisher = {Roskam Aviation and Engineering Corporation},
+  year      = {1985},
+  author    = {Jan Roskam},
+}
+
+@Book{RoskII85,
+  title     = {Airplane Design. Part II: Preliminary Configuration Design and Integration of the Propulsion System.},
+  publisher = {Roskam Aviation and Engineering Corporation},
+  year      = {1985},
+  author    = {Jan Roskam},
+}
+
+@Book{Ray99,
+  title     = {Aircraft Design: A conceptual approach.},
+  publisher = {American Institute of Aeronautics and Atronautics (AIAA)},
+  year      = {1999},
+  author    = {Daniel P. Raymer},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}
