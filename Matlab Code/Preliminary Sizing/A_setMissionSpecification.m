@@ -80,21 +80,21 @@ end
 %% TAKE-OFF
 switch ME.MissionType
     case  5 % business jet
-        ME.TakeOff.Altitude = 0;  % Take off altitude in m
-        ME.TakeOff.S_TOFL = NaN;  % Take off distance in m
+        ME.TakeOff.Altitude = 0;     % Take off altitude in m
+        ME.TakeOff.S_TOFL = DP.TOFL; % Take off distance in m
         
     case 11 % amphibious
         ME.TakeOff.Altitude = 0;  % Take off altitude in m
-        ME.TakeOff.S_TOFL = 500; % Take off distance in m
+        ME.TakeOff.S_TOFL = 500;  % Take off distance in m
 end
 
 
 %% CLIMB
 switch ME.MissionType
     case  5 % business jet
-        ME.Climb.E_cl    = NaN;  %Time to climb in seconds --> se sobrescribe luego
-        ME.Climb.Rate_cl = DP.ClimbRate; %Rate of climb speed in m/s (vertical) (2500 ft/min)
-        ME.Climb.V_cl    = 140;  %Climb speed in m/s (horizontal) (270 kts)
+        ME.Climb.E_cl    = NaN;           %Time to climb in seconds --> se sobrescribe luego
+        ME.Climb.Rate_cl = DP.ClimbRate;  %Rate of climb speed in m/s (vertical) (2500 ft/min)
+        ME.Climb.V_cl    = DP.ClimbSpeed; %Climb speed in m/s (horizontal) (270 kts)
         
     case 11 % amphibious
         ME.Climb.E_cl    = NaN;  %Time to climb in seconds
@@ -106,13 +106,13 @@ end
 %% CRUISE
 switch ME.MissionType
     case  5 % business jet
-        ME.Cruise.Range =  DP.Range;            % in m
+        ME.Cruise.Range    = DP.Range;          % in m
         ME.Cruise.Altitude = DP.CruiseAltitude; % in m
-        ME.Cruise.Speed = DP.CruiseSpeed;       % m/s
+        ME.Cruise.Speed    = DP.CruiseSpeed;    % m/s
         
     case 11 % amphibious
         ME.Cruise.Range = 2000*1e3;     % in m
-        ME.Cruise.Altitude = 6000;      % in m
+        ME.Cruise.Altitude =  6000;     % in m
         ME.Cruise.Speed = 138.8889;     % m/s
 end
 
@@ -121,7 +121,7 @@ end
 %% LOITER
 switch ME.MissionType
     case  5 % business jet
-        ME.Loiter.E_ltr = 30*CF.min2sec;    %Loiter time in seconds
+        ME.Loiter.E_ltr = DP.LoiterTime;    %Loiter time in seconds
         ME.Loiter.V_ltr = ME.Cruise.Speed;  %Loiter speed in m/s
         
     case 11 % amphibious
@@ -133,8 +133,8 @@ end
 %% ALTERNATE
 switch ME.MissionType
     case 5 % business jet
-        ME.Alternate.R_alt = 370*1e3;       %Range to alternate airport (200 nautic miles --> 370km)
-        ME.Alternate.V_alt = 250*CF.kts2ms; %If flight is below 10.000ft (typical) max speed is 250kts because of FAA regulations
+        ME.Alternate.R_alt = DP.AlternateRange; %Range to alternate airport (200 nautic miles --> 370km)
+        ME.Alternate.V_alt = 250*CF.kts2ms;     %If flight is below 10.000ft (typical) max speed is 250kts because of FAA regulations
         
     case 11 % amphibious
         ME.Alternate.R_alt = 370*1e3;       %Range to alternate airport (200 nautic miles --> 370km)
@@ -144,7 +144,12 @@ end
 
 
 %% LANDING
-ME.Landing = NaN;
+switch ME.MissionType
+    case 5
+        ME.Landing.S_LFL = DP.LFL; %Length of the landing field [m]
+    case 11
+        ME.Landing.S_LFL = DP.LFL; %Length of the landing field [m]
+end
 
 
 %% POWERPLANT
