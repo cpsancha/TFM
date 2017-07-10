@@ -13,7 +13,6 @@ classdef wing < handle
     properties
         Sw              double  %[double] Total Wing Surface [m^2]
         WingSpan        double  %[double] Span of the wing [m]
-        RealSemiSpan    double  %[double] Distance from the fuselage (root chord) to the tip chord
         RootChord       double  %[double] Chord at the root [m]
         TipChord        double  %[double] Chord ath the tip [m]
         CMA             double  %[double] Mean Aerodynamic Chord [m]
@@ -28,9 +27,9 @@ classdef wing < handle
         CLmaxTO         double  %[double] Maximum Cl of the wing at Take-Off
         CLmaxL          double  %[double] Maximum Cl of the wing at Landing
         LongPos         double  %[double] Definida como el cociente entre la distancia longitudinal del punto un cuarto de la cuerda media aerodinámica al morro del avión y la longitud del fuselaje.
-        Root_LE         double  %[double] Longitudinal Position of the Root Leading Edge 
-        CMA_LE          double  %[double] Longitudinal Position of the Mean Aerodynamic Chord Leading Edge
-        CMA_14          double  %[double] Longitudinal Position of the point 1/4 of the Mean Aerodynamic Chord
+        Root_LE         double  %[double] Root Leading Edge 
+        CMA_LE          double  %[double] Longitudinal disMean Aerodynamic Chord Leading Edge
+        CMA_14          double
     end
     
     methods

@@ -1,12 +1,19 @@
-% Estimating wing area (S), wing aspect ratio (A), take-off thrust (T_TO),
-% and maximum lift coefficients (CL_max, CL_max_TO and CL_max_L)
+%********************************************************************************************************
+%*                                                                                                      *
+%*                                  D - AIRPLANE DESIGN PARAMETERS:                                     *
+%*                                                                                                      *
+%*    In this script are estimated the wing area (Sw), wing aspect ratio (A), take-off thrust (T_TO),   *
+%*    and maximum lift coefficients (CL_max, CL_max_TO and CL_max_L), acording to the previously        *
+%*    obtained values of the MTOW and EW.                                                               *
+%*                                                                                                      *
+%********************************************************************************************************
 
 Wto_S= linspace(10,1000,100);
 
-%% Polar estimation
+%% POLAR ESTIMATION
 %Values needed from similar airplanes
-W_S = 100;        %Wing loading from similar airplanes
-A   = 10;         %Aspect ratio from similar airplanes
+W_S = mean(loadFields(SP,'Wing.WingLoading'),'omitnan'); %Wing loading from similar airplanes
+A   = mean(loadFields(SP,'Wing.AspectRatio'),'omitnan'); %Aspect ratio from similar airplanes
 
 %Eq 3.22
 S_wet = CF.ft2m^2*10^( Parameters.Table_3_5.c + Parameters.Table_3_5.d * log10(AC.Weight.MTOW/CF.lbm2kg));
