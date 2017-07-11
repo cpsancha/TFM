@@ -22,8 +22,6 @@ else
     clear options W_TO_guess exitflag
 end
 
-%Create dessign aircraft 
-AC = aircraft();
 
 % Get the other weights:
 [~, AC.Weight.MTOW, AC.Weight.EW, AC.Weight.MFW] = getWeights( W_TO, ME, Parameters);

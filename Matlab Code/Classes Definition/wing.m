@@ -25,8 +25,8 @@ classdef wing < handle
         Dihedral        double  %[double] Dihedral of the wing [º]
         WingLoading     double  %[double] MTOW/Sw [kg/m^2]
         CLmax           double  %[double] Maximum Cl of the wing at cruise
-        CLmaxTO         double  %[double] Maximum Cl of the wing at Take-Off
-        CLmaxL          double  %[double] Maximum Cl of the wing at Landing
+        CLmax_TO        double  %[double] Maximum Cl of the wing at Take-Off
+        CLmax_L         double  %[double] Maximum Cl of the wing at Landing
         LongPos         double  %[double] Definida como el cociente entre la distancia longitudinal del punto un cuarto de la cuerda media aerodinámica al morro del avión y la longitud del fuselaje.
         Root_LE         double  %[double] Longitudinal Position of the Root Leading Edge 
         CMA_LE          double  %[double] Longitudinal Position of the Mean Aerodynamic Chord Leading Edge

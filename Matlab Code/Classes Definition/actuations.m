@@ -10,7 +10,7 @@ classdef actuations < handle
         Mcruise     double        %[double]  Cruise Mach [-]
         Vcruise     double        %[double]  Cruise speed [m/s]
         L_D         double        %[double]  Efficiency [-]
-        Vto         double        %[double]  Take Off speed [m/s]
+        Vto         double        %[double]  Take Off speed [m/s] también llamada Lift-Off speed o V2 (1.2*Vstall_TO)
         Vstall      double        %[double]  Stall Speed in clean configuration [m/s]
         Vstall_TO   double        %[double]  Stall Speed in Take-Off configuration [m/s]
         Vstall_L    double        %[double]  Stall Speed in Landing configuration[m/s]

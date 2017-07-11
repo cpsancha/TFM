@@ -28,25 +28,40 @@ switch ME.MissionType
         ME.FiguresFolder = '11_Figures';
 end
 %% DEFINE CONVERSION FACTORS
-CF.nm2m     = 1852;
-CF.ft2m     = 0.3048;
-CF.mph2ms   = 2.236936; %???? mph2ms --> 0.44704
-CF.sm2m     = 1.6093e+03;
-CF.kts2ms   = 0.514444;
-CF.lbm2kg   = convmass(1,'lbm','kg');
-CF.lbf2N    = 4.448222;
-CF.slug2kq  = 14.593903;
-CF.fps2kts  = 0.592484;
-CF.hp2watts = 745.7;
-CF.hour2sec = 3600;
-CF.min2sec  = 60;
-CF.TSFC2SI  = CF.lbm2kg/(CF.lbf2N*CF.hour2sec);
-CF.c_p2SI   = CF.lbm2kg*(1/CF.hp2watts)*(1/3600)*CST.GravitySI; %?? Que es?
-CF.psf2Pa   = CF.lbf2N/CF.ft2m^2;
+%length
+    CF.nm2m     = 1852;
+    CF.m2ft     = 3.28084;
+    CF.ft2m     = 0.3048;
+%speed
+    CF.mph2ms   = 2.236936; %???? mph2ms --> 0.44704
+    CF.kts2ms   = 0.514444;
+    CF.ms2kts   = 1.94384;
+    CF.fps2kts  = 0.592484;
+%mass
+    CF.kg2lbm   = convmass(1,'kg','lbm');
+    CF.lbm2kg   = convmass(1,'lbm','kg');
+    CF.slug2kg  = 14.593903;
+%force
+    CF.lbf2N    = 4.448222;
+    CF.N2lbf    = 0.224809;
+%time
+    CF.hour2sec = 3600;
+    CF.min2sec  = 60;
+%Pressure
+    CF.psf2Pa   = CF.lbf2N/CF.ft2m^2;
+%Power
+    CF.hp2watts = 745.7;
+%Other
+    CF.TSFC2SI  = CF.lbm2kg/(CF.lbf2N*CF.hour2sec);
+    CF.c_p2SI   = CF.lbm2kg*(1/CF.hp2watts)*(1/3600)*CST.GravitySI;
+    
+    CF.sm2m     = 1.6093e+03; %<-- No se qué es
+
 
 
 %% LOAD CUSTOM DESING PARAMETERS
 run DesignParameters.m
+
 
 
 %% PAYLOAD
@@ -179,6 +194,12 @@ switch ME.MissionType
     case 11 % amphibious
 %         SP = importSimilarPlanes(ME.MissionType,CST,CF);
 end
+
+
+
+%% CREATE DESIGN AIRCRAFT 
+AC = aircraft();
+
 
 
 %% EXAMPLE OF HOW TO OBTAIN MEAN VALUES FROM SIMILAR PLANES

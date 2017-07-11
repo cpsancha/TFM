@@ -1,57 +1,176 @@
 %********************************************************************************************************
 %*                                                                                                      *
 %*                                  D - AIRPLANE DESIGN PARAMETERS:                                     *
-%*                                                                            
-%* In this script are estimated the wing area (Sw), wing aspect ratio (A), take-off thrust (T_TO),      *
-%* and maximum lift coefficients (CL_max, CL_max_TO and CL_max_L)
+%*                                                                                                      *
+%*    In this script are estimated the wing area (Sw), wing aspect ratio (A), take-off thrust (T_TO),   *
+%*    and maximum lift coefficients (CL_max, CL_max_TO and CL_max_L), acording to the previously        *
+%*    obtained values of the MTOW and EW.                                                               *
+%*                                                                                                      *
+%********************************************************************************************************
 
-Wto_S= linspace(10,1000,100);
-
-%% Polar estimation
-%Values needed from similar airplanes
-W_S = 100;        %Wing loading from similar airplanes
-A   = 10;         %Aspect ratio from similar airplanes
-
-%Eq 3.22
-S_wet = CF.ft2m^2*10^( Parameters.Table_3_5.c + Parameters.Table_3_5.d * log10(AC.Weight.MTOW/CF.lbm2kg));
-%Eq 3.21
-f = CF.ft2m^2*10^(Parameters.Table_3_4.a + Parameters.Table_3_4.b * log10(S_wet/(CF.ft2m^2)));
-
-S =  AC.Weight.MTOW/ W_S;
-C_D0 = f/S; 
-
-%Compresibility corrections: torenbeek p 172 pdf
-%deltaC_D0 =0.0005 long-range cruise conditions
-%deltaC_D0 =0.002 high-speed cruise conditions
-
-k=1/(pi*A*Parameters.Table_3_6.e.clean(1));
+%% Definimos un rango de ratios Thrust/Weight al despegue para representar las gráficas --> eje y
+    ThrustWeight_TO = linspace(0,1,100);
 
 
-%% 3.1 Sizing to stall speed requirements
+    
+%% DENSITY
+    % Calculamos las distintas densidades para despegue, crucero, y nivel de mar
+    [~, ~, ~, rho0]   = atmosisa(0);
+    [~, ~, ~, rho]    = atmosisa(ME.Cruise.Altitude);
+    [~, ~, ~, rho_TO] = atmosisa(ME.TakeOff.Altitude);
+    [~, ~, ~, rho_L]  = atmosisa(ME.TakeOff.Altitude); %<--Supongo que es la misma que en despegue
 
-%% 3.2 Sizing to take-off distance requirements
-[~, ~, ~, rho] = atmosisa(ME.TakeOff.Altitude);
-[~, ~, ~, rho0] = atmosisa(0);
-sigma = rho/rho0;
 
-S_tofl = ME.TakeOff.S_TOFL/CF.ft2m; %stofl in ft
-
-TOP_25 = (S_tofl)/37.5; %TOP in lbs/ft^2 Eq 3.8
-
-Cl_max_TO = 1.2;
-
-Wto_S_to=Wto_S./(CF.lbf2N/CF.ft2m^2); %W/S to lbs/ft^2
-
-Tto_Wto_TO = Wto_S_to./ (Cl_max_TO.*TOP_25*sigma); 
-
-% figure()
-% plot(Wto_S,Tto_Wto_TO)
+    
+%% POLAR ESTIMATION --> De momento no lo uso
+%     %Values needed from similar airplanes
+%     W_S = mean(loadFields(SP,'Wing.WingLoading'),'omitnan'); %Wing loading from similar airplanes
+%     A   = mean(loadFields(SP,'Wing.AspectRatio'),'omitnan'); %Aspect ratio from similar airplanes
 % 
-% hold all
+%     %Eq 3.22
+%     S_wet = CF.ft2m^2*10^( Parameters.Table_3_5.c + Parameters.Table_3_5.d * log10(AC.Weight.MTOW/CF.lbm2kg));
+%     %Eq 3.21
+%     f = CF.ft2m^2*10^(Parameters.Table_3_4.a + Parameters.Table_3_4.b * log10(S_wet/(CF.ft2m^2)));
+% 
+%     S =  AC.Weight.MTOW/ W_S;
+%     C_D0 = f/S; 
+% 
+%     %Compresibility corrections: torenbeek p 172 pdf
+%     %deltaC_D0 =0.0005 long-range cruise conditions
+%     %deltaC_D0 =0.002 high-speed cruise conditions
+% 
+%     k=1/(pi*A*Parameters.Table_3_6.e.clean(1));
+
+
+    
+%% 3.1 SIZING TO STALL SPEED REQUIREMENTS
+    %Cruise stall speed
+    if ~isnan(DP.StallSpeed)
+        WingLoading.Stall = ((DP.StallSpeed^2)*rho*DP.CLmax)/(2*CST.GravitySI); %[kg/m^2]
+    end
+    
+    %Landing Stall Speed
+    if ~isnan(DP.StallSpeed_L)
+        WingLoading.Stall_L = ((DP.StallSpeed_L^2)*rho_L*DP.CLmax_L)/(2*CST.GravitySI); %[kg/m^2]
+    end
+    
+    %Take-Off Stall Speed
+    if ~isnan(DP.StallSpeed_TO)
+        WingLoading.Stall_TO = ((DP.StallSpeed_TO^2)*rho_TO*DP.CLmax_TO)/(2*CST.GravitySI); %[kg/m^2]
+    end
 
 
 
-%% 3.3 Sizing to landing distance requirements
+%% 3.2 SIZING TO TAKE-OFF DISTANCE REQUIREMENTS
+    sigma = rho_TO/rho0; %Gravity coefficient
+%Roskam method
+    TOP25R = ME.TakeOff.S_TOFL*CF.m2ft/37.5; %[lbf/ft^2]
+    WingLoading.TakeOffRoskam = TOP25R*sigma*DP.CLmax_TO*ThrustWeight_TO*(CF.lbf2N/(CF.ft2m^2))/CST.GravitySI; %[kg/m^2]
+    
+%Similar planes method
+    TOP25_SP = loadFields(SP,'Wing.WingLoading')./(sigma.*loadFields(SP,'Wing.CLmax_TO').*loadFields(SP,'Weight.Tto_MTOW')./CST.GravitySI); %[kg/m^2]
+    TOP25=polyval([loadFields(SP,'Actuations.Sto')'\TOP25_SP',0],ME.TakeOff.S_TOFL);
+    WingLoading.TakeOffSP = TOP25*sigma*DP.CLmax_TO*ThrustWeight_TO; %[kg/m^2]
+    
+    
+%Obtain static constant from similar planes
+    figure()
+    plot(loadFields(SP,'Actuations.Sto'),TOP25_SP,'*'); hold on
+    plot([min(loadFields(SP,'Actuations.Sto')),max(loadFields(SP,'Actuations.Sto'))],(loadFields(SP,'Actuations.Sto')'\TOP25_SP').*[min(loadFields(SP,'Actuations.Sto')),max(loadFields(SP,'Actuations.Sto'))],'--')
+    plot(ME.TakeOff.S_TOFL,TOP25R*CF.lbf2N/CST.GravitySI/(CF.ft2m^2),'+')
+    plot(ME.TakeOff.S_TOFL,TOP25,'o')
+    xlabel('TOFL [m]');
+    ylabel('Take-Off Parameter [kg/m^2]');
+    h = findobj(gca,'Type','line');
+    legend([h(4),h(2),h(1)],{'Similar Planes','Roskam Method','Similar Planes Method'},'Location','southeast')
+    legend('boxoff')
+    
+clear sigma h TOP25 TOP25_SP TOP25R
+
+
+
+%% 3.3 SIZING TO LANDING DISTANCE REQUIREMENTS
+%Roskam Method
+    WL_WTO_R = 0.85;
+    Vapp     = sqrt(DP.LFL*CF.m2ft/0.3); %[kts] --> Roskam eq 3.16
+    VStall_L = Vapp/1.3;                 %[kts] --> Roskam eq 3.15
+    WL_Sw    = (rho_L*DP.CLmax_L*(VStall_L*CF.kts2ms)^2)/(2*CST.GravitySI); %[kg/m^2]
+    WingLoading.LandingRoskam = WL_Sw/WL_WTO_R;
+
+%Similar Planes Method
+    WL_WTO_SP = mean(loadFields(SP,'Weight.MLW')./loadFields(SP,'Weight.MTOW')); %From SP: min-->0.7900, max-->0.9267, mean-->0.8753
+    Vapp      = (sqrt((1/.3)*CF.m2ft)/CF.ms2kts) * sqrt(DP.LFL); %[m/s]
+    VStall_L  = Vapp/1.3; %[m/s]
+    WL_Sw     = (rho_L*DP.CLmax_L*VStall_L^2)/(2*CST.GravitySI); %[kg/m^2]
+    WingLoading.LandingSP = WL_Sw/WL_WTO_SP;
+
+
+
+%Obtain static constant from similar planes
+    figure()
+    plot(loadFields(SP,'Actuations.Sl'),loadFields(SP,'Actuations.V'),'*'); hold on
+    plot([min(loadFields(SP,'Actuations.Sto')),max(loadFields(SP,'Actuations.Sto'))],(loadFields(SP,'Actuations.Sto')'\TOP25_SP').*[min(loadFields(SP,'Actuations.Sto')),max(loadFields(SP,'Actuations.Sto'))],'--')
+    plot(ME.TakeOff.S_TOFL,TOP25R*CF.lbf2N/CST.GravitySI/(CF.ft2m^2),'+')
+    plot(ME.TakeOff.S_TOFL,TOP25,'o')
+    xlabel('TOFL [m]');
+    ylabel('Take-Off Parameter [kg/m^2]');
+    h = findobj(gca,'Type','line');
+    legend([h(4),h(2),h(1)],{'Similar Planes','Roskam Method','Similar Planes Method'},'Location','southeast')
+    legend('boxoff')
+
+
+
+%DESIGN POINT
+    figure()
+    %Take-Off Field Length
+        plot(WingLoading.TakeOffRoskam,ThrustWeight_TO); hold on;
+        plot(WingLoading.TakeOffSP,ThrustWeight_TO);
+    %Take-Off Stall Speed
+        if isfield(WingLoading,'Stall_TO')
+            plot(WingLoading.Stall_TO.*ones(1,length(ThrustWeight_TO)),ThrustWeight_TO);
+        end
+    %Landing Field Length
+        plot(WingLoading.LandingRoskam.*ones(1,length(ThrustWeight_TO)),ThrustWeight_TO);
+        plot(WingLoading.LandingSP.*ones(1,length(ThrustWeight_TO)),ThrustWeight_TO);
+    %Formating
+        xlabel('Wing Loading - MTOW/Sw [kg/m^2]')
+        ylabel('Thrust/Weight_{TO} [-]')
+    %Design Point Selector
+    choiceFlag = 0;
+    uiwait(msgbox('Por favor, selecione de forma gráfica el punto de diseño deseado.','Selección del punto de diseño','modal'));
+    while choiceFlag<1
+        if choiceFlag==0
+            %First, chose graphically
+            [x,y] = ginput(1);
+            p=plot(x,y,'o');
+        end
+        % Construct a questdlg with three options
+        choice = questdlg(['Has selecionado una carga alar al despegue de ',num2str(x),' (kg/m^2) y un cociente de empuje/peso de ',num2str(y),...
+                           '. ¿Es esto correcto, o desea modificar el valor?'],'Selección del punto de diseño','Si, es correcto',...
+                           'Elegir otro punto gráficamente','Elegir otro punto numéricamente','Si, es correcto');
+        % Handle response
+        switch choice
+            case 'Si, es correcto'
+                choiceFlag = 1;
+            case 'Elegir otro punto gráficamente'
+                delete(p);
+                choiceFlag = 0;
+            case 'Elegir otro punto numéricamente'
+                delete(p);
+                prompt = {'Carga alar [kg/m^2]:','Cociente Empuje/Peso [-]:'};
+                dlg_title = '';
+                num_lines = 1;
+                defaultans = {'',''};
+                answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+                x = str2double(answer{1});
+                y = str2double(answer{2});
+                p=plot(x,y,'o');
+                clear prompt dlg_title num_lines defaultans answer
+                choiceFlag = -1;
+        end
+    end
+
+
 
 %% 3.4 Sizing to climb requirementes **
 Wto_S_cl = Wto_S./(CF.lbf2N/CF.ft2m^2);  %W/S to lbs/ft^2
