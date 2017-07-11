@@ -25,10 +25,10 @@ switch ME.MissionType
         Parameters.Loiter.n_p = NaN;                    %Bussiness JETS can't be propeller driven
         
         %CUSTOM VALUES FROM SIMILAR PLANES
-        Parameters.Cruise.L_D = DP.CruiseEfficiency;      %[-]
-        Parameters.Cruise.c_j = DP.CruiseTSFC*CF.TSFC2SI; %[kg/(N新)]
-        Parameters.Loiter.L_D = DP.LoiterEfficiency;      %[-]
-        Parameters.Loiter.c_j = DP.LoiterTSFC*CF.TSFC2SI; %[kg/(N新)]
+        Parameters.Cruise.L_D    = DP.CruiseEfficiency;         %[-]
+        Parameters.Cruise.c_j    = DP.CruiseTSFC*CF.TSFC2SI;    %[kg/(N新)]
+        Parameters.Loiter.L_D    = DP.LoiterEfficiency;         %[-]
+        Parameters.Loiter.c_j    = DP.LoiterTSFC*CF.TSFC2SI;    %[kg/(N新)]
         Parameters.LowHeight.L_D = DP.LowHeightEfficiency;      %[-]
         Parameters.LowHeight.c_j = DP.LowHeightTSFC*CF.TSFC2SI; %[kg/(N新)]
         
@@ -139,11 +139,12 @@ end
 
 
 %% Table 2.15: Regresion constants A and B of equation 2.16:
+%Regresion for MTOW and EW in lbf (IMPORTANTE)
 switch ME.MissionType
     case 5
         %5.Business Jets
         Parameters.Table_2_15.a = 0.2678;
-        Parameters.Table_2_15.b = 0.9979;
+        Parameters.Table_2_15.b = 0.9979; 
         
     case 11
         %11. Flying boats, amphibious, float airplanes
@@ -157,11 +158,11 @@ end
 switch ME.MissionType
     case 5
         %5.Business Jets
-        [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME,SP);
+        [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME, SP, CST, CF );
     
     case 11
         %11. Flying boats, amphibious, float airplanes
-%         [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME,SP);
+%         [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME, SP, CST, CF );
 end
 
 
@@ -220,7 +221,7 @@ end
 
 %% Table 3.5 Correlation coefficients for parasite area versus wetted area
 % Performs interpolation in table 3.5 in function of cf.
-cf = [0.009, 0.008, 0.007, 0.006, 0.005, 0.004, 0.003, 0.0022];
+cf = [0.009, 0.008, 0.007, 0.006, 0.005, 0.004, 0.003, 0.002];
 a  = [-2.0458, - 2.0969, - 2.1549, -2.2218, - 2.3010, -2.3979, -2.5229, -2.6990];
 
 Parameters.Table_3_4.a = interp1(cf,a,Parameters.cf);
@@ -228,7 +229,7 @@ Parameters.Table_3_4.b = 1;
 clear cf a
 
 
-%% Table 3.5 Regression line coefficients for take-off weight versus wetted area
+%% Table 3.5 Regression line coefficients for take-off weight (in lbf) versus wetted area (in ft^2)
 switch ME.MissionType
     case 5
         % 5.Business Jets
@@ -240,17 +241,35 @@ switch ME.MissionType
         Parameters.Table_3_5.d = 0.6708;
 end
 
+
 %% Table 3.6 First estimates for deltaCD0 and  'e' with flaps and gear down 
+% Highly dependent on the used flaps and gear type. Split flaps are more draggy than Fowler flaps. Full span flaps are more draggy than partial span
+% flaps. Wing mounted landing gears on high wing airplanesa are more draggy than those on low wing airplanes. More information in Roskam Part VI
+switch ME.MissionType
+    case 5
+        %delta_CD0
+        Parameters.Table_3_6.deltaC_D0.clean = 0;
+        Parameters.Table_3_6.deltaC_D0.take_off_flaps = 0.015; %Roskam --> [0.010 , 0.020]
+        Parameters.Table_3_6.deltaC_D0.landing_flaps  = 0.065; %Roskam --> [0.055 , 0.075]
+        Parameters.Table_3_6.deltaC_D0.landing_gear   = 0.020; %Roskam --> [0.015 , 0.025]
+        %e 
+        Parameters.Table_3_6.e.clean          = 0.85; %Roskam --> [0.8 , 0.85]
+        Parameters.Table_3_6.e.take_off_flaps =  0.8; %Roskam --> [0.75 , 0.8]
+        Parameters.Table_3_6.e.landing_flaps  = 0.75; %Roskam --> [0.7 , 0.75]
+        Parameters.Table_3_6.e.landing_gear   =  NaN; %Roskam --> No effect 
+    case 11
+        %delta_CD0
+        Parameters.Table_3_6.deltaC_D0.clean = 0;
+        Parameters.Table_3_6.deltaC_D0.take_off_flaps = [0.010 , 0.020];
+        Parameters.Table_3_6.deltaC_D0.landing_flaps  = [0.055 , 0.075];
+        Parameters.Table_3_6.deltaC_D0.landing_gear   = [0.015 , 0.025];
+        %e
+        Parameters.Table_3_6.e.clean          = [0.8 , 0.85];
+        Parameters.Table_3_6.e.take_off_flaps = [0.75 , 0.8];
+        Parameters.Table_3_6.e.landing_flaps  = [0.7 , 0.75];
+        Parameters.Table_3_6.e.landing_gear   = NaN; %No effect
+end
 
-Parameters.Table_3_6.deltaC_D0.clean = 0;
-Parameters.Table_3_6.deltaC_D0.take_off_flaps = [0.010 , 0.020];
-Parameters.Table_3_6.deltaC_D0.landing_flaps = [0.055 , 0.075];
-Parameters.Table_3_6.deltaC_D0.landing_gear = [0.015 , 0.025];
-
-Parameters.Table_3_6.e.clean = [0.8 , 0.85];
-Parameters.Table_3_6.e.take_off_flaps = [0.75 , 0.8];
-Parameters.Table_3_6.e.landing_flaps = [0.7 , 0.75];
-Parameters.Table_3_6.e.landing_gear = NaN; %No effect
 
 
 
@@ -351,7 +370,7 @@ switch phase
 end
 end
 
-function [ A, B ] = getWTORegression(ME,SP)
+function [ A, B ] = getWTORegression(ME, SP, CST, CF )
 %GETWTOGUESS Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -370,9 +389,15 @@ for i=1:length(SP)
     end
 end
 
+
+%Polyfit with weights in lbf, to obtain regresion constants according with Roskam
+fitLbf = polyfit(log10(EW(index)*CST.GravitySI*CF.N2lbf),log10(MTOW(index)*CST.GravitySI*CF.N2lbf),1);
+A = fitLbf(2);
+B = fitLbf(1);
+
+
+%Polyfit with weights in kg, for plotting
 fit = polyfit(log10(EW(index)),log10(MTOW(index)),1);
-A = fit(2);
-B = fit(1);
 
 %Display figure
     figure()
@@ -473,6 +498,9 @@ switch ME.MissionType
         end
         %Save Figure
         saveFigure(ME.FiguresFolder,'EW_MTOW_Correlation')
+        
+        
+        
         
     case 11 %Amphibious
         

@@ -17,9 +17,9 @@ W_S = 100;        %Wing loading from similar airplanes
 A   = 10;         %Aspect ratio from similar airplanes
 
 %Eq 3.22
-S_wet = CF.ft2m^2*10^( Parameters.Table_3_5.c + Parameters.Table_3_5.d * log10(AC.Weight.MTOW/CF.lbm2kg));
+S_wet = (CF.ft2m^2)*10^(Parameters.Table_3_5.c + Parameters.Table_3_5.d*log10(AC.Weight.MTOW*CST.GravitySI*CF.N2lbf)); %[m^2]
 %Eq 3.21
-f = CF.ft2m^2*10^(Parameters.Table_3_4.a + Parameters.Table_3_4.b * log10(S_wet/(CF.ft2m^2)));
+f = (CF.ft2m^2)*10^(Parameters.Table_3_4.a + Parameters.Table_3_4.b * log10(S_wet*(CF.m2ft^2))); %[m^2]
 
 S =  AC.Weight.MTOW/ W_S;
 C_D0 = f/S; 

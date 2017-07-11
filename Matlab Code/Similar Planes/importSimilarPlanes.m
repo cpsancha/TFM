@@ -124,7 +124,7 @@ for i=1:numberSP
     SimilarPlanes{i}.Wing.CMA_14       = double(excelWing{12,i});
     SimilarPlanes{i}.Wing.CMA_b        = double(excelWing{13,i});
     SimilarPlanes{i}.Wing.TipSweep     = double(excelWing{14,i});
-%     SimilarPlanes{i}.Wing.CLmax        = double(excelWing{17,i});
+%     SimilarPlanes{i}.Wing.CLmax_Cr     = double(excelWing{17,i});
 %     SimilarPlanes{i}.Wing.CLmaxTO      = double(excelWing{17,i});
 %     SimilarPlanes{i}.Wing.CLmaxL       = double(excelWing{17,i});
     
@@ -166,15 +166,16 @@ switch type
                 .Weight.MTOW-SimilarPlanes{i}.Weight.MFW)));
             end
             
-            %Calculate Wing CLmax
+            %Calculate Wing CLmax_Cr from WingLoading, Hcruise and Vcruise
             if (~isempty(SimilarPlanes{i}.Wing.WingLoading)  && ...
-                ~isempty(SimilarPlanes{i}.Actuations.Vstall))
-                    [~,~,~,rho] = atmosisa(0);
-                    SimilarPlanes{i}.Wing.CLmax = 2*SimilarPlanes{i}.Wing.WingLoading*CST.GravitySI/...
-                                                 (rho*SimilarPlanes{i}.Actuations.Vstall^2);
+                ~isempty(SimilarPlanes{i}.Actuations.Hcruise) && ...
+                ~isempty(SimilarPlanes{i}.Actuations.Vcruise))
+                    [~,~,~,rho] = atmosisa(SimilarPlanes{i}.Actuations.Hcruise);
+                    SimilarPlanes{i}.Wing.CLmax_Cr = 2*SimilarPlanes{i}.Wing.WingLoading*CST.GravitySI/...
+                                                 (rho*SimilarPlanes{i}.Actuations.Vcruise^2);
             end
             
-            %Calculate Wing CLmax_TO
+            %Calculate Wing CLmax_TO from Vstall_TO and MTOW (WingLoading)
             if (~isempty(SimilarPlanes{i}.Wing.WingLoading)  && ...
                 ~isempty(SimilarPlanes{i}.Actuations.Vstall_TO))
                     [~,~,~,rho] = atmosisa(0);
@@ -182,7 +183,7 @@ switch type
                                                  (rho*SimilarPlanes{i}.Actuations.Vstall_TO^2);
             end
 
-            %Calculate Wing CLmax_L
+            %Calculate Wing CLmax_L from Vstall_L and MLW
             if (~isempty(SimilarPlanes{i}.Wing.WingLoading)  && ...
                 ~isempty(SimilarPlanes{i}.Actuations.Vstall_L))
                     [~,~,~,rho] = atmosisa(0);

@@ -22,25 +22,31 @@
 
 
     
-%% POLAR ESTIMATION --> De momento no lo uso
-%     %Values needed from similar airplanes
-%     W_S = mean(loadFields(SP,'Wing.WingLoading'),'omitnan'); %Wing loading from similar airplanes
-%     A   = mean(loadFields(SP,'Wing.AspectRatio'),'omitnan'); %Aspect ratio from similar airplanes
-% 
-%     %Eq 3.22
-%     S_wet = CF.ft2m^2*10^( Parameters.Table_3_5.c + Parameters.Table_3_5.d * log10(AC.Weight.MTOW/CF.lbm2kg));
-%     %Eq 3.21
-%     f = CF.ft2m^2*10^(Parameters.Table_3_4.a + Parameters.Table_3_4.b * log10(S_wet/(CF.ft2m^2)));
-% 
-%     S =  AC.Weight.MTOW/ W_S;
-%     C_D0 = f/S; 
-% 
-%     %Compresibility corrections: torenbeek p 172 pdf
-%     %deltaC_D0 =0.0005 long-range cruise conditions
-%     %deltaC_D0 =0.002 high-speed cruise conditions
-% 
-%     k=1/(pi*A*Parameters.Table_3_6.e.clean(1));
+%% POLAR ESTIMATION
+    %Values needed from similar airplanes
+    W_S_temp = mean(loadFields(SP,'Wing.WingLoading'),'omitnan'); %Wing loading from similar airplanes
 
+    %Roskam --> Eq 3.22
+    S_wet = (CF.ft2m^2)*10^(Parameters.Table_3_5.c + Parameters.Table_3_5.d*log10(AC.Weight.MTOW*CST.GravitySI*CF.N2lbf)); %[m^2]
+    %Roskam --> Eq 3.21
+    f = (CF.ft2m^2)*10^(Parameters.Table_3_4.a + Parameters.Table_3_4.b * log10(S_wet*(CF.m2ft^2))); %[m^2]
+
+    Sw =  AC.Weight.MTOW/ W_S_temp;
+    C_D0 = f/Sw; 
+
+    %Compresibility corrections: torenbeek p 172 pdf
+    %deltaC_D0 =0.0005 long-range cruise conditions
+    %deltaC_D0 =0.002 high-speed cruise conditions
+    
+    %Polar coefficients as function of CL to use with polyval --> CD = CD0 + k*CL^2
+    Polar.LowSpeedClean   = [inv(pi*DP.AspectRatio*Parameters.Table_3_6.e.clean),0,C_D0];
+    Polar.HighSpeedClean  = [];
+    Polar.TakeOffGearUp   = [inv(pi*DP.AspectRatio*Parameters.Table_3_6.e.take_off_flaps),0,C_D0+Parameters.Table_3_6.deltaC_D0.take_off_flaps];
+    Polar.TakeOffGearDown = [inv(pi*DP.AspectRatio*Parameters.Table_3_6.e.take_off_flaps),0,C_D0+Parameters.Table_3_6.deltaC_D0.take_off_flaps+Parameters.Table_3_6.deltaC_D0.landing_gear];
+    Polar.LandingGearUp   = [inv(pi*DP.AspectRatio*Parameters.Table_3_6.e.landing_flaps),0,C_D0+Parameters.Table_3_6.deltaC_D0.landing_flaps];
+    Polar.LandingGearDown = [inv(pi*DP.AspectRatio*Parameters.Table_3_6.e.landing_flaps),0,C_D0+Parameters.Table_3_6.deltaC_D0.landing_flaps+Parameters.Table_3_6.deltaC_D0.landing_gear];
+    
+    
 
     
 %% 3.1 SIZING TO STALL SPEED REQUIREMENTS
@@ -99,7 +105,7 @@ clear sigma h TOP25 TOP25_SP TOP25R
 
 %Similar Planes Method
     WL_WTO_SP = mean(loadFields(SP,'Weight.MLW')./loadFields(SP,'Weight.MTOW')); %From SP: min-->0.7900, max-->0.9267, mean-->0.8753
-    Vapp_SP   = (sqrt((1/.3)*CF.m2ft)/CF.ms2kts) * sqrt(ME.Landing.S_LFL); %[m/s]
+    Vapp_SP   = sqrt((loadFields(SP,'Actuations.Sl')'\(loadFields(SP,'Actuations.Vapprox').^2)').*ME.Landing.S_LFL);
     VStall_L  = Vapp_SP/1.3; %[m/s]
     WL_Sw     = (rho_L*DP.CLmax_L*VStall_L^2)/(2*CST.GravitySI); %[kg/m^2]
     WingLoading.LandingSP = WL_Sw/WL_WTO_SP;
@@ -109,70 +115,20 @@ clear sigma h TOP25 TOP25_SP TOP25R
 %Obtain static constant from similar planes
     figure()
     plot(loadFields(SP,'Actuations.Sl'),loadFields(SP,'Actuations.Vapprox').^2,'*'); hold on
-    plot([min(loadFields(SP,'Actuations.Sl')),max(loadFields(SP,'Actuations.Sl'))],(loadFields(SP,'Actuations.Sl')'\(loadFields(SP,'Actuations.Vapprox').^2)').*[min(loadFields(SP,'Actuations.Sl')),max(loadFields(SP,'Actuations.Sl'))],'--')
-    plot(ME.Landing.S_LFL,(Vapp_R*CF.kts2ms)^2,'+')
-    plot(ME.Landing.S_LFL,Vapp_SP^2,'o')
+    plot([450,max(loadFields(SP,'Actuations.Sl'))],(loadFields(SP,'Actuations.Sl')'\(loadFields(SP,'Actuations.Vapprox').^2)').*[450,max(loadFields(SP,'Actuations.Sl'))],'--')
+    plot(ME.Landing.S_LFL,(Vapp_R*CF.kts2ms).^2,'+')
+    plot(ME.Landing.S_LFL,Vapp_SP.^2,'o')
     xlabel('Landing Field Length (LFL) [m]','Interpreter','Tex');
     ylabel('Square of Approach Speed   V_{approx}^2   [m^2/s^2]');
     h = findobj(gca,'Type','line');
     legend([h(4),h(2),h(1)],{'Similar Planes','Roskam Method','Similar Planes Method'},'Location','southeast')
     legend('boxoff')
 
-
-
-%DESIGN POINT
-    figure()
-    %Take-Off Field Length
-        plot(WingLoading.TakeOffRoskam,ThrustWeight_TO); hold on;
-        plot(WingLoading.TakeOffSP,ThrustWeight_TO);
-    %Take-Off Stall Speed
-        if isfield(WingLoading,'Stall_TO')
-            plot(WingLoading.Stall_TO.*ones(1,length(ThrustWeight_TO)),ThrustWeight_TO);
-        end
-    %Landing Field Length
-        plot(WingLoading.LandingRoskam.*ones(1,length(ThrustWeight_TO)),ThrustWeight_TO);
-        plot(WingLoading.LandingSP.*ones(1,length(ThrustWeight_TO)),ThrustWeight_TO);
-    %Formating
-        xlabel('Wing Loading - MTOW/Sw [kg/m^2]')
-        ylabel('Thrust/Weight_{TO} [-]')
-    %Design Point Selector
-    choiceFlag = 0;
-    uiwait(msgbox('Por favor, selecione de forma gráfica el punto de diseño deseado.','Selección del punto de diseño','modal'));
-    while choiceFlag<1
-        if choiceFlag==0
-            %First, chose graphically
-            [x,y] = ginput(1);
-            p=plot(x,y,'o');
-        end
-        % Construct a questdlg with three options
-        choice = questdlg(['Has selecionado una carga alar al despegue de ',num2str(x),' (kg/m^2) y un cociente de empuje/peso de ',num2str(y),...
-                           '. ¿Es esto correcto, o desea modificar el valor?'],'Selección del punto de diseño','Si, es correcto',...
-                           'Elegir otro punto gráficamente','Elegir otro punto numéricamente','Si, es correcto');
-        % Handle response
-        switch choice
-            case 'Si, es correcto'
-                choiceFlag = 1;
-            case 'Elegir otro punto gráficamente'
-                delete(p);
-                choiceFlag = 0;
-            case 'Elegir otro punto numéricamente'
-                delete(p);
-                prompt = {'Carga alar [kg/m^2]:','Cociente Empuje/Peso [-]:'};
-                dlg_title = '';
-                num_lines = 1;
-                defaultans = {'',''};
-                answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
-                x = str2double(answer{1});
-                y = str2double(answer{2});
-                p=plot(x,y,'o');
-                clear prompt dlg_title num_lines defaultans answer
-                choiceFlag = -1;
-        end
-    end
+clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
 
 
 
-%% 3.4 Sizing to climb requirementes **
+%% 3.4 SIZING TO CLIMB REQUIREMENTS
 Wto_S_cl = Wto_S./(CF.lbf2N/CF.ft2m^2);  %W/S to lbs/ft^2
 
 % Wto_S_cl = [20, 30, 40, 50];
@@ -279,6 +235,61 @@ plot(Wto_S,P_W.cl.FAR2377, 'DisplayName','23.77')
 % plot(W_P.cl.FAR2377,Wto_S_cl)
 
 legend('show')
+
+
+
+%% DESIGN POINT
+    figure()
+    %Take-Off Field Length
+        plot(WingLoading.TakeOffRoskam,ThrustWeight_TO); hold on;
+        plot(WingLoading.TakeOffSP,ThrustWeight_TO);
+    %Take-Off Stall Speed
+        if isfield(WingLoading,'Stall_TO')
+            plot(WingLoading.Stall_TO.*ones(1,length(ThrustWeight_TO)),ThrustWeight_TO);
+        end
+    %Landing Field Length
+        plot(WingLoading.LandingRoskam.*ones(1,length(ThrustWeight_TO)),ThrustWeight_TO);
+        plot(WingLoading.LandingSP.*ones(1,length(ThrustWeight_TO)),ThrustWeight_TO);
+    %Formating
+        xlabel('Wing Loading - MTOW/Sw [kg/m^2]')
+        ylabel('Thrust/Weight_{TO} [-]')
+    %Design Point Selector
+    choiceFlag = 0;
+    uiwait(msgbox('Por favor, selecione de forma gráfica el punto de diseño deseado.','Selección del punto de diseño','modal'));
+    while choiceFlag<1
+        if choiceFlag==0
+            %First, chose graphically
+            [x,y] = ginput(1);
+            p=plot(x,y,'o');
+        end
+        % Construct a questdlg with three options
+        choice = questdlg(['Has selecionado una carga alar al despegue de ',num2str(x),' (kg/m^2) y un cociente de empuje/peso de ',num2str(y),...
+                           '. ¿Es esto correcto, o desea modificar el valor?'],'Selección del punto de diseño','Si, es correcto',...
+                           'Elegir otro punto gráficamente','Elegir otro punto numéricamente','Si, es correcto');
+        % Handle response
+        switch choice
+            case 'Si, es correcto'
+                choiceFlag = 1;
+            case 'Elegir otro punto gráficamente'
+                delete(p);
+                choiceFlag = 0;
+            case 'Elegir otro punto numéricamente'
+                delete(p);
+                prompt = {'Carga alar [kg/m^2]:','Cociente Empuje/Peso [-]:'};
+                dlg_title = '';
+                num_lines = 1;
+                defaultans = {'',''};
+                answer = inputdlg(prompt,dlg_title,num_lines,defaultans);
+                x = str2double(answer{1});
+                y = str2double(answer{2});
+                p=plot(x,y,'o');
+                clear prompt dlg_title num_lines defaultans answer
+                choiceFlag = -1;
+        end
+    end
+    
+    clear choiceFlag choice p
+
 %% 3.5 Sizing to maneuvering requierements
 
 %% 3.6 Sizing to cruise speed requirementes **

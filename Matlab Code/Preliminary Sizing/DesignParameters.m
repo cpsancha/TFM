@@ -45,10 +45,12 @@ switch ME.MissionType
         DP.AlternateRange    = 370*1e3; %[m] Range to alternate airport (200 nautic miles --> 370km)
         
         %Landing
-        DP.LFL               =  700; %[m]   -- Landing Field Length, from similar planes: max-->1015m, min-->631m, mean-->733m
-        DP.StallSpeed_L      =  NaN; %[m/s] -- Landing Stall Speed
+        DP.LFL               = 700; %[m]   -- Landing Field Length, from similar planes: max-->1015m, min-->631m, mean-->733m
+        DP.StallSpeed_L      = NaN; %[m/s] -- Landing Stall Speed
         
         %Wing - Airfoil
+        DP.AspectRatio       =   9; %[-] - Aspect ratio, from similar planes: max-->9.7166, min-->8.0139, mean-->9.0017
+
         DP.CLmax             = NaN;
         DP.CLmax_TO          = 2.2; %From similar planes: max-->2.3447, min-->1.5414, mean-->2.0622
         DP.CLmax_L           = 3.1; %From similar planes: max-->3.7689, min-->2.2523, mean-->3.0764

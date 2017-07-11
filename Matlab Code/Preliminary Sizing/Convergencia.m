@@ -9,7 +9,7 @@ switch ME.MissionType
         %Define linspace values of MTOW
         x=linspace(18.6e3,45e3,30);
         for i = 1:length(x)
-            [ ~, ~, W_E, ~, W_E_tent,~,~ ] = getWeights(x(i), ME, Parameters);
+            [ ~, ~, W_E, ~, W_E_tent,~,~ ] = getWeights(x(i), ME, CST, CF, Parameters );
             y1(i)= W_E_tent; %fuel fraction method
             y2(i)= W_E; %regresion, already painted
         end
@@ -29,7 +29,7 @@ switch ME.MissionType
         x1 = linspace(15000,50000, 30);
         for i = 1:length(x1)
             x=x1(i);
-            [ F, W_TO_guess, W_E, W_F, W_E_tent,m,M_ff ] = getWeights( x, ME, Parameters);
+            [ F, W_TO_guess, W_E, W_F, W_E_tent,m,M_ff ] = getWeights( x, ME, CST, CF, Parameters );
             y1(i)= W_E_tent;
             y2(i)=W_E;
         end
@@ -45,18 +45,18 @@ switch ME.MissionType
 end
 
 
-function [ F, W_TO_guess, W_E, W_F, W_E_tent,m, M_ff ] = getWeights( x, ME, Parameters)
+function [ F, W_TO_guess, W_E, W_F, W_E_tent,m, M_ff ] = getWeights( x, ME, CST, CF, Parameters )
 %GETWEIGHTS: Gets the estimation of take-off gross weight (WTO), empty weight (WE) and mission
 % fuel weight (WF). All weights in kg
 
 %% 1. Determine the mission payload weight (W_PL)
-W_PL = ME.Payload;
+W_PL = ME.Payload; %[kg]
 
 
 %% 2. Guessing a likely value of W_TO_guess:
 %An initial guess is obtained by comparing the mission specification of the
 %airplane with the mission capabilities of similar airplanes.
-W_TO_guess = x; 
+W_TO_guess = x;  %[kg]
 
 
 %% 3. Determination of mission fuel weight:
@@ -67,19 +67,20 @@ for i=1:length(Parameters.fuelFraction(:))
 end
 
 W_F_res = 0; %NEEDS TO BE ESTABLISHED (FAR?)
-W_F = (1 - M_ff)*W_TO_guess + W_F_res; %Eq 2.15
+W_F = (1 - M_ff)*W_TO_guess + W_F_res; %Eq 2.15 %[kg]
 
 
 %% Step 4. Calculate a tentative value for W_OE from:
-W_OE_tent = W_TO_guess - W_F - W_PL;  %Eq 2.4
+W_OE_tent = W_TO_guess - W_F - W_PL;  %Eq 2.4 %[kg]
 
 
 %% Step 5. Calculate a tentative value for W_E from:
 W_tfo = 0.005*W_TO_guess; % 0.5% of MTOW, taken from example pag.52. Note that W_tfo (trapped fuel-oil) is often neglected in this stage (page 7)
-W_E_tent = W_OE_tent - W_tfo - ME.CrewWeight;   %Eq 2.4. 
+W_E_tent = W_OE_tent - W_tfo - ME.CrewWeight;   %Eq 2.4.  %[kg]
 
 %% 4. Finding the allowable value for W_E
-W_E = 10.^((log10(W_TO_guess)-Parameters.Table_2_15.a)/Parameters.Table_2_15.b);
+W_E = 10^((log10(W_TO_guess*CST.GravitySI*CF.N2lbf)-Parameters.Table_2_15.a)/Parameters.Table_2_15.b); %In lbf, remember that Roskam correlation is in lbf
+W_E = W_E*CF.lbf2N/CST.GravitySI; %W_E in kg
 
 m= W_E/W_TO_guess;
 % W_E = 10^((log10(W_TO_guess/CF.lbs_to_kg)-parameters.Table_2_15.a)/parameters.Table_2_15.b); %lb
