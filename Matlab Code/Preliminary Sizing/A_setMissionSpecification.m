@@ -20,20 +20,24 @@ ME.MissionType = 5 ; % Business Jets
 CST = importConstants();
 
 
-%% DEFINE FIGURES FOLDER
+%% DEFINE FIGURES FOLDER AND POSITION
 switch ME.MissionType
     case 5
         ME.FiguresFolder = '5_Figures';
     case 11
         ME.FiguresFolder = '11_Figures';
 end
+
+
+
 %% DEFINE CONVERSION FACTORS
 %length
     CF.nm2m     = 1852;
     CF.m2ft     = 3.28084;
     CF.ft2m     = 0.3048;
+    CF.sm2m     = 1609.3; %Static miles to m
 %speed
-    CF.mph2ms   = 2.236936; %???? mph2ms --> 0.44704
+    CF.mph2ms   = 0.44704;
     CF.kts2ms   = 0.514444;
     CF.ms2kts   = 1.94384;
     CF.fps2kts  = 0.592484;
@@ -55,7 +59,7 @@ end
     CF.TSFC2SI  = CF.lbm2kg/(CF.lbf2N*CF.hour2sec);
     CF.c_p2SI   = CF.lbm2kg*(1/CF.hp2watts)*(1/3600)*CST.GravitySI;
     
-    CF.sm2m     = 1.6093e+03; %<-- No se qué es
+    
 
 
 

@@ -9,6 +9,10 @@
 % Movidos al apartado A para usarlos al importar los aviones semejantes
 
 
+%% GENERATE A BUNCH OF DISTINGUISHABLE COLORS
+Parameters.Colors = distinguishable_colors(20);
+
+
 %% Table 2.2: Suggested Values For L/D, c_j, n_p and c_p for several mission phases:
 switch ME.MissionType
     case 5
@@ -137,7 +141,6 @@ end
 
 
 
-
 %% Table 2.15: Regresion constants A and B of equation 2.16:
 %Regresion for MTOW and EW in lbf (IMPORTANTE)
 switch ME.MissionType
@@ -158,36 +161,12 @@ end
 switch ME.MissionType
     case 5
         %5.Business Jets
-        [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME, SP, CST, CF );
+        [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME, SP, CST, CF, Parameters );
     
     case 11
         %11. Flying boats, amphibious, float airplanes
-%         [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME, SP, CST, CF );
+%         [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME, SP, CST, CF, Parameters );
 end
-
-
-
-
-%% DE AQUÍ EN ADELANTE, DEBERÍA IR EN OTRO SCRIPT, PORQ SI NO ES UN LIO DEL DEMONIO
-% %  YO CREO QUE CADA INCORPORACIÓN DE PARÁMETROS SE DEBERÍA IR HACIENDO EN EL LUGAR DONDE SE USAN
-%                      
-%                           .
-%                             .
-%                         . ;.
-%                          .;
-%                           ;;.
-%                         ;.;;
-%                         ;;;;.
-%                         ;;;;;
-%                         ;;;;;
-%                         ;;;;;
-%                         ;;;;;
-%                         ;;;;;
-%                       ..;;;;;..
-%                        ':::::'
-%                          ':`
-
-
 
 
 
@@ -208,6 +187,7 @@ switch ME.MissionType
 end
 
 
+
 %% Figures 3.21 Equivalent Skin Friction (cf)
 switch ME.MissionType
     case 5
@@ -219,6 +199,7 @@ switch ME.MissionType
 end
 
 
+
 %% Table 3.5 Correlation coefficients for parasite area versus wetted area
 % Performs interpolation in table 3.5 in function of cf.
 cf = [0.009, 0.008, 0.007, 0.006, 0.005, 0.004, 0.003, 0.002];
@@ -227,6 +208,7 @@ a  = [-2.0458, - 2.0969, - 2.1549, -2.2218, - 2.3010, -2.3979, -2.5229, -2.6990]
 Parameters.Table_3_4.a = interp1(cf,a,Parameters.cf);
 Parameters.Table_3_4.b = 1;
 clear cf a
+
 
 
 %% Table 3.5 Regression line coefficients for take-off weight (in lbf) versus wetted area (in ft^2)
@@ -240,6 +222,7 @@ switch ME.MissionType
         Parameters.Table_3_5.c = 0.6295;
         Parameters.Table_3_5.d = 0.6708;
 end
+
 
 
 %% Table 3.6 First estimates for deltaCD0 and  'e' with flaps and gear down 
@@ -269,7 +252,6 @@ switch ME.MissionType
         Parameters.Table_3_6.e.landing_flaps  = [0.7 , 0.75];
         Parameters.Table_3_6.e.landing_gear   = NaN; %No effect
 end
-
 
 
 
@@ -370,7 +352,7 @@ switch phase
 end
 end
 
-function [ A, B ] = getWTORegression(ME, SP, CST, CF )
+function [ A, B ] = getWTORegression(ME, SP, CST, CF, Parameters )
 %GETWTOGUESS Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -401,12 +383,12 @@ fit = polyfit(log10(EW(index)),log10(MTOW(index)),1);
 
 %Display figure
     figure()
-    loglog(EW(index),MTOW(index),'*','Color','b'); hold on;
+    loglog(EW(index),MTOW(index),'*','Color',Parameters.Colors(1,:)); hold on;
     switch ME.MissionType
         case 5
-            plot(linspace(min(EW)-0.5e3,max(EW)+1e3,2),10.^polyval(fit,linspace(log10(min(EW)-0.5e3),log10(max(EW)+1e3),2)),'LineWidth',1.25);
+            plot(linspace(min(EW)-0.5e3,max(EW)+1e3,2),10.^polyval(fit,linspace(log10(min(EW)-0.5e3),log10(max(EW)+1e3),2)),'LineWidth',1.25,'Color',Parameters.Colors(2,:));
         case 11
-            plot(linspace(min(EW),max(EW),2),10.^polyval(fit,linspace(min(log10(EW)),max(log10(EW)),2)),'LineWidth',1.25);
+            plot(linspace(min(EW),max(EW),2),10.^polyval(fit,linspace(min(log10(EW)),max(log10(EW)),2)),'LineWidth',1.25,'Color',Parameters.Colors(2,:));
     end
     xlabel('EW$$\ [kg]$$','Interpreter','latex')
     ylabel('MTOW$$\ [kg]$$','Interpreter','latex')

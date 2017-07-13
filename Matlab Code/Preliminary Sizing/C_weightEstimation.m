@@ -25,6 +25,16 @@ end
 
 % Get the other weights:
 [~, AC.Weight.MTOW, AC.Weight.EW, AC.Weight.MFW] = getWeights( W_TO, ME, CST, CF, Parameters );
+
+
+% Define more AC weights;
+switch ME.MissionType
+    case 5
+        AC.Weight.MRW = DP.MRW_MTOW * AC.Weight.MTOW;
+        AC.Weight.MLW = DP.MLW_MTOW * AC.Weight.MTOW;
+    case 11
+end
+
 clear W_TO
 
 %Create figure showing the convergence

@@ -3,7 +3,7 @@ switch ME.MissionType
         % EXPECTED TO BE RUN AFTER B_loadParameters, IF NOT, COMMENT THIS:
         h1=gcf;
         h2=figure();
-        objects=allchild(h1);
+        objects=allchild(h1); %#ok<NASGU>
         copyobj(get(h1,'children'),h2);
         
         %Define linspace values of MTOW
@@ -13,8 +13,8 @@ switch ME.MissionType
             y1(i)= W_E_tent; %fuel fraction method
             y2(i)= W_E; %regresion, already painted
         end
-        plot(y1,x,'b','LineWidth',1.25,'Color',[0 0.251 0]);
-        plot(AC.Weight.EW,AC.Weight.MTOW,'+','LineWidth',2,'Color',[0.9412 0.4706 0]);
+        plot(y1,x,'b','LineWidth',1.25,'Color',Parameters.Colors(3,:));
+        plot(AC.Weight.EW,AC.Weight.MTOW,'+','LineWidth',2,'Color',Parameters.Colors(4,:));
         txt=['EW:\ ',num2str(round(AC.Weight.EW)),'kg\ \ $$\rightarrow\ \ \ $$'];
         text(AC.Weight.EW,AC.Weight.MTOW,txt,'HorizontalAlignment','right','FontSize',10,'Interpreter','Latex')
         txt=['MTOW:\ ',num2str(round(AC.Weight.MTOW)),'kg\ \ \ '];
