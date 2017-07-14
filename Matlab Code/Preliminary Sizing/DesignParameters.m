@@ -12,7 +12,13 @@ switch ME.MissionType
     %% REQUIREMENTS
         DP.Payload       = 1250; %[kg]
         DP.Range         = 10e6; %[m]
-       
+        DP.MaxSpeed      = 257;  %[m/s] (Mach=0.87)
+        
+        
+    %% PLOTTING OPTIONS
+        DP.ShowReportFigures      = false; %Show all the available figures for reports [true] or only the most relevant ones [false]
+        DP.selectDesignPoint      = false; %Ask user to select design point [true] or use the saved value [false]
+        DP.showRoskamRequirements = false; %Show the Take-Off and Landing requirements obtained with Roskam constants [true] or only the SP ones [false]
         
     %% CUSTOM SELECTED PARAMETERS
         %Take-Off
@@ -26,8 +32,8 @@ switch ME.MissionType
         
         %Cruise
         DP.StallSpeed          =    NaN; %[m/s] -- Cruise Stall Speed
-        DP.CruiseAltitude      = 12.5e3; %[m]
-        DP.CruiseSpeed         =    225; %[m/s]
+        DP.CruiseAltitude      =   12e3; %[m]
+        DP.CruiseSpeed         =    236; %[m/s] (Mach=0.80)
         DP.CruiseEfficiency    =     14; %[-] mean(loadFields(SP,'Actuations.L_D'),'omitnan') --> 12.25
         DP.CruiseTSFC          =   0.50; %[lbm/(lbf·h)] mean(loadFields(SP,'Engine.TSFC'),'omitnan') --> 0.661
         
@@ -45,7 +51,7 @@ switch ME.MissionType
         DP.AlternateRange  = 370*1e3; %[m] Range to alternate airport (200 nautic miles --> 370km)
         
         %Landing
-        DP.LFL             = 700; %[m]   -- Landing Field Length, from similar planes: max-->1015m, min-->631m, mean-->733m
+        DP.LFL             = 750; %[m]   -- Landing Field Length, from similar planes: max-->1015m, min-->631m, mean-->733m
         DP.StallSpeed_L    = NaN; %[m/s] -- Landing Stall Speed
         
         %Wing - Airfoil
@@ -55,6 +61,7 @@ switch ME.MissionType
         DP.CLmax_L         = 3.1; %From similar planes: max-->3.7689, min-->2.2523, mean-->3.0764
         
         %Weight
+        DP.EWnew_EWold     = 0.80;  %Weight reduction of the empty weight as being fully manufatured in composite materials
         DP.MLW_MTOW        = 0.85;  %From SP: min-->0.7900, max-->0.9267, mean-->0.8753
         DP.MRW_MTOW        = 1.005; %From SP: min-->0.9918, max-->1.0286, mean-->1.0051
         

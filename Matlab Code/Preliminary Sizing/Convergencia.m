@@ -1,5 +1,6 @@
 switch ME.MissionType
     case 5
+        if DP.ShowReportFigures
         % EXPECTED TO BE RUN AFTER B_loadParameters, IF NOT, COMMENT THIS:
         h1=gcf;
         h2=figure();
@@ -11,10 +12,15 @@ switch ME.MissionType
         for i = 1:length(x)
             [ ~, ~, W_E, ~, W_E_tent,~,~ ] = getWeights(x(i), ME, CST, CF, Parameters );
             y1(i)= W_E_tent; %fuel fraction method
-            y2(i)= W_E; %regresion, already painted
+            y2(i)= W_E;      %regresion, already painted
         end
         plot(y1,x,'b','LineWidth',1.25,'Color',Parameters.Colors(3,:));
-        plot(AC.Weight.EW,AC.Weight.MTOW,'+','LineWidth',2,'Color',Parameters.Colors(4,:));
+        plot(AC.Weight.EW/DP.EWnew_EWold,AC.Weight.MTOW+AC.Weight.EW*((1-DP.EWnew_EWold)/DP.EWnew_EWold),'+','LineWidth',2,'Color',Parameters.Colors(4,:));
+        txt=['$$EW_{old}:\ $$',num2str(round(AC.Weight.EW/DP.EWnew_EWold)),'kg\ \ $$\rightarrow\ \ \ $$'];
+        text(AC.Weight.EW/DP.EWnew_EWold,AC.Weight.MTOW+AC.Weight.EW*((1-DP.EWnew_EWold)/DP.EWnew_EWold),txt,'HorizontalAlignment','right','FontSize',10,'Interpreter','Latex')
+        txt=['$$MTOW_{old}:\ $$',num2str(round(AC.Weight.MTOW+AC.Weight.EW*((1-DP.EWnew_EWold)/DP.EWnew_EWold))),'kg\ \ \ '];
+        text(AC.Weight.EW/DP.EWnew_EWold,AC.Weight.MTOW+AC.Weight.EW*((1-DP.EWnew_EWold)/DP.EWnew_EWold)+1.5e3,txt,'HorizontalAlignment','right','FontSize',10,'Interpreter','Latex')
+        plot(AC.Weight.EW,AC.Weight.MTOW,'+','LineWidth',2,'Color',Parameters.Colors(5,:));
         txt=['EW:\ ',num2str(round(AC.Weight.EW)),'kg\ \ $$\rightarrow\ \ \ $$'];
         text(AC.Weight.EW,AC.Weight.MTOW,txt,'HorizontalAlignment','right','FontSize',10,'Interpreter','Latex')
         txt=['MTOW:\ ',num2str(round(AC.Weight.MTOW)),'kg\ \ \ '];
@@ -24,6 +30,7 @@ switch ME.MissionType
         legend('boxoff')
         saveFigure(ME.FiguresFolder,'MTOW definition')
         clear h h1 h2 x y1 y2 W_E W_E_tent i objects txt
+        end
         
     case 11
         x1 = linspace(15000,50000, 30);

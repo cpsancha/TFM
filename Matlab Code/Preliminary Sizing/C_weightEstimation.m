@@ -26,6 +26,13 @@ end
 % Get the other weights:
 [~, AC.Weight.MTOW, AC.Weight.EW, AC.Weight.MFW] = getWeights( W_TO, ME, CST, CF, Parameters );
 
+%Weight reduction of the empty weight as being fully manufatured in composite materials
+switch ME.MissionType
+    case 5
+        AC.Weight.MTOW = AC.Weight.MTOW - (1-DP.EWnew_EWold)*AC.Weight.EW;     
+        AC.Weight.EW   = DP.EWnew_EWold * AC.Weight.EW;
+    case 11
+end
 
 % Define more AC weights;
 switch ME.MissionType

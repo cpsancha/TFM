@@ -31,4 +31,8 @@ end
 %% Import the data
 [~, ~, data] = xlsread(workbookFile, sheetName, range);
 data(cellfun(@(x) ~isempty(x) && isnumeric(x) && isnan(x),data)) = {''};
+data(strcmp('ActiveX VT_ERROR: ', data))={''};
+
+% 
+% data(data==B ) = NaN;
 

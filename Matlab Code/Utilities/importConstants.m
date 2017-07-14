@@ -11,7 +11,7 @@ if i>0
 else
   error('Cannot locate MTORRES directory. You must add the path to the MTorres directory.')
 end
-fileSP = fullfile(sr,'Aviones Semejantes',filesep,'Aviones_Semejantes.xlsx');
+fileSP = fullfile(sr,'Aviones Semejantes',filesep,'Aviones_Semejantes_Seaplanes.xlsx');
 
 
 
