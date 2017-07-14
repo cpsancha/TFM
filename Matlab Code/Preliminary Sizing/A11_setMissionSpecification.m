@@ -174,6 +174,7 @@ switch ME.MissionType
         
     case 11 % amphibious
         ME.Powerplant.Type = 'propeller';
+        ME.Powerplant.Number = 2;
 end
 
 
@@ -187,7 +188,7 @@ switch ME.MissionType
     case  5 % business jet
         SP = importSimilarPlanes(ME.MissionType,CST,CF);
     case 11 % amphibious
-        SP = importSimilarPlanes(ME.MissionType,CST,CF);
+        [SP, MV] = importSimilarPlanes(ME.MissionType,CST,CF);
 end
 
 
@@ -210,4 +211,6 @@ AC = aircraft();
 
 
 %% CONTINUE...
-% run B_loadParameters.m
+run B_loadParameters.m
+run C_weightEstimation.m
+run D11_airplaneDesignParameters.m

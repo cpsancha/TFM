@@ -85,7 +85,7 @@ end
 %% CREW
 switch ME.MissionType
     case  5 % business jet
-        ME.Crew = 2; %Check FAR 91.215 for minimun crew members
+        ME.Crew = DP.CrewNumber; %Check FAR 91.215 for minimun crew members
         %Mission crew weight in kg:
         ME.CrewWeight = ME.Crew*(CST.CrewWeightSI+CST.CrewBaggWeightSI);
         
@@ -184,7 +184,7 @@ end
 
 
 %% OTHERS
-ME.Pressurization = NaN;
+ME.Pressurization  = NaN;
 ME.Mission_Profile = NaN;
 
 

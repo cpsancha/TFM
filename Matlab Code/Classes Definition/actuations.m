@@ -11,15 +11,22 @@ classdef actuations < handle
         Vcruise     double        %[double]  Cruise speed [m/s]
         L_D         double        %[double]  Efficiency [-]
         Vto         double        %[double]  Take Off speed [m/s] también llamada Lift-Off speed o V2 (1.2*Vstall_TO)
+        Vtow        double
+        Vl          double
+        Vlw         double
         Vstall      double        %[double]  Stall Speed in clean configuration [m/s]
-        Vstall_TO   double        %[double]  Stall Speed in Take-Off configuration [m/s]
+        Vstall_TO   double        %[double]  Stall Speed in Take-Off configuration [m/s]   
+        Vstall_TOw  double       %[double]  Stall Speed in Take-Off water [m/s]
         Vstall_L    double        %[double]  Stall Speed in Landing configuration[m/s]
+        Vstall_Lw   double       %[double]  Stall Speed in Landing configuration[m/s]
         Vapprox     double        %[double]  Approximation Speed (1.3*Vstall_L) [m/s]
         Vasc        double        %[double]  Ascensional Speed [m/s]
         Hmax        double        %[double]  Max. Operating Altitude [m]
         Hcruise     double        %[double]  Typical cruise Altitude [m]
         Sto         double        %[double]  Take off distance [m]
+        Stow        double        %[double]  Take off distance water [m]
         Sl          double        %[double]  Landing distance [m]
+        Slw         double        %[double]  Landing distance water [m]
         
     end
     

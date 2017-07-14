@@ -24,7 +24,7 @@ classdef wing < handle
         Sweep           double  %[double] Sweep of the wing at the point 1/4 of CMA [º]
         Dihedral        double  %[double] Dihedral of the wing [º]
         WingLoading     double  %[double] MTOW/Sw [kg/m^2]
-        CLmax_Cr        double  %[double] Maximum Cl of the wing at cruise
+        CLmax           double  %[double] Maximum Cl of the wing at cruise
         CLmax_TO        double  %[double] Maximum Cl of the wing at Take-Off
         CLmax_L         double  %[double] Maximum Cl of the wing at Landing
         LongPos         double  %[double] Definida como el cociente entre la distancia longitudinal del punto un cuarto de la cuerda media aerodinámica al morro del avión y la longitud del fuselaje.

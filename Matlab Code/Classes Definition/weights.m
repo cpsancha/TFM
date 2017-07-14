@@ -18,6 +18,7 @@ classdef weights < handle
     
     
     properties (Dependent, GetObservable) 
+        MLW_MTOW double    %[double]  Ratio of the MLW and the MTOW [-]
         OEW_MTOW double    %[double]  Ratio of the OEW and the MTOW [-]
         MPL_MTOW double    %[double]  Ratio of the MPL and the MTOW [-]
         MFW_MTOW double    %[double]  Ratio of the MFW and the MTOW [-]
@@ -30,6 +31,11 @@ classdef weights < handle
             if (nargin > 0) && (isa(varargin{1},'aircraft'))
                 addlistener(obj,'MTOW','PostSet',@(src,evnt)aircraft.TtoMTOWModification(src,evnt,varargin{1}));
             end
+        end
+        
+        % MLW_MTOW getter function
+        function MLW_MTOW = get.MLW_MTOW(obj)
+            MLW_MTOW = obj.MLW / obj.MTOW;
         end
                     
         % OEW_MTOW getter function

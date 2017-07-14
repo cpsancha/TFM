@@ -48,6 +48,17 @@ switch ME.MissionType
         Parameters.Loiter.c_p = [0.5, 0.7]*CF.c_p2SI;  %lbs/hp/hr to N/Watts/s
         Parameters.Loiter.n_p = 0.77;
         
+        %Custom Values
+                Parameters.Cruise.L_D = 12;
+        Parameters.Cruise.c_j = 0.5*CF.TSFC2SI; %lbm/lbf/hr to kg/N/s
+        Parameters.Cruise.c_p = 0.5*CF.c_p2SI;  %lbs/hp/hr to N/Watts/s
+        Parameters.Cruise.n_p = 0.82;
+        
+        Parameters.Loiter.L_D = 14;
+        Parameters.Loiter.c_j = 0.4*CF.TSFC2SI; %lbm/lbf/hr to kg/N/s
+        Parameters.Loiter.c_p = 0.5*CF.c_p2SI;  %lbs/hp/hr to N/Watts/s
+        Parameters.Loiter.n_p = 0.77;
+        
     otherwise
         warning('Unexpected mission type.')
 end
@@ -165,7 +176,7 @@ switch ME.MissionType
     
     case 11
         %11. Flying boats, amphibious, float airplanes
-%         [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME, SP, CST, CF, Parameters );
+        [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME, SP, CST, CF, Parameters );
 end
 
 
@@ -184,7 +195,10 @@ switch ME.MissionType
         Parameters.CL_max    = [1.2, 1.8];
         Parameters.CL_max_TO = [1.6, 2.2];
         Parameters.CL_max_L  = [1.8, 3.4];
+
 end
+
+
 
 
 
@@ -243,21 +257,31 @@ switch ME.MissionType
     case 11
         %delta_CD0
         Parameters.Table_3_6.deltaC_D0.clean = 0;
-        Parameters.Table_3_6.deltaC_D0.take_off_flaps = [0.010 , 0.020];
-        Parameters.Table_3_6.deltaC_D0.landing_flaps  = [0.055 , 0.075];
-        Parameters.Table_3_6.deltaC_D0.landing_gear   = [0.015 , 0.025];
+        Parameters.Table_3_6.deltaC_D0.take_off_flaps = 0.01; %[0.010 , 0.020];
+        Parameters.Table_3_6.deltaC_D0.landing_flaps  = 0.06; %[0.055 , 0.075];
+        Parameters.Table_3_6.deltaC_D0.landing_gear   = 0.015;%[0.015 , 0.025];
         %e
-        Parameters.Table_3_6.e.clean          = [0.8 , 0.85];
-        Parameters.Table_3_6.e.take_off_flaps = [0.75 , 0.8];
-        Parameters.Table_3_6.e.landing_flaps  = [0.7 , 0.75];
+        Parameters.Table_3_6.e.clean          = 0.85; %[0.8 , 0.85];
+        Parameters.Table_3_6.e.take_off_flaps = 0.8; %[0.75 , 0.8];
+        Parameters.Table_3_6.e.landing_flaps  = 0.75; %[0.7 , 0.75];
         Parameters.Table_3_6.e.landing_gear   = NaN; %No effect
 end
 
 
 
+%% Weight Reduction due to the use of new composite materials and techniques
+%Weight reduction of the empty weight as being fully manufatured in composite materials
+%From: http://www.compositesworld.com/news/revolutionary-fuselage-concept-unveiled-by-mtorres --> Fuselage weight
+%reduction estimated between 10% and 30%, and from Roskam Part V, Chapter 2 page 11, average FuselageWeight/EW=0.2
+%so, total EW reduction estimated between 2% and 6%
+switch ME.MissionType
+    case 5
+        Parameters.EWnew_EWold = DP.EWnew_EWold;
+    case 11
+        Parameters.EWnew_EWold = 0.95; 
+end
 
-%% CONTINUE...
-% run C_weightEstimation.m
+
 
 
 
@@ -485,84 +509,62 @@ switch ME.MissionType
         
         
     case 11 %Amphibious
-        
-end
+                %Formating
+        grafWidth   = 16;
+        grafAR      = 0.6;
+% %         grid on
+        xlim([9e3,35e3]);
+        ylim([15e3,55e3]);
+        set(gcf,'DefaultLineLineWidth',1.5);
+        set(gcf,'PaperUnits', 'centimeters','PaperSize',[grafWidth grafWidth*grafAR], 'PaperPosition', [0 0 grafWidth grafWidth*grafAR]);
+        set(gca,'FontSize',10,'FontName','Times new Roman','box','on')
 
-
-end
-
-function [ A, B ] = getWTORegressionBackup(ME,SP)
-%GETWTOGUESS Summary of this function goes here
-%   Detailed explanation goes here
-
-%Calculate regresion
-for i=1:length(SP)
-    if (~isempty(SP{i}.Weight.OEW))&&(~strcmp(SP{i}.Model,'Phenom 300'))
-        Model(i) = SP{i}.Model;
-        MTOW(i)  = SP{i}.Weight.MTOW; %#ok<*AGROW>
-        EW(i)    = SP{i}.Weight.EW;
-        index(i) = true;
-    else
-        Model(i) = '';
-        MTOW(i)  = NaN;
-        EW(i)    = NaN;
-        index(i) = false;
-    end
-end
-
-fit = polyfit(log10(EW(index)),log10(MTOW(index)),1);
-A = fit(2);
-B = fit(1);
-
-%Display figure
-figure()
-plot(log10(EW(index)),log10(MTOW(index)),'*'); hold on;
-plot(linspace(min(log10(EW)),max(log10(EW)),2),polyval(fit,linspace(min(log10(EW)),max(log10(EW)),2)),'LineWidth',1.25);
-xlabel('$$\log_{10}($$EW$$)\ [kg]$$','Interpreter','latex')
-ylabel('$$\log_{10}($$MTOW$$)\ [kg]$$','Interpreter','latex')
-title('Correlation between $$\log_{10}($$EW$$)$$ and $$\log_{10}($$MTOW$$)$$','Interpreter','latex')
-
-
-%Image customization
-switch ME.MissionType
-    case 5 %Business jet
         %Show equation in the graph
-        x = min(log10(EW)) + 0.225*(max(log10(EW))-min(log10(EW)));
-        y = polyval(fit,x);
+        x = min(EW) + 0.3*(max(EW)-min(EW));
+        y = 10.^polyval(fit,log10(x));
         txt0 = '$$\ \ \leftarrow$$ $$\log_{10}($$MTOW$$)=A+B\log_{10}($$EW$$)$$';
         txt1 = strcat('$$\ \ \ \ \ \ A=',num2str(fit(2)),'$$');
         txt2 = strcat('$$\ \ \ \ \ \ B=',num2str(fit(1)),'$$');
         text(x,y,txt0,'Interpreter','latex','FontSize',11)
-        text(x,y-0.04,txt1,'Interpreter','latex','FontSize',11)
-        text(x,y-0.08,txt2,'Interpreter','latex','FontSize',11)
-        %Image positioning
-        %     set(gcf,'pos',[500   300   800   450])
-        %         xlim([3.9,4.5])
-        %         ylim([4.15,4.7])
-        %Show models names
+        text(x,y-1.5e3,txt1,'Interpreter','latex','FontSize',11)
+        text(x,y-2.8e3,txt2,'Interpreter','latex','FontSize',11)
         for i=1:length(Model)
+
             if index(i)
-                if strcmp(Model(i),'Legacy 500')
-                    text(log10(EW(i))-0.125,log10(MTOW(i)),char(Model(i)),'FontSize',9)
+                if strcmp(Model(i),'Falcon 7X')
+                    text(EW(i)+0.3e3,MTOW(i),char(Model(i)),'FontSize',8)
+                elseif strcmp(Model(i),'Falcon 900LX')
+                    text(EW(i)+0.2e3,MTOW(i),char(Model(i)),'FontSize',8)
                 elseif strcmp(Model(i),'Falcon 2000LXS')
-                    text(log10(EW(i))-0.175,log10(MTOW(i)),char(Model(i)),'FontSize',9)
+                    text(EW(i)+0.15e3,MTOW(i)+0.25e3,char(Model(i)),'FontSize',8)
+                elseif strcmp(Model(i),'Global 6000')
+                    text(EW(i)-2.9e3,MTOW(i),char(Model(i)),'FontSize',8)
+                elseif strcmp(Model(i),'Global 5000')
+                    text(EW(i)-2.9e3,MTOW(i)+0.25e3,char(Model(i)),'FontSize',8)
                 elseif strcmp(Model(i),'Challenger 350')
-                    text(log10(EW(i))+0.0095,log10(MTOW(i))+0.005,char(Model(i)),'FontSize',9)
+                    text(EW(i)-1.7e3,MTOW(i)+0.25e3,char(Model(i)),'FontSize',8)
                 elseif strcmp(Model(i),'Gulfstream G280')
-                    text(log10(EW(i))+0.01,log10(MTOW(i))-0.01,char(Model(i)),'FontSize',9)
+                    text(EW(i)+0.1e3,MTOW(i)-0.1e3,char(Model(i)),'FontSize',8)
+                elseif strcmp(Model(i),'Legacy 450')
+                    text(EW(i)+0.1e3,MTOW(i)-0.15e3,char(Model(i)),'FontSize',8)
+                elseif strcmp(Model(i),'Legacy 500')
+                    text(EW(i)-1.30e3,MTOW(i)+0.1e3,char(Model(i)),'FontSize',8)
+                elseif strcmp(Model(i),'Phenom 300')
+                    text(EW(i),MTOW(i),char(Model(i)),'FontSize',8)
+                elseif strcmp(Model(i),'Citation X+')
+                    text(EW(i)+0.1e3,MTOW(i)+0.05e3,char(Model(i)),'FontSize',8)
                 else
-                    text(log10(EW(i))+0.01,log10(MTOW(i)),char(Model(i)),'FontSize',9)
+                    text(EW(i),MTOW(i),char(Model(i)),'FontSize',8)
                 end
             end
         end
-        %Save Figure
-        saveFigure('5_Figures','EW_MTOW_Correlation')
         
-    case 11 %Amphibious
         
+                %Save Figure
+        saveFigure(ME.FiguresFolder,'EW_MTOW_Correlation')
 end
 
 
-end  %<-- Not used, only as backup of non logarithmic axis
+end
 
 

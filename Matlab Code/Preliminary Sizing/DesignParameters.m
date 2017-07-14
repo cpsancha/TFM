@@ -34,12 +34,12 @@ switch ME.MissionType
         DP.StallSpeed          =    NaN; %[m/s] -- Cruise Stall Speed
         DP.CruiseAltitude      =   12e3; %[m]
         DP.CruiseSpeed         =    236; %[m/s] (Mach=0.80)
-        DP.CruiseEfficiency    =     14; %[-] mean(loadFields(SP,'Actuations.L_D'),'omitnan') --> 12.25
+        DP.CruiseEfficiency    =     13; %[-] mean(loadFields(SP,'Actuations.L_D'),'omitnan') --> 12.25
         DP.CruiseTSFC          =   0.50; %[lbm/(lbf·h)] mean(loadFields(SP,'Engine.TSFC'),'omitnan') --> 0.661
         
         %Loiter
         DP.LoiterTime          = 30*60;  %[s]
-        DP.LoiterEfficiency    = 16;     %[-] mean(loadFields(SP,'Actuations.L_D'),'omitnan') --> 12.25
+        DP.LoiterEfficiency    =  14;    %[-] mean(loadFields(SP,'Actuations.L_D'),'omitnan') --> 12.25
         DP.LoiterTSFC          = 0.4;    %[lbm/(lbf·h)] mean(loadFields(SP,'Engine.TSFC'),'omitnan') --> 0.661
         
         %Low Height
@@ -61,21 +61,31 @@ switch ME.MissionType
         DP.CLmax_L         = 3.1; %From similar planes: max-->3.7689, min-->2.2523, mean-->3.0764
         
         %Weight
-        DP.EWnew_EWold     = 0.80;  %Weight reduction of the empty weight as being fully manufatured in composite materials
         DP.MLW_MTOW        = 0.85;  %From SP: min-->0.7900, max-->0.9267, mean-->0.8753
         DP.MRW_MTOW        = 1.005; %From SP: min-->0.9918, max-->1.0286, mean-->1.0051
+        DP.EWnew_EWold     = 0.95;  %Weight reduction of the empty weight as being fully manufatured in composite materials
+                                    %From: http://www.compositesworld.com/news/revolutionary-fuselage-concept-unveiled-by-mtorres --> Fuselage weight
+                                    %reduction estimated between 10% and 30%, and from Roskam Part V, Chapter 2 page 11, average FuselageWeight/EW=0.2
+                                    %so, total EW reduction estimated between 2% and 6%, we chose a confident average of 5% --> EWnew=0.95*EWold
         
         %Engines
-        DP.NumberEngines  = 2; 
+        DP.NumberEngines  = 2;
+        
+        %Crew
+        DP.CrewNumber     = 2;
         
         
         
         
     case 11  %11. Flying boats, amphibious, float airplanes
-        %% REQUIREMENTS
        
         
-        %% CUSTOM SELECTED PARAMETERS
+            %% PLOTTING OPTIONS
+        DP.ShowReportFigures      = true; %Show all the available figures for reports [true] or only the most relevant ones [false]
+        DP.selectDesignPoint      = false; %Ask user to select design point [true] or use the saved value [false]
+        DP.showRoskamRequirements = false; %Show the Take-Off and Landing requirements obtained with Roskam constants [true] or only the SP ones [false]
+        
+        
         
         
 end

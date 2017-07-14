@@ -99,9 +99,9 @@ if DP.ShowReportFigures
     figure()
     plot(loadFields(SP,'Actuations.Sto'),TOP25_SP,'*','Color',Parameters.Colors(1,:)); hold on
     plot([min(loadFields(SP,'Actuations.Sto')),max(loadFields(SP,'Actuations.Sto'))],(loadFields(SP,'Actuations.Sto')'\TOP25_SP').*...
-         [min(loadFields(SP,'Actuations.Sto')),max(loadFields(SP,'Actuations.Sto'))],'--','Color',Parameters.Colors(2,:))
-    plot(DP.TOFL,TOP25R*CF.lbf2N/CST.GravitySI/(CF.ft2m^2),'+','Color',Parameters.Colors(3,:))
-    plot(DP.TOFL,TOP25,'o','Color',Parameters.Colors(4,:))
+         [min(loadFields(SP,'Actuations.Sto')),max(loadFields(SP,'Actuations.Sto'))],'--','LineWidth',1.5,'Color',Parameters.Colors(2,:))
+    plot(DP.TOFL,TOP25R*CF.lbf2N/CST.GravitySI/(CF.ft2m^2),'+','LineWidth',2,'Color',Parameters.Colors(3,:))
+    plot(DP.TOFL,TOP25,'o','LineWidth',2,'Color',Parameters.Colors(4,:))
     xlabel('Take-Off Field Length (TOFL) [m]');
     ylabel('Take-Off Parameter [kg/m^2]');
     h = findobj(gca,'Type','line');
@@ -134,9 +134,9 @@ if DP.ShowReportFigures
     figure()
     plot(loadFields(SP,'Actuations.Sl'),loadFields(SP,'Actuations.Vapprox').^2,'*','Color',Parameters.Colors(1,:)); hold on
     plot([450,max(loadFields(SP,'Actuations.Sl'))],(loadFields(SP,'Actuations.Sl')'\(loadFields(SP,'Actuations.Vapprox').^2)').*...
-         [450,max(loadFields(SP,'Actuations.Sl'))],'--','Color',Parameters.Colors(2,:))
-    plot(DP.LFL,(Vapp_R*CF.kts2ms).^2,'+','Color',Parameters.Colors(3,:))
-    plot(DP.LFL,Vapp_SP.^2,'o','Color',Parameters.Colors(4,:))
+         [450,max(loadFields(SP,'Actuations.Sl'))],'--','LineWidth',1.5,'Color',Parameters.Colors(2,:))
+    plot(DP.LFL,(Vapp_R*CF.kts2ms).^2,'+','LineWidth',2,'Color',Parameters.Colors(3,:))
+    plot(DP.LFL,Vapp_SP.^2,'o','LineWidth',2,'Color',Parameters.Colors(4,:))
     xlabel('Landing Field Length (LFL) [m]','Interpreter','Tex');
     ylabel('Square of Approach Speed   V_{approx}^2   [m^2/s^2]');
     h = findobj(gca,'Type','line');
@@ -351,51 +351,51 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
     
     %Take-Off Field Length
     if DP.showRoskamRequirements == true
-        plot(WingLoading.TakeOffRoskam,T_W_TO,'--','Color',Parameters.Colors(1,:));
+        plot(WingLoading.TakeOffRoskam,T_W_TO,'--','LineWidth',1.25,'Color',Parameters.Colors(1,:));
             LegendStr{end+1} = 'Take-Off (Roskam)';
     end
             
-        plot(WingLoading.TakeOffSP,T_W_TO,'Color',Parameters.Colors(2,:));
+        plot(WingLoading.TakeOffSP,T_W_TO,'LineWidth',1.25,'Color',Parameters.Colors(2,:));
             LegendStr{end+1} = 'Take-Off (Similar Planes)';
             
     %Take-Off Stall Speed
         if isfield(WingLoading,'Stall_TO')
-            plot(WingLoading.Stall_TO.*ones(1,length(T_W_TO)),T_W_TO,'Color',Parameters.Colors(3,:));
+            plot(WingLoading.Stall_TO.*ones(1,length(T_W_TO)),T_W_TO,'LineWidth',1.25,'Color',Parameters.Colors(3,:));
                 LegendStr{end+1} = 'Take-Off Stall Speed';
         end
         
     %Landing Field Length
     if DP.showRoskamRequirements == true
-        plot(WingLoading.LandingRoskam.*ones(1,length(T_W_TO)),T_W_TO,'--','Color',Parameters.Colors(4,:));
+        plot(WingLoading.LandingRoskam.*ones(1,length(T_W_TO)),T_W_TO,'--','LineWidth',1.25,'Color',Parameters.Colors(4,:));
             LegendStr{end+1} = 'Landing (Roskam)';
     end
             
-        plot(WingLoading.LandingSP.*ones(1,length(T_W_TO)),T_W_TO,'Color',Parameters.Colors(5,:));
+        plot(WingLoading.LandingSP.*ones(1,length(T_W_TO)),T_W_TO,'LineWidth',1.25,'Color',Parameters.Colors(5,:));
             LegendStr{end+1} = 'Landing (Similar Planes)';
             
     %Climb Requirements
         %Take-Off
-        plot(W_S_TO,ThrustWeight_TO.TransitionSegment.*ones(1,length(W_S_TO)),'Color',Parameters.Colors(6,:));
+        plot(W_S_TO,ThrustWeight_TO.TransitionSegment.*ones(1,length(W_S_TO)),'LineWidth',1.25,'Color',Parameters.Colors(6,:));
             LegendStr{end+1} = 'Climb (Transition Segment)';
 
-        plot(W_S_TO,ThrustWeight_TO.InitialSegment.*ones(1,length(W_S_TO)),'Color',Parameters.Colors(7,:));
+        plot(W_S_TO,ThrustWeight_TO.InitialSegment.*ones(1,length(W_S_TO)),'LineWidth',1.25,'Color',Parameters.Colors(7,:));
             LegendStr{end+1} = 'Climb (Initial Segment)';
 
-        plot(W_S_TO,ThrustWeight_TO.SecondSegment.*ones(1,length(W_S_TO)),'Color',Parameters.Colors(8,:));
+        plot(W_S_TO,ThrustWeight_TO.SecondSegment.*ones(1,length(W_S_TO)),'LineWidth',1.25,'Color',Parameters.Colors(8,:));
             LegendStr{end+1} = 'Climb (Second Segment)';
             
-        plot(W_S_TO,ThrustWeight_TO.EnRouteSegment.*ones(1,length(W_S_TO)),'Color',Parameters.Colors(9,:));
+        plot(W_S_TO,ThrustWeight_TO.EnRouteSegment.*ones(1,length(W_S_TO)),'LineWidth',1.25,'Color',Parameters.Colors(9,:));
             LegendStr{end+1} = 'Climb (En-Route Segment)';
             
         %Landing
-        plot(W_S_TO,ThrustWeight_TO.BalkedLanding.*ones(1,length(W_S_TO)),'Color',Parameters.Colors(10,:));
+        plot(W_S_TO,ThrustWeight_TO.BalkedLanding.*ones(1,length(W_S_TO)),'LineWidth',1.25,'Color',Parameters.Colors(10,:));
             LegendStr{end+1} = 'Climb (Balked Landing)';
             
-        plot(W_S_TO,ThrustWeight_TO.BalkedApproach.*ones(1,length(W_S_TO)),'Color',Parameters.Colors(11,:));
+        plot(W_S_TO,ThrustWeight_TO.BalkedApproach.*ones(1,length(W_S_TO)),'LineWidth',1.25,'Color',Parameters.Colors(11,:));
             LegendStr{end+1} = 'Climb (Balked Approach)';
             
     %Max Speed Cruise
-        plot(W_S_TO,ThrustWeight_TO.MaxSpeedCruise,'Color',Parameters.Colors(12,:));
+        plot(W_S_TO,ThrustWeight_TO.MaxSpeedCruise,'LineWidth',1.25,'Color',Parameters.Colors(12,:));
             LegendStr{end+1} = 'Max Speed Cruise';
             
     %Formating
@@ -452,8 +452,8 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         end
     end
     else
-        x = 385;  %[kg/m^2] WingLoad
-        y = 0.375; %[-] Thrust to Weight ratio at take-off
+        x = 387.5; %[kg/m^2] WingLoad
+        y =  0.38; %[-] Thrust to Weight ratio at take-off
         plot(x,y,'o');
     end
     warning('off', 'MATLAB:handle_graphics:exceptions:SceneNode');
@@ -462,9 +462,17 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
 
     clear choiceFlag choice p LegendStr
 
-    %Save design point into AC structure
-    AC.Wing.WingLoading = x;
-    AC.Weight.Tto_MTOW  = y;
+    %Store design point into AC structure
+    AC.Wing.WingLoading   = x;
+    AC.Weight.Tto_MTOW    = y;
+    AC.Wing.AspectRatio   = DP.AspectRatio;
+    AC.Wing.Sw            = AC.Weight.MTOW/AC.Wing.WingLoading;
+    AC.Engine.TotalThrust = AC.Weight.Tto_MTOW*(AC.Weight.MTOW*CST.GravitySI);
+    AC.Wing.CLmax         = DP.CLmax;
+    AC.Wing.CLmax_TO      = DP.CLmax_TO;
+    AC.Wing.CLmax_L       = DP.CLmax_L;
+    
+    
     
 
-clear rho rho0 rho_TO rho_L T_W_TO W_S_TO WingLoading ThrustWeight
+clear rho rho0 rho_TO rho_L T_W_TO W_S_TO WingLoading ThrustWeight_TO x y
