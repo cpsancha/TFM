@@ -14,6 +14,7 @@ classdef aircraft < handle
         Weight       weights        % The weights of the aircraft
         Actuations   actuations     % The actuations of the aircraft
         Payload      payload        % The payload/passengers and cabin information
+        Hull         hull           % Hull characteristics
     end
     
     
@@ -29,6 +30,7 @@ classdef aircraft < handle
             obj.Engine     = engines(obj);
             obj.Actuations = actuations();
             obj.Payload    = payload();
+            obj.Hull       = hull();
         end
         
     end

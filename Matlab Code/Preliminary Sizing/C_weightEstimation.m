@@ -75,13 +75,17 @@ switch ME.MissionType
         txt=['$$EW_{old}:\ $$',num2str(round(W_E_old)),'kg\ \ $$\rightarrow\ \ \ $$'];
         text(W_E_old,W_TO_old,txt,'HorizontalAlignment','right','FontSize',10,'Interpreter','Latex')
         txt=['$$MTOW_{old}:\ $$',num2str(round(W_TO_old)),'kg\ \ \ '];
-        text(W_E_old,W_TO_old+1.5e3,txt,'HorizontalAlignment','right','FontSize',10,'Interpreter','Latex')
+        text(W_E_old,W_TO_old+2e3,txt,'HorizontalAlignment','right','FontSize',10,'Interpreter','Latex')
         %EW_new intersection point
         plot(AC.Weight.EW,AC.Weight.MTOW,'+','LineWidth',2,'Color',Parameters.Colors(4,:));
         txt=['EW:\ ',num2str(round(AC.Weight.EW)),'kg\ \ $$\rightarrow\ \ \ $$'];
         text(AC.Weight.EW,AC.Weight.MTOW,txt,'HorizontalAlignment','right','FontSize',10,'Interpreter','Latex')
         txt=['MTOW:\ ',num2str(round(AC.Weight.MTOW)),'kg\ \ \ '];
         text(AC.Weight.EW,AC.Weight.MTOW+1.5e3,txt,'HorizontalAlignment','right','FontSize',10,'Interpreter','Latex')
+        p=findobj(gca,'Type','text');
+        for i=1:length(p)
+            uistack(p(i), 'top')
+        end
         %Legend
         h = findobj(gca,'Type','line');
         legend([h(5),h(4),h(3)],{'Similar Planes','Similar Planes (Weight correction)','Fuel-Fraction Method'},'Location','southeast')
@@ -89,7 +93,7 @@ switch ME.MissionType
         saveFigure(ME.FiguresFolder,'MTOW definition')
         clear h h1 h2 x y1 y2 W_E W_E_tent i objects txt
         end
-        clear W_TO_old W_TO_new W_E_old
+        clear W_TO_old W_TO_new W_E_old p
     case 11
           if DP.ShowReportFigures
         % EXPECTED TO BE RUN AFTER B_loadParameters, IF NOT, COMMENT THIS:

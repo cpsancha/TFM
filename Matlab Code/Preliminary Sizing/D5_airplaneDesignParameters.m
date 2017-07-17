@@ -399,7 +399,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
             LegendStr{end+1} = 'Max Speed Cruise';
             
     %Formating
-        xlim([250,max(W_S_TO)])
+        xlim([200,max(W_S_TO)])
         ylim([0.20,0.75])
         set(gcf,'Position',[450   200   700   525])
         xlabel('Wing Loading - MTOW/Sw [kg/m^2]')
@@ -412,7 +412,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         warning('off', 'MATLAB:handle_graphics:exceptions:SceneNode');
         [~,objs]=columnlegend(2,LegendStr,'Location','northwest','FontSize',8,'boxoff');
         drawnow; % make sure everything is finished rendering 
-        set(findall(objs, 'type', 'text'), 'fontsize', 8, 'interpreter', 'tex')
+        set(findall(objs, 'type', 'text'),'FontName','Times new Roman','FontSize', 8, 'interpreter', 'tex')
         warning('on', 'MATLAB:handle_graphics:exceptions:SceneNode');
         clear grafWidth grafAR showRoskamRequirements LegendStr objs
     
@@ -452,8 +452,8 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         end
     end
     else
-        x = 387.5; %[kg/m^2] WingLoad
-        y =  0.38; %[-] Thrust to Weight ratio at take-off
+        x = 382.5; %[kg/m^2] WingLoad
+        y =  0.37; %[-] Thrust to Weight ratio at take-off
         plot(x,y,'o');
     end
     warning('off', 'MATLAB:handle_graphics:exceptions:SceneNode');

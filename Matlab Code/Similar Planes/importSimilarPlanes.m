@@ -78,10 +78,10 @@ switch type
         excelWing = importFile(fileSP, sheetSP,strcat(initLetter,'65:',endLetter,'85'));
         
         %Load Hull from Excel
-        excelHull = importFile(fileSP, sheetSP,strcat(initLetter,'147:',endLetter,'149'));
+        excelHull = importFile(fileSP, sheetSP,strcat(initLetter,'147:',endLetter,'151'));
         
         %Load Actuations from Excel
-        excelActuations = importFile(fileSP, sheetSP,strcat(initLetter,'165:',endLetter,'187'));
+        excelActuations = importFile(fileSP, sheetSP,strcat(initLetter,'167:',endLetter,'190'));
     otherwise
         error('There are only two cases, businessJet (5) or Amphibious (11). Choose one.')
 end
@@ -240,6 +240,13 @@ switch type
             SimilarPlanes{i}.Payload.cabVolume = double(excelPayload{8,i});
             SimilarPlanes{i}.Payload.bagVolume = double(excelPayload{9,i});
 
+            %Hull
+            SimilarPlanes{i}.Hull.Length       = double(excelHull{1,i});
+            SimilarPlanes{i}.Hull.Beam         = double(excelHull{2,i});
+            SimilarPlanes{i}.Hull.Length_Beam  = double(excelHull{3,i});
+            SimilarPlanes{i}.Hull.Lf           = double(excelHull{4,i}); 
+            SimilarPlanes{i}.Hull.Beta           = double(excelHull{5,i}); 
+            
             %Wing
             SimilarPlanes{i}.Wing.Sw           = double(excelWing{4,i});
             SimilarPlanes{i}.Wing.WingSpan     = double(excelWing{5,i});

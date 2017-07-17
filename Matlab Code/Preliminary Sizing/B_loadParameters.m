@@ -407,7 +407,7 @@ fit = polyfit(log10(EW(index)),log10(MTOW(index)),1);
 
 %Display figure
     figure()
-    loglog(EW(index),MTOW(index),'*','Color',Parameters.Colors(1,:)); hold on;
+    loglog(EW(index),MTOW(index),'*','LineWidth',1,'Color',Parameters.Colors(1,:)); hold on;
     switch ME.MissionType
         case 5
             plot(linspace(min(EW)-0.5e3,max(EW)+1e3,2),10.^polyval(fit,linspace(log10(min(EW)-0.5e3),log10(max(EW)+1e3),2)),'LineWidth',1.25,'Color',Parameters.Colors(2,:));
@@ -502,6 +502,11 @@ switch ME.MissionType
                 end
             end
         end
+        p=findobj(gca,'Type','text');
+        for i=1:length(p)
+            uistack(p(i), 'top')
+        end
+        clear p
         %Save Figure
         saveFigure(ME.FiguresFolder,'EW_MTOW_Correlation')
         

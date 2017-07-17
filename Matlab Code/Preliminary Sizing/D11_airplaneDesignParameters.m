@@ -8,6 +8,7 @@
 %*                                                                                                      *
 %********************************************************************************************************
 
+
 %% Design parameters
 A = 9;
 Parameters.CL_max    = 1.5; %[1.2, 1.8];
@@ -19,16 +20,15 @@ Wto_S= linspace(100,10000,100);
 
 %% Polar estimation
 %Values needed from similar airplanes
-W_S = 100;        %Wing loading from similar airplanes
+W_S = mean(loadFields(SP,'Wing.WingLoading'),'omitnan')./(CF.lbf2N/CF.ft2m^2);        %Wing loading from similar airplanes
 
 %Eq 3.22
 S_wet = (CF.ft2m^2)*10^(Parameters.Table_3_5.c + Parameters.Table_3_5.d*log10(AC.Weight.MTOW*CST.GravitySI*CF.N2lbf)); %[m^2]
 %Eq 3.21
 f = (CF.ft2m^2)*10^(Parameters.Table_3_4.a + Parameters.Table_3_4.b * log10(S_wet*(CF.m2ft^2))); %[m^2]
-
 S =  AC.Weight.MTOW/ W_S;
-C_D0 = f/S; 
 
+C_D0 = f/S; 
 k=1/(pi*A*Parameters.Table_3_6.e.clean(1));
 
 
@@ -40,18 +40,45 @@ k=1/(pi*A*Parameters.Table_3_6.e.clean(1));
 sigma = rho/rho0;
 
 S_tofl = ME.TakeOff.S_TOFL/CF.ft2m; %stofl in ft
-
 TOP_25 = (S_tofl)/37.5; %TOP in lbs/ft^2 Eq 3.8
-
-
 Wto_S_to=Wto_S./(CF.lbf2N/CF.ft2m^2); %W/S to lbs/ft^2
-
 Tto_Wto_TO = Wto_S_to./ (Parameters.CL_max_TO*TOP_25*sigma); 
 
-% figure()
-% plot(Wto_S,Tto_Wto_TO)
-% 
-% hold all
+Tto_Wto_TO = Tto_Wto_TO/CF.lbf2N;
+Pto2Tto =2.9*CF.lbf2N/CF.hp2watts;
+
+P_W.take_off_Roskam=Tto_Wto_TO./Pto2Tto;
+%%%
+% Take off distance method from paper 3. Design Point
+%%%%
+a= [12.54183, -6.77017, 0.0827, -0.90283, -0.10521, -1.42082, -3.73432, 0.28393];
+
+%Preliminary value for the AC beam:
+AC.Hull.Beam =  mean(loadFields(SP,'Hull.Beam'),'omitnan'); %Set the beam of the hull from similar planes
+
+Cdelta0=mean(loadFields(SP,'Weight.MTOW')./(CST.WaterDensity*(loadFields(SP,'Hull.Beam')).^3), 'omitnan');
+Lf_B = mean(loadFields(SP,'Hull.Lf')./(loadFields(SP,'Hull.Beam')), 'omitnan');
+Beta = mean(loadFields(SP,'Hull.Beta') ,'omitnan');
+C_D0_to= C_D0 + Parameters.Table_3_6.deltaC_D0.take_off_flaps(end);
+
+%Solve a*x^2+b*x+c=0
+c = -( Wto_S./(ME.TakeOff.S_TOFL)-a(7)*rho*C_D0_to-a(8) )./(rho*Parameters.CL_max_TO)...
+     +a(3)*Lf_B+a(4)/cos(Beta*pi/180)+a(5)*Cdelta0+a(6);
+ 
+T_W_to = (-a(1)+sqrt((a(1))^2-4*a(2).*c))./(2*a(2));
+
+
+
+% plot(Wto_S,sqrt((a(1))^2-4*a(2).*c))
+
+P_W.take_off=T_W_to./Pto2Tto;
+
+% W_S = [2,6];
+% a=2;
+% fun =@(T_W)getStow(W_S,T_W,a);
+% T_W_to = fsolve(fun,0)
+
+
 
 
 
@@ -354,7 +381,7 @@ P_W.cl.CS25121ba = (ME.Powerplant.Number/(ME.Powerplant.Number-1)).*(W_P.cl.CS25
 %% 3.5 Sizing to maneuvering requierements
 
 %% 3.6 Sizing to cruise speed requirementes **
-[T, a, P, rho] = atmosisa(ME.Cruise.Altitude);
+[T, asound, P, rho] = atmosisa(ME.Cruise.Altitude);
 q = 0.5*rho*ME.Cruise.Speed^2;
 
 Wcr_WTO = 1;
@@ -371,10 +398,10 @@ Tto_Wto_cr = Tcr_Wcr_cr * Wcr_WTO;
 % Tto_Wto_cr = ((C_D0*q)./Wto_S + Wto_S.*(Wcr_WTO^2*k)); %?
 P_W.cr = Pto_Pcr.*Tto_Wto_cr.*ME.Cruise.Speed./Parameters.Cruise.n_p;
 
-
-figure(1)
-hold all
-plot(Wto_S,P_W.cr,'DisplayName','cr')
+% 
+% figure(1)
+% hold all
+% plot(Wto_S,P_W.cr,'DisplayName','cr')
 
 
 % Roskam cruise
@@ -386,16 +413,18 @@ Ip = 1.7;
 
 W_P_roskam = 0.7*(1/(sigma*Ip^3)).* Wto_S_cr;
 P_W.crRoskam = (W_P_roskam.*(CF.hp2watts./(CF.lbm2kg.*CST.GravitySI))^(-1)).^-1;
-figure(1)
-plot(Wto_S,P_W.crRoskam,'DisplayName','Cruise Roskam')
-
-legend('show')
+% figure(1)
+% plot(Wto_S,P_W.crRoskam,'DisplayName','Cruise Roskam')
+% 
+% legend('show')
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Design point selection
 
    figure(); hold on;
     LegendStr=cell(0);
+    
+
     
     %Cruise Roskam
             plot(Wto_S,P_W.crRoskam,'Color',Parameters.Colors(1,:));
@@ -404,6 +433,12 @@ legend('show')
     %Cruise
             plot(Wto_S,P_W.cr,'Color',Parameters.Colors(2,:));
             LegendStr{end+1} = 'Max Speed Cruise';          
+            
+    %Take-off
+            plot(Wto_S,P_W.take_off,'Color',Parameters.Colors(3,:));
+            LegendStr{end+1} = 'Take off length';
+            plot(Wto_S,P_W.take_off_Roskam,'Color',Parameters.Colors(4,:));
+            LegendStr{end+1} = 'Take off length (Roskam)';
     %Climb
         %Take-Off
         plot(Wto_S,P_W.cl.CS25121tr,'LineWidth',1.25,'Color',Parameters.Colors(6,:));
