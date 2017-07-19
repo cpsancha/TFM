@@ -1,0 +1,18 @@
+Falcon 7x
+https://www.easa.europa.eu/system/files/dfu/EASA-TCDS-A.155_Falcon_7X-04-20012010.pdf
+Global 5000 6000
+https://customer.aero.bombardier.com/webd/BAG/bbad/custsupp/techinfo/CICOpenDocuments.nsf/vwWebPage/TechPubs_ARM_CCC/$FILE/arm_700.pdf
+
+Challenger 350
+https://customer.aero.bombardier.com/webd/BAG/bbad/custsupp/techinfo/CICOpenDocuments.nsf/vwWebPage/TechPubs_ARM_CCC/$FILE/arm_300.pdf
+
+Gulfstream g280
+https://www.easa.europa.eu/system/files/dfu/EASA-TCDS-A.348_(IM)_Gulfstream_LP_G280-01-07022013.pdf                        
+
+https://www.easa.europa.eu/system/files/dfu/TCDS_EASA%20IM%20A%20348%20Issue%202.pdz
+Phenom 300 
+https://www.easa.europa.eu/system/files/dfu/20131017%20EMB%20500_505%20OEB%20Report.pdf
+https://www.easa.europa.eu/system/files/dfu/EASA-TCDS-A.158_(IM)_EMB505-04-30042013.pdf
+
+Citation X+
+http://www.africair.com/wp-content/uploads/2016/03/SD-X-Unit-0524-to-TBD-2015-Oct.pdf

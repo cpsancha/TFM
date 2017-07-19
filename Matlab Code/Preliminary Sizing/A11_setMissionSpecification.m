@@ -97,7 +97,7 @@ switch ME.MissionType
         
     case 11 % amphibious
         ME.TakeOff.Altitude = 0;  % Take off altitude in m
-        ME.TakeOff.S_TOFL = 600;  % Take off distance in m
+        ME.TakeOff.S_TOFL = 750;  % Take off distance in m
 end
 
 
@@ -123,7 +123,7 @@ switch ME.MissionType
         ME.Cruise.Speed    = DP.CruiseSpeed;    % m/s
         
     case 11 % amphibious
-        ME.Cruise.Range = 2000*1e3;     % in m
+        ME.Cruise.Range = 3500*1e3;     % in m
         ME.Cruise.Altitude =  6000;     % in m
         ME.Cruise.Speed = 138.8889;     % m/s
 end
@@ -161,6 +161,7 @@ switch ME.MissionType
         ME.Landing.S_LFL = DP.LFL; %Length of the landing field [m]
     case 11
         ME.Landing.S_LFL = 1000; %Length of the landing field [m]
+        ME.Landing.Altitude = 0;
 end
 
 
@@ -213,3 +214,4 @@ AC = aircraft();
 run B_loadParameters.m
 run C_weightEstimation.m
 run D11_airplaneDesignParameters.m
+run E11_configurationDesign.m

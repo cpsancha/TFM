@@ -38,19 +38,19 @@ switch type
         excelGeneralData = importFile(fileSP, sheetSP,strcat(initLetter,'6:',endLetter,'9'));
                 
         %Load Engines from Excel
-        excelEngines = importFile(fileSP, sheetSP,strcat(initLetter,'11:',endLetter,'23'));
+        excelEngines = importFile(fileSP, sheetSP,strcat(initLetter,'11:',endLetter,'22'));
                 
         %Load Weights from Excel
-        excelWeights = importFile(fileSP, sheetSP,strcat(initLetter,'25:',endLetter,'34'));
+        excelWeights = importFile(fileSP, sheetSP,strcat(initLetter,'24:',endLetter,'33'));
         
         %Load Payload from Excel
-        excelPayload = importFile(fileSP, sheetSP,strcat(initLetter,'41:',endLetter,'49'));
+        excelPayload = importFile(fileSP, sheetSP,strcat(initLetter,'40:',endLetter,'48'));
         
         %Load Wing from Excel
-        excelWing = importFile(fileSP, sheetSP,strcat(initLetter,'63:',endLetter,'83'));
+        excelWing = importFile(fileSP, sheetSP,strcat(initLetter,'62:',endLetter,'82'));
         
         %Load Actuations from Excel
-        excelActuations = importFile(fileSP, sheetSP,strcat(initLetter,'159:',endLetter,'175'));
+        excelActuations = importFile(fileSP, sheetSP,strcat(initLetter,'158:',endLetter,'174'));
         
     case 11
                 %Options
@@ -125,24 +125,23 @@ switch type
             SimilarPlanes{i}.Engine.Weight       = double(excelEngines{6,i});
             SimilarPlanes{i}.Engine.Thrust       = double(excelEngines{7,i})*1e3; %kN --> N
             SimilarPlanes{i}.Engine.TSFC         = double(excelEngines{8,i});
-            SimilarPlanes{i}.Engine.SFC          = double(excelEngines{9,i});
-            SimilarPlanes{i}.Engine.etaPropeller = double(excelEngines{10,i});
-            SimilarPlanes{i}.Engine.Diameter     = double(excelEngines{11,i});
-            SimilarPlanes{i}.Engine.Length       = double(excelEngines{12,i});
-            SimilarPlanes{i}.Engine.TotalThrust  = double(excelEngines{13,i})*1e3; %kN --> N
+            SimilarPlanes{i}.Engine.TSFC_TO      = double(excelEngines{9,i});
+            SimilarPlanes{i}.Engine.Diameter     = double(excelEngines{10,i});
+            SimilarPlanes{i}.Engine.Length       = double(excelEngines{11,i});
+            SimilarPlanes{i}.Engine.TotalThrust  = double(excelEngines{12,i})*1e3; %kN --> N
             SimilarPlanes{i}.Engine.TotalWeight  = double(excelEngines{1,i})*...
                                                    double(excelEngines{6,i});
             
             %Payload
-            SimilarPlanes{i}.Payload.crew      = double(excelPayload{1,i});
-            SimilarPlanes{i}.Payload.paxMin    = double(excelPayload{2,i});
-            SimilarPlanes{i}.Payload.paxMax    = double(excelPayload{3,i});
-            SimilarPlanes{i}.Payload.beds      = double(excelPayload{4,i});
-            SimilarPlanes{i}.Payload.cabLength = double(excelPayload{5,i});
-            SimilarPlanes{i}.Payload.cabWide   = double(excelPayload{6,i});
-            SimilarPlanes{i}.Payload.cabHeight = double(excelPayload{7,i});
-            SimilarPlanes{i}.Payload.cabVolume = double(excelPayload{8,i});
-            SimilarPlanes{i}.Payload.bagVolume = double(excelPayload{9,i});
+            SimilarPlanes{i}.Payload.crew       = double(excelPayload{1,i});
+            SimilarPlanes{i}.Payload.paxMin     = double(excelPayload{2,i});
+            SimilarPlanes{i}.Payload.paxMax     = double(excelPayload{3,i});
+            SimilarPlanes{i}.Payload.beds       = double(excelPayload{4,i});
+            SimilarPlanes{i}.Fuselage.cabLength = double(excelPayload{5,i});
+            SimilarPlanes{i}.Fuselage.cabWide   = double(excelPayload{6,i});
+            SimilarPlanes{i}.Fuselage.cabHeight = double(excelPayload{7,i});
+            SimilarPlanes{i}.Fuselage.cabVolume = double(excelPayload{8,i});
+            SimilarPlanes{i}.Fuselage.bagVolume = double(excelPayload{9,i});
 
             %Wing
             SimilarPlanes{i}.Wing.Sw           = double(excelWing{4,i});
@@ -214,6 +213,7 @@ switch type
             SimilarPlanes{i}.Weight.TUL  = double(excelWeights{8,i});
             SimilarPlanes{i}.Weight.MZFW = double(excelWeights{9,i});
             SimilarPlanes{i}.Weight.MLW  = double(excelWeights{10,i});
+            SimilarPlanes{i}.Weight.Pto_MTOW  = double(excelWeights{15,i});
 
             %Engines
             SimilarPlanes{i}.Engine.Number       = double(excelEngines{1,i});
@@ -222,23 +222,26 @@ switch type
             SimilarPlanes{i}.Engine.Manufacturer = string(excelEngines{4,i});
             SimilarPlanes{i}.Engine.Model        = string(excelEngines{5,i});
             SimilarPlanes{i}.Engine.Weight       = double(excelEngines{6,i});
-            SimilarPlanes{i}.Engine.Thrust       = double(excelEngines{7,i});
-            SimilarPlanes{i}.Engine.TSFC         = double(excelEngines{8,i});
-            SimilarPlanes{i}.Engine.SFC          = double(excelEngines{9,i});
+            SimilarPlanes{i}.Engine.Thrust       = double(excelEngines{8,i});
+            SimilarPlanes{i}.Engine.TSFC         = double(excelEngines{9,i});
+%             SimilarPlanes{i}.Engine.SFC          = double(excelEngines{10,i});
             SimilarPlanes{i}.Engine.etaPropeller = double(excelEngines{10,i});
             SimilarPlanes{i}.Engine.Diameter     = double(excelEngines{11,i});
-            SimilarPlanes{i}.Engine.Length       = double(excelEngines{12,i});
+            SimilarPlanes{i}.Engine.Length       = double(excelEngines{12,i});   
+            SimilarPlanes{i}.Engine.TotalThrust   = double(excelEngines{13,i});
+            SimilarPlanes{i}.Engine.TotalPower   = double(excelEngines{14,i});
+
 
             %Payload
-            SimilarPlanes{i}.Payload.crew      = double(excelPayload{1,i});
-            SimilarPlanes{i}.Payload.paxMin    = double(excelPayload{2,i});
-            SimilarPlanes{i}.Payload.paxMax    = double(excelPayload{3,i});
-            SimilarPlanes{i}.Payload.beds      = double(excelPayload{4,i});
-            SimilarPlanes{i}.Payload.cabLength = double(excelPayload{5,i});
-            SimilarPlanes{i}.Payload.cabWide   = double(excelPayload{6,i});
-            SimilarPlanes{i}.Payload.cabHeight = double(excelPayload{7,i});
-            SimilarPlanes{i}.Payload.cabVolume = double(excelPayload{8,i});
-            SimilarPlanes{i}.Payload.bagVolume = double(excelPayload{9,i});
+            SimilarPlanes{i}.Payload.crew       = double(excelPayload{1,i});
+            SimilarPlanes{i}.Payload.paxMin     = double(excelPayload{2,i});
+            SimilarPlanes{i}.Payload.paxMax     = double(excelPayload{3,i});
+            SimilarPlanes{i}.Payload.beds       = double(excelPayload{4,i});
+            SimilarPlanes{i}.Fuselage.cabLength = double(excelPayload{5,i});
+            SimilarPlanes{i}.Fuselage.cabWide   = double(excelPayload{6,i});
+            SimilarPlanes{i}.Fuselage.cabHeight = double(excelPayload{7,i});
+            SimilarPlanes{i}.Fuselage.cabVolume = double(excelPayload{8,i});
+            SimilarPlanes{i}.Fuselage.bagVolume = double(excelPayload{9,i});
 
             %Hull
             SimilarPlanes{i}.Hull.Length       = double(excelHull{1,i});

@@ -12,13 +12,16 @@ classdef engines < handle
         PositionStr  string     %[string] Verbose Position of the engine/engines
         Weight       double     %[double] Mass of the engine [kg].
         Thrust       double     %[double] Thrust of the engine [N].
+        Power        double     %[double] Power at take-off [W]   
         TSFC         double     %[double] Thrust specific fuel consumption [lb/(lbf·h)]
+        TSFC_TO      double     %[double] Thrust specific fuel consumption at Take-Off [lb/(lbf·h)]
         SFC          double     %[double] Specific fuel consumption [lb/(shp·h)]
         etaPropeller double     %[double] Propeller efficiency [-]
         Diameter     double     %[double] Maximum diameter of the engine [m]
         Length       double     %[double] Maximum length of the engine [m]
-        TotalThrust double      %[double] Total thrust of the engines [N].
-        TotalWeight double      %[double] Total mass of the engines [kg].
+        TotalThrust  double     %[double] Total thrust of the engines [N].
+        TotalWeight  double     %[double] Total mass of the engines [kg].
+        TotalPower   double     %[double] Total take-off power [kW]
     end
     
     

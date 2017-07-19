@@ -11,12 +11,12 @@
 
 %% Design parameters
 A = 9;
-Parameters.CL_max    = 1.5; %[1.2, 1.8];
-Parameters.CL_max_TO = 2;   %[1.6, 2.2];
-Parameters.CL_max_L  = 3;   %[1.8, 3.4];
+Parameters.CL_max    = 1.5; %[1.2, 1.8]; %Doesn't affect any restriction!
+Parameters.CL_max_TO = 2.2;   %[1.6, 2.2];
+Parameters.CL_max_L  = 3.4;   %[1.8, 3.4];
 
 %Definimos un rango de cargas alares al despegue para representar las gráficas
-Wto_S= linspace(100,10000,100);
+Wto_S= linspace(100,6000,100);
 
 %% Polar estimation
 %Values needed from similar airplanes
@@ -31,10 +31,16 @@ S =  AC.Weight.MTOW/ W_S;
 C_D0 = f/S; 
 k=1/(pi*A*Parameters.Table_3_6.e.clean(1));
 
+%% Thrust model at Take-off and power to thrust relationship
+Pto2Tto =2.9*CF.lbf2N/CF.hp2watts; %W to N
+
+% T= T_to+ T_to*m*Vr, m=(0.63-1)/(100*CF.kts2ms)
 
 %% 3.1 Sizing to stall speed requirements
 
 %% 3.2 Sizing to take-off distance requirements
+
+
 [~, ~, ~, rho] = atmosisa(ME.TakeOff.Altitude);
 [~, ~, ~, rho0] = atmosisa(0);
 sigma = rho/rho0;
@@ -44,11 +50,17 @@ TOP_25 = (S_tofl)/37.5; %TOP in lbs/ft^2 Eq 3.8
 Wto_S_to=Wto_S./(CF.lbf2N/CF.ft2m^2); %W/S to lbs/ft^2
 Tto_Wto_TO = Wto_S_to./ (Parameters.CL_max_TO*TOP_25*sigma); 
 
-Tto_Wto_TO = Tto_Wto_TO/CF.lbf2N;
-Pto2Tto =2.9*CF.lbf2N/CF.hp2watts;
+P_W.take_off =Tto_Wto_TO./2.9; %HP/LBF
+P_W.take_off1=P_W.take_off.*CF.hp2watts./CF.lbf2N;
 
+Tto_Wto_TO = Tto_Wto_TO./CF.lbf2N; %lbf/N
 P_W.take_off_Roskam=Tto_Wto_TO./Pto2Tto;
-%%%
+
+% figure(13)
+% hold on
+% plot(Wto_S, P_W.take_off_Roskam,'^')
+% plot(Wto_S, P_W.take_off1,'*')
+% %%%
 % Take off distance method from paper 3. Design Point
 %%%%
 a= [12.54183, -6.77017, 0.0827, -0.90283, -0.10521, -1.42082, -3.73432, 0.28393];
@@ -73,6 +85,7 @@ T_W_to = (-a(1)+sqrt((a(1))^2-4*a(2).*c))./(2*a(2));
 
 P_W.take_off=T_W_to./Pto2Tto;
 
+clear a c T_W_to
 % W_S = [2,6];
 % a=2;
 % fun =@(T_W)getStow(W_S,T_W,a);
@@ -83,6 +96,16 @@ P_W.take_off=T_W_to./Pto2Tto;
 
 
 %% 3.3 Sizing to landing distance requirements
+[~, ~, ~, rho] = atmosisa(ME.Landing.Altitude); 
+
+%Roskam Method
+    MLW_MTOW = mean(loadFields(SP,'Weight.MLW_MTOW'),'omitnan');
+    Vapp_R   = sqrt(ME.Landing.S_LFL*CF.m2ft/0.3); %[kts] --> Roskam eq 3.16
+    VStall_L = Vapp_R/1.3;               %[kts] --> Roskam eq 3.15
+    WL_Sw    = (rho*Parameters.CL_max_L*(VStall_L*CF.kts2ms)^2)/(2*CST.GravitySI); %[kg/m^2]
+    WingLoading.LandingRoskam = WL_Sw/MLW_MTOW*CST.GravitySI;
+
+    clear Vapp_R VStall_L WL_Sw
 
 %% 3.4 Sizing to climb requirementes **
 Wto_S_cl = Wto_S./(CF.lbf2N/CF.ft2m^2);  %W/S to lbs/ft^2
@@ -335,7 +358,6 @@ P_W.cl.CS25121er = (ME.Powerplant.Number/(ME.Powerplant.Number-1)).*(W_P.cl.CS25
             case 4
                 CGR = 0.032;
         end
-MLW_MTOW = mean(loadFields(SP,'Weight.MLW_MTOW'),'omitnan');
 e_cl = Parameters.Table_3_6.e.landing_flaps;       
 C_D0_cl = C_D0 + Parameters.Table_3_6.deltaC_D0.landing_flaps+Parameters.Table_3_6.deltaC_D0.landing_gear;
 
@@ -378,10 +400,12 @@ CGRP = (CGR + 1/L_D_cl)/CL_cl^0.5;
 W_P.cl.CS25121ba = (1./(Wto_S_cl.*MLW_MTOW).^(0.5)).*18.97.*Parameters.Cruise.n_p./CGRP;
 P_W.cl.CS25121ba = (ME.Powerplant.Number/(ME.Powerplant.Number-1)).*(W_P.cl.CS25121ba*(CF.hp2watts/(CF.lbm2kg*CST.GravitySI))^(-1)).^-1;
 
+clear CGR CGRP 
 %% 3.5 Sizing to maneuvering requierements
 
 %% 3.6 Sizing to cruise speed requirementes **
 [T, asound, P, rho] = atmosisa(ME.Cruise.Altitude);
+sigma = rho/rho0;
 q = 0.5*rho*ME.Cruise.Speed^2;
 
 Wcr_WTO = 1;
@@ -389,46 +413,51 @@ for i = [1,2,3,4]
 Wcr_WTO =  Wcr_WTO*Parameters.fuelFraction(i).value; % Wcrucero entre mtow
 end
 
-Pto_Pcr = 0.65; %potencia al despegue versus potencia crucero
-
+Pto_Pcr = 1/0.65; %potencia al despegue versus potencia crucero
 Wcr_S = Wcr_WTO * Wto_S;
-
 Tcr_Wcr_cr = (C_D0*q)./Wcr_S + k.*Wcr_S./q;
 Tto_Wto_cr = Tcr_Wcr_cr * Wcr_WTO;
 % Tto_Wto_cr = ((C_D0*q)./Wto_S + Wto_S.*(Wcr_WTO^2*k)); %?
 P_W.cr = Pto_Pcr.*Tto_Wto_cr.*ME.Cruise.Speed./Parameters.Cruise.n_p;
 
-% 
-% figure(1)
-% hold all
-% plot(Wto_S,P_W.cr,'DisplayName','cr')
-
-
 % Roskam cruise
+Ip=((loadFields(SP,'Wing.WingLoading')./CF.psf2Pa)./...
+    (sigma./(loadFields(SP,'Weight.Pto_MTOW').*CF.lbf2N./CF.hp2watts))).^(1/3);
+V = loadFields(SP,'Actuations.Vcruise')./CF.mph2ms;
+m = mean(V./Ip, 'omitnan');
 
+% 
+% IP=polyval([Ip./V,0],10)
+% Ip1=polyval([k,0],ME.Cruise.Speed)
+figure(12)
+hold on
+for i =1:length(V)
+plot(Ip(i),V(i),'x')
+end
+x=linspace(0,5,50);
+plot(x,m.*x)
+Ip1 =ME.Cruise.Speed/CF.mph2ms/m;
+Ip=Ip1;
 Wto_S_cr = Wto_S./(CF.lbf2N/CF.ft2m^2);  %W/S to lbs/ft^2
-[~, ~, ~, rho] = atmosisa(ME.Cruise.Altitude);
-sigma = rho/rho0;
-Ip = 1.7;
-
+% Ip = 1.7;
 W_P_roskam = 0.7*(1/(sigma*Ip^3)).* Wto_S_cr;
-P_W.crRoskam = (W_P_roskam.*(CF.hp2watts./(CF.lbm2kg.*CST.GravitySI))^(-1)).^-1;
+P_W.crRoskam = (W_P_roskam.*(CF.hp2watts./CF.lbf2N).^(-1)).^-1;
 % figure(1)
 % plot(Wto_S,P_W.crRoskam,'DisplayName','Cruise Roskam')
 % 
 % legend('show')
 
+clear m V Ip Ip1 Wto_S_cr x Wcr_S Tcr_Wcr_cr Tto_Wto_cr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Design point selection
 
-   figure(); hold on;
+ figure(3); hold on;
     LegendStr=cell(0);
-    
 
     
     %Cruise Roskam
-            plot(Wto_S,P_W.crRoskam,'Color',Parameters.Colors(1,:));
-            LegendStr{end+1} = 'Max Speed Cruise (Roskam)';
+%             plot(Wto_S,P_W.crRoskam,'Color',Parameters.Colors(1,:));
+%             LegendStr{end+1} = 'Max Speed Cruise (Roskam)';
             
     %Cruise
             plot(Wto_S,P_W.cr,'Color',Parameters.Colors(2,:));
@@ -436,9 +465,13 @@ P_W.crRoskam = (W_P_roskam.*(CF.hp2watts./(CF.lbm2kg.*CST.GravitySI))^(-1)).^-1;
             
     %Take-off
             plot(Wto_S,P_W.take_off,'Color',Parameters.Colors(3,:));
-            LegendStr{end+1} = 'Take off length';
-            plot(Wto_S,P_W.take_off_Roskam,'Color',Parameters.Colors(4,:));
-            LegendStr{end+1} = 'Take off length (Roskam)';
+            LegendStr{end+1} = 'Water Take off length';
+            plot(Wto_S,P_W.take_off1,'Color',Parameters.Colors(4,:));
+            LegendStr{end+1} = 'Ground Take off length';
+            
+    %Landing
+            plot(WingLoading.LandingRoskam.*ones(1,100),linspace(1,100,100),'LineWidth',1.25,'Color',Parameters.Colors(5,:));
+            LegendStr{end+1} = 'Landing (Roskam)';
     %Climb
         %Take-Off
         plot(Wto_S,P_W.cl.CS25121tr,'LineWidth',1.25,'Color',Parameters.Colors(6,:));
@@ -463,6 +496,8 @@ P_W.crRoskam = (W_P_roskam.*(CF.hp2watts./(CF.lbm2kg.*CST.GravitySI))^(-1)).^-1;
         xlim([250,max(Wto_S)])
         ylim([0,60])
         set(gcf,'Position',[450   200   700   525])
+        
+        title('Design Point') 
         xlabel('Wing Loading - MTOW/Sw [N/m^2]')
         ylabel('Power/Weight_{TO} [W/N]')
         grafWidth   = 16;
@@ -517,6 +552,7 @@ P_W.crRoskam = (W_P_roskam.*(CF.hp2watts./(CF.lbm2kg.*CST.GravitySI))^(-1)).^-1;
         y =  20; %[W/N] Power to Weight ratio at take-off
         plot(x,y,'o');
     end
+    
     warning('off', 'MATLAB:handle_graphics:exceptions:SceneNode');
     saveFigure(ME.FiguresFolder,'DesignPoint')
     warning('on', 'MATLAB:handle_graphics:exceptions:SceneNode');
@@ -525,7 +561,10 @@ P_W.crRoskam = (W_P_roskam.*(CF.hp2watts./(CF.lbm2kg.*CST.GravitySI))^(-1)).^-1;
 
     %Store design point into AC structure
     AC.Wing.WingLoading   = x;
-    AC.Weight.Tto_MTOW    = y;
+    AC.Weight.Pto_MTOW    = y;
     AC.Wing.AspectRatio   = A;
     AC.Wing.Sw            = AC.Weight.MTOW/AC.Wing.WingLoading;
     AC.Engine.TotalThrust = AC.Weight.Tto_MTOW*(AC.Weight.MTOW*CST.GravitySI);
+    AC.Engine.TotalPower  = AC.Weight.Pto_MTOW*AC.Weight.MTOW*CST.GravitySI;
+    
+    clear A x y rho rho5000 rho0 sigma

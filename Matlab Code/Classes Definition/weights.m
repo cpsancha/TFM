@@ -14,6 +14,7 @@ classdef weights < handle
         MZFW     double    %[double]  Maximum Zero Fuel Weight [kg]
         MLW      double    %[double]  Maximum Landing Weight [kg]
         Tto_MTOW double    %[double]  Ratio of total take-off thrust and MTOW [N/kg]
+        Pto_MTOW double
     end
     
     

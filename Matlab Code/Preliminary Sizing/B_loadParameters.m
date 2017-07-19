@@ -9,6 +9,13 @@
 % Movidos al apartado A para usarlos al importar los aviones semejantes
 
 
+%% Load engine data base
+
+switch ME.MissionType
+    case 5
+    case 11
+        run('importTurbopropDatabase.m')
+end
 %% GENERATE A BUNCH OF DISTINGUISHABLE COLORS
 Parameters.Colors = distinguishable_colors(20);
 
@@ -49,7 +56,7 @@ switch ME.MissionType
         Parameters.Loiter.n_p = 0.77;
         
         %Custom Values
-                Parameters.Cruise.L_D = 12;
+                Parameters.Cruise.L_D = 13;
         Parameters.Cruise.c_j = 0.5*CF.TSFC2SI; %lbm/lbf/hr to kg/N/s
         Parameters.Cruise.c_p = 0.5*CF.c_p2SI;  %lbs/hp/hr to N/Watts/s
         Parameters.Cruise.n_p = 0.82;
@@ -172,11 +179,11 @@ end
 switch ME.MissionType
     case 5
         %5.Business Jets
-        [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME, SP, CST, CF, Parameters );
+        [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME, SP, CST, CF, Parameters, DP );
     
     case 11
         %11. Flying boats, amphibious, float airplanes
-        [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME, SP, CST, CF, Parameters );
+        [Parameters.Table_2_15.a,Parameters.Table_2_15.b] = getWTORegression(ME, SP, CST, CF, Parameters, DP );
 end
 
 
@@ -376,7 +383,7 @@ switch phase
 end
 end
 
-function [ A, B ] = getWTORegression(ME, SP, CST, CF, Parameters )
+function [ A, B ] = getWTORegression(ME, SP, CST, CF, Parameters, DP )
 %GETWTOGUESS Summary of this function goes here
 %   Detailed explanation goes here
 
@@ -405,23 +412,17 @@ B = fitLbf(1);
 %Polyfit with weights in kg, for plotting
 fit = polyfit(log10(EW(index)),log10(MTOW(index)),1);
 
-%Display figure
-    figure()
-    loglog(EW(index),MTOW(index),'*','LineWidth',1,'Color',Parameters.Colors(1,:)); hold on;
-    switch ME.MissionType
-        case 5
-            plot(linspace(min(EW)-0.5e3,max(EW)+1e3,2),10.^polyval(fit,linspace(log10(min(EW)-0.5e3),log10(max(EW)+1e3),2)),'LineWidth',1.25,'Color',Parameters.Colors(2,:));
-        case 11
-            plot(linspace(min(EW),max(EW),2),10.^polyval(fit,linspace(min(log10(EW)),max(log10(EW)),2)),'LineWidth',1.25,'Color',Parameters.Colors(2,:));
-    end
-    xlabel('EW$$\ [kg]$$','Interpreter','latex')
-    ylabel('MTOW$$\ [kg]$$','Interpreter','latex')
-    title('Logarithmic correlation between $$($$EW$$)$$ and $$($$MTOW$$)$$','Interpreter','latex')
-
 
 %Image customization
 switch ME.MissionType
     case 5 %Business jet
+        if DP.ShowReportFigures
+        figure()
+        loglog(EW(index),MTOW(index),'*','LineWidth',1,'Color',Parameters.Colors(1,:)); hold on;
+        plot(linspace(min(EW)-0.5e3,max(EW)+1e3,2),10.^polyval(fit,linspace(log10(min(EW)-0.5e3),log10(max(EW)+1e3),2)),'LineWidth',1.25,'Color',Parameters.Colors(2,:));
+        xlabel('EW$$\ [kg]$$','Interpreter','latex')
+        ylabel('MTOW$$\ [kg]$$','Interpreter','latex')
+        title('Logarithmic correlation between $$($$EW$$)$$ and $$($$MTOW$$)$$','Interpreter','latex')
         %Formating
         grafWidth   = 16;
         grafAR      = 0.6;
@@ -510,11 +511,19 @@ switch ME.MissionType
         %Save Figure
         saveFigure(ME.FiguresFolder,'EW_MTOW_Correlation')
         
-        
+        end
         
         
     case 11 %Amphibious
-                %Formating
+    figure()
+    loglog(EW(index),MTOW(index),'*','LineWidth',1,'Color',Parameters.Colors(1,:)); hold on;
+    plot(linspace(min(EW),max(EW),2),10.^polyval(fit,linspace(min(log10(EW)),max(log10(EW)),2)),'LineWidth',1.25,'Color',Parameters.Colors(2,:));
+    xlabel('EW$$\ [kg]$$','Interpreter','latex')
+    ylabel('MTOW$$\ [kg]$$','Interpreter','latex')
+    title('Logarithmic correlation between $$($$EW$$)$$ and $$($$MTOW$$)$$','Interpreter','latex')
+        
+        
+        %Formating
         grafWidth   = 16;
         grafAR      = 0.6;
 % %         grid on
@@ -536,12 +545,12 @@ switch ME.MissionType
         for i=1:length(Model)
 
             if index(i)
-                if strcmp(Model(i),'Falcon 7X')
-                    text(EW(i)+0.3e3,MTOW(i),char(Model(i)),'FontSize',8)
-                elseif strcmp(Model(i),'Falcon 900LX')
-                    text(EW(i)+0.2e3,MTOW(i),char(Model(i)),'FontSize',8)
-                elseif strcmp(Model(i),'Falcon 2000LXS')
-                    text(EW(i)+0.15e3,MTOW(i)+0.25e3,char(Model(i)),'FontSize',8)
+                if strcmp(Model(i),'Bombardier 415')
+                    text(EW(i),MTOW(i)+0.5e3,char(Model(i)),'FontSize',8)
+                elseif strcmp(Model(i),'Grumann Albatross')
+                    text(EW(i)+0e3,MTOW(i)-0.4e3,char(Model(i)),'FontSize',8)
+                elseif strcmp(Model(i),'ShinMaywa US-1A')
+                    text(EW(i)-6e3,MTOW(i)-0.25e3,char(Model(i)),'FontSize',8)
                 elseif strcmp(Model(i),'Global 6000')
                     text(EW(i)-2.9e3,MTOW(i),char(Model(i)),'FontSize',8)
                 elseif strcmp(Model(i),'Global 5000')

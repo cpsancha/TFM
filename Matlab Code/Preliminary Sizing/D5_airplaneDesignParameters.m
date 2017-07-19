@@ -397,12 +397,20 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
     %Max Speed Cruise
         plot(W_S_TO,ThrustWeight_TO.MaxSpeedCruise,'LineWidth',1.25,'Color',Parameters.Colors(12,:));
             LegendStr{end+1} = 'Max Speed Cruise';
-            
+    
+    %Available Engines
+        for i=1:length(DP.EngineOptions)
+            plot(W_S_TO,(DP.NumberEngines.*DP.EngineOptions(i).Thrust.*1e3./(AC.Weight.MTOW.*CST.GravitySI)).*ones(1,length(W_S_TO)),...
+                 'LineWidth',1,'LineStyle','--','Color',Parameters.Colors(12+i,:));
+            LegendStr{end+1} = ['Engine: ',DP.EngineOptions(i).Name]; %#ok<SAGROW>
+        end
+        clear i
+    
     %Formating
         xlim([200,max(W_S_TO)])
         ylim([0.20,0.75])
         set(gcf,'Position',[450   200   700   525])
-        xlabel('Wing Loading - MTOW/Sw [kg/m^2]')
+        xlabel('Wing Loading - MTOW/S_{w} [kg/m^2]')
         ylabel('Thrust/Weight_{TO} [-]')
         grafWidth   = 16;
         grafAR      = 0.6;
@@ -452,8 +460,8 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         end
     end
     else
-        x = 382.5; %[kg/m^2] WingLoad
-        y =  0.37; %[-] Thrust to Weight ratio at take-off
+        x =  382.5; %[kg/m^2] WingLoad
+        y =  DP.NumberEngines*DP.EngineOptions(3).Thrust*1e3/(AC.Weight.MTOW*CST.GravitySI); %[-] Thrust to Weight ratio at take-off --> Snecma Silvercrest 2D
         plot(x,y,'o');
     end
     warning('off', 'MATLAB:handle_graphics:exceptions:SceneNode');

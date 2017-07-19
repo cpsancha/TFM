@@ -12,8 +12,9 @@ classdef aircraft < handle
         Wing         wing           % The main wing of the aircraft
         Engine       engines        % The engines of the aircraft
         Weight       weights        % The weights of the aircraft
+        Payload      payload        % The payload/passengers
+        Fuselage     fuselage       % The fuselage and cabin information
         Actuations   actuations     % The actuations of the aircraft
-        Payload      payload        % The payload/passengers and cabin information
         Hull         hull           % Hull characteristics
     end
     
@@ -28,8 +29,9 @@ classdef aircraft < handle
             obj.Wing       = wing();
             obj.Weight     = weights(obj);
             obj.Engine     = engines(obj);
-            obj.Actuations = actuations();
             obj.Payload    = payload();
+            obj.Fuselage   = fuselage();
+            obj.Actuations = actuations();
             obj.Hull       = hull();
         end
         
