@@ -10,7 +10,7 @@ classdef engines < handle
         Number       double     %[double] Number of engines in the plane.
         Position     double     %[double] Position of the CoG (x y z) of the engine [m].
         PositionStr  string     %[string] Verbose Position of the engine/engines
-        Weight       double     %[double] Mass of the engine [kg].
+        Weight       double     %[double] Mass of the engine [kg]. ONE ENGINE
         Thrust       double     %[double] Thrust of the engine [N].
         Power        double     %[double] Power at take-off [W]   
         TSFC         double     %[double] Thrust specific fuel consumption [lb/(lbf·h)]

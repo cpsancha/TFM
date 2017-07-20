@@ -20,19 +20,14 @@
     % 2[X] / 3[ ]
     % Pushers
     % In nacelles
-    % Below the wing[X] / Above the wing[ ] / On the fuselage[ ]
-    % Options:
-        % [ ] 2*Rolls-Royce AE 3007A1E (39.7kN) -->  ~80kN ~kg ~lb/(lbf·h)--> Embraer Legacy family
-        % [X] 2*Snecma Silvercrest (35 - 53 kN) --> ~100kN ~2*1040kg ~0.628lb/(lbf·h)--> Dassault Falcon 5X (51kN) - Cessna Citation Hemisphere (53kN)
-        % [ ] 2*Rolls-Royce BR710A2-20 (65.6kN) --> ~130kN ~2*kg ~0.63lb/(lbf·h)--> Bombardier Global 5000
-        % [ ] 2*P&W Canada PW800 (44 to 89 kN)  -->  ~90kN ~kg ~lb/(lbf·h)--> Gulfstream G500/G600 (67.36/69.75 kN)
-        % [ ] 2*GE Passport (44 to 89 kN)       -->  ~90kN ~kg ~lb/(lbf·h)--> Bombardier Global 7000/8000 (73.4 kN)
+    % On the wing [x] / Below the wing[] / Above the wing[ ] / On the fuselage[ ]
 
         offset=5 %Fila del primer motor
    for i=offset:length(turbopropDataBase)
       enginesPower(i) = ME.Powerplant.Number*turbopropDataBase(i).Power*CF.hp2watts;
       enginesSFC(i)   = turbopropDataBase(i).SFC;
       enginesModel{i} = turbopropDataBase(i).Model;
+      enginesWeights
    end
         
         
@@ -44,6 +39,7 @@ AC.Engine.Model       = enginesModel{index(indexmin)};
 AC.Engine.SFC         = enginesSFC(index(indexmin));
 AC.Engine.TotalPower  = enginesPower(index(indexmin));
 AC.Engine.Power       = turbopropDataBase(index(indexmin)).Power*CF.hp2watts;
+AC.Engine.Weight      = turbopropDataBase(index(indexmin)).Weight*CF.lbm2kg;
 %         [min,indexmin]= min(abs(enginesPower-AC.Engine.TotalPower)); % Closest to power selected
         
  figure(4); hold on;
@@ -85,6 +81,9 @@ AC.Engine.Power       = turbopropDataBase(index(indexmin)).Power*CF.hp2watts;
         set(findall(objs, 'type', 'text'), 'fontsize', 8, 'interpreter', 'tex')
         warning('on', 'MATLAB:handle_graphics:exceptions:SceneNode');
         clear grafWidth grafAR showRoskamRequirements LegendStr objs
+        
+        
+% Determination of proppeller diameter
         
 %% WING CONFIGURATION --> Chapter 6 & 7
     % Cantilever wing (without braces)

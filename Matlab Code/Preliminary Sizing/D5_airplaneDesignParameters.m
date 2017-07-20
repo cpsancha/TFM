@@ -160,7 +160,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         %Weight: Maximum Take-Off Weight
         %Thrust: Take-Off Thrust
         %Engines: N-1
-        switch DP.NumberEngines
+        switch DP.EngineNumber
             case 2
                 CGR = 0.000;
             case 3
@@ -171,7 +171,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         CL = DP.CLmax_TO/(1.1^2);
         CD = polyval(Parameters.Polar.TakeOffGearDown,CL);
         Efficiency = CL/CD;
-        ThrustWeight_TO.TransitionSegment = (DP.NumberEngines/(DP.NumberEngines-1))*(CGR + 1/Efficiency);
+        ThrustWeight_TO.TransitionSegment = (DP.EngineNumber/(DP.EngineNumber-1))*(CGR + 1/Efficiency);
         ThrustWeight_TO.TransitionSegment = ThrustWeight_TO.TransitionSegment/0.8;  %28ºC (50ºF) Correction to take into account the worst case possible (CS 25.101)
        
     % CS 25.111 (OEI) --> Initial climb segment requirement
@@ -183,7 +183,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         %Weight: Maximum Take-Off Weight
         %Thrust: Take-Off Thrust
         %Engines: N-1
-        switch DP.NumberEngines
+        switch DP.EngineNumber
             case 2
                 CGR = 0.012;
             case 3
@@ -194,7 +194,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         CL = DP.CLmax_TO/(1.13^2);
         CD = polyval(Parameters.Polar.TakeOffGearUp,CL);
         Efficiency = CL/CD;
-        ThrustWeight_TO.InitialSegment = (DP.NumberEngines/(DP.NumberEngines-1))*(CGR + 1/Efficiency);
+        ThrustWeight_TO.InitialSegment = (DP.EngineNumber/(DP.EngineNumber-1))*(CGR + 1/Efficiency);
         ThrustWeight_TO.InitialSegment = ThrustWeight_TO.InitialSegment/0.8;  %28ºC (50ºF) Correction to take into account the worst case possible (CS 25.101)
         
     % CS 25.121 (OEI) --> Second segment climb requirement
@@ -206,7 +206,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         %Weight: Maximum Take-Off Weight
         %Thrust: Take-Off Thrust
         %Engines: N-1
-        switch DP.NumberEngines
+        switch DP.EngineNumber
             case 2
                 CGR = 0.024;
             case 3
@@ -217,7 +217,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         CL = DP.CLmax_TO/(1.13^2);
         CD = polyval(Parameters.Polar.TakeOffGearUp,CL);
         Efficiency = CL/CD;
-        ThrustWeight_TO.SecondSegment = (DP.NumberEngines/(DP.NumberEngines-1))*(CGR + 1/Efficiency);
+        ThrustWeight_TO.SecondSegment = (DP.EngineNumber/(DP.EngineNumber-1))*(CGR + 1/Efficiency);
         ThrustWeight_TO.SecondSegment = ThrustWeight_TO.SecondSegment/0.8;  %28ºC (50ºF) Correction to take into account the worst case possible (CS 25.101)
         
     % CS 25.121 (OEI) --> En-Route segment climb requirement
@@ -229,7 +229,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         %Weight: Maximum Take-Off Weight
         %Thrust: Continuous Thrust
         %Engines: N-1
-        switch DP.NumberEngines
+        switch DP.EngineNumber
             case 2
                 CGR = 0.012;
             case 3
@@ -240,7 +240,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         CL = DP.CLmax/(1.18^2);
         CD = polyval(Parameters.Polar.LowSpeedCruise,CL);
         Efficiency = CL/CD;
-        ThrustWeight_TO.EnRouteSegment = (DP.NumberEngines/(DP.NumberEngines-1))*(CGR + 1/Efficiency);
+        ThrustWeight_TO.EnRouteSegment = (DP.EngineNumber/(DP.EngineNumber-1))*(CGR + 1/Efficiency);
         ThrustWeight_TO.EnRouteSegment = ThrustWeight_TO.EnRouteSegment/0.94; %Ratio between continuous thrust and take-off thrust --> 0.94 (Roskam)
         ThrustWeight_TO.EnRouteSegment = ThrustWeight_TO.EnRouteSegment/0.8;  %28ºC (50ºF) Correction to take into account the worst case possible (CS 25.101)
         
@@ -255,7 +255,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         %Weight: Maximum Landing Weight
         %Thrust: Take-Off Thrust
         %Engines: N-1
-        switch DP.NumberEngines
+        switch DP.EngineNumber
             case 2
                 CGR = 0.032;
             case 3
@@ -279,7 +279,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         %Weight: Maximum Landing Weight
         %Thrust: Take-Off Thrust
         %Engines: N-1
-        switch DP.NumberEngines
+        switch DP.EngineNumber
             case 2
                 CGR = 0.021;
             case 3
@@ -291,7 +291,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         CD = polyval([mean([Parameters.Polar.TakeOffGearUp(1),Parameters.Polar.LandingGearUp(1)]),0,...
                       mean([Parameters.Polar.TakeOffGearUp(3),Parameters.Polar.LandingGearUp(3)])],CL);
         Efficiency = CL/CD;
-        T_W_L = (DP.NumberEngines/(DP.NumberEngines-1))*(CGR + 1/Efficiency);
+        T_W_L = (DP.EngineNumber/(DP.EngineNumber-1))*(CGR + 1/Efficiency);
         ThrustWeight_TO.BalkedApproach = T_W_L/DP.MLW_MTOW;
         ThrustWeight_TO.BalkedApproach = ThrustWeight_TO.BalkedApproach/0.8;  %28ºC (50ºF) Correction to take into account the worst case possible (CS 25.101)
         
@@ -399,10 +399,10 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
             LegendStr{end+1} = 'Max Speed Cruise';
     
     %Available Engines
-        for i=1:length(DP.EngineOptions)
-            plot(W_S_TO,(DP.NumberEngines.*DP.EngineOptions(i).Thrust.*1e3./(AC.Weight.MTOW.*CST.GravitySI)).*ones(1,length(W_S_TO)),...
+        for i=1:length(Parameters.EngineOptions)
+            plot(W_S_TO,(DP.EngineNumber.*Parameters.EngineOptions(i).Thrust.*1e3./(AC.Weight.MTOW.*CST.GravitySI)).*ones(1,length(W_S_TO)),...
                  'LineWidth',1,'LineStyle','--','Color',Parameters.Colors(12+i,:));
-            LegendStr{end+1} = ['Engine: ',DP.EngineOptions(i).Name]; %#ok<SAGROW>
+            LegendStr{end+1} = ['Engine: ',char(Parameters.EngineOptions(i).Model)]; %#ok<SAGROW>
         end
         clear i
     
@@ -421,7 +421,6 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         [~,objs]=columnlegend(2,LegendStr,'Location','northwest','FontSize',8,'boxoff');
         drawnow; % make sure everything is finished rendering 
         set(findall(objs, 'type', 'text'),'FontName','Times new Roman','FontSize', 8, 'interpreter', 'tex')
-        warning('on', 'MATLAB:handle_graphics:exceptions:SceneNode');
         clear grafWidth grafAR showRoskamRequirements LegendStr objs
     
     if DP.selectDesignPoint == true
@@ -461,26 +460,29 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
     end
     else
         x =  382.5; %[kg/m^2] WingLoad
-        y =  DP.NumberEngines*DP.EngineOptions(3).Thrust*1e3/(AC.Weight.MTOW*CST.GravitySI); %[-] Thrust to Weight ratio at take-off --> Snecma Silvercrest 2D
+        for i=1:length(Parameters.EngineOptions)
+            usedEngine(i) = strcmp(Parameters.EngineOptions(i).Model,DP.EngineModel); %#ok<SAGROW>
+        end
+        y =  DP.EngineNumber*Parameters.EngineOptions(find(usedEngine,1)).Thrust*1e3/(AC.Weight.MTOW*CST.GravitySI); %[-] Thrust to Weight ratio at take-off --> Snecma Silvercrest 2D
         plot(x,y,'o');
     end
-    warning('off', 'MATLAB:handle_graphics:exceptions:SceneNode');
     saveFigure(ME.FiguresFolder,'DesignPoint')
-    warning('on', 'MATLAB:handle_graphics:exceptions:SceneNode');
 
-    clear choiceFlag choice p LegendStr
+    clear choiceFlag choice p LegendStr i
 
     %Store design point into AC structure
     AC.Wing.WingLoading   = x;
     AC.Weight.Tto_MTOW    = y;
     AC.Wing.AspectRatio   = DP.AspectRatio;
     AC.Wing.Sw            = AC.Weight.MTOW/AC.Wing.WingLoading;
-    AC.Engine.TotalThrust = AC.Weight.Tto_MTOW*(AC.Weight.MTOW*CST.GravitySI);
     AC.Wing.CLmax         = DP.CLmax;
     AC.Wing.CLmax_TO      = DP.CLmax_TO;
     AC.Wing.CLmax_L       = DP.CLmax_L;
-    
-    
+    AC.Engine             = Parameters.EngineOptions(find(usedEngine,1));
+    AC.Engine.Number      = DP.EngineNumber;
+    AC.Engine.TotalThrust = AC.Weight.Tto_MTOW*(AC.Weight.MTOW*CST.GravitySI);
+    AC.Engine.TotalWeight = AC.Engine.Number*AC.Engine.Weight;
+
     
 
-clear rho rho0 rho_TO rho_L T_W_TO W_S_TO WingLoading ThrustWeight_TO x y
+clear rho rho0 rho_TO rho_L T_W_TO W_S_TO WingLoading ThrustWeight_TO x y usedEngine

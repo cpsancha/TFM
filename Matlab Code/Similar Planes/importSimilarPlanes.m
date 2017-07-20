@@ -46,6 +46,9 @@ switch type
         %Load Payload from Excel
         excelPayload = importFile(fileSP, sheetSP,strcat(initLetter,'40:',endLetter,'48'));
         
+        %Load Fuselage from Excel
+        excelFuselage = importFile(fileSP, sheetSP,strcat(initLetter,'53:',endLetter,'60'));
+        
         %Load Wing from Excel
         excelWing = importFile(fileSP, sheetSP,strcat(initLetter,'62:',endLetter,'82'));
         
@@ -138,10 +141,21 @@ switch type
             SimilarPlanes{i}.Payload.paxMax     = double(excelPayload{3,i});
             SimilarPlanes{i}.Payload.beds       = double(excelPayload{4,i});
             SimilarPlanes{i}.Fuselage.cabLength = double(excelPayload{5,i});
-            SimilarPlanes{i}.Fuselage.cabWide   = double(excelPayload{6,i});
+            SimilarPlanes{i}.Fuselage.cabWidth  = double(excelPayload{6,i});
             SimilarPlanes{i}.Fuselage.cabHeight = double(excelPayload{7,i});
             SimilarPlanes{i}.Fuselage.cabVolume = double(excelPayload{8,i});
             SimilarPlanes{i}.Fuselage.bagVolume = double(excelPayload{9,i});
+            
+            %Fuselage
+            SimilarPlanes{i}.Fuselage.fusLength      = double(excelFuselage{1,i});
+            SimilarPlanes{i}.Fuselage.fusWidth       = double(excelFuselage{4,i});
+            SimilarPlanes{i}.Fuselage.fusHeight      = double(excelFuselage{5,i});
+            SimilarPlanes{i}.Fuselage.frontArea      = double(excelFuselage{6,i});
+            SimilarPlanes{i}.Fuselage.minHeight      = double(excelFuselage{7,i});
+            SimilarPlanes{i}.Fuselage.finenessRatio  = double(excelFuselage{8,i});
+            SimilarPlanes{i}.Fuselage.fusHeightWidth = double(excelFuselage{5,i})/...
+                                                       double(excelFuselage{4,i});
+            
 
             %Wing
             SimilarPlanes{i}.Wing.Sw           = double(excelWing{4,i});
@@ -238,7 +252,7 @@ switch type
             SimilarPlanes{i}.Payload.paxMax     = double(excelPayload{3,i});
             SimilarPlanes{i}.Payload.beds       = double(excelPayload{4,i});
             SimilarPlanes{i}.Fuselage.cabLength = double(excelPayload{5,i});
-            SimilarPlanes{i}.Fuselage.cabWide   = double(excelPayload{6,i});
+            SimilarPlanes{i}.Fuselage.cabWidth  = double(excelPayload{6,i});
             SimilarPlanes{i}.Fuselage.cabHeight = double(excelPayload{7,i});
             SimilarPlanes{i}.Fuselage.cabVolume = double(excelPayload{8,i});
             SimilarPlanes{i}.Fuselage.bagVolume = double(excelPayload{9,i});
@@ -397,27 +411,27 @@ switch type
         for i=1:length(SP)
                 %CLmax
                 if ~isempty(SP{i}.Wing.CLmax)
-                    index(i)   = true; %#ok<SAGROW>
-                    CLmax(i) = SP{i}.Wing.CLmax; %#ok<SAGROW>
+                    index(i)   = true;  %#ok<AGROW>
+                    CLmax(i) = SP{i}.Wing.CLmax;  %#ok<AGROW>
                 else
-                    index(i)   = false; %#ok<SAGROW>
-                    CLmax(i) = NaN; %#ok<SAGROW>
+                    index(i)   = false;  %#ok<AGROW>
+                    CLmax(i) = NaN;  %#ok<AGROW>
                 end  
                 %CLmax_TO
                 if ~isempty(SP{i}.Wing.CLmax_TO)
-                    index(i)   = true; %#ok<SAGROW>
-                    CLmax_TO(i) = SP{i}.Wing.CLmax_TO; %#ok<SAGROW>
+                    index(i)   = true;  %#ok<AGROW>
+                    CLmax_TO(i) = SP{i}.Wing.CLmax_TO;  %#ok<AGROW>
                 else
-                    index(i)   = false; %#ok<SAGROW>
-                    CLmax_TO(i) = NaN; %#ok<SAGROW>
+                    index(i)   = false;  %#ok<AGROW>
+                    CLmax_TO(i) = NaN;  %#ok<AGROW>
                 end   
                 %CLmax_L
                 if ~isempty(SP{i}.Wing.CLmax_L)
-                    index(i)   = true; %#ok<SAGROW>
-                    CLmax_L(i) = SP{i}.Wing.CLmax_L; %#ok<SAGROW>
+                    index(i)   = true;  %#ok<AGROW>
+                    CLmax_L(i) = SP{i}.Wing.CLmax_L;  %#ok<AGROW>
                 else
-                    index(i)   = false; %#ok<SAGROW>
-                    CLmax_L(i) = NaN; %#ok<SAGROW>
+                    index(i)   = false;  %#ok<AGROW>
+                    CLmax_L(i) = NaN;  %#ok<AGROW>
                 end 
         end
         

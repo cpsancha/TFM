@@ -290,7 +290,54 @@ end
 
 
 
-
+%% Engine options
+switch ME.MissionType
+    case 5
+        Parameters.EngineOptions = engines();
+        % [ ] 2*Rolls-Royce AE 3007A1E --> Embraer Legacy family
+        Parameters.EngineOptions(1).Model   = 'Rolls-Royce AE 3007A1E';
+        Parameters.EngineOptions(1).Thrust =    40; %[kN] at sea level
+        Parameters.EngineOptions(1).Weight = 751.6; %[kg] dry weight
+        Parameters.EngineOptions(1).TSFC   = 0.625; %[lb/(lbf·h)] at cruise
+        
+        % [ ] 2*Snecma Silvercrest --> Cessna Citation Hemisphere
+        Parameters.EngineOptions(2).Model   = 'Snecma Silvercrest 2C';
+        Parameters.EngineOptions(2).Thrust =  53.4; %[kN] at sea level
+        Parameters.EngineOptions(2).Weight =  1040; %[kg] dry weight
+        Parameters.EngineOptions(2).TSFC   = 0.597; %[lb/(lbf·h)] at cruise 0.95*0.628
+        
+        % [X] 2*Snecma Silvercrest --> Dassault Falcon 5X
+        Parameters.EngineOptions(3).Model   = 'Snecma Silvercrest 2D';
+        Parameters.EngineOptions(3).Thrust =  50.9; %[kN] at sea level
+        Parameters.EngineOptions(3).Weight =  1040; %[kg] dry weight
+        Parameters.EngineOptions(3).TSFC   = 0.597; %[lb/(lbf·h)] at cruise 0.95*0.628
+        
+        % [ ] 2*Rolls-Royce BR710A2-20 --> Bombardier Global 5000
+        Parameters.EngineOptions(4).Model   = 'Rolls-Royce BR710A2-20';
+        Parameters.EngineOptions(4).Thrust = 65.6; %[kN] at sea level
+        Parameters.EngineOptions(4).Weight = 1633; %[kg] dry weight
+        Parameters.EngineOptions(4).TSFC   = 0.63; %[lb/(lbf·h)] at cruise
+        
+        % [ ] 2*P&W Canada PW800 --> Gulfstream G500/G600 (67.36/69.75 kN)
+        Parameters.EngineOptions(5).Model   = 'P&W Canada PW814GA';
+        Parameters.EngineOptions(5).Thrust = 67.36; %[kN] at sea level
+        Parameters.EngineOptions(5).Weight =  1422; %[kg] dry weight
+        Parameters.EngineOptions(5).TSFC   =    []; %[lb/(lbf·h)] at cruise
+        
+        % [ ] 2*P&W PW1215G --> Mitsubishi Regional Jet
+        Parameters.EngineOptions(6).Model   = 'P&W PW1215G';
+        Parameters.EngineOptions(6).Thrust = 66.7; %[kN] at sea level
+        Parameters.EngineOptions(6).Weight =   []; %[kg] dry weight
+        Parameters.EngineOptions(6).TSFC   =   []; %[lb/(lbf·h)] at cruise
+        
+%         % [ ] 2*GE Passport 20–17BB1A (44 to 89 kN)       -->  ~90kN ~kg ~lb/(lbf·h)--> Bombardier Global 7000/8000 (73.4 kN)
+%         Parameters.EngineOptions(7).Model   = 'GE Passport 20–17BB1A';
+%         Parameters.EngineOptions(7).Thrust = 74.8; %[kN] at sea level
+%         Parameters.EngineOptions(7).Weight = []; %[kg] dry weight
+%         Parameters.EngineOptions(7).TSFC   = []; %[lb/(lbf·h)] at cruise
+        
+    case 11
+end
 
 %% AUXILIAR FUNCTIONS DEFINITION:
 function [Parameters] = getFuelFraction( phase, ME, Parameters, CST, CF )

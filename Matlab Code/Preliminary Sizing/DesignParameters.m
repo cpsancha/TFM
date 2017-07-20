@@ -18,10 +18,9 @@ switch ME.MissionType
         
         
     %% PLOTTING OPTIONS
-        DP.ShowReportFigures      = true; %Show all the available figures for reports [true] or only the most relevant ones [false]
+        DP.ShowReportFigures      = false; %Show all the available figures for reports [true] or only the most relevant ones [false]
         DP.selectDesignPoint      = false; %Ask user to select design point [true] or use the saved value [false]
         DP.showRoskamRequirements = false; %Show the Take-Off and Landing requirements obtained with Roskam constants [true] or only the SP ones [false]
-        warning('off', 'MATLAB:handle_graphics:exceptions:SceneNode');
         
         
     %% CUSTOM SELECTED PARAMETERS
@@ -38,7 +37,7 @@ switch ME.MissionType
         DP.CruiseAltitude      =   12e3; %[m]
         DP.CruiseSpeed         =    250; %[m/s] (Mach=0.85)
         DP.CruiseEfficiency    =     14; %[-] mean(loadFields(SP,'Actuations.L_D'),'omitnan') --> 12.25
-        DP.CruiseTSFC          =   0.60; %[lbm/(lbf·h)] mean(loadFields(SP,'Engine.TSFC'),'omitnan') --> 0.661
+        DP.CruiseTSFC          =  0.597; %[lbm/(lbf·h)] mean(loadFields(SP,'Engine.TSFC'),'omitnan') --> 0.661
         
         %Loiter
         DP.LoiterTime          =  30*60;  %[s]
@@ -71,42 +70,9 @@ switch ME.MissionType
                                     %so, total EW reduction estimated between 2% and 6%, we chose a confident average of 5% --> EWnew=0.95*EWold
         
         %Engines
-        DP.NumberEngines    = 2;
-        % [ ] 2*Rolls-Royce AE 3007A1E --> Embraer Legacy family
-        DP.EngineOptions(1).Name   = 'Rolls-Royce AE 3007A1E';
-        DP.EngineOptions(1).Thrust =    40; %[kN] at sea level
-        DP.EngineOptions(1).Weight = 751.6; %[kg] dry weight
-        DP.EngineOptions(1).TSFC   = 0.625; %[lb/(lbf·h)] at cruise 0.33 lb/(lbf·h) at TO
-        % [ ] 2*Snecma Silvercrest --> Cessna Citation Hemisphere
-        DP.EngineOptions(2).Name   = 'Snecma Silvercrest 2C';
-        DP.EngineOptions(2).Thrust =  53.4; %[kN] at sea level
-        DP.EngineOptions(2).Weight =  1040; %[kg] dry weight
-        DP.EngineOptions(2).TSFC   = 0.628; %[lb/(lbf·h)] at cruise
-        % [X] 2*Snecma Silvercrest --> Dassault Falcon 5X
-        DP.EngineOptions(3).Name   = 'Snecma Silvercrest 2D';
-        DP.EngineOptions(3).Thrust =  50.9; %[kN] at sea level
-        DP.EngineOptions(3).Weight =  1040; %[kg] dry weight
-        DP.EngineOptions(3).TSFC   = 0.628; %[lb/(lbf·h)] at cruise
-        % [ ] 2*Rolls-Royce BR710A2-20 --> Bombardier Global 5000
-        DP.EngineOptions(4).Name   = 'Rolls-Royce BR710A2-20';
-        DP.EngineOptions(4).Thrust = 65.6; %[kN] at sea level
-        DP.EngineOptions(4).Weight = 1633; %[kg] dry weight
-        DP.EngineOptions(4).TSFC   = 0.63; %[lb/(lbf·h)] at cruise
-        % [ ] 2*P&W Canada PW800 --> Gulfstream G500/G600 (67.36/69.75 kN)
-        DP.EngineOptions(5).Name   = 'P&W Canada PW814GA';
-        DP.EngineOptions(5).Thrust = 67.36; %[kN] at sea level
-        DP.EngineOptions(5).Weight =  1422; %[kg] dry weight
-        DP.EngineOptions(5).TSFC   =    []; %[lb/(lbf·h)] at cruise
-        % [ ] 2*P&W PW1215G --> Mitsubishi Regional Jet
-        DP.EngineOptions(6).Name   = 'P&W PW1215G';
-        DP.EngineOptions(6).Thrust = 66.7; %[kN] at sea level
-        DP.EngineOptions(6).Weight =   []; %[kg] dry weight
-        DP.EngineOptions(6).TSFC   =   []; %[lb/(lbf·h)] at cruise
-        % [ ] 2*GE Passport 20–17BB1A (44 to 89 kN)       -->  ~90kN ~kg ~lb/(lbf·h)--> Bombardier Global 7000/8000 (73.4 kN)
-        DP.EngineOptions(7).Name   = 'GE Passport 20–17BB1A';
-        DP.EngineOptions(7).Thrust = 74.8; %[kN] at sea level
-        DP.EngineOptions(7).Weight = []; %[kg] dry weight
-        DP.EngineOptions(7).TSFC   = []; %[lb/(lbf·h)] at cruise
+        DP.EngineNumber    = 2;
+        DP.EngineModel     = 'Snecma Silvercrest 2D';
+        
         
         %Crew
         DP.CrewNumber     = 2;

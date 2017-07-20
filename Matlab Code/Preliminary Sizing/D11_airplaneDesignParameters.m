@@ -564,6 +564,7 @@ clear m V Ip Ip1 Wto_S_cr x Wcr_S Tcr_Wcr_cr Tto_Wto_cr
     AC.Weight.Pto_MTOW    = y;
     AC.Wing.AspectRatio   = A;
     AC.Wing.Sw            = AC.Weight.MTOW/AC.Wing.WingLoading;
+    AC.Wing.WingSpan      = sqrt(AC.Wing.AspectRatio*AC.Wing.Sw);
     AC.Engine.TotalThrust = AC.Weight.Tto_MTOW*(AC.Weight.MTOW*CST.GravitySI);
     AC.Engine.TotalPower  = AC.Weight.Pto_MTOW*AC.Weight.MTOW*CST.GravitySI;
     
