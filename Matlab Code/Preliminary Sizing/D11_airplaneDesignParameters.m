@@ -429,19 +429,19 @@ m = mean(V./Ip, 'omitnan');
 % 
 % IP=polyval([Ip./V,0],10)
 % Ip1=polyval([k,0],ME.Cruise.Speed)
-figure(12)
-hold on
-for i =1:length(V)
-plot(Ip(i),V(i),'x')
-end
-x=linspace(0,5,50);
-plot(x,m.*x)
-Ip1 =ME.Cruise.Speed/CF.mph2ms/m;
-Ip=Ip1;
-Wto_S_cr = Wto_S./(CF.lbf2N/CF.ft2m^2);  %W/S to lbs/ft^2
-% Ip = 1.7;
-W_P_roskam = 0.7*(1/(sigma*Ip^3)).* Wto_S_cr;
-P_W.crRoskam = (W_P_roskam.*(CF.hp2watts./CF.lbf2N).^(-1)).^-1;
+% figure(12)
+% hold on
+% for i =1:length(V)
+% plot(Ip(i),V(i),'x')
+% end
+% x=linspace(0,5,50);
+% plot(x,m.*x)
+% Ip1 =ME.Cruise.Speed/CF.mph2ms/m;
+% Ip=Ip1;
+% Wto_S_cr = Wto_S./(CF.lbf2N/CF.ft2m^2);  %W/S to lbs/ft^2
+% % Ip = 1.7;
+% W_P_roskam = 0.7*(1/(sigma*Ip^3)).* Wto_S_cr;
+% P_W.crRoskam = (W_P_roskam.*(CF.hp2watts./CF.lbf2N).^(-1)).^-1;
 % figure(1)
 % plot(Wto_S,P_W.crRoskam,'DisplayName','Cruise Roskam')
 % 
@@ -454,7 +454,12 @@ clear m V Ip Ip1 Wto_S_cr x Wcr_S Tcr_Wcr_cr Tto_Wto_cr
  figure(3); hold on;
     LegendStr=cell(0);
 
+    grid on
     
+    %Similar planes design points
+    for i=1:length(SP)
+        plot(SP{i}.Wing.WingLoading,SP{i}.Weight.Pto_MTOW,'x')
+    end
     %Cruise Roskam
 %             plot(Wto_S,P_W.crRoskam,'Color',Parameters.Colors(1,:));
 %             LegendStr{end+1} = 'Max Speed Cruise (Roskam)';

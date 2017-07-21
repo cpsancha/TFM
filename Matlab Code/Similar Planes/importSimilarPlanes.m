@@ -26,7 +26,7 @@ end
 switch type
     case 5
         %Options
-        numberSP = 11;
+        numberSP = 3;
         sheetSP  = 'Aviones Semejantes Long-Range';
         initLetter = 'E';
         endLetter  = native2unicode(unicode2native(initLetter)+numberSP-1);
@@ -76,6 +76,9 @@ switch type
         
         %Load Payload from Excel
         excelPayload = importFile(fileSP, sheetSP,strcat(initLetter,'43:',endLetter,'54'));
+        
+        %Load Fuselage from Excel
+        excelFuselage = importFile(fileSP, sheetSP,strcat(initLetter,'56:',endLetter,'63'));
         
         %Load Wing from Excel
         excelWing = importFile(fileSP, sheetSP,strcat(initLetter,'65:',endLetter,'85'));
@@ -256,6 +259,16 @@ switch type
             SimilarPlanes{i}.Fuselage.cabHeight = double(excelPayload{7,i});
             SimilarPlanes{i}.Fuselage.cabVolume = double(excelPayload{8,i});
             SimilarPlanes{i}.Fuselage.bagVolume = double(excelPayload{9,i});
+            
+            %Fuselage
+            SimilarPlanes{i}.Fuselage.fusLength      = double(excelFuselage{1,i});
+            SimilarPlanes{i}.Fuselage.fusWidth       = double(excelFuselage{4,i});
+            SimilarPlanes{i}.Fuselage.fusHeight      = double(excelFuselage{5,i});
+            SimilarPlanes{i}.Fuselage.frontArea      = double(excelFuselage{6,i});
+            SimilarPlanes{i}.Fuselage.minHeight      = double(excelFuselage{7,i});
+            SimilarPlanes{i}.Fuselage.finenessRatio  = double(excelFuselage{8,i});
+            SimilarPlanes{i}.Fuselage.fusHeightWidth = double(excelFuselage{5,i})/...
+                                                       double(excelFuselage{4,i});
 
             %Hull
             SimilarPlanes{i}.Hull.Length       = double(excelHull{1,i});

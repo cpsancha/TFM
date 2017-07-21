@@ -27,11 +27,10 @@
       enginesPower(i) = ME.Powerplant.Number*turbopropDataBase(i).Power*CF.hp2watts;
       enginesSFC(i)   = turbopropDataBase(i).SFC;
       enginesModel{i} = turbopropDataBase(i).Model;
-      enginesWeights
    end
         
         
-index = find(enginesPower<1.03*AC.Engine.TotalPower & enginesPower>0.97*AC.Engine.TotalPower); %Find matching engines in a range
+index = find(enginesPower<1.1*AC.Engine.TotalPower & enginesPower>0.9*AC.Engine.TotalPower); %Find matching engines in a range
 
 [~,indexmin] = min(enginesSFC(index)); % In that range, select the one whose SFC is minimum
 
@@ -46,6 +45,7 @@ AC.Engine.Weight      = turbopropDataBase(index(indexmin)).Weight*CF.lbm2kg;
  title('Engine selection')
  clear LegendStr
    LegendStr=cell(0);
+   grid on
  
  for i=1:length(index) 
  plot(Wto_S,ones(1,length(Wto_S)).*enginesPower(index(i))./(AC.Weight.MTOW.*CST.GravitySI),'--')

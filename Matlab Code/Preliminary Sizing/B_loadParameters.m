@@ -56,12 +56,12 @@ switch ME.MissionType
         Parameters.Loiter.n_p = 0.77;
         
         %Custom Values
-                Parameters.Cruise.L_D = 13;
+                Parameters.Cruise.L_D = 14;
         Parameters.Cruise.c_j = 0.5*CF.TSFC2SI; %lbm/lbf/hr to kg/N/s
         Parameters.Cruise.c_p = 0.5*CF.c_p2SI;  %lbs/hp/hr to N/Watts/s
         Parameters.Cruise.n_p = 0.82;
         
-        Parameters.Loiter.L_D = 14;
+        Parameters.Loiter.L_D = 17;
         Parameters.Loiter.c_j = 0.4*CF.TSFC2SI; %lbm/lbf/hr to kg/N/s
         Parameters.Loiter.c_p = 0.5*CF.c_p2SI;  %lbs/hp/hr to N/Watts/s
         Parameters.Loiter.n_p = 0.77;
@@ -339,6 +339,7 @@ switch ME.MissionType
     case 11
 end
 
+
 %% AUXILIAR FUNCTIONS DEFINITION:
 function [Parameters] = getFuelFraction( phase, ME, Parameters, CST, CF )
 %DOC: Computes fuel fraction using Breguet's equation for range/endurance
@@ -457,7 +458,7 @@ B = fitLbf(1);
 
 
 %Polyfit with weights in kg, for plotting
-fit = polyfit(log10(EW(index)),log10(MTOW(index)),1);
+[fit, rsquared] = polyfitR2(log10(EW(index)),log10(MTOW(index)),1);
 
 
 %Image customization
@@ -486,9 +487,11 @@ switch ME.MissionType
         txt0 = '$$\ \ \leftarrow$$ $$\log_{10}($$MTOW$$)=A+B\log_{10}($$EW$$)$$';
         txt1 = strcat('$$\ \ \ \ \ \ A=',num2str(fit(2)),'$$');
         txt2 = strcat('$$\ \ \ \ \ \ B=',num2str(fit(1)),'$$');
+        txt3 = strcat('$$\ \ \ \ \ \ R^{2}=',num2str(rsquared),'$$');
         text(x,y,txt0,'Interpreter','latex','FontSize',11)
         text(x,y-1.5e3,txt1,'Interpreter','latex','FontSize',11)
         text(x,y-2.8e3,txt2,'Interpreter','latex','FontSize',11)
+        text(x,y-4.0e3,txt3,'Interpreter','latex','FontSize',11)
         %Image positioning
         %     set(gcf,'pos',[500   300   800   450])
         %         xlim([3.9,4.5])
@@ -586,9 +589,11 @@ switch ME.MissionType
         txt0 = '$$\ \ \leftarrow$$ $$\log_{10}($$MTOW$$)=A+B\log_{10}($$EW$$)$$';
         txt1 = strcat('$$\ \ \ \ \ \ A=',num2str(fit(2)),'$$');
         txt2 = strcat('$$\ \ \ \ \ \ B=',num2str(fit(1)),'$$');
+        txt3 = strcat('$$\ \ \ \ \ \ R^{2}=',num2str(rsquared),'$$');
         text(x,y,txt0,'Interpreter','latex','FontSize',11)
         text(x,y-1.5e3,txt1,'Interpreter','latex','FontSize',11)
         text(x,y-2.8e3,txt2,'Interpreter','latex','FontSize',11)
+        text(x,y-4.0e3,txt3,'Interpreter','latex','FontSize',11)
         for i=1:length(Model)
 
             if index(i)

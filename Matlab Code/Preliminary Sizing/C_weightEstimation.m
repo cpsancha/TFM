@@ -150,6 +150,59 @@ switch ME.MissionType
 %         legend('fraccion combustible','semejantes','Location','southeast')
 end
 
+%% TORENBEEK GUESSTIMATION
+
+Wfix = 500;
+
+% mean(loadFields(SP,'Engine.TSFC'),'omitnan')
+index=1:length(SP);
+for i=1:length(SP)
+deltaWe(i) = SP{i}.Weight.EW -SP{i}.Engine.Weight*SP{1}.Engine.Number - ...
+    0.2* SP{i}.Weight.MTOW- Wfix;
+x(i) = SP{i}.Fuselage.fusLength*(SP{i}.Fuselage.fusWidth+SP{i}.Fuselage.fusHeight)/2;
+end
+
+
+x_ac = SP{i}.Fuselage.fusLength*(SP{i}.Fuselage.fusWidth+SP{i}.Fuselage.fusHeight)/2;
+%Polyfit with weights in kg, for plotting
+[fit, rsquared] = polyfitR2(log10(x(index)),log10(deltaWe(index)),1);
+
+deltaWe_ac = 10^(polyval(fit,log10(x_ac)));
+Wto = (ME.Payload+Wfix+deltaWe_ac+Weng)/(0.8-Wf_Wto);
+
+    figure()
+    %Plot points
+    loglog(x(index),deltaWe(index),'*','LineWidth',1,'Color',Parameters.Colors(1,:)); hold on;
+    
+    loglog(x_ac,deltaWe_ac,'*','LineWidth',1,'Color',Parameters.Colors(3,:)); hold on;
+    
+    %Plot regresion
+    plot(linspace(min(x),max(x),2),10.^polyval(fit,linspace(min(log10(x)),max(log10(x)),2)),'LineWidth',1.25,'Color',Parameters.Colors(2,:));
+    xlabel('$$l_{f}\frac{b_{f}+h_{f}}{2}$$','Interpreter','latex')
+    ylabel('$$\Delta EW\ [kg]$$','Interpreter','latex')
+    title('Logarithmic correlation between $$\Delta EW$$ and $$l_{f}\frac{b_{f}+h_{f}}{2}$$','Interpreter','latex')
+        
+        
+        %Formating
+        grafWidth   = 16;
+        grafAR      = 0.6;
+% %         grid on
+%         xlim([9e3,35e3]);
+%         ylim([15e3,55e3]);
+        set(gcf,'DefaultLineLineWidth',1.5);
+        set(gcf,'PaperUnits', 'centimeters','PaperSize',[grafWidth grafWidth*grafAR], 'PaperPosition', [0 0 grafWidth grafWidth*grafAR]);
+        set(gca,'FontSize',10,'FontName','Times new Roman','box','on')
+
+        %Show equation in the graph
+        x1 = min(x) + 0.3*(max(x)-min(x));
+        y1 = 10.^polyval(fit,log10(x1));
+        txt3 = strcat('$$\ \ \ \ \ \ R^{2}=',num2str(rsquared),'$$');
+
+        text(x1,y1,txt3,'Interpreter','latex','FontSize',11)
+        
+                %Save Figure
+        saveFigure(ME.FiguresFolder,'deltaEW_fuselage_Correlation')
+
 
 %% USEFUL FUNCTIONS DEFINITION:
 function [ F, W_TO_guess, W_E, W_F, W_E_tent] = getWeights( x, ME, CST, CF, Parameters, W_E_Str )
@@ -199,3 +252,6 @@ end
 F = W_E_tent-W_E;
 
 end
+
+
+

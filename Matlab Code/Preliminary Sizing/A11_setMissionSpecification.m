@@ -195,6 +195,12 @@ end
 %% CREATE DESIGN AIRCRAFT 
 AC = aircraft();
 
+%% FUSELAGE SHAPE
+
+        AC.Fuselage.fusLength  = 30;
+        AC.Fuselage.fusWidth   = 3;
+        AC.Fuselage.fusHeight  = 3;
+
 
 %% EXAMPLE OF HOW TO OBTAIN MEAN VALUES FROM SIMILAR PLANES
 % for i=1:length(SP)

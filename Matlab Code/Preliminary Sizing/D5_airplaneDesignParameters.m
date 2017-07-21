@@ -397,15 +397,28 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
     %Max Speed Cruise
         plot(W_S_TO,ThrustWeight_TO.MaxSpeedCruise,'LineWidth',1.25,'Color',Parameters.Colors(12,:));
             LegendStr{end+1} = 'Max Speed Cruise';
+            
+    %Load Factor for limit maneuvering
+        n = 2.1+(24e3/(10e3+AC.MTOW*CF.kg2lbm));
+        if n<2.5
+            n = 2.5;
+        elseif n>3.8
+            n = 3.8;
+        end
+        
     
     %Available Engines
         for i=1:length(Parameters.EngineOptions)
             plot(W_S_TO,(DP.EngineNumber.*Parameters.EngineOptions(i).Thrust.*1e3./(AC.Weight.MTOW.*CST.GravitySI)).*ones(1,length(W_S_TO)),...
-                 'LineWidth',1,'LineStyle','--','Color',Parameters.Colors(12+i,:));
+                 'LineWidth',1,'LineStyle','--','Color',Parameters.Colors(13+i,:));
             LegendStr{end+1} = ['Engine: ',char(Parameters.EngineOptions(i).Model)]; %#ok<SAGROW>
         end
+        
+    %Similar Planes
+        plot(loadFields(SP,'Wing.WingLoading'),loadFields(SP,'Engine.TotalThrust')./(loadFields(SP,'Weight.MTOW').*CST.GravitySI),...
+             '*','Color',Parameters.Colors(14+i,:))
         clear i
-    
+        
     %Formating
         xlim([200,max(W_S_TO)])
         ylim([0.20,0.75])

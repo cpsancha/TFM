@@ -9,8 +9,13 @@
 
 switch ME.MissionType
     case 5  %5.Business Jets
+        
+    %% FUSELAGE SHAPE
+        AC.Fuselage.fusLength  = 30;
+        AC.Fuselage.fusWidth   = 3;
+        AC.Fuselage.fusHeight  = 3;
     %% REQUIREMENTS
-        DP.Payload     =  800; %[kg] <-- 6 pax
+        DP.Payload     =  800; %[kg] <-- 6 pax (80+50 each)
         DP.Range       = 10e6; %[m]
         DP.MaxSpeed    =  257; %[m/s]  (Mach=0.87)
         DP.TOFL        = 1200; %[m]    Take-Off Field Length, from similar planes: max-->1972m, min-->956m, mean-->1488m
@@ -18,7 +23,7 @@ switch ME.MissionType
         
         
     %% PLOTTING OPTIONS
-        DP.ShowReportFigures      = false; %Show all the available figures for reports [true] or only the most relevant ones [false]
+        DP.ShowReportFigures      = true;  %Show all the available figures for reports [true] or only the most relevant ones [false]
         DP.selectDesignPoint      = false; %Ask user to select design point [true] or use the saved value [false]
         DP.showRoskamRequirements = false; %Show the Take-Off and Landing requirements obtained with Roskam constants [true] or only the SP ones [false]
         
