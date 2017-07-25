@@ -10,6 +10,7 @@ classdef weights < handle
         BOW      double    %[double]  Basic Operational Weight [kg]
         MPL      double    %[double]  Maximum Payload Weight [kg]
         MFW      double    %[double]  Maximum Fuel Weight [kg]
+        FW       double
         TUL      double    %[double]  Total Useful Load [kg]
         MZFW     double    %[double]  Maximum Zero Fuel Weight [kg]
         MLW      double    %[double]  Maximum Landing Weight [kg]

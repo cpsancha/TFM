@@ -105,5 +105,55 @@ Eleccion del numero de motores:
 Comparar resultados con 2 y 4 motores en selecion del pubnto de diseño
 \end_layout
 
+\begin_layout Standard
+2: mantenimiento mas facil
+\end_layout
+
+\begin_layout Subsection
+Datos historicos de SFC de turobprop torenbeeeck p156 pdf
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pegado3.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Discusión sobre Aspect Ratio, explicación de semejantes en a la izda de
+ la restriccion de rafagas p.234 torenbeek pdf
+\end_layout
+
+\begin_layout Standard
+For light aircraft, the wing loading is usually fairly low, the complication
+ of a sophisticated high-lift system generally being considered as undesirable
+ by most manufacturers.
+ Consequently, the optimum cruising speed for long-range flight may be too
+ slow to make it an attractive speed, particularly when the altitude is
+ limited to some 10,000 ft (3,000 m).
+ These aircraft are usually flown at the maximum cruise rating and it can
+ readily be shown that a large increase in A results in a relatively modest
+ gain in speed and range.
+ For example, increasing the aspect ratio of an aircraft with W= 3,300 lb
+ (1,500 kg), S = 160 sq.ft (15 m2 ), P = 180 hp and COo = .025 from 6 to 10
+ results in a speed increment at sea level from 128 knots (238 km/h) to
+ 134 knots (248 km/h) , a gain of only 4%.
+ A high aspect ratio may result in a low drag in the landing configuration,
+ which tends to flatten the approach glide, makes judgment of the landing
+ point more difficult to the pilot and gives the aircraft a tendency to
+ "float" after the landing flare.
+ In addition, a high aspect ratio wing does not favor good maneuverability
+ in roll due to its large damping and the reduced effectiveness of the small-cho
+rd ailerons (Ref.
+ 7-96).
+ In conclusion, moderate aspect ratios between 7 and 9 are usually applied
+ for twinengine general aviation aircraft; for single-engine aircraft these
+ values are usually somewhat lower, e.g.
+ between 5.5 and 8
+\end_layout
+
 \end_body
 \end_document

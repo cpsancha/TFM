@@ -5,7 +5,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% CLEAR CMD WINDOW & WORKSPACE
-clearvars
+clear all
 close all
 clc
 
@@ -61,6 +61,9 @@ end
     
     
 
+%% CREATE DESIGN AIRCRAFT 
+AC = aircraft();
+
 
 
 %% LOAD CUSTOM DESING PARAMETERS
@@ -91,6 +94,7 @@ switch ME.MissionType
         
     case 11 % amphibious
         ME.Crew = 2; %Check FAR 91.215 for minimun crew members
+        AC.Payload.crew = ME.Crew;
         %Mission crew weight in kg:
         ME.CrewWeight = ME.Crew*(CST.CrewWeightSI+CST.CrewBaggWeightSI);
 end
@@ -125,9 +129,10 @@ end
 %% CRUISE
 switch ME.MissionType
     case  5 % business jet
-        ME.Cruise.Range    = DP.Range;          % in m
+        ME.Cruise.Range    = DP.Range;          % in km
         ME.Cruise.Altitude = DP.CruiseAltitude; % in m
         ME.Cruise.Speed    = DP.CruiseSpeed;    % m/s
+
         
     case 11 % amphibious
         ME.Cruise.Range = 2000*1e3;     % in m
@@ -201,10 +206,6 @@ end
 
 
 
-%% CREATE DESIGN AIRCRAFT 
-AC = aircraft();
-
-
 
 %% EXAMPLE OF HOW TO OBTAIN MEAN VALUES FROM SIMILAR PLANES
 % for i=1:length(SP)
@@ -222,5 +223,5 @@ AC = aircraft();
 
 %% CONTINUE...
 run B_loadParameters.m
-run C_weightEstimation.m
+run C5_weightEstimation.m
 run D5_airplaneDesignParameters.m

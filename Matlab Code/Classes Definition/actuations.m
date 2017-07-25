@@ -27,7 +27,7 @@ classdef actuations < handle
         Stow        double        %[double]  Take off distance water [m]
         Sl          double        %[double]  Landing distance [m]
         Slw         double        %[double]  Landing distance water [m]
-        
+        Wf_Wto      double        % Fuel used to get the range in actuations divided by Wto 
     end
     
     

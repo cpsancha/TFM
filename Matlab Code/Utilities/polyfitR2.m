@@ -1,4 +1,4 @@
-function [ fit, RSquared ] = polyfitR2( x,y,degree )
+function [ fit, RSquared ] = polyfitR2( x, y, degree )
 %POLYFITR2 Summary of this function goes here
 %   Detailed explanation goes here
 

@@ -41,7 +41,7 @@ AC.Engine.Power       = turbopropDataBase(index(indexmin)).Power*CF.hp2watts;
 AC.Engine.Weight      = turbopropDataBase(index(indexmin)).Weight*CF.lbm2kg;
 %         [min,indexmin]= min(abs(enginesPower-AC.Engine.TotalPower)); % Closest to power selected
         
- figure(4); hold on;
+ figure(); hold on;
  title('Engine selection')
  clear LegendStr
    LegendStr=cell(0);

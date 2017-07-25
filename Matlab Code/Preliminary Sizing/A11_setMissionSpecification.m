@@ -72,6 +72,10 @@ switch ME.MissionType
         
     case 11 % amphibious
         ME.Payload = 3000;
+        ME.Passengers = 10;    
+        ME.Cargo.Weigth = ME.Payload - ME.Passengers*(CST.PassengerWeightSI);
+        ME.Cargo.Volume = (ME.Cargo.Weigth/160 + ME.Passengers*CST.PassBaggWeightSI/200)  / 0.85 ; % page 79 torenbeek: Density 160 kg m^3, 200 and 0.85 efficiency
+        
 end
 
 
@@ -124,8 +128,8 @@ switch ME.MissionType
         
     case 11 % amphibious
         ME.Cruise.Range = 3500*1e3;     % in m
-        ME.Cruise.Altitude =  6000;     % in m
-        ME.Cruise.Speed = 138.8889;     % m/s
+        ME.Cruise.Altitude = 3048;     % in m
+        ME.Cruise.Speed =138.8889;     % m/s
 end
 
 
@@ -195,11 +199,14 @@ end
 %% CREATE DESIGN AIRCRAFT 
 AC = aircraft();
 
-%% FUSELAGE SHAPE
-
-        AC.Fuselage.fusLength  = 30;
-        AC.Fuselage.fusWidth   = 3;
-        AC.Fuselage.fusHeight  = 3;
+% %% FUSELAGE SHAPE
+%         ac=(2+1)*0.5+0.2;
+%         af=ac(1+0.05)
+%         lc = 
+%         lf = lc +(af*4)
+        AC.Fuselage.fusLength  = 12.13+ME.Cargo.Volume/2.332;% A=3.286m^2: cilindric section; %Area form Catia
+        AC.Fuselage.fusWidth   = 1.1*2.15;
+        AC.Fuselage.fusHeight  = 1.1*2.734517;
 
 
 %% EXAMPLE OF HOW TO OBTAIN MEAN VALUES FROM SIMILAR PLANES
@@ -218,6 +225,6 @@ AC = aircraft();
 
 %% CONTINUE...
 run B_loadParameters.m
-run C_weightEstimation.m
+run C11_weightEstimation.m
 run D11_airplaneDesignParameters.m
-run E11_configurationDesign.m
+% run E11_configurationDesign.m

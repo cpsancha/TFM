@@ -343,6 +343,19 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
 %% SIZE TO CEILING REQUIREMENTS
 
 
+%% SIZE TO GUST REQUIREMENTS
+
+options = optimoptions('fsolve',...
+                       'StepTolerance',1e-9,...
+                       'Display','none');
+[WingLoading.Gust,~,exitflag,~] = fsolve(@(x)gustWingLoading(x, DP.AspectRatio, CST, AC, CF, ME), 1000, options); %WingLoading in N/m^2
+WingLoading.Gust = WingLoading.Gust ./ CST.GravitySI; %WingLoading in kg/m^2
+if ~isequal(exitflag,1)
+    disp('El solver de la limitacion por rafagas no ha logrado converger correctamente. Se debería revisar el resultado.')
+    pause
+else
+    clear exitflag options
+end
 
 
 %% DESIGN POINT
@@ -398,15 +411,10 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
         plot(W_S_TO,ThrustWeight_TO.MaxSpeedCruise,'LineWidth',1.25,'Color',Parameters.Colors(12,:));
             LegendStr{end+1} = 'Max Speed Cruise';
             
-    %Load Factor for limit maneuvering
-        n = 2.1+(24e3/(10e3+AC.MTOW*CF.kg2lbm));
-        if n<2.5
-            n = 2.5;
-        elseif n>3.8
-            n = 3.8;
-        end
+    %Max gust factor
+    plot(WingLoading.Gust.*ones(1,length(T_W_TO)),T_W_TO,'LineWidth',1.25,'Color',Parameters.Colors(13,:));
+            LegendStr{end+1} = 'Gust Loading';
         
-    
     %Available Engines
         for i=1:length(Parameters.EngineOptions)
             plot(W_S_TO,(DP.EngineNumber.*Parameters.EngineOptions(i).Thrust.*1e3./(AC.Weight.MTOW.*CST.GravitySI)).*ones(1,length(W_S_TO)),...
@@ -498,4 +506,48 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
 
     
 
-clear rho rho0 rho_TO rho_L T_W_TO W_S_TO WingLoading ThrustWeight_TO x y usedEngine
+clear rho rho0 rho_TO rho_L T_W_TO W_S_TO ThrustWeight_TO x y usedEngine
+
+
+%% OTHER USEFUL FUNCTIONS
+function [F] = gustWingLoading(x, A, CST, AC, CF, ME) %-->x=carga alar en N/m^2
+
+    [~, asound, P, rho] = atmosisa(ME.Cruise.Altitude);
+    [~, ~, ~, rho0] = atmosisa(0);
+
+    % M = ME.Cruise.Speed/asound
+    % beta = sqrt(1-M^2)
+    % k = 4*pi/beta/(2*pi)
+    % flecha=0; %RAD
+    % a = 2*pi*A/(2+sqrt((A^2*beta^2/k^2)*(1+(tan(flecha))^2/beta^2)+4)) %DA MUY ALTO
+
+
+    a = 3.8; %[Cl_alpha] Raymer p.311 High AR swept wing
+    CMG =sqrt((AC.Weight.MTOW*CST.GravitySI)/(x*A));
+
+
+    mu = 2*x/(rho*a*CMG*CST.GravitySI);
+    kg = 0.88*mu/(5.3+mu);
+
+    %Load Factor for limit maneuvering
+    n = 2.1+(24e3/(10e3+AC.Weight.MTOW*CF.kg2lbm));
+    if n<2.5
+        n = 2.5;
+    elseif n>3.8
+        n = 3.8;
+    end
+
+    %Reference Gust Speed
+    if ME.Cruise.Altitude*CF.m2ft<20e3
+        U_EAS = 50*CF.ft2m;
+    elseif ME.Cruise.Altitude*CF.m2ft>=20e3
+        U_EAS = ((50 + (ME.Cruise.Altitude*CF.m2ft-20e3)*(25-50)/(50e3-20e3)))*CF.ft2m;
+    end
+
+    %Equivalent Cruise Airspeed
+    V_EAS =  correctairspeed(ME.Cruise.Speed, asound, P, 'TAS', 'EAS');
+    
+    F = kg*rho0*U_EAS*V_EAS*a/(2*x)-(n-1);
+    % W_S_Gust = rho0*a*U*V_EAS/(2*(n-1));
+
+end

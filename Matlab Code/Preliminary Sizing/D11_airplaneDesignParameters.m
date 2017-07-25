@@ -8,12 +8,47 @@
 %*                                                                                                      *
 %********************************************************************************************************
 
-
+clear Parameters.CL_max_L Parameters.CL_max_L
 %% Design parameters
-A = 9;
-Parameters.CL_max    = 1.5; %[1.2, 1.8]; %Doesn't affect any restriction!
-Parameters.CL_max_TO = 2.2;   %[1.6, 2.2];
-Parameters.CL_max_L  = 3.4;   %[1.8, 3.4];
+% Seleccionar tipo de barrido:
+% 1: En alargamiento
+% 2: En Cl_max_TO
+% 3: EN Cl_max_L
+
+barrido=3;
+
+switch barrido
+    case 1
+A_vec = [8,10,12];
+CL_max_TO_vec = 2.8;
+CL_max_L_vec = 3.8;
+    case 2
+A_vec = 9.1;
+CL_max_TO_vec = [1.6, 2.2, 2.8];
+CL_max_L_vec = 3.8;
+    case 3
+A_vec = 9.1;
+CL_max_TO_vec = 2.8;
+CL_max_L_vec = [2.5, 3.5, 3.8];
+end
+
+%A=9.1 Clto = 2.8 clL=3.8
+
+
+line={':','--','-'};
+for ii=1:length(A_vec)
+    for jj=1:length(CL_max_TO_vec)
+        for kk=1:length(CL_max_L_vec)
+
+
+    A=A_vec(ii);
+    Parameters.CL_max_TO = CL_max_TO_vec(jj);
+    Parameters.CL_max_L = CL_max_L_vec(kk);
+    
+% A = 9;
+% Parameters.CL_max    = 1.5; %[1.2, 1.8]; %Doesn't affect any restriction!
+% Parameters.CL_max_TO = 1.6;   %[1.6, 2.2];
+% Parameters.CL_max_L  = 3.4;   %[1.8, 3.4];
 
 %Definimos un rango de cargas alares al despegue para representar las gráficas
 Wto_S= linspace(100,6000,100);
@@ -448,58 +483,69 @@ m = mean(V./Ip, 'omitnan');
 % legend('show')
 
 clear m V Ip Ip1 Wto_S_cr x Wcr_S Tcr_Wcr_cr Tto_Wto_cr
+
+%% Sizing to gust requirements
+WingLoading.Gust=fsolve(@(x)gustWingLoading(x,A, CST, AC, CF, ME),1000);
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Design point selection
 
- figure(3); hold on;
+ figure(99); hold on;
     LegendStr=cell(0);
 
     grid on
     
-    %Similar planes design points
-    for i=1:length(SP)
-        plot(SP{i}.Wing.WingLoading,SP{i}.Weight.Pto_MTOW,'x')
-    end
+
     %Cruise Roskam
 %             plot(Wto_S,P_W.crRoskam,'Color',Parameters.Colors(1,:));
 %             LegendStr{end+1} = 'Max Speed Cruise (Roskam)';
-            
+    %Gust
+            plot(WingLoading.Gust.*ones(1,100),linspace(0,100,100),'LineWidth',1.25,'Color',Parameters.Colors(12,:),'LineStyle',line{ii+jj+kk-2});
+            LegendStr{end+1} = 'Gust';
+    
     %Cruise
-            plot(Wto_S,P_W.cr,'Color',Parameters.Colors(2,:));
+            plot(Wto_S,P_W.cr,'Color',Parameters.Colors(2,:),'LineStyle',line{ii+jj+kk-2});
             LegendStr{end+1} = 'Max Speed Cruise';          
             
     %Take-off
-            plot(Wto_S,P_W.take_off,'Color',Parameters.Colors(3,:));
+            plot(Wto_S,P_W.take_off,'Color',Parameters.Colors(3,:),'LineStyle',line{ii+jj+kk-2});
             LegendStr{end+1} = 'Water Take off length';
-            plot(Wto_S,P_W.take_off1,'Color',Parameters.Colors(4,:));
-            LegendStr{end+1} = 'Ground Take off length';
+%             plot(Wto_S,P_W.take_off1,'Color',Parameters.Colors(4,:),'LineStyle',line{ii+jj+kk-2});
+%             LegendStr{end+1} = 'Ground Take off length';
             
     %Landing
-            plot(WingLoading.LandingRoskam.*ones(1,100),linspace(1,100,100),'LineWidth',1.25,'Color',Parameters.Colors(5,:));
+            plot(WingLoading.LandingRoskam.*ones(1,100),linspace(0,100,100),'LineWidth',1.25,'Color',Parameters.Colors(5,:),'LineStyle',line{ii+jj+kk-2});
             LegendStr{end+1} = 'Landing (Roskam)';
     %Climb
         %Take-Off
-        plot(Wto_S,P_W.cl.CS25121tr,'LineWidth',1.25,'Color',Parameters.Colors(6,:));
+        plot(Wto_S,P_W.cl.CS25121tr,'LineWidth',1.25,'Color',Parameters.Colors(6,:),'LineStyle',line{ii+jj+kk-2});
             LegendStr{end+1} = 'Climb (Transition Segment)';
 
-        plot(Wto_S,P_W.cl.CS25111,'LineWidth',1.25,'Color',Parameters.Colors(7,:));
+        plot(Wto_S,P_W.cl.CS25111,'LineWidth',1.25,'Color',Parameters.Colors(7,:),'LineStyle',line{ii+jj+kk-2});
             LegendStr{end+1} = 'Climb (Initial Segment)';
 
-        plot(Wto_S,P_W.cl.CS25121nd,'LineWidth',1.25,'Color',Parameters.Colors(8,:));
+        plot(Wto_S,P_W.cl.CS25121nd,'LineWidth',1.25,'Color',Parameters.Colors(8,:),'LineStyle',line{ii+jj+kk-2});
             LegendStr{end+1} = 'Climb (Second Segment)';
             
-        plot(Wto_S,P_W.cl.CS25121er,'LineWidth',1.25,'Color',Parameters.Colors(9,:));
+        plot(Wto_S,P_W.cl.CS25121er,'LineWidth',1.25,'Color',Parameters.Colors(20,:),'LineStyle',line{ii+jj+kk-2});
             LegendStr{end+1} = 'Climb (En-Route Segment)';
             
         %Landing
-        plot(Wto_S,P_W.cl.CS25119,'LineWidth',1.25,'Color',Parameters.Colors(10,:));
+        plot(Wto_S,P_W.cl.CS25119,'LineWidth',1.25,'Color',Parameters.Colors(15,:),'LineStyle',line{ii+jj+kk-2});
             LegendStr{end+1} = 'Climb (Balked Landing)';
             
-        plot(Wto_S,P_W.cl.CS25121ba,'LineWidth',1.25,'Color',Parameters.Colors(11,:));
+        plot(Wto_S,P_W.cl.CS25121ba,'LineWidth',1.25,'Color',Parameters.Colors(18,:),'LineStyle',line{ii+jj+kk-2});
             LegendStr{end+1} = 'Climb (Balked Approach)';
+            
+        %Similar planes design points
+    for i=1:length(SP)
+        plot(SP{i}.Wing.WingLoading,SP{i}.Weight.Pto_MTOW,'x')
+    end
+    
      %Formating
         xlim([250,max(Wto_S)])
-        ylim([0,60])
+        ylim([0,40])
         set(gcf,'Position',[450   200   700   525])
         
         title('Design Point') 
@@ -553,9 +599,9 @@ clear m V Ip Ip1 Wto_S_cr x Wcr_S Tcr_Wcr_cr Tto_Wto_cr
         end
     end
     else
-        x = 2000; %[N/m^2] WingLoad
-        y =  20; %[W/N] Power to Weight ratio at take-off
-        plot(x,y,'o');
+        x = 3350; %[N/m^2] WingLoad
+        y =  19.55; %[W/N] Power to Weight ratio at take-off
+        plot(x,y,'ko');
     end
     
     warning('off', 'MATLAB:handle_graphics:exceptions:SceneNode');
@@ -569,8 +615,57 @@ clear m V Ip Ip1 Wto_S_cr x Wcr_S Tcr_Wcr_cr Tto_Wto_cr
     AC.Weight.Pto_MTOW    = y;
     AC.Wing.AspectRatio   = A;
     AC.Wing.Sw            = AC.Weight.MTOW/AC.Wing.WingLoading;
-    AC.Wing.WingSpan      = sqrt(AC.Wing.AspectRatio*AC.Wing.Sw);
     AC.Engine.TotalThrust = AC.Weight.Tto_MTOW*(AC.Weight.MTOW*CST.GravitySI);
     AC.Engine.TotalPower  = AC.Weight.Pto_MTOW*AC.Weight.MTOW*CST.GravitySI;
     
     clear A x y rho rho5000 rho0 sigma
+    
+        end
+    end
+end
+%% Auxiliary Functions
+    
+function [F] = gustWingLoading(x,A, CST, AC, CF, ME)
+
+switch ME.MissionType
+    case 5
+    case 11
+[~, asound, P, rho] = atmosisa(ME.Cruise.Altitude);
+[~, ~, ~, rho0] = atmosisa(0);
+
+% M = ME.Cruise.Speed/asound
+% beta = sqrt(1-M^2)
+% k = 4*pi/beta/(2*pi)
+% flecha=0; %RAD
+% a = 2*pi*A/(2+sqrt((A^2*beta^2/k^2)*(1+(tan(flecha))^2/beta^2)+4)) %DA MUY ALTO
+
+
+a = 5; %Raymer p.311 High AR unswept
+c =sqrt((AC.Weight.MTOW*CST.GravitySI/x)/A);
+
+
+mu = 2*x/(rho*a*c*CST.GravitySI);
+kg = 0.88*mu/(5.3+mu);
+
+%Load Factor for limit maneuvering
+    n = 2.1+(24e3/(10e3+AC.Weight.MTOW*CF.kg2lbm));
+    if n<2.5
+        n = 2.5;
+    elseif n>3.8
+        n = 3.8;
+    end
+
+%Reference Gust Speed
+    if ME.Cruise.Altitude*CF.m2ft<20000
+    U_EAS = 50*CF.ft2m;
+    elseif ME.Cruise.Altitude*CF.m2ft>=20000
+    U_EAS = ((50+ (ME.Cruise.Altitude*CF.m2ft-20000)*(25-50)/(50000-20000)))*CF.ft2m;
+    end
+
+%Equivalent Cruise Airspeed    
+V_EAS =  correctairspeed(ME.Cruise.Speed, asound, P, 'TAS', 'EAS');
+
+F= kg*rho0*U_EAS*V_EAS*a/(2*x)-(n-1);
+% W_S_Gust = rho0*a*U*V_EAS/(2*(n-1));  
+end
+end

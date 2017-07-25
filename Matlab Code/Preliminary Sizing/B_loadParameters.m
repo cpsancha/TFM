@@ -56,14 +56,14 @@ switch ME.MissionType
         Parameters.Loiter.n_p = 0.77;
         
         %Custom Values
-                Parameters.Cruise.L_D = 14;
+        Parameters.Cruise.L_D = 14;
         Parameters.Cruise.c_j = 0.5*CF.TSFC2SI; %lbm/lbf/hr to kg/N/s
-        Parameters.Cruise.c_p = 0.5*CF.c_p2SI;  %lbs/hp/hr to N/Watts/s
+        Parameters.Cruise.c_p = 0.46*CF.c_p2SI;  %lbs/hp/hr to N/Watts/s
         Parameters.Cruise.n_p = 0.82;
         
         Parameters.Loiter.L_D = 17;
         Parameters.Loiter.c_j = 0.4*CF.TSFC2SI; %lbm/lbf/hr to kg/N/s
-        Parameters.Loiter.c_p = 0.5*CF.c_p2SI;  %lbs/hp/hr to N/Watts/s
+        Parameters.Loiter.c_p = 0.46*CF.c_p2SI;  %lbs/hp/hr to N/Watts/s
         Parameters.Loiter.n_p = 0.77;
         
     otherwise
@@ -285,7 +285,7 @@ switch ME.MissionType
     case 5
         Parameters.EWnew_EWold = DP.EWnew_EWold;
     case 11
-        Parameters.EWnew_EWold = 0.95; 
+        Parameters.EWnew_EWold = 0.94; 
 end
 
 
@@ -351,9 +351,9 @@ switch phase
             case 'jet'
                 cj  = Parameters.Cruise.c_j;    %Custom selected
                 L_D = Parameters.Cruise.L_D;    %Custom selected
-                ClimbRange = ME.Climb.E_cl*ME.Climb.V_cl; %The horizontal distance flight while climbing, is relevant
+                ClimbRange = ME.Climb.E_cl*ME.Climb.V_cl; %The horizontal distance flight while climbing, is relevant [in meters]
                 
-                Parameters.fuelFraction(5).value=inv(exp((ME.Cruise.Range-ClimbRange)*CST.GravitySI*cj/(ME.Cruise.Speed*L_D)));
+                Parameters.fuelFraction(5).value=inv(exp((ME.Cruise.Range*1e3-ClimbRange)*CST.GravitySI*cj/(ME.Cruise.Speed*L_D)));
                 
             case 'propeller'
                 R   = ME.Cruise.Range;
@@ -411,8 +411,8 @@ switch phase
                 E_ClimbCruise = (ME.Cruise.Altitude-5000*CF.ft2m)/ME.Climb.Rate_cl;
                 W43 = inv(exp(E_ClimbCruise*Cruise_cj*CST.GravitySI/Cruise_L_D)); %According Roskam, should be aprox 0.980
                 % (5) - cruise at long range power
-                ClimbRange = E_ClimbCruise*ME.Climb.V_cl; %The horizontal distance flight while climbing, is relevant
-                W54 = inv(exp((ME.Alternate.R_alt-ClimbRange)*CST.GravitySI*Cruise_cj/(ME.Cruise.Speed*Cruise_L_D)));
+                ClimbRange = E_ClimbCruise*ME.Climb.V_cl; %The horizontal distance flight while climbing, is relevant [in meters]
+                W54 = inv(exp((ME.Alternate.R_alt*1e3-ClimbRange)*CST.GravitySI*Cruise_cj/(ME.Cruise.Speed*Cruise_L_D)));
                 % (6) - descend to sea level      
                 W65 = 0.990; % Typical value from Roskam
                 % (7) - land with 30 mins of holding fuel at 5000ft.

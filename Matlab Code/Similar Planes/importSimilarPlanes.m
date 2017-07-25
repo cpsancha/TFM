@@ -26,7 +26,7 @@ end
 switch type
     case 5
         %Options
-        numberSP = 3;
+        numberSP = 11;
         sheetSP  = 'Aviones Semejantes Long-Range';
         initLetter = 'E';
         endLetter  = native2unicode(unicode2native(initLetter)+numberSP-1);
@@ -87,7 +87,7 @@ switch type
         excelHull = importFile(fileSP, sheetSP,strcat(initLetter,'147:',endLetter,'151'));
         
         %Load Actuations from Excel
-        excelActuations = importFile(fileSP, sheetSP,strcat(initLetter,'167:',endLetter,'190'));
+        excelActuations = importFile(fileSP, sheetSP,strcat(initLetter,'167:',endLetter,'191'));
     otherwise
         error('There are only two cases, businessJet (5) or Amphibious (11). Choose one.')
 end
@@ -324,10 +324,12 @@ switch type
             SimilarPlanes{i}.Actuations.Endurance = double(excelActuations{17,i});
             SimilarPlanes{i}.Actuations.Hmax      = double(excelActuations{18,i});
             SimilarPlanes{i}.Actuations.Hcruise   = double(excelActuations{19,i});
-            SimilarPlanes{i}.Actuations.Sto       = double(excelActuations{20,i});
-            SimilarPlanes{i}.Actuations.Sl        = double(excelActuations{21,i});
-            SimilarPlanes{i}.Actuations.Stow       = double(excelActuations{22,i});            
-            SimilarPlanes{i}.Actuations.Slw        = double(excelActuations{23,i});
+            SimilarPlanes{i}.Actuations.Sto       = double(excelActuations{21,i});
+            SimilarPlanes{i}.Actuations.Sl        = double(excelActuations{22,i});
+            SimilarPlanes{i}.Actuations.Stow       = double(excelActuations{23,i});            
+            SimilarPlanes{i}.Actuations.Slw        = double(excelActuations{24,i});
+            SimilarPlanes{i}.Actuations.Wf_Wto     = double(excelActuations{25,i});
+
 
         end
 

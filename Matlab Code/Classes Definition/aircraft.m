@@ -10,6 +10,8 @@ classdef aircraft < handle
         Length       double         % Maximum length [m]
         Wingspan     double         % Maximum wingspan [m]
         Wing         wing           % The main wing of the aircraft
+        Wing1        wing           % Front wing
+        Wing2        wing           % Rear wing
         Engine       engines        % The engines of the aircraft
         Weight       weights        % The weights of the aircraft
         Payload      payload        % The payload/passengers
@@ -26,7 +28,9 @@ classdef aircraft < handle
     methods
         % Constructor with listeners
         function obj = aircraft()
-            obj.Wing       = wing();
+            obj.Wing       = wing();   
+            obj.Wing1      = wing();          
+            obj.Wing2      = wing();
             obj.Weight     = weights(obj);
             obj.Engine     = engines(obj);
             obj.Payload    = payload();

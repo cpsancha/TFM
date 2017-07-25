@@ -10,13 +10,9 @@
 switch ME.MissionType
     case 5  %5.Business Jets
         
-    %% FUSELAGE SHAPE
-        AC.Fuselage.fusLength  = 30;
-        AC.Fuselage.fusWidth   = 3;
-        AC.Fuselage.fusHeight  = 3;
     %% REQUIREMENTS
         DP.Payload     =  800; %[kg] <-- 6 pax (80+50 each)
-        DP.Range       = 10e6; %[m]
+        DP.Range       = 10e3; %[km]
         DP.MaxSpeed    =  257; %[m/s]  (Mach=0.87)
         DP.TOFL        = 1200; %[m]    Take-Off Field Length, from similar planes: max-->1972m, min-->956m, mean-->1488m
         DP.LFL         =  800; %[m]    Landing Field Length, from similar planes: max-->1015m, min-->631m, mean-->733m
@@ -55,7 +51,7 @@ switch ME.MissionType
                                           %              10.000ft and at a max of 250kts (128.611 m/s) in accordance with FAA regulations
         
         %Fuel Reserves & Alternate Airport
-        DP.AlternateRange      = 370*1e3; %[m] Range to alternate airport (200 nautic miles --> 370km)
+        DP.AlternateRange      = 370; %[km] Range to alternate airport (200 nautic miles --> 370km)
         
         %Landing
         DP.StallSpeed_L    = NaN; %[m/s] -- Landing Stall Speed
@@ -81,6 +77,16 @@ switch ME.MissionType
         
         %Crew
         DP.CrewNumber     = 2;
+        
+        % Fuselage Shape
+        DP.fusLength  = 27;
+        DP.fusWidth   = 2.150; %[m]
+        DP.fusHeight  = 2.735; %[m]
+%         AC.Fuselage.fusLength  = 20;
+%         AC.Fuselage.fusWidth   = 2.150; %[m]
+%         AC.Fuselage.fusHeight  = 2.735; %[m]
+        
+        
         
         
         
