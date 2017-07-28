@@ -58,6 +58,7 @@ switch ME.MissionType
         
         %Wing - Airfoil
         DP.AspectRatio     =   9; %[-] - Aspect ratio, from similar planes: max-->9.7166, min-->8.0139, mean-->9.0017
+        DP.TaperRatio      = 0.3;
         DP.CLmax           = 1.4; %Porque si, hay que calcularlo bien... los valores estimados en crucero son muy bajos por ser la velocidad muy alta
         DP.CLmax_TO        = 2.0; %From similar planes: max-->2.3447, min-->1.5414, mean-->2.0622
         DP.CLmax_L         = 2.8; %From similar planes: max-->3.7689, min-->2.2523, mean-->3.0764
@@ -79,9 +80,10 @@ switch ME.MissionType
         DP.CrewNumber     = 2;
         
         % Fuselage Shape
-        DP.fusLength  = 27;
-        DP.fusWidth   = 2.150; %[m]
+        DP.fusWidth   = 2.50; %[m]
         DP.fusHeight  = 2.735; %[m]
+        DP.fusLength  = 12.15 + 3*(DP.fusWidth+DP.fusHeight)/2;
+
 %         AC.Fuselage.fusLength  = 20;
 %         AC.Fuselage.fusWidth   = 2.150; %[m]
 %         AC.Fuselage.fusHeight  = 2.735; %[m]

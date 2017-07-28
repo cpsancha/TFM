@@ -15,6 +15,7 @@ classdef wing < handle
         WingSpan        double  %[double] Span of the wing [m]
         RealSemiSpan    double  %[double] Distance from the fuselage (root chord) to the tip chord
         RootChord       double  %[double] Chord at the root [m]
+        RootWidth       double  %[double] t at the root [m]
         TipChord        double  %[double] Chord ath the tip [m]
         CMA             double  %[double] Mean Aerodynamic Chord [m]
         CMG             double  %[double] Mean Geometric Chord [m]

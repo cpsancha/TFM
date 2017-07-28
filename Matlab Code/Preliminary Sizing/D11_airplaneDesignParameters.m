@@ -614,7 +614,7 @@ WingLoading.Gust=fsolve(@(x)gustWingLoading(x,A, CST, AC, CF, ME),1000);
     AC.Wing.WingLoading   = x;
     AC.Weight.Pto_MTOW    = y;
     AC.Wing.AspectRatio   = A;
-    AC.Wing.Sw            = AC.Weight.MTOW/AC.Wing.WingLoading;
+    AC.Wing.Sw            = AC.Weight.MTOW*CST.GravitySI/AC.Wing.WingLoading;
     AC.Engine.TotalThrust = AC.Weight.Tto_MTOW*(AC.Weight.MTOW*CST.GravitySI);
     AC.Engine.TotalPower  = AC.Weight.Pto_MTOW*AC.Weight.MTOW*CST.GravitySI;
     

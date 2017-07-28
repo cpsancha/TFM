@@ -25,7 +25,7 @@ switch ME.MissionType
         ME.FiguresFolder = '5_Figures';
     case 11
         ME.FiguresFolder = '11_Figures';
-end
+end      
 
 
 
