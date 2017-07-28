@@ -170,7 +170,7 @@ switch type
             SimilarPlanes{i}.Wing.CMA          = double(excelWing{10,i});
             SimilarPlanes{i}.Wing.AspectRatio  = double(excelWing{15,i});
             SimilarPlanes{i}.Wing.TaperRatio   = double(excelWing{16,i});
-            SimilarPlanes{i}.Wing.Sweep        = double(excelWing{17,i});
+            SimilarPlanes{i}.Wing.Sweep_14     = double(excelWing{17,i});
             SimilarPlanes{i}.Wing.Dihedral     = double(excelWing{18,i});
             SimilarPlanes{i}.Wing.Airfoil      = string(excelWing{19,i});
             SimilarPlanes{i}.Wing.WingLoading  = double(excelWing{21,i});
@@ -287,7 +287,7 @@ switch type
             SimilarPlanes{i}.Wing.CMA          = double(excelWing{10,i});
             SimilarPlanes{i}.Wing.AspectRatio  = double(excelWing{15,i});
             SimilarPlanes{i}.Wing.TaperRatio   = double(excelWing{16,i});
-%             SimilarPlanes{i}.Wing.Sweep        = double(excelWing{17,i});
+%             SimilarPlanes{i}.Wing.Sweep_14     = double(excelWing{17,i});
 %             SimilarPlanes{i}.Wing.Dihedral     = double(excelWing{18,i});
 %             SimilarPlanes{i}.Wing.Airfoil      = string(excelWing{19,i});
 %             SimilarPlanes{i}.Wing.WingLoading  = double(excelWing{21,i});

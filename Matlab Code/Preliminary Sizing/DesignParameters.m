@@ -19,7 +19,7 @@ switch ME.MissionType
         
         
     %% PLOTTING OPTIONS
-        DP.ShowReportFigures      = true;  %Show all the available figures for reports [true] or only the most relevant ones [false]
+        DP.ShowReportFigures      = false;  %Show all the available figures for reports [true] or only the most relevant ones [false]
         DP.selectDesignPoint      = false; %Ask user to select design point [true] or use the saved value [false]
         DP.showRoskamRequirements = false; %Show the Take-Off and Landing requirements obtained with Roskam constants [true] or only the SP ones [false]
         
@@ -38,7 +38,7 @@ switch ME.MissionType
         DP.CruiseAltitude      =   12e3; %[m]
         DP.CruiseSpeed         =    250; %[m/s] (Mach=0.85)
         DP.CruiseEfficiency    =     14; %[-] mean(loadFields(SP,'Actuations.L_D'),'omitnan') --> 12.25
-        DP.CruiseTSFC          =  0.597; %[lbm/(lbf·h)] mean(loadFields(SP,'Engine.TSFC'),'omitnan') --> 0.661
+        DP.CruiseTSFC          =  0.597; %0.625 %[lbm/(lbf·h)] mean(loadFields(SP,'Engine.TSFC'),'omitnan') --> 0.661
         
         %Loiter
         DP.LoiterTime          =  30*60;  %[s]
@@ -48,7 +48,7 @@ switch ME.MissionType
         %Low Height
         DP.LowHeightEfficiency =     12;  %Lower than CruiseEfficiency because of lower altitude (Typically lower than 10.000ft)
         DP.LowHeightTSFC       =    0.30;  %[lbm/(lbf·h)] Not sure if higher or lower than CruiseTSFC as the fly will probably be carried out below
-                                          %              10.000ft and at a max of 250kts (128.611 m/s) in accordance with FAA regulations
+                                           %              10.000ft and at a max of 250kts (128.611 m/s) in accordance with FAA regulations
         
         %Fuel Reserves & Alternate Airport
         DP.AlternateRange      = 370; %[km] Range to alternate airport (200 nautic miles --> 370km)
@@ -58,7 +58,10 @@ switch ME.MissionType
         
         %Wing - Airfoil
         DP.AspectRatio     =   9; %[-] - Aspect ratio, from similar planes: max-->9.7166, min-->8.0139, mean-->9.0017
-        DP.TaperRatio      = 0.3;
+        DP.TaperRatio      = 0.3; %[-]
+        DP.Dihedral        = 0.0; %[º]
+        DP.Stagger         =   5; %[m]
+        DP.Sweep_14        =  25; %[º] Flecha en la linea 1/4 
         DP.CLmax           = 1.4; %Porque si, hay que calcularlo bien... los valores estimados en crucero son muy bajos por ser la velocidad muy alta
         DP.CLmax_TO        = 2.0; %From similar planes: max-->2.3447, min-->1.5414, mean-->2.0622
         DP.CLmax_L         = 2.8; %From similar planes: max-->3.7689, min-->2.2523, mean-->3.0764
@@ -73,7 +76,7 @@ switch ME.MissionType
         
         %Engines
         DP.EngineNumber    = 2;
-        DP.EngineModel     = 'Snecma Silvercrest 2D';
+        DP.EngineModel     = 'Snecma Silvercrest 2D';%'Rolls-Royce AE 3007A1E';
         
         
         %Crew
@@ -82,7 +85,7 @@ switch ME.MissionType
         % Fuselage Shape
         DP.fusWidth   = 2.50; %[m]
         DP.fusHeight  = 2.735; %[m]
-        DP.fusLength  = 12.15 + 3*(DP.fusWidth+DP.fusHeight)/2;
+        DP.fusLength  = 23;%12.15 + 3*(DP.fusWidth+DP.fusHeight)/2;
 
 %         AC.Fuselage.fusLength  = 20;
 %         AC.Fuselage.fusWidth   = 2.150; %[m]

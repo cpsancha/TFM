@@ -378,6 +378,7 @@ end
 
 
 %% DESIGN POINT
+if DP.ShowReportFigures
     figure(); hold on;
     LegendStr=cell(0);
     
@@ -507,8 +508,16 @@ end
         plot(x,y,'o');
     end
     saveFigure(ME.FiguresFolder,'DesignPoint')
-
     clear choiceFlag choice p LegendStr i
+else
+    x =  382.5; %[kg/m^2] WingLoad
+    for i=1:length(Parameters.EngineOptions)
+        usedEngine(i) = strcmp(Parameters.EngineOptions(i).Model,DP.EngineModel);  %#ok<SAGROW>
+    end
+    y =  DP.EngineNumber*Parameters.EngineOptions(find(usedEngine,1)).Thrust*1e3/(AC.Weight.MTOW*CST.GravitySI); %[-] Thrust to Weight ratio at take-off --> Snecma Silvercrest 2D
+    plot(x,y,'o');
+end
+
 
     %Store design point into AC structure
     AC.Wing.WingLoading   = x;

@@ -24,7 +24,9 @@ classdef wing < handle
         TaperRatio_i    double  %[double] Inborad Wing taper ratio (tipChord/rootChord) [-]           
         TaperRatio_o    double  %[double] Outboard Wing taper ratio (tipChord/rootChord) [-]
         Airfoil         string  %[double] Name of the used Airfoil [-]
-        Sweep           double  %[double] Sweep of the wing at the point 1/4 of CMA [º]
+        Sweep_14        double  %[double] Sweep of the wing at the point 1/4 of CMA [º]
+        Sweep_12        double  %[double] Sweep of the wing at the point 1/2 of CMA [º]
+        Sweep_LE        double  %[double] Sweep of the wing at the leading edge [º]
         Dihedral        double  %[double] Dihedral of the wing [º]
         WingLoading     double  %[double] MTOW/Sw [kg/m^2]
         CLmax           double  %[double] Maximum Cl of the wing at cruise

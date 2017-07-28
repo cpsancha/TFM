@@ -296,7 +296,7 @@ switch ME.MissionType
         Parameters.EngineOptions = engines();
         % [ ] 2*Rolls-Royce AE 3007A1E --> Embraer Legacy family
         Parameters.EngineOptions(1).Model   = 'Rolls-Royce AE 3007A1E';
-        Parameters.EngineOptions(1).Thrust =    40; %[kN] at sea level
+        Parameters.EngineOptions(1).Thrust =    41; %[kN] at sea level
         Parameters.EngineOptions(1).Weight = 751.6; %[kg] dry weight
         Parameters.EngineOptions(1).TSFC   = 0.625; %[lb/(lbf·h)] at cruise
         

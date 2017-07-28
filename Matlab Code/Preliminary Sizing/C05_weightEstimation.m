@@ -117,58 +117,60 @@ end
 
 
 %Fracción de combustible vs parámetro random
-figure()
-plot(parametro(indexPar),Wf_Wto(indexPar),'*','LineWidth',1,'Color',Parameters.Colors(1,:)); hold on; xl = xlim; yl = ylim;
-plot([0,max(parametro(indexPar))],polyval([Wf_Wto_fit.a, Wf_Wto_fit.b, Wf_Wto_fit.c],[0,max(parametro(indexPar))]),'--','LineWidth',1.25,'Color',Parameters.Colors(2,:))
-plot(parametro_ac_old, MFW_MTOW_ac_old,'+','LineWidth',1.25,'Color',Parameters.Colors(3,:))
-plot(parametro_ac_new, MFW_MTOW_ac_new,'+','LineWidth',1.25,'Color',Parameters.Colors(4,:))
-legend('Similar planes','Polynomial regression','Without weight reduction','With weight reduction','Location','southeast')
-legend('boxoff')
-xlabel('$$\frac{R}{a_{0}}\frac{TSFC_{0}}{\sqrt{\theta}}\left( \frac{1}{M\sqrt{A}}+0.068 P M \frac{l_f\left(b_f+h_f\right)}{2 MTOW}\right)$$','Interpreter','latex')
-ylabel('$$\frac{MFW}{MTOW}$$','Interpreter','latex')
-title('Estimation of fuel weight fraction for similar business jets','Interpreter','latex')
-xlim([xl(1)-0.25,xl(2)+0.1])
-ylim([yl(1)-0.05,yl(2)+0.025])
-%Show equation in the graph
-x = min(parametro(indexPar)) + 0.35*(max(parametro(indexPar))-min(parametro(indexPar)));
-y = polyval([Wf_Wto_fit.a, Wf_Wto_fit.b, Wf_Wto_fit.c],x);
-txt0 = '$$\ \ \leftarrow$$ $$MFW/MTOW=Ax^2+Bx$$';
-txt1 = strcat('$$\ \ \ \ \ \ A=',num2str(Wf_Wto_fit.a),'$$');
-txt2 = strcat('$$\ \ \ \ \ \ B=',num2str(Wf_Wto_fit.b),'$$');
-txt3 = strcat('$$\ \ \ \ \ \ R^{2}=',num2str(gof.rsquare),'$$');
-text(x,y,txt0,'Interpreter','latex','FontSize',11)
-text(x,y-0.0075,txt1,'Interpreter','latex','FontSize',11)
-text(x,y-0.0150,txt2,'Interpreter','latex','FontSize',11)
-text(x,y-0.0225,txt3,'Interpreter','latex','FontSize',11)
-clear xl yl x y 
-saveFigure(ME.FiguresFolder,'Torenbeek_FuelFraction')
-
+if DP.ShowReportFigures
+    figure()
+    plot(parametro(indexPar),Wf_Wto(indexPar),'*','LineWidth',1,'Color',Parameters.Colors(1,:)); hold on; xl = xlim; yl = ylim;
+    plot([0,max(parametro(indexPar))],polyval([Wf_Wto_fit.a, Wf_Wto_fit.b, Wf_Wto_fit.c],[0,max(parametro(indexPar))]),'--','LineWidth',1.25,'Color',Parameters.Colors(2,:))
+    plot(parametro_ac_old, MFW_MTOW_ac_old,'+','LineWidth',1.25,'Color',Parameters.Colors(3,:))
+    plot(parametro_ac_new, MFW_MTOW_ac_new,'+','LineWidth',1.25,'Color',Parameters.Colors(4,:))
+    legend('Similar planes','Polynomial regression','Without weight reduction','With weight reduction','Location','southeast')
+    legend('boxoff')
+    xlabel('$$\frac{R}{a_{0}}\frac{TSFC_{0}}{\sqrt{\theta}}\left( \frac{1}{M\sqrt{A}}+0.068 P M \frac{l_f\left(b_f+h_f\right)}{2 MTOW}\right)$$','Interpreter','latex')
+    ylabel('$$\frac{MFW}{MTOW}$$','Interpreter','latex')
+    title('Estimation of fuel weight fraction for similar business jets','Interpreter','latex')
+    xlim([xl(1)-0.25,xl(2)+0.1])
+    ylim([yl(1)-0.05,yl(2)+0.025])
+    %Show equation in the graph
+    x = min(parametro(indexPar)) + 0.35*(max(parametro(indexPar))-min(parametro(indexPar)));
+    y = polyval([Wf_Wto_fit.a, Wf_Wto_fit.b, Wf_Wto_fit.c],x);
+    txt0 = '$$\ \ \leftarrow$$ $$MFW/MTOW=Ax^2+Bx$$';
+    txt1 = strcat('$$\ \ \ \ \ \ A=',num2str(Wf_Wto_fit.a),'$$');
+    txt2 = strcat('$$\ \ \ \ \ \ B=',num2str(Wf_Wto_fit.b),'$$');
+    txt3 = strcat('$$\ \ \ \ \ \ R^{2}=',num2str(gof.rsquare),'$$');
+    text(x,y,txt0,'Interpreter','latex','FontSize',11)
+    text(x,y-0.0075,txt1,'Interpreter','latex','FontSize',11)
+    text(x,y-0.0150,txt2,'Interpreter','latex','FontSize',11)
+    text(x,y-0.0225,txt3,'Interpreter','latex','FontSize',11)
+    clear xl yl x y 
+    saveFigure(ME.FiguresFolder,'Torenbeek_FuelFraction')
+end
 
 %Incremento de empty weight vs parametro del fuselaje
-figure()
-loglog(fus_parameter(indexFus),delta_EW(indexFus),'*','LineWidth',1.00,'Color',Parameters.Colors(1,:)); hold on;
-plot([min(fus_parameter(indexFus))-2.5,max(fus_parameter(indexFus))],10.^polyval(delta_EW_fit,log10([min(fus_parameter(indexFus))-2.5,max(fus_parameter(indexFus))])),'--','LineWidth',1.25,'Color',Parameters.Colors(2,:))
-plot(fus_parameter_ac,10^polyval(delta_EW_fit,log10(fus_parameter_ac)),'+','LineWidth',1.25,'Color',Parameters.Colors(4,:))
-legend('Similar planes','Logarithmic regression','Aircraft','Location','southeast')
-legend('boxoff')
-xlabel('$$\frac{l_f\left(b_f+h_f\right)}{2}\ [m^2]$$','Interpreter','latex')
-ylabel('$$\Delta EW\ [kg]$$','Interpreter','latex')
-title('Estimation of the fuselage dependent empty weight','interpreter','latex')
-xlim([min(fus_parameter(indexFus))-5,max(fus_parameter(indexFus))+5]);
-ylim([min(delta_EW(indexFus))-0.5e3,max(delta_EW(indexFus))+1e3]);
-%Show equation in the graph
-x = min(fus_parameter(indexFus)) + 0.15*(max(fus_parameter(indexFus))-min(fus_parameter(indexFus)));
-y = 10^polyval(delta_EW_fit,log10(x));
-txt0 = '$$\ \ \leftarrow$$ $$\log_{10}(\Delta EW)=A+B\log_{10}(\frac{l_f\left(b_f+h_f\right)}{2})$$';
-txt1 = strcat('$$\ \ \ \ \ \ A=',num2str(delta_EW_fit(2)),'$$');
-txt2 = strcat('$$\ \ \ \ \ \ B=',num2str(delta_EW_fit(1)),'$$');
-txt3 = strcat('$$\ \ \ \ \ \ R^{2}=',num2str(delta_EW_R2),'$$');
-text(x,y,txt0,'Interpreter','latex','FontSize',11)
-text(x,y-0.35e3,txt1,'Interpreter','latex','FontSize',11)
-text(x,y-0.65e3,txt2,'Interpreter','latex','FontSize',11)
-text(x,y-0.90e3,txt3,'Interpreter','latex','FontSize',11)
-saveFigure(ME.FiguresFolder,'Torenbeek_fuselage_EW')
-
+if DP.ShowReportFigures
+    figure()
+    loglog(fus_parameter(indexFus),delta_EW(indexFus),'*','LineWidth',1.00,'Color',Parameters.Colors(1,:)); hold on;
+    plot([min(fus_parameter(indexFus))-2.5,max(fus_parameter(indexFus))],10.^polyval(delta_EW_fit,log10([min(fus_parameter(indexFus))-2.5,max(fus_parameter(indexFus))])),'--','LineWidth',1.25,'Color',Parameters.Colors(2,:))
+    plot(fus_parameter_ac,10^polyval(delta_EW_fit,log10(fus_parameter_ac)),'+','LineWidth',1.25,'Color',Parameters.Colors(4,:))
+    legend('Similar planes','Logarithmic regression','Aircraft','Location','southeast')
+    legend('boxoff')
+    xlabel('$$\frac{l_f\left(b_f+h_f\right)}{2}\ [m^2]$$','Interpreter','latex')
+    ylabel('$$\Delta EW\ [kg]$$','Interpreter','latex')
+    title('Estimation of the fuselage dependent empty weight','interpreter','latex')
+    xlim([min(fus_parameter(indexFus))-5,max(fus_parameter(indexFus))+5]);
+    ylim([min(delta_EW(indexFus))-0.5e3,max(delta_EW(indexFus))+1e3]);
+    %Show equation in the graph
+    x = min(fus_parameter(indexFus)) + 0.15*(max(fus_parameter(indexFus))-min(fus_parameter(indexFus)));
+    y = 10^polyval(delta_EW_fit,log10(x));
+    txt0 = '$$\ \ \leftarrow$$ $$\log_{10}(\Delta EW)=A+B\log_{10}(\frac{l_f\left(b_f+h_f\right)}{2})$$';
+    txt1 = strcat('$$\ \ \ \ \ \ A=',num2str(delta_EW_fit(2)),'$$');
+    txt2 = strcat('$$\ \ \ \ \ \ B=',num2str(delta_EW_fit(1)),'$$');
+    txt3 = strcat('$$\ \ \ \ \ \ R^{2}=',num2str(delta_EW_R2),'$$');
+    text(x,y,txt0,'Interpreter','latex','FontSize',11)
+    text(x,y-0.35e3,txt1,'Interpreter','latex','FontSize',11)
+    text(x,y-0.65e3,txt2,'Interpreter','latex','FontSize',11)
+    text(x,y-0.90e3,txt3,'Interpreter','latex','FontSize',11)
+    saveFigure(ME.FiguresFolder,'Torenbeek_fuselage_EW')
+end
 
 %         txt3 = strcat('$$\ \ \ \ \ \ R^{2}=',num2str(rsquared),'$$');
 %         text(x,y,txt,'Interpreter','latex','FontSize',11)
@@ -179,8 +181,9 @@ clear gof indexFus indexPar MFW_MTOW_ac_old MFW_MTOW_ac_new parametro_ac_old par
 
 % Define more AC weights;
 AC.Weight.MTOW = mean([MTOW.newRoskam,MTOW.newTorenbeek]);
-AC.Weight.EW   = mean([EW.newRoskam,EW.newTorenbeek]);
-AC.Weight.MFW  = mean([MFW.newRoskam,MFW.newTorenbeek]);
+%AC.Weight.EW   = mean([EW.newRoskam,EW.newTorenbeek]);
+%AC.Weight.MFW  = mean([MFW.newRoskam,MFW.newTorenbeek]);
+[~, AC.Weight.MTOW, AC.Weight.EW, AC.Weight.MFW] = getWeights( AC.Weight.MTOW, ME, CST, CF, Parameters, 'EW_new');
 AC.Weight.MRW  = DP.MRW_MTOW * AC.Weight.MTOW;
 AC.Weight.MLW  = DP.MLW_MTOW * AC.Weight.MTOW;
 AC.Weight.TUL  = AC.Weight.MFW + ME.Payload;

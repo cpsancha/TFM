@@ -225,3 +225,4 @@ end
 run B_loadParameters.m
 run C05_weightEstimation.m
 run D05_airplaneDesignParameters.m
+run F05_wingConfiguration
