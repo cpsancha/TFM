@@ -27,9 +27,13 @@ A_vec = 9.1;
 CL_max_TO_vec = [1.6, 2.2, 2.8];
 CL_max_L_vec = 3.8;
     case 3
+% A_vec = 9.1;
+% CL_max_TO_vec = 2.8;
+% CL_max_L_vec = [2.5, 3.5, 3.8];
+
 A_vec = 9.1;
-CL_max_TO_vec = 2.8;
-CL_max_L_vec = [2.5, 3.5, 3.8];
+CL_max_TO_vec = 2.405;
+CL_max_L_vec = [2.2, 2.7, 2.8];
 end
 
 %A=9.1 Clto = 2.8 clL=3.8
@@ -601,6 +605,7 @@ WingLoading.Gust=fsolve(@(x)gustWingLoading(x,A, CST, AC, CF, ME),1000);
     else
         x = 3350; %[N/m^2] WingLoad
         y =  19.55; %[W/N] Power to Weight ratio at take-off
+%         y =  21;
         plot(x,y,'ko');
     end
     

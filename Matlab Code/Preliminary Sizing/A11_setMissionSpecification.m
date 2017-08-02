@@ -130,10 +130,11 @@ switch ME.MissionType
         ME.Cruise.Range = 3500*1e3;     % in m
         ME.Cruise.Altitude = 3048;     % in m
         ME.Cruise.Speed =138.8889;     % m/s
-        [~, a, ~, ~] = atmosisa(ME.Cruise.Altitude);
+        [~, a, ~, rho] = atmosisa(ME.Cruise.Altitude);
         ME.Cruise.Mach = ME.Cruise.Speed/a;
         ME.Cruise.beta = sqrt(1-ME.Cruise.Mach^2);
-        clear a 
+        ME.Cruise.Density = rho;
+        clear a rho
 end
 
 
@@ -231,4 +232,4 @@ AC = aircraft();
 run B_loadParameters.m
 run C11_weightEstimation.m
 run D11_airplaneDesignParameters.m
-% run E11_configurationDesign.m
+run E11_configurationDesign.m

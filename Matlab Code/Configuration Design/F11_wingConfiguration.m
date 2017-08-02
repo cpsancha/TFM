@@ -23,6 +23,7 @@ AC.Wing1.AspectRatio = AC.Wing.AspectRatio;
 
 
 %% Wing extra parameters
+
 DP.Stagger = 5;
 AC.Wing1.LongPos = 4;
 AC.Wing2.LongPos = AC.Wing1.LongPos+AC.Wing1.RootChord+DP.Stagger;
@@ -30,17 +31,19 @@ AC.Wing2.LongPos = AC.Wing1.LongPos+AC.Wing1.RootChord+DP.Stagger;
 
 % La combinación de estos parametros gobernará el punto de entrada en
 % pérdidad:
-phi = 0.3; % location of prismoidal section in fraction of semispan 
-AC.Wing1.TaperRatio = 0.38; %Menor que 0.4, argumentando que el taper ratio "efectivo" es diferente respecto a un ala de simple estrechamiento
+AC.Wing1.Torsion = 20*2*pi/180;
+AC.Wing1.TaperRatio = 0.6; %Menor que 0.4, argumentando que el taper ratio "efectivo" es diferente respecto a un ala de simple estrechamiento
 AC.Wing1.Dihedral = 0;
 
 %% 3: Obtain derived values from geometry
 AC.Wing1.WingSpan   = sqrt(AC.Wing1.AspectRatio*AC.Wing1.Sw);
+phi = AC.Engine.Position(2)/(AC.Wing1.WingSpan/2); % location of prismoidal section in fraction of semispan 
 AC.Wing1.CMG        = AC.Wing1.WingSpan / AC.Wing1.AspectRatio; %equals to AC.Wing1.Sw/AC.Wing1.WingSpan 
 AC.Wing1.CMA        = AC.Wing1.CMG*(1 + (1+3*phi)/(3*(1-phi))*((1-AC.Wing1.TaperRatio)/((1+phi)/(1-phi)+AC.Wing1.TaperRatio))^2);
 
+
 %Root and tip chord
-AC.Wing1.RootChord  = (AC.Wing1.Sw/(2*AC.Wing1.WingSpan))/(phi+(1-phi)*(1+AC.Wing1.TaperRatio)/2);
+AC.Wing1.RootChord  = (AC.Wing1.Sw/(AC.Wing1.WingSpan))/(phi+(1-phi)*(1+AC.Wing1.TaperRatio)/2);
 AC.Wing1.TipChord   = AC.Wing1.RootChord * AC.Wing1.TaperRatio;
 
 % Chord, leading edge and trailing edge vector coordinates
@@ -56,6 +59,134 @@ for i=1:length(y)
         x_trailingEdge(i) = AC.Wing1.RootChord - x_leadingEdge(i);
     end
 end
+AC.Wing1.TipSweep =  (AC.Wing1.RootChord-c(end))/2;
+
+
+%%
+
+% Sweep at each chord location 
+AC.Wing1.Sweep_14 =(180/2/pi)*atan((x_leadingEdge(end)+0.25*c(end)-0.25*AC.Wing1.RootChord)/(0.5*AC.Wing1.WingSpan*(1-phi)));
+AC.Wing1.Sweep_12 = 0;
+AC.Wing1.Sweep_LE = (180/2/pi)*atan((AC.Wing1.RootChord - c(end))/2/(0.5*AC.Wing1.WingSpan*(1-phi)));
+
+% Preassure center:
+ x_ac = 0.25 * AC.Wing1.RootChord;
+ 
+ 
+ % Espesor en la raíz
+ % Quizás debería escoger primero t/c ?
+ % De esta forma y teniendo la expresión de la cuerda tendría el espesor
+ % máximo en cada sección. Creo que el t/c viene fijado por el número de
+ % perfil que elija. Habría que establecer congruencia entre este criterio
+ % y el overhang ratio. Por ej:
+ % 1: Escojo perfil
+ % 2: Compruebo el espesor en la raíz tr= c_root*(t/c)
+ % 3: Calculo que el overhang ratio está entre los límites [18,22]
+ AC.Wing1.RootWidth = AC.Wing1.WingSpan/2/22; %overhang ratio of 22
+ 
+ %% Airfoil characteristics
+ % Get Reynolds number at each chord location: (para qué?)
+ [~,~,~,~,nu,~] = atmos(ME.Cruise.Altitude);
+ Reynolds = ME.Cruise.Speed .* c / nu;
+
+ 
+cl_alpha =1.35*(180/2/pi)*(0.991-0.15)/(8-0);  %1/rad,  NACA 63A210 pag 557 theory of wing sections
+cl_max = 1.41;
+c_mac = -0.25;
+ 
+%% Wing lift slope
+l = 0.5*AC.Wing1.WingSpan*(1-phi)/cos(AC.Wing1.Sweep_LE*2*pi/180);
+E = (4*0.5*AC.Wing1.WingSpan*phi+4*l+2*AC.Wing1.TipChord)/2/AC.Wing1.WingSpan; %planform semiperimeter / wingspan
+
+CL_alpha = (0.995 * cl_alpha / (E + cl_alpha/(pi*ME.Cruise.beta*AC.Wing1.AspectRatio))) / ME.Cruise.beta; clear l 
+
+%% Lift distribution
+eta = y./(AC.Wing1.WingSpan/2);
+
+%x value in Fig E-5:
+x = 2*pi*AC.Wing1.AspectRatio/(cl_alpha*cos(AC.Wing1.Sweep_14*2*pi/180)); %<--Te sobra un 2 al pasar a radianes, no? por qué no usas cosd() y así no te equivocas nunca?
+
+%Load digitized points, make a 3rd order polynomic regression (better
+%extrapolation than higher order(situational but who cares)) and evaluate in the point of interest:
+run ('C1C2C3C4f0f30.m')
+
+% xt = linspace(0,20,100)
+C1 = polyval( polyfit(C1x,C1y,3) , x);
+C2 = polyval( polyfit(C2x,C2y,3) , x);
+C3 = polyval( polyfit(C3x,C3y,3) , x);
+C4 = polyval( polyfit(C4x,C4y,3) , x);
+
+% %Plot for checking regression:
+% figure()
+% hold on
+% plot(xt, C4)
+% plot(C4x,C4y)
+
+f0 = polyval( polyfit(f0x,f0y,5) , eta); %high order, no need for extrapolation but for precission
+f30 = polyval( polyfit(f30x,f30y,5) , eta);
+f = f0+(f30-f0)./30.*AC.Wing1.Sweep_14;  %perform interpolation for Sweep 14
+% figure()
+% hold on
+% plot(eta, f0)
+% plot(f0x,f0y)
+% plot(eta, f30)
+% plot(f30x,f30y)
+% plot(eta,f)
+
+%Aditional lift distribution calculation La
+La = C1.*c./AC.Wing1.CMG+(C2+C3).*4./pi.*sqrt(1-eta.^2)+C3.*f; %<--Está mal, no? sobra el último término, creo que has mezclado las fórmulas E13 y E14
+
+%Basic lift distribution Lb. Si no tienes torsion no hace falta calcularla
+%porque luego se multiplica por la torsion en la punta pa k kieres saber
+%eso jaja salu2
+epsilon_epsilont = eta; %Torsión lineal desde 0 hasta la torsion en punta epsilon=epsilont*eta;
+alpha_0_1 = -trapz(eta,epsilon_epsilont.*La); %Eq E-16
+lambda_beta = atan((tan(AC.Wing1.Sweep_12)/ME.Cruise.beta)); %Valor nulo, flecha 1/2 nula
+Lb = La.*C4.*cos(lambda_beta).*(epsilon_epsilont+alpha_0_1).*ME.Cruise.beta*E;
+
+% figure()
+% hold on
+% plot(eta, La)
+% plot(eta,Lb)
+
+%cl distribution
+% CL = 2*AC.Weight.MTOW*CST.GravitySI/(ME.Cruise.Density*ME.Cruise.Speed^2*AC.Wing.Sw); %Coeficiente de sustentacion orientativo en crucero
+CL = 1;
+cl = (La.*CL+AC.Wing1.Torsion.*cl_alpha.*Lb./E)./c.*AC.Wing1.CMG;
+cla = CL.*AC.Wing1.CMG.*La./c;
+clb = AC.Wing1.Torsion .* cl_alpha .* AC.Wing1.CMG .* Lb ./ (E.*c);
+
+%% Maximum lift
+figure()
+hold on
+plot(eta, cl_max*ones(length(eta)),'r' )
+plot(eta, clb,'k')
+plot(eta, cla, 'b')
+plot(eta, (cl_max*ones(length(eta))-clb)/cla , 'g')
+
+[CLmax,index] = min((cl_max*ones(length(eta))-clb)/cla);
+
+%% Pitching moment
+
+%Eq E-25
+for i=1:length(y)
+    if y(i)<phi*AC.Wing1.WingSpan/2
+        integrando(i) = clb(i)*c(i)*y(i)*tan(0); %En el primer tramo la flecha es nula
+
+    else
+        integrando(i) = clb(i)*c(i)*y(i)*tan(AC.Wing1.Sweep_14*2*pi/180);
+    end
+end
+
+figure()
+plot(y,integrando)
+
+deltaEpsilonCmac = (-2/(AC.Wing1.Sw*AC.Wing1.CMG))*trapz(y,integrando);
+Cmac_w = c_mac + deltaEpsilonCmac ;
+
+%% Wing-fuselage interference
+AC.Wing1.Snet = AC.Wing1.Sw - AC.Wing1.RootChord * AC.Fuselage.fusWidth;
+
 
 %% Plotting
 %Longitudinal Position of the leading edge at root
@@ -87,55 +218,13 @@ figure()
         plot(AC.Wing1.LongPos+x_trailingEdge,y,'b')
         plot(AC.Wing1.LongPos+x_trailingEdge,-y,'b')
         
-        plot(AC.Wing2.LongPos+x_leadingEdge,y,'r')
-        plot(AC.Wing2.LongPos+x_trailingEdge,y,'r')
-        plot(AC.Wing2.LongPos+x_leadingEdge,-y,'r')       
-        plot(AC.Wing2.LongPos+x_trailingEdge,-y,'r')
-
-
-%%
-
-% Sweep at each chord location 
-AC.Wing1.Sweep_14 =(180/2/pi)*atan((x_leadingEdge(end)+0.25*c(end)-0.25*AC.Wing1.RootChord)/(0.5*AC.Wing1.WingSpan*(1-phi)));
-AC.Wing1.Sweep_12 = 0;
-AC.Wing1.Sweep_LE = (180/2/pi)*atan((AC.Wing1.RootChord - c(end))/2/(0.5*AC.Wing1.WingSpan*(1-phi)));
-
-% Preassure center:
- x_ac = 0.25 * AC.Wing1.RootChord;
- 
- 
- % Espesor en la raíz
- % Quizás debería escoger primero t/c ?
- % De esta forma y teniendo la expresión de la cuerda tendría el espesor
- % máximo en cada sección. Creo que el t/c viene fijado por el número de
- % perfil que elija. Habría que establecer congruencia entre este criterio
- % y el overhang ratio. Por ej:
- % 1: Escojo perfil
- % 2: Compruebo el espesor en la raíz tr= c_root*(t/c)
- % 3: Calculo que el overhang ratio está entre los límites [18,22]
- AC.Wing1.RootWidth = AC.Wing1.WingSpan/2/22; %overhang ratio of 22
- 
- %% Airfoil characteristics
- % Get Reynolds number at each chord location:
- [~,~,~,~,nu,~] = atmos(ME.Cruise.Altitude);
- Reynolds = ME.Cruise.Speed .* c / nu;
-
- 
-cl_alpha =(180/2/pi)*(0.991-0.15)/(8-0);  %1/rad,  NACA 63A210 pag 557 theory of wing sections
- 
-%% Wing lift slope
-l = 0.5*AC.Wing1.WingSpan*(1-phi)/cos(AC.Wing1.Sweep_LE*2*pi/180);
-E = (4*0.5*AC.Wing1.WingSpan*phi+4*l+2*AC.Wing1.TipChord)/2/AC.Wing1.WingSpan; %planform semiperimeter / wingspan
-
-CL_alpha = (0.995 * cl_alpha / (E + cl_alpha/(pi*ME.Cruise.beta*AC.Wing1.AspectRatio))) / ME.Cruise.beta; clear E l 
-
-%% Lift distribution
-eta = y./(AC.Wing1.WingSpan/2);
-x = 2*pi*AC.Wing1.AspectRatio/(cl_alpha*cos(AC.Wing1.Sweep_14*2*pi/180))
-
-
-
-
-
+        %root chord
+            plot([AC.Wing1.LongPos,AC.Wing1.LongPos+AC.Wing1.RootChord],[ 0, 0],'b')
+            plot([AC.Wing1.LongPos,AC.Wing1.LongPos+AC.Wing1.RootChord],[-0,-0],'b')
+        %tip chord
+            plot([AC.Wing1.LongPos+AC.Wing1.TipSweep,AC.Wing1.LongPos+AC.Wing1.TipSweep+AC.Wing1.TipChord],[ AC.Wing1.WingSpan/2, AC.Wing1.WingSpan/2],'b')
+            plot([AC.Wing1.LongPos+AC.Wing1.TipSweep,AC.Wing1.LongPos+AC.Wing1.TipSweep+AC.Wing1.TipChord],[-AC.Wing1.WingSpan/2,-AC.Wing1.WingSpan/2],'b')
+  
+        
 
 

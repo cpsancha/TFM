@@ -348,7 +348,7 @@ clear WL_WTO_R WL_WTO_SP Vapp_R Vapp_SP VStall_L WL_Sw h
 
     Parameters.Polar.MaxSpeedCruise = [Parameters.Polar.LowSpeedCruise(1),0,Parameters.Polar.LowSpeedCruise(3)+deltaCD0];
     
-    W_WTO = Parameters.fuelFraction(1).value*Parameters.fuelFraction(2).value*Parameters.fuelFraction(3).value*Parameters.fuelFraction(4).value;
+    W_WTO = prod([Parameters.fuelFraction(1:4).value]);
     sigma = rho / rho0;
     T_T0 = (sigma.^0.7).*(1-exp((DP.CruiseAltitude-17000)./2000)); %<-- Modelo de variación del empuje con la altura, Flight Dynamics - Robert F. Stengel
     ThrustWeight_TO.MaxSpeedCruise = (1./T_T0).*((0.5.*rho.*DP.MaxSpeed^2.*Parameters.Polar.MaxSpeedCruise(1)./(W_S_TO.*CST.GravitySI))+((W_WTO.^2).*...
@@ -515,7 +515,6 @@ else
         usedEngine(i) = strcmp(Parameters.EngineOptions(i).Model,DP.EngineModel);  %#ok<SAGROW>
     end
     y =  DP.EngineNumber*Parameters.EngineOptions(find(usedEngine,1)).Thrust*1e3/(AC.Weight.MTOW*CST.GravitySI); %[-] Thrust to Weight ratio at take-off --> Snecma Silvercrest 2D
-    plot(x,y,'o');
 end
 
 
@@ -524,6 +523,7 @@ end
     AC.Weight.Tto_MTOW    = y;
     AC.Wing.AspectRatio   = DP.AspectRatio;
     AC.Wing.Sw            = AC.Weight.MTOW/AC.Wing.WingLoading;
+    AC.Wing.CLdesign      = 2*AC.Weight.MTOW*prod([Parameters.fuelFraction(1:4).value])*CST.GravitySI/(rho*AC.Wing.Sw*DP.CruiseSpeed^2);
     AC.Wing.CLmax         = DP.CLmax;
     AC.Wing.CLmax_TO      = DP.CLmax_TO;
     AC.Wing.CLmax_L       = DP.CLmax_L;

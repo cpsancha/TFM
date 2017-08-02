@@ -57,17 +57,18 @@ switch ME.MissionType
         DP.StallSpeed_L    = NaN; %[m/s] -- Landing Stall Speed
         
         %Wing - Airfoil
-        DP.AspectRatio     =   9; %[-] - Aspect ratio, from similar planes: max-->9.7166, min-->8.0139, mean-->9.0017
-        DP.TaperRatio      = 0.3; %[-]
-        DP.Dihedral        = 0.0; %[º]
-        DP.Stagger         =   5; %[m]
-        DP.Sweep_14        =  25; %[º] Flecha en la linea 1/4 
-        DP.CLmax           = 1.4; %Porque si, hay que calcularlo bien... los valores estimados en crucero son muy bajos por ser la velocidad muy alta
-        DP.CLmax_TO        = 2.0; %From similar planes: max-->2.3447, min-->1.5414, mean-->2.0622
-        DP.CLmax_L         = 2.8; %From similar planes: max-->3.7689, min-->2.2523, mean-->3.0764
+        DP.AspectRatio     =    9; %[-] - Aspect ratio, from similar planes: max-->9.7166, min-->8.0139, mean-->9.0017
+        DP.TaperRatio      =  0.3; %[-]
+        DP.Dihedral        =  0.0; %[º]
+        DP.Stagger         =    5; %[m]
+        DP.Wing1LongPos    =    4; %[m] Longitudinal position of the first wing
+        DP.Sweep_14        =   30; %[º] Flecha en la linea 1/4 
+        DP.CLmax           =  1.2; %Porque si, hay que calcularlo bien... los valores estimados en crucero son muy bajos por ser la velocidad muy alta
+        DP.CLmax_TO        =  2.0; %From similar planes: max-->2.3447, min-->1.5414, mean-->2.0622
+        DP.CLmax_L         =  2.8; %From similar planes: max-->3.7689, min-->2.2523, mean-->3.0764
         
         %Weight
-        DP.MLW_MTOW        = 0.85;  %From SP: min-->0.7900, max-->0.9267, mean-->0.8753
+        DP.MLW_MTOW        =  0.85; %From SP: min-->0.7900, max-->0.9267, mean-->0.8753
         DP.MRW_MTOW        = 1.005; %From SP: min-->0.9918, max-->1.0286, mean-->1.0051
         DP.EWnew_EWold     = 0.95;  %Weight reduction of the empty weight as being fully manufatured in composite materials
                                     %From: http://www.compositesworld.com/news/revolutionary-fuselage-concept-unveiled-by-mtorres --> Fuselage weight
@@ -87,10 +88,6 @@ switch ME.MissionType
         DP.fusHeight  = 2.735; %[m]
         DP.fusLength  = 23;%12.15 + 3*(DP.fusWidth+DP.fusHeight)/2;
 
-%         AC.Fuselage.fusLength  = 20;
-%         AC.Fuselage.fusWidth   = 2.150; %[m]
-%         AC.Fuselage.fusHeight  = 2.735; %[m]
-        
         
         
         

@@ -172,7 +172,7 @@ switch type
             SimilarPlanes{i}.Wing.TaperRatio   = double(excelWing{16,i});
             SimilarPlanes{i}.Wing.Sweep_14     = double(excelWing{17,i});
             SimilarPlanes{i}.Wing.Dihedral     = double(excelWing{18,i});
-            SimilarPlanes{i}.Wing.Airfoil      = string(excelWing{19,i});
+            SimilarPlanes{i}.Wing.Airfoil.Name = string(excelWing{19,i});
             SimilarPlanes{i}.Wing.WingLoading  = double(excelWing{21,i});
             SimilarPlanes{i}.Wing.LongPos      = double(excelWing{2,i});
             SimilarPlanes{i}.Wing.Root_LE      = double(excelWing{3,i});
@@ -289,7 +289,7 @@ switch type
             SimilarPlanes{i}.Wing.TaperRatio   = double(excelWing{16,i});
 %             SimilarPlanes{i}.Wing.Sweep_14     = double(excelWing{17,i});
 %             SimilarPlanes{i}.Wing.Dihedral     = double(excelWing{18,i});
-%             SimilarPlanes{i}.Wing.Airfoil      = string(excelWing{19,i});
+%             SimilarPlanes{i}.Wing.Airfoil.Name = string(excelWing{19,i});
 %             SimilarPlanes{i}.Wing.WingLoading  = double(excelWing{21,i});
 %             SimilarPlanes{i}.Wing.LongPos      = double(excelWing{2,i});
 %             SimilarPlanes{i}.Wing.Root_LE      = double(excelWing{3,i});
@@ -358,7 +358,7 @@ switch type
                 ~isempty(SimilarPlanes{i}.Actuations.Hcruise) && ...
                 ~isempty(SimilarPlanes{i}.Actuations.Vcruise))
                     [~,~,~,rho] = atmosisa(SimilarPlanes{i}.Actuations.Hcruise);
-                    SimilarPlanes{i}.Wing.CLmax = 2*SimilarPlanes{i}.Wing.WingLoading*CST.GravitySI/...
+                    SimilarPlanes{i}.Wing.CLdesign = 2*SimilarPlanes{i}.Wing.WingLoading*CST.GravitySI/...
                                                  (rho*SimilarPlanes{i}.Actuations.Vcruise^2);
             end
             

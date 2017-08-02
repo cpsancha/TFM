@@ -155,5 +155,26 @@ rd ailerons (Ref.
  between 5.5 and 8
 \end_layout
 
+\begin_layout Subsection
+Propeller diameter
+\end_layout
+
+\begin_layout Subsubsection
+Clearance values p 223 pdf
+\end_layout
+
+\begin_layout Standard
+The values stated above are absolute minima; in order to limit cabin noise
+ level it is advisable to provide a propeller tip / fuselage clearance of
+ at least 4 inches (10 cm) plus .65 inch (1.65 em) per 100 hp of one engine.
+ It should also be kept in mind that in the case of engine power growth
+ the optimum diameter of the propeller is likely to i~crease.
+ d.
+ In the case of seaplanes and flying boats there must be a clearance of
+ at least 18 inches (46 cm) between each propeller and the water, but it
+ is recommended that this clearance should be at least 40 per cent of the
+ propeller diameter.
+\end_layout
+
 \end_body
 \end_document

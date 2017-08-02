@@ -22,7 +22,7 @@
     % In nacelles
     % On the wing [x] / Below the wing[] / Above the wing[ ] / On the fuselage[ ]
 
-        offset=5 %Fila del primer motor
+        offset=5; %Fila del primer motor
    for i=offset:length(turbopropDataBase)
       enginesPower(i) = ME.Powerplant.Number*turbopropDataBase(i).Power*CF.hp2watts;
       enginesSFC(i)   = turbopropDataBase(i).SFC;
@@ -31,7 +31,9 @@
         
         
 index = find(enginesPower<1.1*AC.Engine.TotalPower & enginesPower>0.9*AC.Engine.TotalPower); %Find matching engines in a range
-
+% index = find(enginesPower<1.1*AC.Engine.TotalPower);
+indexSFC =  find(enginesSFC<0.5);
+ 
 [~,indexmin] = min(enginesSFC(index)); % In that range, select the one whose SFC is minimum
 
 AC.Engine.Model       = enginesModel{index(indexmin)};
@@ -40,23 +42,31 @@ AC.Engine.TotalPower  = enginesPower(index(indexmin));
 AC.Engine.Power       = turbopropDataBase(index(indexmin)).Power*CF.hp2watts;
 AC.Engine.Weight      = turbopropDataBase(index(indexmin)).Weight*CF.lbm2kg;
 %         [min,indexmin]= min(abs(enginesPower-AC.Engine.TotalPower)); % Closest to power selected
-        
+%%        
  figure(); hold on;
  title('Engine selection')
  clear LegendStr
    LegendStr=cell(0);
    grid on
  
+%    Engines plot
  for i=1:length(index) 
  plot(Wto_S,ones(1,length(Wto_S)).*enginesPower(index(i))./(AC.Weight.MTOW.*CST.GravitySI),'--')
  LegendStr{i} = enginesModel{index(i)};
  end
-  
+ 
+%   for i=5:length(indexSFC) 
+%  plot(Wto_S,ones(1,length(Wto_S)).*enginesPower(indexSFC(i))./(AC.Weight.MTOW.*CST.GravitySI),'--')
+%  LegendStr{i} = enginesModel{indexSFC(i)};
+%   end
+ 
+
+ %Design point plot
      plot(AC.Wing.WingLoading,AC.Weight.Pto_MTOW,'o')
-     
+ %Restrictions   
         plot(Wto_S,P_W.cr,'Color',Parameters.Colors(2,:));         
         plot(Wto_S,P_W.take_off,'Color',Parameters.Colors(3,:));
-        plot(Wto_S,P_W.take_off1,'Color',Parameters.Colors(4,:));
+%         plot(Wto_S,P_W.take_off1,'Color',Parameters.Colors(4,:));
         plot(WingLoading.LandingRoskam.*ones(1,100),linspace(1,100,100),'LineWidth',1.25,'Color',Parameters.Colors(5,:));
         plot(Wto_S,P_W.cl.CS25121tr,'LineWidth',1.25,'Color',Parameters.Colors(6,:));
         plot(Wto_S,P_W.cl.CS25111,'LineWidth',1.25,'Color',Parameters.Colors(7,:));
@@ -64,6 +74,7 @@ AC.Engine.Weight      = turbopropDataBase(index(indexmin)).Weight*CF.lbm2kg;
         plot(Wto_S,P_W.cl.CS25121er,'LineWidth',1.25,'Color',Parameters.Colors(9,:));
         plot(Wto_S,P_W.cl.CS25119,'LineWidth',1.25,'Color',Parameters.Colors(10,:));    
         plot(Wto_S,P_W.cl.CS25121ba,'LineWidth',1.25,'Color',Parameters.Colors(11,:));
+        plot(WingLoading.Gust.*ones(1,100),linspace(0,100,100),'LineWidth',1.25,'Color',Parameters.Colors(12,:));
      %Formating
         xlim([250,max(Wto_S)])
         ylim([0,60])
@@ -84,6 +95,13 @@ AC.Engine.Weight      = turbopropDataBase(index(indexmin)).Weight*CF.lbm2kg;
         
         
 % Determination of proppeller diameter
+
+Pto_DP2 = (250-140)/(1000)*sqrt(AC.Engine.Power/CF.hp2watts*ME.Cruise.Speed*3.6);
+Dp = sqrt(AC.Engine.Power/CF.hp2watts /Pto_DP2 ); 
+%  [~, a, ~, rho] = atmosisa(ME.Cruise.Altitude);
+% D = a/pi/4*sqrt(0.8^2-ME.Cruise.Mach^2)
+
+AC.Engine.Position= [NaN,(AC.Engine.Power/CF.hp2watts/100*1.65e-2+0.1)+Dp/2+AC.Fuselage.fusWidth/2, NaN];
         
 %% WING CONFIGURATION --> Chapter 6 & 7
     % Cantilever wing (without braces)
