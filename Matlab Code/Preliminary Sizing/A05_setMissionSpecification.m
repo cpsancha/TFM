@@ -226,3 +226,18 @@ run B_loadParameters.m
 run C05_weightEstimation.m
 run D05_airplaneDesignParameters.m
 run F05_wingConfiguration
+
+
+% test_values =[-5,-2.5,0,2.5,5];
+% figure(10)
+% hold on
+% for i=1:length(test_values)
+%     DP.TipTwist = test_values(i);
+%     run B_loadParameters.m
+%     run C05_weightEstimation.m
+%     run D05_airplaneDesignParameters.m
+%     run F05_wingConfiguration
+%     figure(10); hold on
+%     plot(eta1,Cl1)
+% end
+% legend('-5º','-2.5º','0º','2.5º','5º')

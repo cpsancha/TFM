@@ -19,7 +19,8 @@ switch ME.MissionType
         
         
     %% PLOTTING OPTIONS
-        DP.ShowReportFigures      = false;  %Show all the available figures for reports [true] or only the most relevant ones [false]
+        DP.ShowReportFigures      = false; %Show all the available figures for reports [true] or only the most relevant ones [false]
+        DP.ShowAircraftLayout     = true;  %Show a layout of the aircraft and the wings
         DP.selectDesignPoint      = false; %Ask user to select design point [true] or use the saved value [false]
         DP.showRoskamRequirements = false; %Show the Take-Off and Landing requirements obtained with Roskam constants [true] or only the SP ones [false]
         
@@ -58,8 +59,9 @@ switch ME.MissionType
         
         %Wing - Airfoil
         DP.AspectRatio     =    9; %[-] - Aspect ratio, from similar planes: max-->9.7166, min-->8.0139, mean-->9.0017
-        DP.TaperRatio      =  0.3; %[-]
+        DP.TaperRatio      =  0.6; %[-]
         DP.Dihedral        =  0.0; %[º]
+        DP.TipTwist        = -5.0; %[º] - Positive twist: nose rotated upwards (Wash-in). Negative twist: nose rotated downwards (Wash-out)
         DP.Stagger         =    5; %[m]
         DP.Wing1LongPos    =    4; %[m] Longitudinal position of the first wing
         DP.Sweep_14        =   30; %[º] Flecha en la linea 1/4 

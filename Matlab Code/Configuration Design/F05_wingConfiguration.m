@@ -54,6 +54,10 @@
     AC.Wing1.TaperRatio = DP.TaperRatio;
     AC.Wing2.TaperRatio = DP.TaperRatio;
     
+%Twist at the tip
+    AC.Wing1.TipTwist = DP.TipTwist;
+    AC.Wing2.TipTwist = DP.TipTwist;
+    
 %Root Chord
     AC.Wing1.RootChord = (2/(1+AC.Wing1.TaperRatio))*sqrt(AC.Wing1.Sw/AC.Wing1.AspectRatio);
     AC.Wing2.RootChord = (2/(1+AC.Wing2.TaperRatio))*sqrt(AC.Wing2.Sw/AC.Wing2.AspectRatio);
@@ -87,18 +91,22 @@
     AC.Wing2.Dihedral = DP.Dihedral;
  
 %Longitudinal Position of the leading edge at root
-    AC.Wing1.LongPos = DP.Wing1LongPos;
-    AC.Wing2.LongPos = AC.Wing1.LongPos+AC.Wing1.RootChord+DP.Stagger;
+    AC.Wing1.Root_LE = DP.Wing1LongPos;
+    AC.Wing2.Root_LE = AC.Wing1.Root_LE+AC.Wing1.RootChord+DP.Stagger;
     
 %Y_CMA
     AC.Wing1.CMA_b = (AC.Wing1.WingSpan/6)*((1+2*AC.Wing1.TaperRatio)/(1+AC.Wing1.TaperRatio));
     AC.Wing2.CMA_b = (AC.Wing2.WingSpan/6)*((1+2*AC.Wing2.TaperRatio)/(1+AC.Wing2.TaperRatio));
 
 %X_CMA_LE
-    AC.Wing1.CMA_LE = (AC.Wing1.WingSpan/6)*((1+2*AC.Wing1.TaperRatio)/(1+AC.Wing1.TaperRatio))*tand(AC.Wing1.Sweep_LE);
-    AC.Wing2.CMA_LE = (AC.Wing2.WingSpan/6)*((1+2*AC.Wing2.TaperRatio)/(1+AC.Wing2.TaperRatio))*tand(AC.Wing2.Sweep_LE);
+    AC.Wing1.CMA_LE = AC.Wing1.Root_LE + (AC.Wing1.WingSpan/6)*((1+2*AC.Wing1.TaperRatio)/(1+AC.Wing1.TaperRatio))*tand(AC.Wing1.Sweep_LE);
+    AC.Wing2.CMA_LE = AC.Wing2.Root_LE + (AC.Wing2.WingSpan/6)*((1+2*AC.Wing2.TaperRatio)/(1+AC.Wing2.TaperRatio))*tand(AC.Wing2.Sweep_LE);
+    
+%X_CMA_1/4
+    AC.Wing1.CMA_14 = AC.Wing1.CMA_LE + AC.Wing1.CMA/4;
+    AC.Wing2.CMA_14 = AC.Wing2.CMA_LE + AC.Wing2.CMA/4;
 
-%X_Tip_LE
+%Distance from Root_LE to Tip_LE
     AC.Wing1.TipSweep = (AC.Wing1.WingSpan/2)*tand(AC.Wing1.Sweep_LE);
     AC.Wing2.TipSweep = (AC.Wing2.WingSpan/2)*tand(AC.Wing2.Sweep_LE);
 
@@ -141,13 +149,19 @@
     
 %% LIFTING PROPERTIES OF AIRFOIL SECTIONS
 %TBD... interpolación en Mach y Re
-load('.\Temporary Stuff\M05_Re04.mat')
-[fit,R2] = polyfitR2(deg2rad(alpha_Cn_M05_Re04(:,1)),alpha_Cn_M05_Re04(:,2),1); %#ok<ASGLU>
-AC.Wing1.Airfoil.Cl_alpha = fit(1); %<--Cl_alpha a Mach = Mach_infty * cos(Sweep_14)
-AC.Wing1.Airfoil.alpha_zeroLift = rad2deg(-fit(2)/fit(1));
-AC.Wing2.Airfoil.Cl_alpha = fit(1);
-AC.Wing2.Airfoil.alpha_zeroLift = rad2deg(-fit(2)/fit(1));
-clear fit R2 alpha_Cn_M05_Re04 Cd_Cn_M05_Re04 Cm_Cn_M05_Re04
+warning('Falta digitalizar las graficas del perfil y meter bien los datos')
+load('.\Temporary Stuff\Temp.mat')
+[fit,R2] = polyfitR2(deg2rad(alpha_Cn_M050_Re04(:,1)),alpha_Cn_M050_Re04(:,2),1); %#ok<ASGLU>
+%Wing1
+    AC.Wing1.Airfoil.Cl_alpha = fit(1); %<--Cl_alpha a Mach = Mach_infty * cos(Sweep_14) [1/rad]
+    AC.Wing1.Airfoil.alpha_zeroLift = rad2deg(-fit(2)/fit(1)); %[Degrees]
+    AC.Wing1.Airfoil.Cm_ac = mean(Cm_Cn_M05_Re04(:,1));
+%Wing2
+    AC.Wing2.Airfoil.Cl_alpha = fit(1);                        %[1/rad]
+    AC.Wing2.Airfoil.alpha_zeroLift = rad2deg(-fit(2)/fit(1)); %[Degrees]
+    AC.Wing2.Airfoil.Cm_ac = mean(Cm_Cn_M05_Re04(:,1));
+    
+clear fit R2 alpha_Cn_M050_Re04 Cd_Cn_M050_Re04 Cm_Cn_M050_Re04
 
 
 
@@ -175,7 +189,7 @@ clear fit R2 alpha_Cn_M05_Re04 Cd_Cn_M05_Re04 Cm_Cn_M05_Re04
     AC.Wing2.CL_alpha  = (2*pi*AC.Wing2.AspectRatio)/(2+sqrt((AC.Wing2.AspectRatio*Beta2/k2)^2*(1+(tand(AC.Wing2.Sweep_12)/Beta2)^2)+4));
     clear k1 k2 CL_alpha_Torenbeek CL_alpha_DATCOM CL_alpha_Polhamus
     
-%SPANWISE LIFT DISTRIBUTION
+%SPANWISE LIFT DISTRIBUTION <-- Diederich Semiempirical Method from NACA TechNote 2751
 %Create spanwise coordinates
     y1   = linspace(0,AC.Wing1.WingSpan/2,100);
     y2   = linspace(0,AC.Wing2.WingSpan/2,100);
@@ -185,37 +199,39 @@ clear fit R2 alpha_Cn_M05_Re04 Cd_Cn_M05_Re04 Cm_Cn_M05_Re04
 %Load graph from NACA Technical Note 2751
     load('.\Temporary Stuff\Lift_Distribution.mat')
     if EffectiveSweep1 < 30
-        f_low   = interp1(f_00deg(:,1),f_00deg(:,2),eta1);
-        f_hight = interp1(f_30deg(:,1),f_30deg(:,2),eta1);
+        f_low   = interp1(f_00deg(:,1),f_00deg(:,2),eta1,'linear','extrap');
+        f_hight = interp1(f_30deg(:,1),f_30deg(:,2),eta1,'linear','extrap');
         f1 = f_low+(f_hight-f_low)./30.*EffectiveSweep1;
     elseif EffectiveSweep1 < 45
-        f_low   = interp1(f_30deg(:,1),f_30deg(:,2),eta1);
-        f_hight = interp1(f_45deg(:,1),f_45deg(:,2),eta1);
+        f_low   = interp1(f_30deg(:,1),f_30deg(:,2),eta1,'linear','extrap');
+        f_hight = interp1(f_45deg(:,1),f_45deg(:,2),eta1,'linear','extrap');
         f1 = f_low+(f_hight-f_low)./15.*(EffectiveSweep1-30);
     elseif EffectiveSweep1 < 60
-        f_low   = interp1(f_45deg(:,1),f_45deg(:,2),eta1);
-        f_hight = interp1(f_60deg(:,1),f_60deg(:,2),eta1);
+        f_low   = interp1(f_45deg(:,1),f_45deg(:,2),eta1,'linear','extrap');
+        f_hight = interp1(f_60deg(:,1),f_60deg(:,2),eta1,'linear','extrap');
         f1 = f_low+(f_hight-f_low)./15.*(EffectiveSweep1-45);
     else
         warning('Incorrect value for Effective Sweep of wing 1.')
     end
 
     if EffectiveSweep2 < 30
-        f_low   = interp1(f_00deg(:,1),f_00deg(:,2),eta1);
-        f_hight = interp1(f_30deg(:,1),f_30deg(:,2),eta1);
+        f_low   = interp1(f_00deg(:,1),f_00deg(:,2),eta2,'linear','extrap');
+        f_hight = interp1(f_30deg(:,1),f_30deg(:,2),eta2,'linear','extrap');
         f2 = f_low+(f_hight-f_low)./30.*EffectiveSweep2;
     elseif EffectiveSweep2 < 45
-        f_low   = interp1(f_30deg(:,1),f_30deg(:,2),eta1);
-        f_hight = interp1(f_45deg(:,1),f_45deg(:,2),eta1);
+        f_low   = interp1(f_30deg(:,1),f_30deg(:,2),eta2,'linear','extrap');
+        f_hight = interp1(f_45deg(:,1),f_45deg(:,2),eta2,'linear','extrap');
         f2 = f_low+(f_hight-f_low)./15.*(EffectiveSweep2-30);
     elseif EffectiveSweep2 < 60
-        f_low   = interp1(f_45deg(:,1),f_45deg(:,2),eta1);
-        f_hight = interp1(f_60deg(:,1),f_60deg(:,2),eta1);
+        f_low   = interp1(f_45deg(:,1),f_45deg(:,2),eta2,'linear','extrap');
+        f_hight = interp1(f_60deg(:,1),f_60deg(:,2),eta2,'linear','extrap');
         f2 = f_low+(f_hight-f_low)./15.*(EffectiveSweep2-45);
     else
         warning('Incorrect value for Effective Sweep of wing 2.')
     end
-
+    f1(end) = 0;
+    f2(end) = 0;
+    
 %Plan-Form parameter for Diederich Method in Torenbeek Fig E-5:
     DiederichCoordinate1 = (2*pi*AC.Wing1.AspectRatio)/(AC.Wing1.Airfoil.Cl_alpha*cosd(AC.Wing1.Sweep_14)); %Plan-Form parameter (F)
     DiederichCoordinate2 = (2*pi*AC.Wing2.AspectRatio)/(AC.Wing2.Airfoil.Cl_alpha*cosd(AC.Wing2.Sweep_14)); %Plan-Form parameter (F)
@@ -236,40 +252,109 @@ clear fit R2 alpha_Cn_M05_Re04 Cd_Cn_M05_Re04 Cm_Cn_M05_Re04
     c1 = getChord(y1, AC.Wing1.WingSpan, AC.Wing1.TaperRatio, AC.Wing1.Sw);
     c2 = getChord(y2, AC.Wing2.WingSpan, AC.Wing2.TaperRatio, AC.Wing2.Sw);
     
+%Aditional lift distribution calculation (La)
+    La1 = C1_1.*c1./AC.Wing1.CMG + C2_1.*4./pi.*sqrt(1-eta1.^2) + C3_1.*f1;
+    La2 = C1_2.*c2./AC.Wing2.CMG + C2_2.*4./pi.*sqrt(1-eta2.^2) + C3_2.*f2;
 
+ %Jone's edge velocity correction E=semiperimeter/semispan
+    E1 = 1+((2*AC.Wing1.TaperRatio)/(AC.Wing1.AspectRatio*(1+AC.Wing1.TaperRatio)));
+    E2 = 1+((2*AC.Wing2.TaperRatio)/(AC.Wing2.AspectRatio*(1+AC.Wing2.TaperRatio)));
+
+%Linear Lofted (Geometrical) Twist    
+%     Twist1 = AC.Wing1.TipTwist .* (AC.Wing1.TaperRatio.*eta1./(1-(1-AC.Wing1.TaperRatio).*eta1));
+%     Twist2 = AC.Wing2.TipTwist .* (AC.Wing2.TaperRatio.*eta2./(1-(1-AC.Wing2.TaperRatio).*eta2));
+
+%Linear Twist
+    Twist1 = AC.Wing1.TipTwist .* eta1;
+    Twist2 = AC.Wing2.TipTwist .* eta2;
+    
+%Local aerodynamic twist at the station for which Clb=0 if TipTwist=1º    
+    twist_0lift_1 = -trapz(eta1,(Twist1./AC.Wing1.TipTwist).*La1); %Torenbeek Eq. E-16 [adimensional, must be multiplied by TipTwist]
+    twist_0lift_2 = -trapz(eta2,(Twist2./AC.Wing2.TipTwist).*La2); %Torenbeek Eq. E-16 [adimensional, must be multiplied by TipTwist]
+    
+%Basic lift distribution (Lb)    
+    Lb1 = La1.*C4_1.*cos(EffectiveSweep1).*((Twist1./AC.Wing1.TipTwist)+twist_0lift_1).*Beta1.*E1;
+    Lb2 = La2.*C4_2.*cos(EffectiveSweep2).*((Twist2./AC.Wing2.TipTwist)+twist_0lift_2).*Beta2.*E2;
+
+%Assumption of CL of the wing to calculate the real one
+    CL_wing1 = 1;
+    CL_wing2 = 1;
+
+%Coefficient of Aditional lift
+    Cla1 = CL_wing1.*AC.Wing1.CMG.*La1./c1;
+    Cla2 = CL_wing2.*AC.Wing2.CMG.*La2./c2;
+    
+%Coefficient of Basic Lift
+    Clb1 = Lb1.*deg2rad(AC.Wing1.TipTwist).*AC.Wing1.Airfoil.Cl_alpha.*AC.Wing1.CMG./(E1.*c1);
+    Clb2 = Lb2.*deg2rad(AC.Wing2.TipTwist).*AC.Wing2.Airfoil.Cl_alpha.*AC.Wing2.CMG./(E2.*c2);
+
+%Zero Lift Angle
+    AC.Wing1.alpha_zeroLift = AC.Wing1.Airfoil.alpha_zeroLift + twist_0lift_1*AC.Wing1.TipTwist; %[degrees]
+    AC.Wing2.alpha_zeroLift = AC.Wing2.Airfoil.alpha_zeroLift + twist_0lift_2*AC.Wing2.TipTwist; %[degrees]
+    
+%Maximum Wing Lift
+    AC.Wing1.CLmax = min((AC.Wing1.Airfoil.Cl_max*cosd(AC.Wing1.Sweep_14)-Clb1)./Cla1);
+    AC.Wing2.CLmax = min((AC.Wing2.Airfoil.Cl_max*cosd(AC.Wing2.Sweep_14)-Clb2)./Cla2);
+
+%Total Lift Distribution
+    Cl1  = AC.Wing1.CLmax.*Cla1 + Clb1;
+    Cl2  = AC.Wing2.CLmax.*Cla2 + Clb2;
+
+%Display Wing Lift Distribution    
+%if DP.ShowReportFigures
+    figure()
+    hold on
+        plot(eta1,AC.Wing1.CLmax.*Cla1);
+        plot(eta1,Clb1);
+        plot(eta1,Cl1);
+        [~,index] = max(Cl1);
+        plot(eta1(index),Cl1(index),'o')
+%         plot(eta2,AC.Wing2.CLmax.*Cla2,':');
+%         plot(eta2,Clb2,':');
+%         plot(eta2,Cl2,':');
+        legend('Aditional lift distribution','Basic lift distribution','Total lift distribution','First point of stall','Location','southwest')
+        legend('boxoff')
+        xlabel('$\frac{y}{b/2}$','interpreter','latex')
+        ylabel('$C_l$','interpreter','latex')
+        title(['Spanwise Lift Distribution for $C_{Lmax}=',num2str(AC.Wing1.CLmax),'$ and $\varepsilon_t=',num2str(AC.Wing1.TipTwist),'$'],'interpreter','latex')
+        saveFigure(ME.FiguresFolder,'SpanwiseLiftDistribution')
+%end
+    
+	
+    %FALTA CALCULAR CLw PORQUE ME FALTA ALPHA_r --> Eq E-18
+    warning('Falta meter la formula E-18 y calcular CL_w')
 
     
-%Aditional lift distribution calculation La
-% La1 = C1_1.*c./AC.Wing1.CMG+(C2+C3).*4./pi.*sqrt(1-eta.^2)+C3.*f; %<--Está mal, no? sobra el último término, creo que has mezclado las fórmulas E13 y E14
-% 
-% %Basic lift distribution Lb. Si no tienes torsion no hace falta calcularla
-% %porque luego se multiplica por la torsion en la punta pa k kieres saber
-% %eso jaja salu2
-% epsilon_epsilont = eta; %Torsión lineal desde 0 hasta la torsion en punta epsilon=epsilont*eta;
-% alpha_0_1 = -trapz(eta,epsilon_epsilont.*La1); %Eq E-16
-% lambda_beta = atan((tan(AC.Wing1.Sweep_12)/ME.Cruise.beta)); %Valor nulo, flecha 1/2 nula
-% Lb = La1.*C4.*cos(lambda_beta).*(epsilon_epsilont+alpha_0_1).*ME.Cruise.beta*E;
-% 
-% % figure()
-% % hold on
-% % plot(eta, La)
-% % plot(eta,Lb)
-% 
-% %cl distribution
-% % CL = 2*AC.Weight.MTOW*CST.GravitySI/(ME.Cruise.Density*ME.Cruise.Speed^2*AC.Wing.Sw); %Coeficiente de sustentacion orientativo en crucero
-% CL = 1;
-% cl = (La1.*CL+AC.Wing1.Torsion.*cl_alpha.*Lb./E)./c.*AC.Wing1.CMG;
-% cla = CL.*AC.Wing1.CMG.*La1./c;
-% clb = AC.Wing1.Torsion .* cl_alpha .* AC.Wing1.CMG .* Lb ./ (E.*c);
+%% PITCHING MOMENT OF THE WING
+%Contribution of the spanwise airfoil camber (Cm_ac_basic)
+    Cm_ac_basic1 = 2/(AC.Wing1.Sw*AC.Wing1.CMA)*trapz(y1,AC.Wing1.Airfoil.Cm_ac.*c1.^2);
+    Cm_ac_basic2 = 2/(AC.Wing2.Sw*AC.Wing2.CMA)*trapz(y2,AC.Wing2.Airfoil.Cm_ac.*c2.^2);
     
-    
+%Contribution of the basic lift distribution due to twist (deltaEpsilon*Cm_ac)    
+    deltaEpsilonCm_ac1 = ((AC.Wing1.AspectRatio*AC.Wing1.CMG*tand(AC.Wing1.Sweep_14))/(2*AC.Wing1.CMA)).*trapz(eta1,Clb1.*c1.*eta1./AC.Wing1.CMG);
+    deltaEpsilonCm_ac2 = ((AC.Wing2.AspectRatio*AC.Wing2.CMG*tand(AC.Wing2.Sweep_14))/(2*AC.Wing2.CMA)).*trapz(eta2,Clb2.*c2.*eta2./AC.Wing2.CMG);
 
-clear f_00deg f_30deg f_45deg f_60deg DiederichCoordinate1 DiederichCoordinate2
-clear C1x C2x C3x C4x C1y C2y C3y C4y f0x f0y f30x f30y f_low f_hight
+%Pitching moment on the aerodynamic center (Cm_ac_w)    
+    Cm_ac_w1 = Cm_ac_basic1 + deltaEpsilonCm_ac1;
+    Cm_ac_w2 = Cm_ac_basic2 + deltaEpsilonCm_ac2;
+
+    
+    
+%FALTA CALCULAR EL COEFICIENTE DE MOMENTOS TOTAL, CUANDO TENGA CLw Y Xcg --> Eq E-22
+warning('Falta meter la formula E-22 y calcular Cm_w')
+
+
+
+%% WING/FUSELAGE INTERFERENCE EFFECTS ON LIFT
+
+%% WING/FUSELAGE PITCHING MOMENT
+%% LIFT OF THE COMPLETE AIRCRAFT
+%% AIRPLANE PITCHING MOMENT AND NEUTRAL POINT
 
 
 
 %% PLOT WING LAYOUT
+if DP.ShowAircraftLayout
 %Import fuselage layout from data file
 sr=which(mfilename);
 i=max(strfind(lower(sr),lower('MTORRES')))+6;
@@ -295,42 +380,46 @@ figure()
         plot([Xfus(end),DP.fusLength],[-Yfus(end),-Yfus(end)],'k')
     %WING1
         %root chord
-            plot([AC.Wing1.LongPos,AC.Wing1.LongPos+AC.Wing1.RootChord],[ 0, 0],'r')
-            plot([AC.Wing1.LongPos,AC.Wing1.LongPos+AC.Wing1.RootChord],[-0,-0],'r')
+            plot([AC.Wing1.Root_LE,AC.Wing1.Root_LE+AC.Wing1.RootChord],[ 0, 0],'r')
+            plot([AC.Wing1.Root_LE,AC.Wing1.Root_LE+AC.Wing1.RootChord],[-0,-0],'r')
         %tip chord
-            plot([AC.Wing1.LongPos+AC.Wing1.TipSweep,AC.Wing1.LongPos+AC.Wing1.TipSweep+AC.Wing1.TipChord],[ AC.Wing1.WingSpan/2, AC.Wing1.WingSpan/2],'r')
-            plot([AC.Wing1.LongPos+AC.Wing1.TipSweep,AC.Wing1.LongPos+AC.Wing1.TipSweep+AC.Wing1.TipChord],[-AC.Wing1.WingSpan/2,-AC.Wing1.WingSpan/2],'r')
+            plot([AC.Wing1.Root_LE+AC.Wing1.TipSweep,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord],[ AC.Wing1.WingSpan/2, AC.Wing1.WingSpan/2],'r')
+            plot([AC.Wing1.Root_LE+AC.Wing1.TipSweep,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord],[-AC.Wing1.WingSpan/2,-AC.Wing1.WingSpan/2],'r')
         %leading edge
-            plot([AC.Wing1.LongPos,AC.Wing1.LongPos+AC.Wing1.TipSweep],[ 0, AC.Wing1.WingSpan/2],'r')
-            plot([AC.Wing1.LongPos,AC.Wing1.LongPos+AC.Wing1.TipSweep],[-0,-AC.Wing1.WingSpan/2],'r')
+            plot([AC.Wing1.Root_LE,AC.Wing1.Root_LE+AC.Wing1.TipSweep],[ 0, AC.Wing1.WingSpan/2],'r')
+            plot([AC.Wing1.Root_LE,AC.Wing1.Root_LE+AC.Wing1.TipSweep],[-0,-AC.Wing1.WingSpan/2],'r')
         %trailing edge
-            plot([AC.Wing1.LongPos+AC.Wing1.RootChord,AC.Wing1.LongPos+AC.Wing1.TipSweep+AC.Wing1.TipChord],[ 0, AC.Wing1.WingSpan/2],'r')
-            plot([AC.Wing1.LongPos+AC.Wing1.RootChord,AC.Wing1.LongPos+AC.Wing1.TipSweep+AC.Wing1.TipChord],[-0,-AC.Wing1.WingSpan/2],'r')
+            plot([AC.Wing1.Root_LE+AC.Wing1.RootChord,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord],[ 0, AC.Wing1.WingSpan/2],'r')
+            plot([AC.Wing1.Root_LE+AC.Wing1.RootChord,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord],[-0,-AC.Wing1.WingSpan/2],'r')
         %position c/4
-            plot([AC.Wing1.LongPos+AC.Wing1.RootChord/4,AC.Wing1.LongPos+AC.Wing1.TipSweep+AC.Wing1.TipChord/4],[ 0, AC.Wing1.WingSpan/2],'g')
-            plot([AC.Wing1.LongPos+AC.Wing1.RootChord/4,AC.Wing1.LongPos+AC.Wing1.TipSweep+AC.Wing1.TipChord/4],[-0,-AC.Wing1.WingSpan/2],'g')
+            plot([AC.Wing1.Root_LE+AC.Wing1.RootChord/4,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord/4],[ 0, AC.Wing1.WingSpan/2],'g')
+            plot([AC.Wing1.Root_LE+AC.Wing1.RootChord/4,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord/4],[-0,-AC.Wing1.WingSpan/2],'g')
     %WING2
         %root chord
-            plot([AC.Wing2.LongPos,AC.Wing2.LongPos+AC.Wing2.RootChord],[ 0, 0],'b')
-            plot([AC.Wing2.LongPos,AC.Wing2.LongPos+AC.Wing2.RootChord],[-0,-0],'b')
+            plot([AC.Wing2.Root_LE,AC.Wing2.Root_LE+AC.Wing2.RootChord],[ 0, 0],'b')
+            plot([AC.Wing2.Root_LE,AC.Wing2.Root_LE+AC.Wing2.RootChord],[-0,-0],'b')
         %tip chord
-            plot([AC.Wing2.LongPos+AC.Wing2.TipSweep,AC.Wing2.LongPos+AC.Wing2.TipSweep+AC.Wing2.TipChord],[ AC.Wing2.WingSpan/2, AC.Wing2.WingSpan/2],'b')
-            plot([AC.Wing2.LongPos+AC.Wing2.TipSweep,AC.Wing2.LongPos+AC.Wing2.TipSweep+AC.Wing2.TipChord],[-AC.Wing2.WingSpan/2,-AC.Wing2.WingSpan/2],'b')
+            plot([AC.Wing2.Root_LE+AC.Wing2.TipSweep,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord],[ AC.Wing2.WingSpan/2, AC.Wing2.WingSpan/2],'b')
+            plot([AC.Wing2.Root_LE+AC.Wing2.TipSweep,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord],[-AC.Wing2.WingSpan/2,-AC.Wing2.WingSpan/2],'b')
         %leading edge
-            plot([AC.Wing2.LongPos,AC.Wing2.LongPos+AC.Wing2.TipSweep],[ 0, AC.Wing2.WingSpan/2],'b')
-            plot([AC.Wing2.LongPos,AC.Wing2.LongPos+AC.Wing2.TipSweep],[-0,-AC.Wing2.WingSpan/2],'b')
+            plot([AC.Wing2.Root_LE,AC.Wing2.Root_LE+AC.Wing2.TipSweep],[ 0, AC.Wing2.WingSpan/2],'b')
+            plot([AC.Wing2.Root_LE,AC.Wing2.Root_LE+AC.Wing2.TipSweep],[-0,-AC.Wing2.WingSpan/2],'b')
         %trailing edge
-            plot([AC.Wing2.LongPos+AC.Wing2.RootChord,AC.Wing2.LongPos+AC.Wing2.TipSweep+AC.Wing2.TipChord],[ 0, AC.Wing2.WingSpan/2],'b')
-            plot([AC.Wing2.LongPos+AC.Wing2.RootChord,AC.Wing2.LongPos+AC.Wing2.TipSweep+AC.Wing2.TipChord],[-0,-AC.Wing2.WingSpan/2],'b')
+            plot([AC.Wing2.Root_LE+AC.Wing2.RootChord,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord],[ 0, AC.Wing2.WingSpan/2],'b')
+            plot([AC.Wing2.Root_LE+AC.Wing2.RootChord,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord],[-0,-AC.Wing2.WingSpan/2],'b')
         %position c/4
-            plot([AC.Wing2.LongPos+AC.Wing2.RootChord/4,AC.Wing2.LongPos+AC.Wing2.TipSweep+AC.Wing2.TipChord/4],[ 0, AC.Wing2.WingSpan/2],'g')
-            plot([AC.Wing2.LongPos+AC.Wing2.RootChord/4,AC.Wing2.LongPos+AC.Wing2.TipSweep+AC.Wing2.TipChord/4],[-0,-AC.Wing2.WingSpan/2],'g')
+            plot([AC.Wing2.Root_LE+AC.Wing2.RootChord/4,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord/4],[ 0, AC.Wing2.WingSpan/2],'g')
+            plot([AC.Wing2.Root_LE+AC.Wing2.RootChord/4,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord/4],[-0,-AC.Wing2.WingSpan/2],'g')
     clear Xfus Yfus
-     
+end     
     
     
-clear T P rho nu Reynolds1 Reynolds2 CruiseMach EffectiveSweep1 EffectiveSweep2 Beta1 Beta2 y1 y2 eta1 eta2
-    
+clear a T P rho nu Reynolds1 Reynolds2 CruiseMach EffectiveSweep1 EffectiveSweep2 Beta1 Beta2 y1 y2
+clear f_00deg f_30deg f_45deg f_60deg index DiederichCoordinate1 DiederichCoordinate2
+clear C1x C2x C3x C4x C1y C2y C3y C4y f0x f0y f30x f30y f_low f_hight f1 f2
+clear C1_1 C1_2 C2_1 C2_2 C3_1 C3_2 C4_1 C4_2 CL_wing1 CL_wing2 Cla1 Cla2 Clb1 Clb2 E1 E2 eta1 eta2
+clear La1 La2 Lb1 Lb2 twist_0lift_1 twist_0lift_2 Twist1 Twist2 c1 c2  Cl1 Cl2 
+clear Cm_ac_basic1 Cm_ac_basic2 deltaEpsilonCm_ac1 deltaEpsilonCm_ac2 Cm_ac_w1 Cm_ac_w2
     
     
 %% USEFUL FUNCTIONS
@@ -352,3 +441,5 @@ end
 function chord = getChord(y, SpanWidth, TaperRatio, Sw)
     chord = (2*Sw/((1+TaperRatio)*SpanWidth)).*(1-(2*(1-TaperRatio)/SpanWidth).*abs(y));
 end
+
+

@@ -11,11 +11,11 @@ classdef hull < handle
     %
     
     properties
-        Length            double  %Hull length [m]
         Beam              double  %Beam [m]
+        Beta              double  %Deadrise angle [º]
+        Length            double  %Hull length [m]
         Length_Beam       double  %Hull to beam ratio
         Lf                double  %Forebody length [m]
-        Beta              double  %Deadrise angle [º]
     end
     
     methods

@@ -3,19 +3,20 @@ classdef weights < handle
     %   Detailed explanation goes here
     
     properties (SetObservable) 
-        MTOW     double    %[double]  Maximum Take Off Weight [kg]
-        MRW      double    %[double]  Maximum Ramp Weight [kg]
-        EW       double    %[double]  Empty Weight, full equiped [kg]
-        OEW      double    %[double]  Operational Empty Weight [kg]
         BOW      double    %[double]  Basic Operational Weight [kg]
-        MPL      double    %[double]  Maximum Payload Weight [kg]
-        MFW      double    %[double]  Maximum Fuel Weight [kg]
+        EW       double    %[double]  Empty Weight, full equiped [kg]
         FW       double
-        TUL      double    %[double]  Total Useful Load [kg]
-        MZFW     double    %[double]  Maximum Zero Fuel Weight [kg]
+        MFW      double    %[double]  Maximum Fuel Weight [kg]
         MLW      double    %[double]  Maximum Landing Weight [kg]
-        Tto_MTOW double    %[double]  Ratio of total take-off thrust and MTOW [N/kg]
+        MPL      double    %[double]  Maximum Payload Weight [kg]
+        MRW      double    %[double]  Maximum Ramp Weight [kg]
+        MTOW     double    %[double]  Maximum Take Off Weight [kg]
+        MZFW     double    %[double]  Maximum Zero Fuel Weight [kg]
+        OEW      double    %[double]  Operational Empty Weight [kg]
         Pto_MTOW double
+        Tto_MTOW double    %[double]  Ratio of total take-off thrust and MTOW [N/kg]
+        TUL      double    %[double]  Total Useful Load [kg]
+
     end
     
     

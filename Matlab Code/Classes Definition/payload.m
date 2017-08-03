@@ -3,10 +3,10 @@ classdef payload < handle
     %   Detailed explanation goes here
     
     properties (SetObservable)
-        crew      double        %[double]  Nº of necessary crew members [-]
-        paxMin    double        %[double]  Nº of passengers in executive seating [-]
-        paxMax    double        %[double]  Nº of passengers in high-density seating [-]
         beds      double        %[double]  Nº of seats that can be converted into sleeping beds [-]
+        crew      double        %[double]  Nº of necessary crew members [-]
+        paxMax    double        %[double]  Nº of passengers in high-density seating [-]
+        paxMin    double        %[double]  Nº of passengers in executive seating [-]
     end
     
     
