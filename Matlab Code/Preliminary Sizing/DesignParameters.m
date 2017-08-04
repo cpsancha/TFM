@@ -58,6 +58,7 @@ switch ME.MissionType
         DP.StallSpeed_L    = NaN; %[m/s] -- Landing Stall Speed
         
         %Wing - Airfoil
+        DP.Incidence       =    2; %[º] - Degrees of angle of the wing/body incidence at root section
         DP.AspectRatio     =    9; %[-] - Aspect ratio, from similar planes: max-->9.7166, min-->8.0139, mean-->9.0017
         DP.TaperRatio      =  0.6; %[-]
         DP.Dihedral        =  0.0; %[º]
@@ -70,6 +71,7 @@ switch ME.MissionType
         DP.CLmax_L         =  2.8; %From similar planes: max-->3.7689, min-->2.2523, mean-->3.0764
         
         %Weight
+        DP.x_cg            =    10; %[m] Posición longitudinal del centro de gravedad, se debe calcular, solo es para que no pete el código.
         DP.MLW_MTOW        =  0.85; %From SP: min-->0.7900, max-->0.9267, mean-->0.8753
         DP.MRW_MTOW        = 1.005; %From SP: min-->0.9918, max-->1.0286, mean-->1.0051
         DP.EWnew_EWold     = 0.95;  %Weight reduction of the empty weight as being fully manufatured in composite materials
@@ -86,9 +88,10 @@ switch ME.MissionType
         DP.CrewNumber     = 2;
         
         % Fuselage Shape
-        DP.fusWidth   = 2.50; %[m]
-        DP.fusHeight  = 2.735; %[m]
-        DP.fusLength  = 23;%12.15 + 3*(DP.fusWidth+DP.fusHeight)/2;
+        DP.fuselage_AoA =     0; %[º] Angle of attack of the fuselage
+        DP.fusWidth     =  2.50; %[m]
+        DP.fusHeight    = 2.735; %[m]
+        DP.fusLength    =    23; %12.15 + 3*(DP.fusWidth+DP.fusHeight)/2;
 
         
         

@@ -180,15 +180,23 @@ clear gof indexFus indexPar MFW_MTOW_ac_old MFW_MTOW_ac_new parametro_ac_old par
 
 
 % Define more AC weights;
-AC.Weight.MTOW = mean([MTOW.newRoskam,MTOW.newTorenbeek]);
-%AC.Weight.EW   = mean([EW.newRoskam,EW.newTorenbeek]);
-%AC.Weight.MFW  = mean([MFW.newRoskam,MFW.newTorenbeek]);
-[~, AC.Weight.MTOW, AC.Weight.EW, AC.Weight.MFW] = getWeights( AC.Weight.MTOW, ME, CST, CF, Parameters, 'EW_new');
-AC.Weight.MRW  = DP.MRW_MTOW * AC.Weight.MTOW;
-AC.Weight.MLW  = DP.MLW_MTOW * AC.Weight.MTOW;
-AC.Weight.TUL  = AC.Weight.MFW + ME.Payload;
-AC.Weight.OEW  = AC.Weight.EW + 0.005*AC.Weight.MTOW + ME.CrewWeight;
-AC.Weight.BOW  = AC.Weight.OEW;
+    AC.Weight.MTOW = mean([MTOW.newRoskam,MTOW.newTorenbeek]);
+    %AC.Weight.EW   = mean([EW.newRoskam,EW.newTorenbeek]);
+    %AC.Weight.MFW  = mean([MFW.newRoskam,MFW.newTorenbeek]);
+    [~, AC.Weight.MTOW, AC.Weight.EW, AC.Weight.MFW] = getWeights( AC.Weight.MTOW, ME, CST, CF, Parameters, 'EW_new');
+    AC.Weight.MRW  = DP.MRW_MTOW * AC.Weight.MTOW;
+    AC.Weight.MLW  = DP.MLW_MTOW * AC.Weight.MTOW;
+    AC.Weight.TUL  = AC.Weight.MFW + ME.Payload;
+    AC.Weight.OEW  = AC.Weight.EW + 0.005*AC.Weight.MTOW + ME.CrewWeight;
+    AC.Weight.BOW  = AC.Weight.OEW;
+
+%Define AC fuselage
+    AC.Fuselage.fusHeight    = DP.fusHeight;
+    AC.Fuselage.fusLength    = DP.fusLength;
+    AC.Fuselage.fusWidth     = DP.fusWidth;
+    AC.Fuselage.fuselage_AoA = DP.fuselage_AoA;
+
+
 
 clear MTOW EW MFW
 

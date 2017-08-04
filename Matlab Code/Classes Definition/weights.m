@@ -16,6 +16,9 @@ classdef weights < handle
         Pto_MTOW double
         Tto_MTOW double    %[double]  Ratio of total take-off thrust and MTOW [N/kg]
         TUL      double    %[double]  Total Useful Load [kg]
+        x_cg     double    %[double]  X-Coordinate of the gravity center of the plane, from the plane nose
+        y_cg     double    %[double]  Y-Coordinate of the gravity center of the plane, from the simetry plane
+        z_cg     double    %[double]  Z-Coordinate of the gravity center of the plane
 
     end
     

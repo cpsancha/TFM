@@ -10,6 +10,7 @@ classdef fuselage < handle
         cabWidth       double    %[double]  Net wide of the cabin [m]
         finenessRatio  double    %[double]  The ratio of the length of a body to its maximum width (Esbeltez) [-]
         frontArea      double    %[double]  Maximum front area [m^2]
+        fuselage_AoA   double    %[double]  Angle of Attack of the fuselage [º]
         fusHeight      double    %[double]  Maximum height of the fuselage [m]
         fusHeightWidth double    %[double]  The ratio between the fuselage height and its width [-]    
         fusLength      double    %[double]  Total length of the fuselage [m]

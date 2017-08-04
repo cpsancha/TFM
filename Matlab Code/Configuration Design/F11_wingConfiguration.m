@@ -16,6 +16,7 @@
     % High lift and control surface requirements
     % Winglets
     
+    close all
 %1: Relate obtained values (Sw, AR) to a virtual global wing
 %2: Relate global wing to each of the wings
 AC.Wing1.Sw          = AC.Wing.Sw/2;
@@ -28,7 +29,7 @@ DP.Stagger = 5;
 AC.Wing1.Root_LE = 4;
 AC.Wing2.Root_LE = AC.Wing1.LongPos+AC.Wing1.RootChord+DP.Stagger;
 
-
+AC.Wing1.Incidence = 0;
 % La combinación de estos parametros gobernará el punto de entrada en
 % pérdidad:
 AC.Wing1.Torsion = -6*pi/180; 
@@ -166,14 +167,20 @@ alpha_L_0_r = alpha_l0 + alpha_0_1 * AC.Wing1.Torsion; %No confundir los alphas;
 figure()
 hold on
 
-plot(eta, clb,'k','DisplayName','clb')
-plot(eta, cla, 'b','DisplayName','cla')
+plot(eta, cla, 'b')
+plot(eta, clb,'k')
 plot(eta, cl, 'y','DisplayName','cl')
-plot(eta, cl_max*ones(length(eta),1),'r','DisplayName','clmax airfoil' )
+plot(eta, cl_max*ones(length(eta),1),'r' )
 % plot(eta, (cl_max.*ones(length(eta))-clb)./cla , 'g')
 [CLmax,index] = min((cl_max.*ones(length(eta),1)-clb')./cla');
 plot(eta, CLmax.*ones(length(eta),1),'DisplayName','CLmax wing')
 
+        legend('Aditional lift distribution','Basic lift distribution','Total lift distribution','clmax airfoil','CLmax wing','Location','best')
+        legend('boxoff')
+        xlabel('$\frac{y}{b/2}$','interpreter','latex')
+        ylabel('$C_l$','interpreter','latex')
+        title(['Spanwise Lift Distribution for $C_{Lmax}=',num2str(CLmax),'$ and $\varepsilon_t=',num2str(AC.Wing1.Torsion),'$'],'interpreter','latex')
+        saveFigure(ME.FiguresFolder,'SpanwiseLiftDistribution')
 
 
 legend('show')
@@ -191,8 +198,8 @@ for i=1:length(y)
     end
 end
 
-figure()
-plot(y,integrando)
+% figure()
+% plot(y,integrando)
 
 deltaEpsilonCmac = (-2/(AC.Wing1.Sw*AC.Wing1.CMG))*trapz(y,integrando);
 Cmac_w = c_mac + deltaEpsilonCmac ;
@@ -218,8 +225,15 @@ deltaf2 = tan(AC.Wing1.Sweep_14*pi/180)*0.273*AC.Fuselage.fusWidth*AC.Wing1.CMG*
 
 x_ac_wf  = AC.Wing1.CMG * (x_ac/AC.Wing1.CMG + deltaf1+ deltaf2);
 %% Pitching moment Cmac_wf
-CL_wf
+CL0 = CL_alpha_wf *( (0 - alpha_0_1*AC.Wing1.Torsion)+ K_I/K_II*(AC.Wing1.Incidence - alpha_l0))+deltazCL;
+deltaCmac = -1.8*(1 - 2.5 * AC.Fuselage.fusWidth/AC.Fuselage.fusLength)...
+    *pi*AC.Fuselage.fusWidth*AC.Fuselage.fusHeight*AC.Fuselage.fusLength*CL0...
+    /(4*AC.Wing1.Sw*AC.Wing1.CMG*CL_alpha_wf);   %Falta meter corrección por área no circular
 
+%% Final values of Wing1
+AC.Wing1.x_ac_wf = x_ac_wf;
+AC.Wing1.CL_wf = CL_alpha_wf *( (0 - alpha_0_1*AC.Wing1.Torsion)+ K_I/K_II*(AC.Wing1.Incidence - alpha_l0))+deltazCL;
+AC.Wing1.Cm_ac_wf = Cmac_w + deltaCmac;
 
 %% Plotting
 %Longitudinal Position of the leading edge at root
@@ -233,7 +247,7 @@ if i>0
 else
   error('Cannot locate MTORRES directory. You must add the path to the MTorres directory.')
 end
-FuselageFile = fullfile(sr,'Matlab Code',filesep,'Temporary Stuff',filesep,'fuselage.dat');
+FuselageFile = fullfile(sr,'Matlab Code',filesep,'Digitalized Data',filesep,'fuselage.dat');
 [Xfus,Yfus]  = importFuselage(FuselageFile);
 clear sr i FuselageFile
 figure()
