@@ -5,7 +5,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% CLEAR CMD WINDOW & WORKSPACE
-clear all
+clear all %#ok<CLALL>
 close all
 clc
 
@@ -226,8 +226,21 @@ run B_loadParameters.m
 run C05_weightEstimation.m
 run D05_airplaneDesignParameters.m
 run F05_wingConfiguration
-
-
+options = optimoptions('fsolve',...
+                       'StepTolerance',1e-9,...
+                       'Display','none');
+    X0 = [DP.Incidence_1, DP.Incidence_2, DP.Stagger];
+    [X,~,exitflag,~] = fsolve(@(X)getWings(X, AC, ME, DP, Parameters, CST, CF),X0,options);
+    DP.Incidence_1 = X(1);
+    DP.Incidence_2 = X(2);
+    DP.Stagger     = X(3);
+    if ~isequal(exitflag,1)
+        error('El solver que calcula las incidencias y el stagger no ha logrado converger correctamente. Se debería revisar el resultado.')
+    else
+        clear exitflag  options X0 X
+    end
+DP.ShowAircraftLayout = true;
+run F05_wingConfiguration
 % test_values =[-5,-2.5,0,2.5,5];
 % figure(10)
 % hold on
@@ -241,3 +254,34 @@ run F05_wingConfiguration
 %     plot(eta1,Cl1)
 % end
 % legend('-5º','-2.5º','0º','2.5º','5º')
+
+
+function [Error, AC] = getWings(X, AC, ME, DP, Parameters, CST, CF) %#ok<INUSD,INUSL>
+  %INPUTS:  
+    %X(1) = Wing1 Incidence [º]
+    %X(2) = Wing2 Incidence [º]
+    %X(3) = Stagger [m]
+  %OUTPUTS:  
+    %Error(1) = LiftCoeff - CL0 [-]
+    %Error(2) = MomentCoeff [-]
+    %Error(3) = Lift wing1 - 0.7Weight [kN]
+    
+  %Parse inputs
+    DP.Incidence_1 = X(1);
+    DP.Incidence_2 = X(2);
+    DP.Stagger     = X(3);
+  
+  %Run wing's script
+    run F05_wingConfiguration
+    
+  %Necessary calculation
+    designWeight = AC.Weight.EW + ME.Payload + AC.Weight.MFW/2;
+    [rho,~,~,~,~,~] = atmos(DP.CruiseAltitude);
+    CL0          = designWeight*CST.GravitySI / (0.5*rho*DP.CruiseSpeed^2*AC.Wing.Sw);
+    
+  %Parse outputs
+    Error(1) = AC.Wing.CL_wf - CL0;
+    Error(2) = AC.Wing.Cm_wf;
+    Error(3) = (DP.Wing1_Wing2*designWeight*CST.GravitySI - 0.5*rho*DP.CruiseSpeed^2*AC.Wing1.Sw*AC.Wing1.CL_wf)*1e-3;
+    
+end

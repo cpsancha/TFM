@@ -20,7 +20,7 @@ switch ME.MissionType
         
     %% PLOTTING OPTIONS
         DP.ShowReportFigures      = false; %Show all the available figures for reports [true] or only the most relevant ones [false]
-        DP.ShowAircraftLayout     = true;  %Show a layout of the aircraft and the wings
+        DP.ShowAircraftLayout     = false;  %Show a layout of the aircraft and the wings
         DP.selectDesignPoint      = false; %Ask user to select design point [true] or use the saved value [false]
         DP.showRoskamRequirements = false; %Show the Take-Off and Landing requirements obtained with Roskam constants [true] or only the SP ones [false]
         
@@ -58,12 +58,15 @@ switch ME.MissionType
         DP.StallSpeed_L    = NaN; %[m/s] -- Landing Stall Speed
         
         %Wing - Airfoil
-        DP.Incidence       =    2; %[º] - Degrees of angle of the wing/body incidence at root section
+        DP.Wing1_Wing2     =  0.7; %[-] - Parte de la sustentación que se lleva el ala delantera,
+        DP.Incidence_1     = 2.85; %[º] - Degrees of angle of the wing/body incidence of wing 1 at root section
+        DP.Incidence_2     = 1.10; %[º] - Degrees of angle of the wing/body incidence of wing 2 at root section
         DP.AspectRatio     =    9; %[-] - Aspect ratio, from similar planes: max-->9.7166, min-->8.0139, mean-->9.0017
         DP.TaperRatio      =  0.6; %[-]
         DP.Dihedral        =  0.0; %[º]
         DP.TipTwist        = -5.0; %[º] - Positive twist: nose rotated upwards (Wash-in). Negative twist: nose rotated downwards (Wash-out)
-        DP.Stagger         =    5; %[m]
+        DP.Stagger         = 6.75; %[m]
+        DP.VerticalGap     =    0; %[m]
         DP.Wing1LongPos    =    4; %[m] Longitudinal position of the first wing
         DP.Sweep_14        =   30; %[º] Flecha en la linea 1/4 
         DP.CLmax           =  1.2; %Porque si, hay que calcularlo bien... los valores estimados en crucero son muy bajos por ser la velocidad muy alta
@@ -82,7 +85,6 @@ switch ME.MissionType
         %Engines
         DP.EngineNumber    = 2;
         DP.EngineModel     = 'Snecma Silvercrest 2D';%'Rolls-Royce AE 3007A1E';
-        
         
         %Crew
         DP.CrewNumber     = 2;

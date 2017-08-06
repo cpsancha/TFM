@@ -1,5 +1,4 @@
 %% WING CONFIGURATION --> Chapter 6 & 7 Roskam; Chapter 7 Torenbeek
-
 % Selection of wing configuration and geometric characteristics
     % Cantilever wing (without braces)
     % Leading wing --> High[ ] / Low[ ]
@@ -116,7 +115,7 @@
     AC.Wing2.TipSweep = (AC.Wing2.WingSpan/2)*tand(AC.Wing2.Sweep_LE);
 
 %Reynolds
-        [rho,a,T,P,nu,~] = atmos(DP.CruiseAltitude);
+        [rho,a,T,P,nu,~] = atmos(DP.CruiseAltitude); %#ok<ASGLU>
         CruiseMach = DP.CruiseSpeed/a;
         Beta1       = sqrt(1-(CruiseMach)^2); %Prandtl compresibility correction
         Beta2       = sqrt(1-(CruiseMach)^2); %Prandtl compresibility correction
@@ -128,12 +127,12 @@
     AC.Wing2.CLdesign = AC.Wing2.Airfoil.Cldesign*(cosd(AC.Wing2.Sweep_14))^2;
 
 %Incidence of the wing respect the fuselage
-    AC.Wing1.Incidence = DP.Incidence;
-    AC.Wing2.Incidence = DP.Incidence;
+    AC.Wing1.Incidence = DP.Incidence_1;
+    AC.Wing2.Incidence = DP.Incidence_2;
     
 %Wing AoA at root section
-    AC.Wing1.Root_AoA = AC.Wing1.Incidence + AC.Fuselage.fuselage_AoA;
-    AC.Wing2.Root_AoA = AC.Wing2.Incidence + AC.Fuselage.fuselage_AoA;
+%     AC.Wing1.Root_AoA  = AC.Wing1.Incidence + AC.Fuselage.fuselage_AoA;
+%     AC.Wing2.Root_AoA  = AC.Wing2.Incidence + AC.Fuselage.fuselage_AoA;
 
 %Wing t_c
     AC.Wing1.t_c = AC.Wing1.Airfoil.t_c*cosd(AC.Wing1.Sweep_14);
@@ -161,9 +160,6 @@
     
     
 %% LIFTING PROPERTIES OF AIRFOIL SECTIONS
-%TBD... interpolación en Mach y Re
-warning('Falta digitalizar el resto de las graficas del perfil')
-
 %Wing1
     [AC.Wing1.Airfoil.Cl_alpha,...
      AC.Wing1.Airfoil.alpha_zeroLift,...
@@ -311,7 +307,7 @@ warning('Falta digitalizar el resto de las graficas del perfil')
     Cl2  = AC.Wing2.CLmax.*Cla2 + Clb2;
 
 %Display Wing Lift Distribution    
-%if DP.ShowReportFigures
+if DP.ShowReportFigures
     figure()
     hold on
         plot(eta1,AC.Wing1.CLmax.*Cla1);
@@ -328,12 +324,20 @@ warning('Falta digitalizar el resto de las graficas del perfil')
         ylabel('$C_l$','interpreter','latex')
         title(['Spanwise Lift Distribution for $C_{Lmax}=',num2str(AC.Wing1.CLmax),'$ and $\varepsilon_t=',num2str(AC.Wing1.TipTwist),'$'],'interpreter','latex')
         saveFigure(ME.FiguresFolder,'SpanwiseLiftDistribution')
-%end
+end
     
 
+%Deflexión de estela para la segunda ala
+%Adimensional parameters
+    r = DP.Stagger / (AC.Wing1.WingSpan/2);
+    m = DP.VerticalGap / (AC.Wing1.WingSpan/2);
+%Downwash gradient
+    deltaE_deltaAlpha = 1.75 * (AC.Wing1.CL_alpha_w/(pi*AC.Wing1.AspectRatio*(AC.Wing1.TaperRatio*r)^0.25*(1+abs(m))));
+    %1-deltaE_deltaAlpa = 0.9*(1-deltaE_deltaAlpha) <-- 10% reduction acording to Torenbeek E-10.1
+
 %Lift Coefficient in the linear range
-    AC.Wing1.CL_w = AC.Wing1.CL_alpha_w * deg2rad(AC.Wing1.Root_AoA-AC.Wing1.Airfoil.alpha_zeroLift-twist_0lift_1*AC.Wing1.TipTwist);
-    AC.Wing2.CL_w = AC.Wing2.CL_alpha_w * deg2rad(AC.Wing2.Root_AoA-AC.Wing2.Airfoil.alpha_zeroLift-twist_0lift_2*AC.Wing2.TipTwist);
+    AC.Wing1.CL_w = AC.Wing1.CL_alpha_w * deg2rad(AC.Wing1.Incidence+AC.Fuselage.fuselage_AoA-AC.Wing1.Airfoil.alpha_zeroLift-twist_0lift_1*AC.Wing1.TipTwist);
+    AC.Wing2.CL_w = AC.Wing2.CL_alpha_w * deg2rad(AC.Wing2.Incidence+AC.Fuselage.fuselage_AoA*0.9*(1-deltaE_deltaAlpha)-AC.Wing2.Airfoil.alpha_zeroLift-twist_0lift_2*AC.Wing2.TipTwist);
 
     
 
@@ -378,17 +382,32 @@ warning('Falta digitalizar el resto de las graficas del perfil')
 %Slope of the lift curve
     AC.Wing1.CL_alpha_wf = KI_1 * AC.Wing1.CL_alpha_w;
     AC.Wing2.CL_alpha_wf = KI_2 * AC.Wing2.CL_alpha_w;
-
+    
+%Downwash gradient
+    deltaE_deltaAlpha = 1.75 * (AC.Wing1.CL_alpha_wf/(pi*AC.Wing1.AspectRatio*(AC.Wing1.TaperRatio*r)^0.25*(1+abs(m))));
+    %1-deltaE_deltaAlpa = 0.9*(1-deltaE_deltaAlpha) <-- 10% reduction acording to Torenbeek E-10.1
+    
 %Lift coefficient taking into acount the fuselage interference
     AC.Wing1.CL_wf = AC.Wing1.CL_alpha_wf * deg2rad(AC.Fuselage.fuselage_AoA - twist_0lift_1*AC.Wing1.TipTwist + (KII_1/KI_1) * ...
                     (AC.Wing1.Incidence - AC.Wing1.Airfoil.alpha_zeroLift)) + deltazCL_1;
-    AC.Wing2.CL_wf = AC.Wing2.CL_alpha_wf * deg2rad(AC.Fuselage.fuselage_AoA - twist_0lift_2*AC.Wing2.TipTwist + (KII_2/KI_2) * ...
+    AC.Wing2.CL_wf = AC.Wing2.CL_alpha_wf * deg2rad(AC.Fuselage.fuselage_AoA*0.9*(1-deltaE_deltaAlpha) - twist_0lift_2*AC.Wing2.TipTwist + (KII_2/KI_2) * ...
                     (AC.Wing2.Incidence - AC.Wing2.Airfoil.alpha_zeroLift)) + deltazCL_2;
     
-clear KI_1 KI_2 KII_1 KII_2 deltazCL_1 deltazCL_2    
 
 
-%% WING/FUSELAGE PITCHING MOMENT
+                
+                
+%% NACELLES CONTRIBUTION
+%Efect on the aerodynamic center for rear fuselage located nacelles
+    deltaNac_1 = -2.5*AC.Engine.Number*AC.Engine.Diameter^2*AC.Engine.Length/(AC.Wing1.Sw*AC.Wing1.CMA*AC.Wing1.CL_alpha_wf);
+    deltaNac_2 = -2.5*AC.Engine.Number*AC.Engine.Diameter^2*AC.Engine.Length/(AC.Wing2.Sw*AC.Wing2.CMA*AC.Wing2.CL_alpha_wf);
+    
+    AC.Wing1.x_ac_wf = AC.Wing1.x_ac_wf + deltaNac_1;
+    AC.Wing2.x_ac_wf = AC.Wing2.x_ac_wf + deltaNac_2;
+    
+    
+    
+%% WING/FUSELAGE INTERFERENCE CORRECTION TO PITCHING MOMENT
 %Forward shift of the aerodynamic center due to fuselage sections forward and after the wing
     lengthFusNose1 = AC.Wing1.Root_LE + AC.Fuselage.fusWidth/2*tand(AC.Wing1.Sweep_LE);
     lengthFusNose2 = AC.Wing2.Root_LE + AC.Fuselage.fusWidth/2*tand(AC.Wing2.Sweep_LE);
@@ -406,8 +425,16 @@ clear KI_1 KI_2 KII_1 KII_2 deltazCL_1 deltazCL_2
     AC.Wing2.x_ac_wf = AC.Wing2.x_ac_w + deltaF1ac_2 + deltaF2ac_2; 
 
 %Fuselage contribution to the pitching moment (from Munk's Theory, Ref: E-33)
-    deltaFCmac_1 = -1.8 * () * () * (AC.Wing1.CL);
-    
+    CL0_1 = AC.Wing1.CL_alpha_wf * deg2rad(0 - twist_0lift_1*AC.Wing1.TipTwist + (KII_1/KI_1) * ...
+           (AC.Wing1.Incidence - AC.Wing1.Airfoil.alpha_zeroLift)) + deltazCL_1;
+    CL0_2 = AC.Wing2.CL_alpha_wf * deg2rad(0 - twist_0lift_2*AC.Wing2.TipTwist + (KII_2/KI_2) * ...
+           (AC.Wing2.Incidence - AC.Wing2.Airfoil.alpha_zeroLift)) + deltazCL_2;
+
+    deltaFCmac_1 = -1.8 * (1-2.5*AC.Fuselage.fusWidth/AC.Fuselage.fusLength) * (pi*AC.Fuselage.fusWidth*AC.Fuselage.fusHeight*...
+                    AC.Fuselage.fusLength/(4*AC.Wing1.Sw*AC.Wing1.CMA)) * (CL0_1/AC.Wing1.CL_alpha_wf);
+    deltaFCmac_2 = -1.8 * (1-2.5*AC.Fuselage.fusWidth/AC.Fuselage.fusLength) * (pi*AC.Fuselage.fusWidth*AC.Fuselage.fusHeight*...
+                    AC.Fuselage.fusLength/(4*AC.Wing2.Sw*AC.Wing2.CMA)) * (CL0_2/AC.Wing2.CL_alpha_wf);
+                
 %Pitching moment coefficient in the aerodynamic center
     AC.Wing1.Cm_ac_wf = AC.Wing1.Cm_ac_w + deltaFCmac_1;
     AC.Wing2.Cm_ac_wf = AC.Wing2.Cm_ac_w + deltaFCmac_2;
@@ -417,11 +444,29 @@ clear KI_1 KI_2 KII_1 KII_2 deltazCL_1 deltazCL_2
     AC.Wing2.Cm_wf = AC.Wing2.Cm_ac_wf + AC.Wing2.CL_wf*((AC.Weight.x_cg-AC.Wing2.x_ac_wf)/AC.Wing2.CMA);
     
     
-clear lengthFusNose1 lengthFusNose2 deltaF1ac_1 deltaF1ac_2 deltaF2ac_1 deltaF2ac_2    
-    
+clear lengthFusNose1 lengthFusNose2 deltaF1ac_1 deltaF1ac_2 deltaF2ac_1 deltaF2ac_2 designWeight CL0 CL0_1 CL0_2 deltaFCmac_1 deltaFCmac_2
 
+    
+    
+    
 %% LIFT OF THE COMPLETE AIRCRAFT
+    %Relaciones de presión dinámica segun torenbeek
+    q1_qinf = 1.00; 
+    q2_qinf = 0.85; %Torenbeek E-10.1
+    
+    %Coeficiente de sustentación y de momentos del avión completo
+    AC.Wing.CL_wf = q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CL_wf + q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CL_wf;
+    AC.Wing.Cm_wf = q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CMA / AC.Wing.CMA * AC.Wing1.Cm_ac_wf + ...
+                    q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CMA / AC.Wing.CMA * AC.Wing2.Cm_ac_wf + ...
+                    q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CL_wf * (AC.Weight.x_cg - AC.Wing1.x_ac_wf) + ...
+                    q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CL_wf * (AC.Weight.x_cg - AC.Wing2.x_ac_wf);
+
+
+
 %% AIRPLANE PITCHING MOMENT AND NEUTRAL POINT
+
+
+
 
 
 
@@ -492,6 +537,7 @@ clear C1x C2x C3x C4x C1y C2y C3y C4y f0x f0y f30x f30y f_low f_hight f1 f2
 clear C1_1 C1_2 C2_1 C2_2 C3_1 C3_2 C4_1 C4_2 CL_wing1 CL_wing2 Cla1 Cla2 Clb1 Clb2 E1 E2 eta1 eta2
 clear La1 La2 Lb1 Lb2 twist_0lift_1 twist_0lift_2 Twist1 Twist2 c1 c2  Cl1 Cl2 
 clear Cm_ac_basic1 Cm_ac_basic2 deltaEpsilonCm_ac1 deltaEpsilonCm_ac2 Cm_ac_w1 Cm_ac_w2
+clear KI_1 KI_2 KII_1 KII_2 deltazCL_1 deltazCL_2 deltaNac_1 deltaNac_2 deltaE_deltaAlpha q1_qinf q2_qinf m r
     
     
 %% USEFUL FUNCTIONS

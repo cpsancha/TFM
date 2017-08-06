@@ -15,8 +15,8 @@
     % Dihedral angle
     % High lift and control surface requirements
     % Winglets
-    
-    close all
+
+
 %1: Relate obtained values (Sw, AR) to a virtual global wing
 %2: Relate global wing to each of the wings
 AC.Wing1.Sw          = AC.Wing.Sw/2;
@@ -24,14 +24,11 @@ AC.Wing1.AspectRatio = AC.Wing.AspectRatio;
 
 
 %% Wing extra parameters
-
-DP.Stagger = 5;
-AC.Wing1.Root_LE = 4;
-AC.Wing2.Root_LE = AC.Wing1.LongPos+AC.Wing1.RootChord+DP.Stagger;
-
+%Only for Wing1
 AC.Wing1.Incidence = 0;
-% La combinación de estos parametros gobernará el punto de entrada en
-% pérdidad:
+AC.Wing1.Root_LE = 4;
+
+%Common parameters
 AC.Wing1.Torsion = -6*pi/180; 
 AC.Wing1.TaperRatio = 0.45; %Menor que 0.4, argumentando que el taper ratio "efectivo" es diferente respecto a un ala de simple estrechamiento
 AC.Wing1.Dihedral = 0;
@@ -159,11 +156,13 @@ cla = CL.*AC.Wing1.CMG.*La./c;
 clb = AC.Wing1.Torsion .* cl_alpha .* AC.Wing1.CMG .* Lb ./ (E.*c);
 
 %% Zero lift angle
-% E-19 no entiendo bien la ecuacion, no se que sentido tiene
-
 alpha_L_0_r = alpha_l0 + alpha_0_1 * AC.Wing1.Torsion; %No confundir los alphas; el primero corresponde al angulo de ataque del perfil tal que cl=0, 
 % el segundo corresponde a la integral hallada en el apartado anterior
 %% Maximum lift
+
+[CLmax,index] = min((cl_max.*ones(length(eta),1)-clb')./cla');
+AC.Wing1.CLmax = CLmax;
+
 figure()
 hold on
 
@@ -172,7 +171,6 @@ plot(eta, clb,'k')
 plot(eta, cl, 'y','DisplayName','cl')
 plot(eta, cl_max*ones(length(eta),1),'r' )
 % plot(eta, (cl_max.*ones(length(eta))-clb)./cla , 'g')
-[CLmax,index] = min((cl_max.*ones(length(eta),1)-clb')./cla');
 plot(eta, CLmax.*ones(length(eta),1),'DisplayName','CLmax wing')
 
         legend('Aditional lift distribution','Basic lift distribution','Total lift distribution','clmax airfoil','CLmax wing','Location','best')
@@ -204,7 +202,10 @@ end
 deltaEpsilonCmac = (-2/(AC.Wing1.Sw*AC.Wing1.CMG))*trapz(y,integrando);
 Cmac_w = c_mac + deltaEpsilonCmac ;
 
-%% Wing-fuselage interference
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% From this point, values may change for the rear wing,as it doesnt share
+% incidence and longitudinal position:
+%% Correction1: Wing-fuselage interference
 AC.Wing1.Snet = AC.Wing1.Sw - AC.Wing1.RootChord * AC.Fuselage.fusWidth;
 K_I = (1 + 2.15 * AC.Fuselage.fusWidth / AC.Wing1.WingSpan ) * AC.Wing1.Snet/AC.Wing1.Sw ...
     + pi * AC.Fuselage.fusWidth^2 / (2 * CL_alpha * AC.Wing1.Sw);
@@ -216,7 +217,7 @@ CL_alpha_wf = K_I * CL_alpha;
 %fuselage angle of attack alpha_f:
 % CL_wf = CL_alpha_wf *( (alpha_f - alpha_0_1*AC.Wing1.Torsion)+ K_I/K_II*(AC.Wing1.Incidence - alpha_l0))+deltazCL;
 
-%% Pressure center correction
+%% Correction2: Pressure center correction
 deltaf1 = -1.8*AC.Wing1.Root_LE * AC.Fuselage.fusHeight * AC.Fuselage.fusWidth / (CL_alpha_wf * AC.Wing1.Sw * AC.Wing1.CMG);
 %f2 correction es de dudosa aplicación, no esta definida para un ala
 %generica.
@@ -224,16 +225,52 @@ deltaf2 = tan(AC.Wing1.Sweep_14*pi/180)*0.273*AC.Fuselage.fusWidth*AC.Wing1.CMG*
     /((1+AC.Wing1.TaperRatio)*AC.Wing1.CMG^2*(AC.Wing1.WingSpan+2.15*AC.Fuselage.fusWidth));
 
 x_ac_wf  = AC.Wing1.CMG * (x_ac/AC.Wing1.CMG + deltaf1+ deltaf2);
-%% Pitching moment Cmac_wf
+%% Correction3: Pitching moment Cmac_wf
 CL0 = CL_alpha_wf *( (0 - alpha_0_1*AC.Wing1.Torsion)+ K_I/K_II*(AC.Wing1.Incidence - alpha_l0))+deltazCL;
 deltaCmac = -1.8*(1 - 2.5 * AC.Fuselage.fusWidth/AC.Fuselage.fusLength)...
     *pi*AC.Fuselage.fusWidth*AC.Fuselage.fusHeight*AC.Fuselage.fusLength*CL0...
     /(4*AC.Wing1.Sw*AC.Wing1.CMG*CL_alpha_wf);   %Falta meter corrección por área no circular
 
 %% Final values of Wing1
+AC.Wing1.alpha_zeroLift = alpha_L_0_r;
 AC.Wing1.x_ac_wf = x_ac_wf;
 AC.Wing1.CL_wf = CL_alpha_wf *( (0 - alpha_0_1*AC.Wing1.Torsion)+ K_I/K_II*(AC.Wing1.Incidence - alpha_l0))+deltazCL;
 AC.Wing1.Cm_ac_wf = Cmac_w + deltaCmac;
+AC.Wing1.CL_alpha_wf = CL_alpha_wf;
+
+
+%% WING2: parameters
+for fn = fieldnames(AC.Wing1)'
+   AC.Wing2.(fn{1}) = AC.Wing1.(fn{1});
+end
+
+DP.Stagger = 5;
+AC.Wing2.Root_LE = AC.Wing1.Root_LE + AC.Wing1.RootChord + DP.Stagger;
+AC.Wing2.Incidence = 0.1;
+
+AC.Wing2.Snet = AC.Wing2.Sw - AC.Wing2.RootChord * AC.Fuselage.fusWidth;
+K_I = (1 + 2.15 * AC.Fuselage.fusWidth / AC.Wing2.WingSpan ) * AC.Wing2.Snet/AC.Wing2.Sw ...
+    + pi * AC.Fuselage.fusWidth^2 / (2 * CL_alpha * AC.Wing2.Sw);
+K_II = (1 + 0.7 * AC.Fuselage.fusWidth / AC.Wing2.WingSpan ) * AC.Wing2.Snet/AC.Wing2.Sw;
+deltazCL = -0.1 * AC.Wing2.RootChord * AC.Fuselage.fusWidth / AC.Wing2.Sw;
+CL_alpha_wf = K_I * CL_alpha;
+
+deltaf1 = -1.8*AC.Wing2.Root_LE * AC.Fuselage.fusHeight * AC.Fuselage.fusWidth / (CL_alpha_wf * AC.Wing2.Sw * AC.Wing2.CMG);
+deltaf2 = tan(AC.Wing2.Sweep_14*pi/180)*0.273*AC.Fuselage.fusWidth*AC.Wing2.CMG*(AC.Wing2.WingSpan-AC.Fuselage.fusWidth) ...
+    /((1+AC.Wing2.TaperRatio)*AC.Wing2.CMG^2*(AC.Wing2.WingSpan+2.15*AC.Fuselage.fusWidth));
+
+x_ac_wf  = AC.Wing2.CMG * (x_ac/AC.Wing2.CMG + deltaf1+ deltaf2);
+
+CL0 = CL_alpha_wf *( (0 - alpha_0_1*AC.Wing2.Torsion)+ K_I/K_II*(AC.Wing2.Incidence - alpha_l0))+deltazCL;
+deltaCmac = -1.8*(1 - 2.5 * AC.Fuselage.fusWidth/AC.Fuselage.fusLength)...
+    *pi*AC.Fuselage.fusWidth*AC.Fuselage.fusHeight*AC.Fuselage.fusLength*CL0...
+    /(4*AC.Wing2.Sw*AC.Wing2.CMG*CL_alpha_wf);   %Falta meter corrección por área no circular
+
+AC.Wing2.alpha_zeroLift = alpha_L_0_r;
+AC.Wing2.x_ac_wf = x_ac_wf;
+AC.Wing2.CL_wf = CL_alpha_wf *( (0 - alpha_0_1*AC.Wing1.Torsion)+ K_I/K_II*(AC.Wing1.Incidence - alpha_l0))+deltazCL;
+AC.Wing2.Cm_ac_wf = Cmac_w + deltaCmac;
+AC.Wing2.CL_alpha_wf = CL_alpha_wf;
 
 %% Plotting
 %Longitudinal Position of the leading edge at root
@@ -272,6 +309,6 @@ figure()
             plot([AC.Wing1.Root_LE+AC.Wing1.TipSweep,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord],[ AC.Wing1.WingSpan/2, AC.Wing1.WingSpan/2],'b')
             plot([AC.Wing1.Root_LE+AC.Wing1.TipSweep,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord],[-AC.Wing1.WingSpan/2,-AC.Wing1.WingSpan/2],'b')
   
-        
+fsolve(@(x)getWings(x,AC, DP, ME, Parameters), [0,0])    
 
 

@@ -299,18 +299,24 @@ switch ME.MissionType
         Parameters.EngineOptions(1).Thrust =    41; %[kN] at sea level
         Parameters.EngineOptions(1).Weight = 751.6; %[kg] dry weight
         Parameters.EngineOptions(1).TSFC   = 0.625; %[lb/(lbf·h)] at cruise
+        Parameters.EngineOptions(3).Diameter = 1.080; %[m]
+        Parameters.EngineOptions(3).Length   = 1.900; %[m]
         
         % [ ] 2*Snecma Silvercrest --> Cessna Citation Hemisphere
         Parameters.EngineOptions(2).Model   = 'Snecma Silvercrest 2C';
         Parameters.EngineOptions(2).Thrust =  53.4; %[kN] at sea level
         Parameters.EngineOptions(2).Weight =  1040; %[kg] dry weight
         Parameters.EngineOptions(2).TSFC   = 0.597; %[lb/(lbf·h)] at cruise 0.95*0.628
+        Parameters.EngineOptions(3).Diameter = 0.978; %[m]
+        Parameters.EngineOptions(3).Length   = 2.705; %[m]
         
         % [X] 2*Snecma Silvercrest --> Dassault Falcon 5X
-        Parameters.EngineOptions(3).Model   = 'Snecma Silvercrest 2D';
-        Parameters.EngineOptions(3).Thrust =  50.9; %[kN] at sea level
-        Parameters.EngineOptions(3).Weight =  1040; %[kg] dry weight
-        Parameters.EngineOptions(3).TSFC   = 0.597; %[lb/(lbf·h)] at cruise 0.95*0.628
+        Parameters.EngineOptions(3).Model    = 'Snecma Silvercrest 2D';
+        Parameters.EngineOptions(3).Thrust   =  50.9; %[kN] at sea level
+        Parameters.EngineOptions(3).Weight   =  1040; %[kg] dry weight
+        Parameters.EngineOptions(3).TSFC     = 0.597; %[lb/(lbf·h)] at cruise 0.95*0.628
+        Parameters.EngineOptions(3).Diameter = 1.080; %[m]
+        Parameters.EngineOptions(3).Length   = 1.900; %[m]
         
         % [ ] 2*Rolls-Royce BR710A2-20 --> Bombardier Global 5000
         Parameters.EngineOptions(4).Model   = 'Rolls-Royce BR710A2-20';

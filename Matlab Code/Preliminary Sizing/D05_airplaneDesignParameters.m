@@ -523,6 +523,12 @@ end
     AC.Weight.Tto_MTOW    = y;
     AC.Wing.AspectRatio   = DP.AspectRatio;
     AC.Wing.Sw            = AC.Weight.MTOW/AC.Wing.WingLoading;
+    AC.Wing.WingSpan      = sqrt(AC.Wing.AspectRatio*AC.Wing.Sw);
+    AC.Wing.TaperRatio    = DP.TaperRatio;
+    AC.Wing.RootChord     = (2/(1+AC.Wing.TaperRatio))*sqrt(AC.Wing.Sw/AC.Wing.AspectRatio);
+    AC.Wing.TipChord      = AC.Wing.TaperRatio*AC.Wing.RootChord;
+    AC.Wing.CMG           = AC.Wing.RootChord*((1+AC.Wing.TaperRatio)/2);
+    AC.Wing.CMA           = (2/3)*AC.Wing.RootChord*((1+AC.Wing.TaperRatio+AC.Wing.TaperRatio^2)/(1+AC.Wing.TaperRatio));
     AC.Wing.CLdesign      = 2*AC.Weight.MTOW*prod([Parameters.fuelFraction(1:4).value])*CST.GravitySI/(rho*AC.Wing.Sw*DP.CruiseSpeed^2);
     AC.Wing.CLmax         = DP.CLmax;
     AC.Wing.CLmax_TO      = DP.CLmax_TO;
@@ -534,7 +540,7 @@ end
 
     
 
-clear rho rho0 rho_TO rho_L T_W_TO W_S_TO x y usedEngine ThrustWeight_TO WingLoading
+clear rho rho0 rho_TO rho_L T_W_TO W_S_TO x y usedEngine ThrustWeight_TO WingLoading i
 
 
 %% OTHER USEFUL FUNCTIONS

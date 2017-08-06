@@ -15,7 +15,7 @@ end
 
 
 %LOAD AND JOIN STORED AIRFOIL DATA
-    load('.\Temporary Stuff\Temp.mat')
+    run('.\Digitalized Data\SC0712_Data.m')
     %alpha_Cn
         varnames = who('alpha_Cn*');
         values = cellfun(@eval, varnames, 'UniformOutput', false);
@@ -38,10 +38,11 @@ end
                 plot(values{i}(:,1),values{i}(:,2),'LineWidth',1.25,'Color',Colors(i,:));
                 LegendStr{end+1} = ['$M_\infty=',num2str(values{i}(1,3)),'\ \ Re=',num2str(values{i}(1,4)/1e6),'e6$']; %#ok<AGROW>
             end
+            title('NACA Airfoil SC(3)-0712(B) - Experimental Data','interpreter','latex')
             xlabel('$\alpha\ [^o]$','interpreter','latex')
             ylabel('$C_l\ [-]$','interpreter','latex')
-            xlim([-5,10])
-            ylim([-0.25,1.2])
+            xlim([-4.5,7.5])
+            ylim([-0.25,1.05])
             legend(LegendStr,'Location','southeast','interpreter','latex')
             legend('boxoff')
 %             set(gca,'FontSize',12,'FontName','Times new Roman','box','on')
@@ -73,9 +74,10 @@ end
                 plot(values{i}(:,1),values{i}(:,2),'LineWidth',1.25,'Color',Colors(i,:));
                 LegendStr{end+1} = ['$M_\infty=',num2str(values{i}(1,3)),'\ \ Re=',num2str(values{i}(1,4)/1e6),'e6$']; %#ok<AGROW>
             end
+            title('NACA Airfoil SC(3)-0712(B) - Experimental Data','interpreter','latex')
             xlabel('$C_d\ [-]$','interpreter','latex')
             ylabel('$C_l\ [-]$','interpreter','latex')
-%             xlim([-5,10])
+            xlim([0.005,0.037])
 %             ylim([-0.25,1.2])
             legend(LegendStr,'Location','southeast','interpreter','latex')
             legend('boxoff')
@@ -108,9 +110,10 @@ end
                 plot(values{i}(:,1),values{i}(:,2),'LineWidth',1.25,'Color',Colors(i,:));
                 LegendStr{end+1} = ['$M_\infty=',num2str(values{i}(1,3)),'\ \ Re=',num2str(values{i}(1,4)/1e6),'e6$']; %#ok<AGROW>
             end
+            title('NACA Airfoil SC(3)-0712(B) - Experimental Data','interpreter','latex')
             xlabel('$C_m\ [-]$','interpreter','latex')
             ylabel('$C_l\ [-]$','interpreter','latex')
-            xlim([-0.2,0.1])
+            xlim([-0.18,0.020])
 %             ylim([-0.25,1.2])
             legend(LegendStr,'Location','southeast','interpreter','latex')
             legend('boxoff')
