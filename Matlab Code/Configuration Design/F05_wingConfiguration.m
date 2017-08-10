@@ -85,6 +85,10 @@
 %Sweep_LE
     AC.Wing1.Sweep_LE = atand(tand(AC.Wing1.Sweep_14)+(4/AC.Wing1.AspectRatio)*((1-AC.Wing1.TaperRatio)/(1+AC.Wing1.TaperRatio))*(0.25-0));
     AC.Wing2.Sweep_LE = atand(tand(AC.Wing2.Sweep_14)+(4/AC.Wing2.AspectRatio)*((1-AC.Wing2.TaperRatio)/(1+AC.Wing2.TaperRatio))*(0.25-0));
+    
+%Sweep_RE
+    AC.Wing1.Sweep_RE = atand(tand(AC.Wing1.Sweep_14)+(4/AC.Wing1.AspectRatio)*((1-AC.Wing1.TaperRatio)/(1+AC.Wing1.TaperRatio))*(0.25-1));
+    AC.Wing2.Sweep_RE = atand(tand(AC.Wing2.Sweep_14)+(4/AC.Wing2.AspectRatio)*((1-AC.Wing2.TaperRatio)/(1+AC.Wing2.TaperRatio))*(0.25-1));
 
 %Dihedral
     AC.Wing1.Dihedral = DP.Dihedral;
@@ -142,21 +146,60 @@
     options = optimoptions('fsolve',...
                            'StepTolerance',1e-9,...
                            'Display','none');
-    [AC.Wing1.MachDiv,~,exitflag1,~] = fsolve(@(DivergenceMach)getDivergenceMach(DivergenceMach, AC.Wing1.Airfoil.t_c, AC.Wing1.Sweep_14,...
+    [AC.Wing1.Airfoil.MachDiv,~,exitflag1,~] = fsolve(@(DivergenceMach)getDivergenceMach(DivergenceMach, AC.Wing1.Airfoil.t_c, 0,...
                                                AC.Wing1.CLdesign,'Supercritical'),0.8,options);
-    [AC.Wing2.MachDiv,~,exitflag2,~] = fsolve(@(DivergenceMach)getDivergenceMach(DivergenceMach, AC.Wing2.Airfoil.t_c, AC.Wing2.Sweep_14,...
+    [AC.Wing1.Airfoil.MachDiv,~,exitflag2,~] = fsolve(@(DivergenceMach)getDivergenceMach(DivergenceMach, AC.Wing2.Airfoil.t_c, 0,...
+                                               AC.Wing2.CLdesign,'Supercritical'),0.8,options);
+    [AC.Wing1.MachDiv,~,exitflag3,~] = fsolve(@(DivergenceMach)getDivergenceMach(DivergenceMach, AC.Wing1.Airfoil.t_c, AC.Wing1.Sweep_14,...
+                                               AC.Wing1.CLdesign,'Supercritical'),0.8,options);
+    [AC.Wing2.MachDiv,~,exitflag4,~] = fsolve(@(DivergenceMach)getDivergenceMach(DivergenceMach, AC.Wing2.Airfoil.t_c, AC.Wing2.Sweep_14,...
                                                AC.Wing2.CLdesign,'Supercritical'),0.8,options);
     if ~isequal(exitflag1,1)
-        disp('El solver del mach de divergencia del ala 1 no ha logrado converger correctamente. Se debería revisar el resultado.')
+        disp('El solver del mach de divergencia del perfil del ala 1 no ha logrado converger correctamente. Se debería revisar el resultado.')
         pause
     elseif ~isequal(exitflag2,1)
+        disp('El solver del mach de divergencia del perfil del ala 2 no ha logrado converger correctamente. Se debería revisar el resultado.')
+        pause
+    elseif ~isequal(exitflag3,1)
+        disp('El solver del mach de divergencia del ala 1 no ha logrado converger correctamente. Se debería revisar el resultado.')
+        pause
+    elseif ~isequal(exitflag4,1)
         disp('El solver del mach de divergencia del ala 2 no ha logrado converger correctamente. Se debería revisar el resultado.')
         pause    
     else
-        clear exitflag1 exitflag2 options
+        clear exitflag1 exitflag2 exitflag3 exitflag4 options
     end
 
-    
+    %Show Divergence Mach depending on sweep
+    if DP.ShowReportFigures
+        sweepArray = [15,20,25,30,32.5,35,37.5];
+        t_c = linspace(10,18,5);
+        LegendStr = cell(0);
+        options = optimoptions('fsolve',...
+                               'StepTolerance',1e-9,...
+                               'Display','none');
+        figure()
+        hold on
+        for i=1:length(sweepArray)
+            for j=1:length(t_c)
+                [MachDiv(j),~,exitFlag,~] = fsolve(@(DivergenceMach)getDivergenceMach(DivergenceMach, t_c(j)./100, sweepArray(i),AC.Wing1.CLdesign,'Supercritical'),0.8,options); %#ok<SAGROW>
+                if ~isequal(exitFlag,1)
+                    disp('El solver del mach de divergencia al generar la figura no ha logrado converger correctamente. Se debería revisar el resultado.')
+                end
+            end
+            plot(t_c,MachDiv,'LineWidth',1.25,'Color',Parameters.Colors(i,:))
+            LegendStr{end+1} = ['$\Lambda_{1/4}=',num2str(sweepArray(i)),'^o$']; %#ok<SAGROW>
+        end
+        plot(AC.Wing1.Airfoil.t_c*100,AC.Wing1.MachDiv,'o','LineWidth',1.25,'Color',Parameters.Colors(i+1,:))
+        LegendStr{end+1}='Design Point';
+        title('$M_{dd}\ en\ funcion\ de\ la\ flecha\ y\ el\ espesor\ relativo\ del\ perfil$','interpreter','latex')
+        xlabel('$t/c\ [-]$','interpreter','latex')
+        ylabel('$M_{dd}\ [-]$','interpreter','latex')
+        legend(LegendStr,'Location','northeast','interpreter','latex')
+        legend('boxoff')
+        saveFigure(ME.FiguresFolder,'SweepDecision')
+        clear sweepArray t_c i j exitFlag LegendStr MachDiv options
+    end
     
     
 %% LIFTING PROPERTIES OF AIRFOIL SECTIONS
@@ -174,8 +217,8 @@
 %% WING LIFT AND LIFT DISTRIBUTIONS
 %LIFT-CURVE SLOPE
 %Torenbeek Method (Torenbeek E-4.1.b pag 473)
-    EffectiveSweep1 = atand(tand(AC.Wing1.Sweep_14)/Beta1);
-    EffectiveSweep2 = atand(tand(AC.Wing2.Sweep_14)/Beta2);
+    EffectiveSweep1 = atand(tand(AC.Wing1.Sweep_12)/Beta1);
+    EffectiveSweep2 = atand(tand(AC.Wing2.Sweep_12)/Beta2);
     k1 = (AC.Wing1.Airfoil.Cl_alpha)/(2*pi);
     k2 = (AC.Wing2.Airfoil.Cl_alpha)/(2*pi);
     CL_alpha_Torenbeek = (2*pi/Beta1)/((2/(Beta1*AC.Wing1.AspectRatio))+sqrt((1/((k1*cosd(EffectiveSweep1))^2))+(2/(Beta1*AC.Wing1.AspectRatio))^2));
@@ -186,13 +229,19 @@
                          sqrt((AC.Wing1.AspectRatio/cosd(AC.Wing1.Sweep_12))^2+(AC.Wing1.Airfoil.Cl_alpha/pi)^2 - ...
                          (AC.Wing1.AspectRatio*CruiseMach)^2));
     if abs(CL_alpha_Torenbeek-CL_alpha_DATCOM) > 1e-6
-%         warning('La pendiente de la curva de sustentacion por el metodo de Torenbeek no es igual que por el metodo de las DATCOM. Elige cual se usa.')
+        if ~ismember('AC:notDefinedCoG',ME.errorList)
+            ME.errorList{end+1} = 'AC:CL_alpha_Torenbeek_DATCOM';
+            warning('AC:CL_alpha_Torenbeek_DATCOM','La pendiente de la curva de sustentacion por el metodo de Torenbeek no es igual que por el metodo de las DATCOM. Elige cual se usa.')
+        end
     elseif abs(CL_alpha_Torenbeek-CL_alpha_Polhamus) > 1e-6
-        warning('La pendiente de la curva de sustentacion por el metodo de Torenbeek no es igual que por el metodo de Polhamus. Elige cual se usa.')
+        if ~ismember('AC:notDefinedCoG',ME.errorList)
+            ME.errorList{end+1} = 'AC:CL_alpha_Torenbeek_DATCOM';
+            warning('AC:CL_alpha_Torenbeek_Polhamus','La pendiente de la curva de sustentacion por el metodo de Torenbeek no es igual que por el metodo de Polhamus. Elige cual se usa.')
+        end
     end
 %Uses Torenbeek Method, because yes... to be decided when loaded airfoil data
-    AC.Wing1.CL_alpha_w  = (2*pi*AC.Wing1.AspectRatio)/(2+sqrt((AC.Wing1.AspectRatio*Beta1/k1)^2*(1+(tand(AC.Wing1.Sweep_12)/Beta1)^2)+4));
-    AC.Wing2.CL_alpha_w  = (2*pi*AC.Wing2.AspectRatio)/(2+sqrt((AC.Wing2.AspectRatio*Beta2/k2)^2*(1+(tand(AC.Wing2.Sweep_12)/Beta2)^2)+4));
+    AC.Wing1.CL_alpha_w  = (2*pi/Beta1)/((2/(Beta1*AC.Wing1.AspectRatio))+sqrt((1/((k1*cosd(EffectiveSweep1))^2))+(2/(Beta1*AC.Wing1.AspectRatio))^2));
+    AC.Wing2.CL_alpha_w  = (2*pi/Beta2)/((2/(Beta2*AC.Wing2.AspectRatio))+sqrt((1/((k2*cosd(EffectiveSweep2))^2))+(2/(Beta2*AC.Wing2.AspectRatio))^2));
     clear k1 k2 CL_alpha_Torenbeek CL_alpha_DATCOM CL_alpha_Polhamus
     
 %SPANWISE LIFT DISTRIBUTION <-- Diederich Semiempirical Method from NACA TechNote 2751
@@ -200,37 +249,39 @@
     y1   = linspace(0,AC.Wing1.WingSpan/2,100);
     y2   = linspace(0,AC.Wing2.WingSpan/2,100);
 %Adimensional spanwise coordinate
-    eta1 = y1./(AC.Wing1.WingSpan/2);
-    eta2 = y2./(AC.Wing2.WingSpan/2);
+    AC.Wing1.eta = y1./(AC.Wing1.WingSpan/2);
+    AC.Wing2.eta = y2./(AC.Wing2.WingSpan/2);
 %Load graph from NACA Technical Note 2751
     run('.\Digitalized Data\Lift_Distribution_Function_f.m')
+    EffectiveSweep1 = atand(tand(AC.Wing1.Sweep_14)/Beta1);
+    EffectiveSweep2 = atand(tand(AC.Wing2.Sweep_14)/Beta2);
     if EffectiveSweep1 < 30
-        f_low   = interp1(f_00deg(:,1),f_00deg(:,2),eta1,'linear','extrap');
-        f_hight = interp1(f_30deg(:,1),f_30deg(:,2),eta1,'linear','extrap');
+        f_low   = interp1(f_00deg(:,1),f_00deg(:,2),AC.Wing1.eta,'linear','extrap');
+        f_hight = interp1(f_30deg(:,1),f_30deg(:,2),AC.Wing1.eta,'linear','extrap');
         f1 = f_low+(f_hight-f_low)./30.*EffectiveSweep1;
     elseif EffectiveSweep1 < 45
-        f_low   = interp1(f_30deg(:,1),f_30deg(:,2),eta1,'linear','extrap');
-        f_hight = interp1(f_45deg(:,1),f_45deg(:,2),eta1,'linear','extrap');
+        f_low   = interp1(f_30deg(:,1),f_30deg(:,2),AC.Wing1.eta,'linear','extrap');
+        f_hight = interp1(f_45deg(:,1),f_45deg(:,2),AC.Wing1.eta,'linear','extrap');
         f1 = f_low+(f_hight-f_low)./15.*(EffectiveSweep1-30);
     elseif EffectiveSweep1 < 60
-        f_low   = interp1(f_45deg(:,1),f_45deg(:,2),eta1,'linear','extrap');
-        f_hight = interp1(f_60deg(:,1),f_60deg(:,2),eta1,'linear','extrap');
+        f_low   = interp1(f_45deg(:,1),f_45deg(:,2),AC.Wing1.eta,'linear','extrap');
+        f_hight = interp1(f_60deg(:,1),f_60deg(:,2),AC.Wing1.eta,'linear','extrap');
         f1 = f_low+(f_hight-f_low)./15.*(EffectiveSweep1-45);
     else
         warning('Incorrect value for Effective Sweep of wing 1.')
     end
 
     if EffectiveSweep2 < 30
-        f_low   = interp1(f_00deg(:,1),f_00deg(:,2),eta2,'linear','extrap');
-        f_hight = interp1(f_30deg(:,1),f_30deg(:,2),eta2,'linear','extrap');
+        f_low   = interp1(f_00deg(:,1),f_00deg(:,2),AC.Wing2.eta,'linear','extrap');
+        f_hight = interp1(f_30deg(:,1),f_30deg(:,2),AC.Wing2.eta,'linear','extrap');
         f2 = f_low+(f_hight-f_low)./30.*EffectiveSweep2;
     elseif EffectiveSweep2 < 45
-        f_low   = interp1(f_30deg(:,1),f_30deg(:,2),eta2,'linear','extrap');
-        f_hight = interp1(f_45deg(:,1),f_45deg(:,2),eta2,'linear','extrap');
+        f_low   = interp1(f_30deg(:,1),f_30deg(:,2),AC.Wing2.eta,'linear','extrap');
+        f_hight = interp1(f_45deg(:,1),f_45deg(:,2),AC.Wing2.eta,'linear','extrap');
         f2 = f_low+(f_hight-f_low)./15.*(EffectiveSweep2-30);
     elseif EffectiveSweep2 < 60
-        f_low   = interp1(f_45deg(:,1),f_45deg(:,2),eta2,'linear','extrap');
-        f_hight = interp1(f_60deg(:,1),f_60deg(:,2),eta2,'linear','extrap');
+        f_low   = interp1(f_45deg(:,1),f_45deg(:,2),AC.Wing2.eta,'linear','extrap');
+        f_hight = interp1(f_60deg(:,1),f_60deg(:,2),AC.Wing2.eta,'linear','extrap');
         f2 = f_low+(f_hight-f_low)./15.*(EffectiveSweep2-45);
     else
         warning('Incorrect value for Effective Sweep of wing 2.')
@@ -255,28 +306,28 @@
     C4_2 = polyval( polyfit(C4x,C4y,3) , DiederichCoordinate2);  
 
 %Calculate the chord
-    c1 = getChord(y1, AC.Wing1.WingSpan, AC.Wing1.TaperRatio, AC.Wing1.Sw);
-    c2 = getChord(y2, AC.Wing2.WingSpan, AC.Wing2.TaperRatio, AC.Wing2.Sw);
+    AC.Wing1.c = getChord(y1, AC.Wing1.WingSpan, AC.Wing1.TaperRatio, AC.Wing1.Sw);
+    AC.Wing2.c = getChord(y2, AC.Wing2.WingSpan, AC.Wing2.TaperRatio, AC.Wing2.Sw);
     
 %Aditional lift distribution calculation (La)
-    La1 = C1_1.*c1./AC.Wing1.CMG + C2_1.*4./pi.*sqrt(1-eta1.^2) + C3_1.*f1;
-    La2 = C1_2.*c2./AC.Wing2.CMG + C2_2.*4./pi.*sqrt(1-eta2.^2) + C3_2.*f2;
+    La1 = C1_1.*AC.Wing1.c./AC.Wing1.CMG + C2_1.*4./pi.*sqrt(1-AC.Wing1.eta.^2) + C3_1.*f1;
+    La2 = C1_2.*AC.Wing2.c./AC.Wing2.CMG + C2_2.*4./pi.*sqrt(1-AC.Wing2.eta.^2) + C3_2.*f2;
 
  %Jone's edge velocity correction E=semiperimeter/semispan
     E1 = 1+((2*AC.Wing1.TaperRatio)/(AC.Wing1.AspectRatio*(1+AC.Wing1.TaperRatio)));
     E2 = 1+((2*AC.Wing2.TaperRatio)/(AC.Wing2.AspectRatio*(1+AC.Wing2.TaperRatio)));
 
 %Linear Lofted (Geometrical) Twist    
-%     Twist1 = AC.Wing1.TipTwist .* (AC.Wing1.TaperRatio.*eta1./(1-(1-AC.Wing1.TaperRatio).*eta1));
-%     Twist2 = AC.Wing2.TipTwist .* (AC.Wing2.TaperRatio.*eta2./(1-(1-AC.Wing2.TaperRatio).*eta2));
+%     Twist1 = AC.Wing1.TipTwist .* (AC.Wing1.TaperRatio.*AC.Wing1.eta./(1-(1-AC.Wing1.TaperRatio).*AC.Wing1.eta));
+%     Twist2 = AC.Wing2.TipTwist .* (AC.Wing2.TaperRatio.*AC.Wing2.eta./(1-(1-AC.Wing2.TaperRatio).*AC.Wing2.eta));
 
 %Linear Twist
-    Twist1 = AC.Wing1.TipTwist .* eta1;
-    Twist2 = AC.Wing2.TipTwist .* eta2;
+    Twist1 = AC.Wing1.TipTwist .* AC.Wing1.eta;
+    Twist2 = AC.Wing2.TipTwist .* AC.Wing2.eta;
     
 %Local aerodynamic twist at the station for which Clb=0 if TipTwist=1º    
-    twist_0lift_1 = -trapz(eta1,(Twist1./AC.Wing1.TipTwist).*La1); %Torenbeek Eq. E-16 [adimensional, must be multiplied by TipTwist]
-    twist_0lift_2 = -trapz(eta2,(Twist2./AC.Wing2.TipTwist).*La2); %Torenbeek Eq. E-16 [adimensional, must be multiplied by TipTwist]
+    twist_0lift_1 = -trapz(AC.Wing1.eta,(Twist1./AC.Wing1.TipTwist).*La1); %Torenbeek Eq. E-16 [adimensional, must be multiplied by TipTwist]
+    twist_0lift_2 = -trapz(AC.Wing2.eta,(Twist2./AC.Wing2.TipTwist).*La2); %Torenbeek Eq. E-16 [adimensional, must be multiplied by TipTwist]
     
 %Basic lift distribution (Lb)    
     Lb1 = La1.*C4_1.*cos(EffectiveSweep1).*((Twist1./AC.Wing1.TipTwist)+twist_0lift_1).*Beta1.*E1;
@@ -287,12 +338,12 @@
     CL_wing2 = 1;
 
 %Coefficient of Aditional lift
-    Cla1 = CL_wing1.*AC.Wing1.CMG.*La1./c1;
-    Cla2 = CL_wing2.*AC.Wing2.CMG.*La2./c2;
+    Cla1 = CL_wing1.*AC.Wing1.CMG.*La1./AC.Wing1.c;
+    Cla2 = CL_wing2.*AC.Wing2.CMG.*La2./AC.Wing2.c;
     
 %Coefficient of Basic Lift
-    Clb1 = Lb1.*deg2rad(AC.Wing1.TipTwist).*AC.Wing1.Airfoil.Cl_alpha.*AC.Wing1.CMG./(E1.*c1);
-    Clb2 = Lb2.*deg2rad(AC.Wing2.TipTwist).*AC.Wing2.Airfoil.Cl_alpha.*AC.Wing2.CMG./(E2.*c2);
+    Clb1 = Lb1.*deg2rad(AC.Wing1.TipTwist).*AC.Wing1.Airfoil.Cl_alpha.*AC.Wing1.CMG./(E1.*AC.Wing1.c);
+    Clb2 = Lb2.*deg2rad(AC.Wing2.TipTwist).*AC.Wing2.Airfoil.Cl_alpha.*AC.Wing2.CMG./(E2.*AC.Wing2.c);
 
 %Zero Lift Angle
     AC.Wing1.alpha_zeroLift = AC.Wing1.Airfoil.alpha_zeroLift + twist_0lift_1*AC.Wing1.TipTwist; %[degrees]
@@ -310,14 +361,14 @@
 if DP.ShowReportFigures
     figure()
     hold on
-        plot(eta1,AC.Wing1.CLmax.*Cla1);
-        plot(eta1,Clb1);
-        plot(eta1,Cl1);
+        plot(AC.Wing1.eta,AC.Wing1.CLmax.*Cla1);
+        plot(AC.Wing1.eta,Clb1);
+        plot(AC.Wing1.eta,Cl1);
         [~,index] = max(Cl1);
-        plot(eta1(index),Cl1(index),'o')
-%         plot(eta2,AC.Wing2.CLmax.*Cla2,':');
-%         plot(eta2,Clb2,':');
-%         plot(eta2,Cl2,':');
+        plot(AC.Wing1.eta(index),Cl1(index),'o')
+%         plot(AC.Wing2.eta,AC.Wing2.CLmax.*Cla2,':');
+%         plot(AC.Wing2.eta,Clb2,':');
+%         plot(AC.Wing2.eta,Cl2,':');
         legend('Aditional lift distribution','Basic lift distribution','Total lift distribution','First point of stall','Location','best')
         legend('boxoff')
         xlabel('$\frac{y}{b/2}$','interpreter','latex')
@@ -344,12 +395,12 @@ end
     
 %% PITCHING MOMENT OF THE WING
 %Contribution of the spanwise airfoil camber (Cm_ac_basic)
-    Cm_ac_basic1 = 2/(AC.Wing1.Sw*AC.Wing1.CMA)*trapz(y1,AC.Wing1.Airfoil.Cm_ac.*c1.^2);
-    Cm_ac_basic2 = 2/(AC.Wing2.Sw*AC.Wing2.CMA)*trapz(y2,AC.Wing2.Airfoil.Cm_ac.*c2.^2);
+    Cm_ac_basic1 = 2/(AC.Wing1.Sw*AC.Wing1.CMA)*trapz(y1,AC.Wing1.Airfoil.Cm_ac.*AC.Wing1.c.^2);
+    Cm_ac_basic2 = 2/(AC.Wing2.Sw*AC.Wing2.CMA)*trapz(y2,AC.Wing2.Airfoil.Cm_ac.*AC.Wing2.c.^2);
     
 %Contribution of the basic lift distribution due to twist (deltaEpsilon*Cm_ac)    
-    deltaEpsilonCm_ac1 = ((AC.Wing1.AspectRatio*AC.Wing1.CMG*tand(AC.Wing1.Sweep_14))/(2*AC.Wing1.CMA)).*trapz(eta1,Clb1.*c1.*eta1./AC.Wing1.CMG);
-    deltaEpsilonCm_ac2 = ((AC.Wing2.AspectRatio*AC.Wing2.CMG*tand(AC.Wing2.Sweep_14))/(2*AC.Wing2.CMA)).*trapz(eta2,Clb2.*c2.*eta2./AC.Wing2.CMG);
+    deltaEpsilonCm_ac1 = ((AC.Wing1.AspectRatio*AC.Wing1.CMG*tand(AC.Wing1.Sweep_14))/(2*AC.Wing1.CMA)).*trapz(AC.Wing1.eta,Clb1.*AC.Wing1.c.*AC.Wing1.eta./AC.Wing1.CMG);
+    deltaEpsilonCm_ac2 = ((AC.Wing2.AspectRatio*AC.Wing2.CMG*tand(AC.Wing2.Sweep_14))/(2*AC.Wing2.CMA)).*trapz(AC.Wing2.eta,Clb2.*AC.Wing2.c.*AC.Wing2.eta./AC.Wing2.CMG);
 
 %Pitching moment on the aerodynamic center (Cm_ac_w)    
     AC.Wing1.Cm_ac_w = Cm_ac_basic1 + deltaEpsilonCm_ac1;
@@ -357,7 +408,11 @@ end
     
 %Pitching moment coefficient of the wings
     AC.Weight.x_cg = DP.x_cg;  %WARNING!!!  <-- TO BE REMOVED
-    warning('Hay que poner bien la posición del centro de gravedad para los coeficientes de momentos')
+    
+    if ~ismember('AC:notDefinedCoG',ME.errorList)
+        ME.errorList{end+1} = 'AC:notDefinedCoG';
+        warning('AC:notDefinedCoG','Hay que poner bien la posición del centro de gravedad para los coeficientes de momentos')
+    end
     
     AC.Wing1.Cm_w = AC.Wing1.Cm_ac_w + AC.Wing1.CL_w * ((AC.Weight.x_cg - AC.Wing1.CMA_14)/AC.Wing1.CMA);
     AC.Wing2.Cm_w = AC.Wing2.Cm_ac_w + AC.Wing2.CL_w * ((AC.Weight.x_cg - AC.Wing2.CMA_14)/AC.Wing2.CMA);
@@ -463,7 +518,18 @@ clear lengthFusNose1 lengthFusNose2 deltaF1ac_1 deltaF1ac_2 deltaF2ac_1 deltaF2a
 
 
 
-%% AIRPLANE PITCHING MOMENT AND NEUTRAL POINT
+%% STORE TOTAL LIFT DISTRIBUTION
+%Coefficient of Aditional lift
+    AC.Wing1.cla = AC.Wing1.CL_wf.*AC.Wing1.CMG.*La1./AC.Wing1.c;
+    AC.Wing2.cla = AC.Wing2.CL_wf.*AC.Wing2.CMG.*La2./AC.Wing2.c;
+    
+%Coefficient of Basic Lift
+    AC.Wing1.clb = Lb1.*deg2rad(AC.Wing1.TipTwist).*AC.Wing1.Airfoil.Cl_alpha.*AC.Wing1.CMG./(E1.*AC.Wing1.c);
+    AC.Wing2.clb = Lb2.*deg2rad(AC.Wing2.TipTwist).*AC.Wing2.Airfoil.Cl_alpha.*AC.Wing2.CMG./(E2.*AC.Wing2.c);
+
+%Total Lift Distribution
+    AC.Wing1.cl = AC.Wing1.cla + AC.Wing1.clb;
+    AC.Wing2.cl = AC.Wing2.cla + AC.Wing2.clb;
 
 
 
@@ -531,11 +597,11 @@ figure()
 end     
     
     
-clear a T P rho nu Reynolds1 Reynolds2 CruiseMach EffectiveSweep1 EffectiveSweep2 Beta1 Beta2 y1 y2
+clear a T P rho nu Reynolds1 Reynolds2 CruiseMach EffectiveSweep1 EffectiveSweep2
 clear f_00deg f_30deg f_45deg f_60deg index DiederichCoordinate1 DiederichCoordinate2
-clear C1x C2x C3x C4x C1y C2y C3y C4y f0x f0y f30x f30y f_low f_hight f1 f2
-clear C1_1 C1_2 C2_1 C2_2 C3_1 C3_2 C4_1 C4_2 CL_wing1 CL_wing2 Cla1 Cla2 Clb1 Clb2 E1 E2 eta1 eta2
-clear La1 La2 Lb1 Lb2 twist_0lift_1 twist_0lift_2 Twist1 Twist2 c1 c2  Cl1 Cl2 
+clear C1x C2x C3x C4x C1y C2y C3y C4y f0x f0y f30x f30y f_low f_hight
+clear C1_1 C1_2 C2_1 C2_2 C3_1 C3_2 f1 f2 C4_1 C4_2 CL_wing1 CL_wing2 Clb1 Clb2
+clear La1 La2 Lb1 Lb2 twist_0lift_1 twist_0lift_2 Cl1 Cl2 y1 y2 Cla1 Cla2
 clear Cm_ac_basic1 Cm_ac_basic2 deltaEpsilonCm_ac1 deltaEpsilonCm_ac2 Cm_ac_w1 Cm_ac_w2
 clear KI_1 KI_2 KII_1 KII_2 deltazCL_1 deltazCL_2 deltaNac_1 deltaNac_2 deltaE_deltaAlpha q1_qinf q2_qinf m r
     

@@ -18,6 +18,10 @@ classdef wing < handle
         CL_wf           double  %[double] Lift coefficient, taking into acount the fuselage interference [-]
         CL_alpha_w      double  %[double] Pendiente de la curva de sustentacion del perfil [1/rad]
         CL_alpha_wf     double  %[double] Pendiente de la curva de sustentacion del perfil, teniendo en cuenta el fuselaje [1/rad]
+        c               double  % chord distribution
+        cl              double  % complete lift distribution for each station in y direction and for each fligth condition
+        cla             double  % additional lift distribution    
+        clb             double  % basic lift distribution
         CLdesign        double  %[double] CL of design of the wing
         CLmax           double  %[double] Maximum Cl of the wing at cruise
         CLmax_L         double  %[double] Maximum Cl of the wing at Landing
@@ -32,6 +36,7 @@ classdef wing < handle
         Cm_ac_w         double  %[double] Coefficient of pitching moment in the aerodynamic center [-]
         Cm_ac_wf        double  %[double] Coefficient of pitching moment in the aerodynamic center, taking into acount the fuselage [-]
         Dihedral        double  %[double] Dihedral of the wing [º]
+        eta             double  % Adimensionalized spanwise coordinate
         Incidence       double  %[double] Angle of the wing/body incidence (iw) mesaured from fuselage floor [º]
         LongPos         double  %[double] Definida como el cociente entre la distancia longitudinal del punto un cuarto de la cuerda media aerodinámica al morro del avión y la longitud del fuselaje.
         MachDiv         double  %[double] Mach of divergence, for which drag increases a lot [-]
@@ -45,10 +50,9 @@ classdef wing < handle
         Sweep_12        double  %[double] Sweep of the wing at the point 1/2 of CMA [º]
         Sweep_14        double  %[double] Sweep of the wing at the point 1/4 of CMA [º]
         Sweep_LE        double  %[double] Sweep of the wing at the leading edge [º]
+        Sweep_RE        double  %[double] Sweep of the wing at the rear edge [º]
         t_c             double  %[double] Thickness ratio. Maximum width/chord length [-]
         TaperRatio      double  %[double] Wing taper ratio (tipChord/rootChord) [-]        
-        TaperRatio_i    double  %[double] Inborad Wing taper ratio (tipChord/rootChord) [-]           
-        TaperRatio_o    double  %[double] Outboard Wing taper ratio (tipChord/rootChord) [-]
         TipChord        double  %[double] Chord ath the tip [m]
         TipSweep        double  %[double] Distancia longitudinal del borde de ataque de la raiz, al borde de ataque en la punta debido a la flecha
         TipTwist        double  %[double] Geometrical twist in the section located at the tip of the wing [º]

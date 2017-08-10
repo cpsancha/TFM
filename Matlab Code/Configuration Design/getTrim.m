@@ -1,33 +1,12 @@
-%% WING CONFIGURATION --> Chapter 6 & 7 Roskam; Chapter 7 Torenbeek
 
-% Selection of wing configuration and geometric characteristics
+ function F = getTrim ( x, AC, DP, ME, Parameters, AF,plotFlag , W)
+alpha_f = x(1);
+clrear  = x(2);
 
-    % Cantilever wing (without braces)
-    % Leading wing --> High[ ] / Low[ ]
-    % Rear wing --> High[ ] / Low[ ]
-    % Zero sweep[ ] / Positive sweep[X] / Negative sweep[ ]
-    % Aspect ratio
-    % Thickness ratio
-    % Airfoils
-    % Taper ratio
-    % Twist
-    % Incidence angle
-    % Dihedral angle
-    % High lift and control surface requirements
-    % Winglets
-
-    function F = getWings (incidences,AC, DP, ME, Parameters, AF,plotFlag , W)
-
-AC.Wing1.Incidence = incidences(1);
-DP.Stagger=     incidences(3)
-alpha_f=0;
 
 %%
 AC.Wing1.Sw          = AC.Wing.Sw/2;
 AC.Wing1.AspectRatio = AC.Wing.AspectRatio;
-
-
-
 
 %% 3: Obtain derived values from geometry
 AC.Wing1.WingSpan   = sqrt(AC.Wing1.AspectRatio*AC.Wing1.Sw);
@@ -200,7 +179,7 @@ deltaCmac = -1.8*(1 - 2.5 * AC.Fuselage.fusWidth/AC.Fuselage.fusLength)...
 %% Final values of Wing1
 AC.Wing1.alpha_zeroLift = alpha_L_0_r;
 AC.Wing1.x_ac_wf = x_ac_wf;
-AC.Wing1.CL_wf = CL_alpha_wf *( (alpha_f - alpha_0_1*AC.Wing1.Torsion)+ K_I/K_II*(AC.Wing1.Incidence - AF.alpha_l0))+deltazCL;
+AC.Wing1.CL_wf =  CL_alpha_wf *( (alpha_f - alpha_0_1*AC.Wing1.Torsion)+ K_I/K_II*(AC.Wing1.Incidence - AF.alpha_l0))+deltazCL;
 AC.Wing1.Cm_ac_wf = Cmac_w + deltaCmac;
 AC.Wing1.CL_alpha_wf = CL_alpha_wf;
 AC.Wing1.cl = cl;
@@ -212,10 +191,6 @@ AC.Wing1.eta = eta;
 for fn = fieldnames(AC.Wing1)'
    AC.Wing2.(fn{1}) = AC.Wing1.(fn{1});
 end
-
-
-AC.Wing2.Incidence = incidences(2);
-
 
 
 AC.Wing2.Root_LE = AC.Wing1.Root_LE + AC.Wing1.RootChord + DP.Stagger;
@@ -247,7 +222,7 @@ deltaCmac = -1.8*(1 - 2.5 * AC.Fuselage.fusWidth/AC.Fuselage.fusLength)...
 
 AC.Wing2.alpha_zeroLift = alpha_L_0_r;
 AC.Wing2.x_ac_wf = x_ac_wf;
-AC.Wing2.CL_wf = CL_alpha_wf *( (alpha_f*(1-de_da) - alpha_0_1*AC.Wing2.Torsion)+ K_I/K_II*(AC.Wing2.Incidence - AF.alpha_l0))+deltazCL;
+AC.Wing2.CL_wf = clrear; % CL_alpha_wf *( (alpha_f*(1-de_da) - alpha_0_1*AC.Wing2.Torsion)+ K_I/K_II*(AC.Wing2.Incidence - AF.alpha_l0))+deltazCL;
 AC.Wing2.Cm_ac_wf = Cmac_w + deltaCmac;
 AC.Wing2.CL_alpha_wf = CL_alpha_wf;
 AC.Wing2.cl = cl;
@@ -266,22 +241,12 @@ x_cg = DP.x_cg;
 
 
 %L1+L2=W
-F(1) = AC.Wing1.CL_wf + AC.Wing2.CL_wf*qh_q*AC.Wing2.Sw/AC.Wing1.Sw - W/(ME.Cruise.q*AC.Wing1.Sw);
+F(1) = 1*(AC.Wing1.CL_wf + AC.Wing2.CL_wf*qh_q*AC.Wing2.Sw/AC.Wing1.Sw - W/ME.Cruise.q/AC.Wing1.Sw);
 
 %M=0
-F(2) = AC.Wing1.Cm_ac_wf + AC.Wing2.Cm_ac_wf*qh_q*Sh_S*ch_c ...
-    + AC.Wing1.CL_wf*(x_cg-x_ac)/AC.Wing1.CMA ...
-    - AC.Wing2.CL_wf*qh_q*Sh_S*(lh-x_cg)/AC.Wing1.CMA;
-
-% AC.Wing1.CL_wf/(AC.Wing1.CL_wf+AC.Wing2.CL_wf)
-% 
-% (x_cg-x_ac)/AC.Wing1.CMA
-% qh_q*Sh_S*(lh-x_cg)/AC.Wing1.CMA
- L1=AC.Wing1.CL_wf*ME.Cruise.q*AC.Wing1.Sw
- L2=AC.Wing2.CL_wf*ME.Cruise.q*qh_q*AC.Wing2.Sw
-%  W
- F(3) = 0.7*W-L1;
-% AC.Wing1.CL_wf/( W/ME.Cruise.q/AC.Wing1.Sw)
+F(2) = 1*(AC.Wing1.Cm_ac_wf + AC.Wing2.Cm_ac_wf*qh_q*Sh_S*ch_c ...
+    + AC.Wing1.CL_wf*(x_ac-x_cg)/AC.Wing1.CMA ...
+    - AC.Wing2.CL_wf*qh_q*Sh_S*(lh-x_cg)/AC.Wing1.CMA);
 
 %% Lift distribution at this CL
 
@@ -344,24 +309,9 @@ figure()
         %tip chord
             plot([AC.Wing1.Root_LE+AC.Wing1.TipSweep,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord],[ AC.Wing1.WingSpan/2, AC.Wing1.WingSpan/2],'b')
             plot([AC.Wing1.Root_LE+AC.Wing1.TipSweep,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord],[-AC.Wing1.WingSpan/2,-AC.Wing1.WingSpan/2],'b')
-   % Wing2 
-        plot(AC.Wing2.Root_LE+x_leadingEdge,y,'b')
-        plot(AC.Wing2.Root_LE+x_leadingEdge,-y,'b')
-        plot(AC.Wing2.Root_LE+x_trailingEdge,y,'b')
-        plot(AC.Wing2.Root_LE+x_trailingEdge,-y,'b')
-
-        %root chord
-            plot([AC.Wing2.Root_LE,AC.Wing2.Root_LE+AC.Wing2.RootChord],[ 0, 0],'b')
-            plot([AC.Wing2.Root_LE,AC.Wing2.Root_LE+AC.Wing2.RootChord],[-0,-0],'b')
-        %tip chord
-            plot([AC.Wing2.Root_LE+AC.Wing2.TipSweep,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord],[ AC.Wing2.WingSpan/2, AC.Wing2.WingSpan/2],'b')
-            plot([AC.Wing2.Root_LE+AC.Wing2.TipSweep,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord],[-AC.Wing2.WingSpan/2,-AC.Wing2.WingSpan/2],'b')
-       %CG
-       plot(DP.x_cg,0,'x')
+  
  
 end
 
     end
-
-
 

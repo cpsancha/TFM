@@ -61,7 +61,7 @@ switch ME.MissionType
         DP.Wing1_Wing2     =  0.7; %[-] - Parte de la sustentación que se lleva el ala delantera,
         DP.Incidence_1     = 2.85; %[º] - Degrees of angle of the wing/body incidence of wing 1 at root section
         DP.Incidence_2     = 1.10; %[º] - Degrees of angle of the wing/body incidence of wing 2 at root section
-        DP.AspectRatio     =    9; %[-] - Aspect ratio, from similar planes: max-->9.7166, min-->8.0139, mean-->9.0017
+        DP.AspectRatio     =    8; %[-] - Aspect ratio, from similar planes: max-->9.7166, min-->8.0139, mean-->9.0017
         DP.TaperRatio      =  0.6; %[-]
         DP.Dihedral        =  0.0; %[º]
         DP.TipTwist        = -5.0; %[º] - Positive twist: nose rotated upwards (Wash-in). Negative twist: nose rotated downwards (Wash-out)
@@ -90,10 +90,11 @@ switch ME.MissionType
         DP.CrewNumber     = 2;
         
         % Fuselage Shape
-        DP.fuselage_AoA =     0; %[º] Angle of attack of the fuselage
-        DP.fusWidth     =  2.50; %[m]
-        DP.fusHeight    = 2.735; %[m]
-        DP.fusLength    =    23; %12.15 + 3*(DP.fusWidth+DP.fusHeight)/2;
+        DP.fuselage_AoA   =     0; %[º] Angle of attack of the fuselage
+        DP.fusWidth       =  2.50; %[m]
+        DP.fusHeight      = 2.735; %[m]
+        DP.fusLength      =    23; %12.15 + 3*(DP.fusWidth+DP.fusHeight)/2;
+        DP.totalFusVolume =  pi*DP.fusWidth*DP.fusHeight*DP.fusLength/4; %[m^3]
 
         
         

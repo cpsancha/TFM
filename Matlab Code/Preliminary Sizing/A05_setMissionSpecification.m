@@ -30,6 +30,9 @@ end
 
 
 
+%% CREATE ERRORS LIST
+ME.errorList=cell(0);
+
 %% DEFINE CONVERSION FACTORS
 %length
     CF.nm2m     = 1852;
@@ -239,8 +242,16 @@ options = optimoptions('fsolve',...
     else
         clear exitflag  options X0 X
     end
-DP.ShowAircraftLayout = true;
+% DP.ShowAircraftLayout = true;
+% DP.ShowReportFigures  = true;
 run F05_wingConfiguration
+run G05_polarPrediction
+
+
+
+
+
+
 % test_values =[-5,-2.5,0,2.5,5];
 % figure(10)
 % hold on
@@ -275,13 +286,14 @@ function [Error, AC] = getWings(X, AC, ME, DP, Parameters, CST, CF) %#ok<INUSD,I
     run F05_wingConfiguration
     
   %Necessary calculation
-    designWeight = AC.Weight.EW + ME.Payload + AC.Weight.MFW/2;
+    designWeight    = AC.Weight.EW + ME.Payload + AC.Weight.MFW/2;
     [rho,~,~,~,~,~] = atmos(DP.CruiseAltitude);
-    CL0          = designWeight*CST.GravitySI / (0.5*rho*DP.CruiseSpeed^2*AC.Wing.Sw);
+    CL0             = designWeight*CST.GravitySI / (0.5*rho*DP.CruiseSpeed^2*AC.Wing.Sw);
     
   %Parse outputs
-    Error(1) = AC.Wing.CL_wf - CL0;
-    Error(2) = AC.Wing.Cm_wf;
-    Error(3) = (DP.Wing1_Wing2*designWeight*CST.GravitySI - 0.5*rho*DP.CruiseSpeed^2*AC.Wing1.Sw*AC.Wing1.CL_wf)*1e-3;
+    Error(1) =  AC.Wing.CL_wf - CL0;
+    Error(2) =  AC.Wing.Cm_wf;
+    Error(3) =  DP.Wing1_Wing2 - (AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CL_w / CL0);
+%     Error(3) = (DP.Wing1_Wing2*designWeight*CST.GravitySI - 0.5*rho*DP.CruiseSpeed^2*AC.Wing1.Sw*AC.Wing1.CL_wf)*1e-3;
     
 end

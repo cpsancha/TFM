@@ -15,7 +15,8 @@ classdef fuselage < handle
         fusHeightWidth double    %[double]  The ratio between the fuselage height and its width [-]    
         fusLength      double    %[double]  Total length of the fuselage [m]
         fusWidth       double    %[double]  Maximum width of the fuselage [m]
-        minHeight      double    %[double]  Height of the lower point of the fuselage till the ground [m]    
+        minHeight      double    %[double]  Height of the lower point of the fuselage till the ground [m]  
+        Volume         double    %[double]  Total exterior volume of the fuselage [m^3]
     end
     
     

@@ -135,7 +135,7 @@ switch ME.MissionType
         ME.Cruise.beta = sqrt(1-ME.Cruise.Mach^2);
         ME.Cruise.Density = rho;
         ME.Cruise.q = 0.5*ME.Cruise.Density*ME.Cruise.Speed^2;
-        DP.x_cg = 4.5;
+        DP.x_cg = 8;
         clear a rho
 end
 
@@ -214,6 +214,7 @@ AC = aircraft();
         AC.Fuselage.fusLength  = 12.13+ME.Cargo.Volume/2.332;% A=3.286m^2: cilindric section; %Area form Catia
         AC.Fuselage.fusWidth   = 1.1*2.15;
         AC.Fuselage.fusHeight  = 1.1*2.734517;
+        AC.Fuselage.Volume     = AC.Fuselage.fusHeight*AC.Fuselage.fusWidth *  AC.Fuselage.fusLength;
 
 
 %% EXAMPLE OF HOW TO OBTAIN MEAN VALUES FROM SIMILAR PLANES
@@ -235,3 +236,4 @@ run B_loadParameters.m
 run C11_weightEstimation.m
 run D11_airplaneDesignParameters.m
 run E11_configurationDesign.m
+run F11_wingConfiguration.m

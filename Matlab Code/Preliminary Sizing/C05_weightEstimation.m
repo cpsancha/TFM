@@ -79,8 +79,8 @@ Wfix = 500;
 
 %Load fields from similar plane and create regresions
 Wf_Wto      =  loadFields(SP,'Weight.MFW')./loadFields(SP,'Weight.MTOW');
-[T,~,P,~]   =  atmosisa(loadFields(SP,'Actuations.Hcruise'));
-[T0,a0,~,~] =  atmosisa(0);
+[T,~,P,~]   =  atmosisa(loadFields(SP,'Actuations.Hcruise')); %#ok<ASGLU>
+[T0,a0,~,~] =  atmosisa(0); %#ok<ASGLU>
 parentesis  =  (1./(loadFields(SP,'Actuations.Mcruise').*sqrt(loadFields(SP,'Wing.AspectRatio')))) + ...
                (0.068.*P.*loadFields(SP,'Actuations.Mcruise').*loadFields(SP,'Fuselage.fusLength').*...
                (loadFields(SP,'Fuselage.fusWidth')+loadFields(SP,'Fuselage.fusHeight'))./(2.*CST.GravitySI.*loadFields(SP,'Weight.MTOW')));
@@ -195,6 +195,7 @@ clear gof indexFus indexPar MFW_MTOW_ac_old MFW_MTOW_ac_new parametro_ac_old par
     AC.Fuselage.fusLength    = DP.fusLength;
     AC.Fuselage.fusWidth     = DP.fusWidth;
     AC.Fuselage.fuselage_AoA = DP.fuselage_AoA;
+    AC.Fuselage.Volume       = DP.totalFusVolume;
 
 
 
@@ -252,8 +253,8 @@ end
 
 function [F, EW, MFW, parametro_ac, MFW_MTOW_ac] = getTorenbeekMTOW(x, Wf_Wto_fit, delta_EW_fit, Wfix, DP, Parameters, CST, CF, W_E_Str )
     MTOW = x; %MTOW in kg
-    [T, a, P, ~] = atmosisa(DP.CruiseAltitude);
-    [T0,a0,~, ~] = atmosisa(0);
+    [T, a, P, ~] = atmosisa(DP.CruiseAltitude); %#ok<ASGLU>
+    [T0,a0,~, ~] = atmosisa(0); %#ok<ASGLU>
     Mcruise      = DP.CruiseSpeed/a;
     parentesis_ac = (1./(Mcruise.*sqrt(DP.AspectRatio))) + (0.068.*P.*Mcruise.*DP.fusLength.*(DP.fusWidth+DP.fusHeight)./(2.*CST.GravitySI.*MTOW));
     Reserve_Range = 0.75*CF.hour2sec*DP.CruiseSpeed;
