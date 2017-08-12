@@ -6,6 +6,7 @@ classdef weights < handle
         BOW      double    %[double]  Basic Operational Weight [kg]
         EW       double    %[double]  Empty Weight, full equiped [kg]
         FW       double
+        Weight   double    %[double]  Instant weight for calculation porpouses [kg]
         MFW      double    %[double]  Maximum Fuel Weight [kg]
         MLW      double    %[double]  Maximum Landing Weight [kg]
         MPL      double    %[double]  Maximum Payload Weight [kg]

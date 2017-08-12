@@ -3,6 +3,9 @@ classdef fuselage < handle
     %   Detailed explanation goes here
     
     properties (SetObservable)
+        A_I            double    % Planform area of section I [m^2] Figure F.13 Torenbeek
+        A_II           double    % Planform area of section II [m^2]
+        beta           double    % Upsweep angle of the afterbody [º]
         bagVolume      double    %[double]  Total volume of the baggage [m^3]
         cabHeight      double    %[double]  Height of the cabin [m]
         cabLength      double    %[double]  Net length of the cabin excluding cockpit and baggage [m]
@@ -15,6 +18,9 @@ classdef fuselage < handle
         fusHeightWidth double    %[double]  The ratio between the fuselage height and its width [-]    
         fusLength      double    %[double]  Total length of the fuselage [m]
         fusWidth       double    %[double]  Maximum width of the fuselage [m]
+        Swet           double    % exterior wet surface [m^2]
+        la             double    % length of the afterbody [m]
+        ln             double    % length of the nose [m]
         minHeight      double    %[double]  Height of the lower point of the fuselage till the ground [m]  
         Volume         double    %[double]  Total exterior volume of the fuselage [m^3]
     end

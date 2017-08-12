@@ -26,6 +26,8 @@ AF.cl_alpha =1*(180/pi)*(0.991-0.15)/(8-0); %1/rad,  NACA 63A210 pag 557 theory 
 AF.alpha_l0 = -1.5*pi/180;
 AF.cl_max = 1.41;
 AF.c_mac = -0.25;
+AF.t_c   = 0.1;
+AF.cli   = 0.005; %cl for minimum drag
 
 %% Wing extra parameters
 %Only for Wing1
@@ -41,9 +43,9 @@ DP.VerticalGap = 0;
 
 %%
 plotFlag = 0;
-% options = optimoptions('fsolve','FunctionTolerance',1e-12,...
-%                            'StepTolerance',1e-9,...
-%                            'Display','none');
+options = optimoptions('fsolve','FunctionTolerance',1e-12,...
+                           'StepTolerance',1e-9,...
+                           'Display','none');
 %Get medium cruise weight:
 CruiseFF = 1; %Mission Fuel Fraction
 for i=1:4

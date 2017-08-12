@@ -41,9 +41,60 @@
     
 %% PROFILE DRAF OF SMOOTH, ISOLATED MAJOR COMPONENTS --> FLAT PLATE ANALOGY
 %WING SECTIONS
+    [rho,a,T,P,nu,~] = atmos(DP.CruiseAltitude);
+    
+%Minimum Cd profile
+    [D.Cdp_min_1,index_1] = min(AC.Wing1.Airfoil.Polar(2,:));
+    [D.Cdp_min_2,index_2] = min(AC.Wing2.Airfoil.Polar(2,:));
+    
+%Cl for minimum Cd profile
+    D.Cli_1 = AC.Wing1.Airfoil.Polar(1,index_1);
+    D.Cli_2 = AC.Wing2.Airfoil.Polar(1,index_2);
+    
+%Extrapolated profile drag increment at stalling angle of attack
+    HighCLSpeed = sqrt((2*DP.Wing1_Wing2*AC.Weight.Weight*CST.GravitySI)/(rho*AC.Wing1.Sw*AC.Wing1.Airfoil.Cl_max*0.75))/cosd(AC.Wing1.Sweep_14);
+    Reynolds1  = HighCLSpeed * AC.Wing1.CMA / nu;
+    Reynolds2  = HighCLSpeed * AC.Wing2.CMA / nu;
+    if Reynolds1 < 1e7
+        deltaLCdp_ref_1 = (67*AC.Wing1.Airfoil.Cl_max)/(log10(Reynolds1))^4.5 - 0.0046*(1+2.75*AC.Wing1.Airfoil.t_c);
+    else
+        deltaLCdp_ref_1 = 0.01*AC.Wing1.Airfoil.Cl_max - 0.0046*(1+2.75*AC.Wing1.Airfoil.t_c);
+    end
+    if Reynolds2 < 1e7
+        deltaLCdp_ref_2 = (67*AC.Wing2.Airfoil.Cl_max)/(log10(Reynolds2))^4.5 - 0.0046*(1+2.75*AC.Wing2.Airfoil.t_c);
+    else
+        deltaLCdp_ref_2 = 0.01*AC.Wing2.Airfoil.Cl_max - 0.0046*(1+2.75*AC.Wing2.Airfoil.t_c);
+    end
+    
+    run generalized_Profile_Drag
+    cl_1 = linspace(-0.5,AC.Wing1.Airfoil.Cl_max,50);
+    cl_2 = linspace(-0.5,AC.Wing2.Airfoil.Cl_max,50);
+    D.deltaLCdp_1 = deltaLCdp_ref_1 .* interp1(generalizedProfileDrag(:,1),generalizedProfileDrag(:,2),...
+                    ((cl_1-D.Cli_1)./(AC.Wing1.Airfoil.Cl_max-D.Cli_1)).^2);
+    D.deltaLCdp_2 = deltaLCdp_ref_2 .* interp1(generalizedProfileDrag(:,1),generalizedProfileDrag(:,2),...
+                    ((cl_2-D.Cli_2)./(AC.Wing2.Airfoil.Cl_max-D.Cli_2)).^2);
+    
+%     figure()
+%     hold on
+%     plot(cl_1,D.Cdp_min_1+D.deltaLCdp_1,'r')
+%     plot(cl_2,D.Cdp_min_2+D.deltaLCdp_2,'b')
+%     title('Profile Drag of an Airfoil Section','interpreter','latex')
+%     xlabel('$C_l$','interpreter','latex')
+%     ylabel('$C_d$','interpreter','latex')
+%     saveFigure(ME.FiguresFolder,'AirfoilProfileDrag')
 
+    
+    
 %WINGS
+    %Three dimensional profile drag coefficient derived from data at MAC airfoil
+    D.CDp_1 = D.Cdp_min_1 * (AC.Wing1.Snet/AC.Wing1.Sw) + 0.75*deltaLCdp_ref_1*((AC.Wing1.CL_wf-D.Cli_1)/(AC.Wing1.CLmax-D.Cli_1))^2;
+    D.CDp_2 = D.Cdp_min_2 * (AC.Wing2.Snet/AC.Wing2.Sw) + 0.75*deltaLCdp_ref_2*((AC.Wing2.CL_wf-D.Cli_2)/(AC.Wing2.CLmax-D.Cli_2))^2;
+
+    D.CD_1 = D.CDv_1 + D.CDp_1;
+    D.CD_2 = D.CDv_2 + D.CDp_2;
+    
 %FUSELAGE
+beta = 17; %grados
 %NACELLES
 
 
@@ -82,4 +133,4 @@
 
     
 % clear C1_1 C1_2 C2_1 C2_2 C3_1 C3_2 f1 f2 c1 c2 y1 y2 eta1 eta2 Twist1 Twist2
-% clear eta_cp_1 eta_cp_2 delta_1 delta_2
+% clear eta_cp_1 eta_cp_2 delta_1 delta_2 

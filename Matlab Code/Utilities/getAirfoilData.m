@@ -1,4 +1,4 @@
-function [Cl_alpha,alpha_zeroLift,Cm_ac,Cl,Cd,Cm] = getAirfoilData(desiredMach,desiredReynolds,Colors,FiguresFolder,plotFlag,varargin)
+function [Cl_alpha,alpha_zeroLift,Cm_ac,Polar,Cl,Cd,Cm] = getAirfoilData(desiredMach,desiredReynolds,Colors,FiguresFolder,plotFlag,varargin)
 
 %CHECK IF EXIST desiredAlpha
 if isempty(varargin)
@@ -89,6 +89,7 @@ end
             saveFigure(FiguresFolder,'SC(3)-0712(B) - Cl_Cd')
         end
         Cn_Cd  = cat(2,Mach,Re,Cn,Other);
+        
     %Cm_Cn
         varnames = who('Cm_Cn*');
         values = cellfun(@eval, varnames, 'UniformOutput', false);
@@ -128,64 +129,112 @@ end
 
 
 %LIFT CURVE SLOPE & ZERO LIFT ANGLE
-    [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex] = getMachReIndexes(desiredMach,desiredReynolds,Cn_alpha);
+    [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex,...
+     lowMach,upMach,lowMachLowRe,lowMachUpRe,upMachLowRe,upMachUpRe] = getMachReIndexes(desiredMach,desiredReynolds,Cn_alpha);
     lowMachLowReFit = polyfit(deg2rad(Cn_alpha(lowMachLowReIndex,4)),Cn_alpha(lowMachLowReIndex,3),1);
     lowMachUpReFit  = polyfit(deg2rad(Cn_alpha( lowMachUpReIndex,4)),Cn_alpha( lowMachUpReIndex,3),1);
     upMachLowReFit  = polyfit(deg2rad(Cn_alpha( upMachLowReIndex,4)),Cn_alpha( upMachLowReIndex,3),1);
     upMachUpReFit   = polyfit(deg2rad(Cn_alpha(  upMachUpReIndex,4)),Cn_alpha(  upMachUpReIndex,3),1);
     %Cl_alpha    
-        lowMach_Cl_alpha = mean([lowMachLowReFit(1),lowMachUpReFit(1)]);
-        upMach_Cl_alpha  = mean([ upMachLowReFit(1), upMachUpReFit(1)]);
-        Cl_alpha = mean([lowMach_Cl_alpha,upMach_Cl_alpha]); 
+        lowMach_Cl_alpha = interp1([lowMachLowRe,lowMachUpRe],[lowMachLowReFit(1),lowMachUpReFit(1)],desiredReynolds);
+        upMach_Cl_alpha  = interp1([ upMachLowRe, upMachUpRe],[ upMachLowReFit(1), upMachUpReFit(1)],desiredReynolds);
+        Cl_alpha = interp1([lowMach,upMach],[lowMach_Cl_alpha,upMach_Cl_alpha],desiredMach); 
     %alpha_zeroLift    
-        lowMach_alpha_zeroLift = mean([rad2deg(-lowMachLowReFit(2)/lowMachLowReFit(1)),rad2deg(-lowMachUpReFit(2)/lowMachUpReFit(1))]);
-        upMach_alpha_zeroLift  = mean([rad2deg(- upMachLowReFit(2)/ upMachLowReFit(1)),rad2deg(- upMachUpReFit(2)/ upMachUpReFit(1))]);
-        alpha_zeroLift = mean([lowMach_alpha_zeroLift, upMach_alpha_zeroLift]); 
+        lowMach_alpha_zeroLift = interp1([lowMachLowRe,lowMachUpRe],[rad2deg(-lowMachLowReFit(2)/lowMachLowReFit(1)),rad2deg(-lowMachUpReFit(2)/lowMachUpReFit(1))],desiredReynolds);
+        upMach_alpha_zeroLift  = interp1([ upMachLowRe, upMachUpRe],[rad2deg(- upMachLowReFit(2)/ upMachLowReFit(1)),rad2deg(- upMachUpReFit(2)/ upMachUpReFit(1))],desiredReynolds);
+        alpha_zeroLift = interp1([lowMach,upMach],[lowMach_alpha_zeroLift, upMach_alpha_zeroLift],desiredMach); 
 
 
 %AERODYNAMIC CENTER MOMENTUM COEFFICIENT
-    [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex] = getMachReIndexes(desiredMach,desiredReynolds,Cn_Cm);
+    [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex,...
+     lowMach,upMach,lowMachLowRe,lowMachUpRe,upMachLowRe,upMachUpRe] = getMachReIndexes(desiredMach,desiredReynolds,Cn_Cm);
     lowMachLowReCm_ac = mean(Cn_Cm(lowMachLowReIndex,4));
     lowMachUpReCm_ac  = mean(Cn_Cm( lowMachUpReIndex,4));
     upMachLowReCm_ac  = mean(Cn_Cm( upMachLowReIndex,4));
     upMachUpReCm_ac   = mean(Cn_Cm(  upMachUpReIndex,4));
-    lowMach_Cm_ac = mean([lowMachLowReCm_ac,lowMachUpReCm_ac]);
-    upMach_Cm_ac  = mean([ upMachLowReCm_ac, upMachUpReCm_ac]);
-    Cm_ac = mean([lowMach_Cm_ac,upMach_Cm_ac]); 
+    lowMach_Cm_ac = interp1([lowMachLowRe,lowMachUpRe],[lowMachLowReCm_ac,lowMachUpReCm_ac],desiredReynolds);
+    upMach_Cm_ac  = interp1([ upMachLowRe, upMachUpRe],[ upMachLowReCm_ac, upMachUpReCm_ac],desiredReynolds);
+    Cm_ac = interp1([lowMach,upMach],[lowMach_Cm_ac,upMach_Cm_ac],desiredMach); 
         
+    
+%POLAR
+    [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex,...
+     lowMach,upMach,lowMachLowRe,lowMachUpRe,upMachLowRe,upMachUpRe] = getMachReIndexes(desiredMach,desiredReynolds,Cn_Cd);
+    cl = linspace(-0.2,1,50);
+    LowMachLowRePolar = interp1(Cn_Cd(lowMachLowReIndex,3),Cn_Cd(lowMachLowReIndex,4),cl);
+    LowMachUpRePolar  = interp1(Cn_Cd( lowMachUpReIndex,3),Cn_Cd( lowMachUpReIndex,4),cl);
+    UpMachLowRePolar  = interp1(Cn_Cd( upMachLowReIndex,3),Cn_Cd( upMachLowReIndex,4),cl);
+    UpMachUpRePolar   = interp1(Cn_Cd(  upMachUpReIndex,3),Cn_Cd(  upMachUpReIndex,4),cl);
+    LowMachPolar = interp1([lowMachLowRe,lowMachUpRe],[LowMachLowRePolar;LowMachUpRePolar],desiredReynolds);
+    UpMachPolar  = interp1([ upMachLowRe, upMachUpRe],[ UpMachLowRePolar; UpMachUpRePolar],desiredReynolds);
+    Polar = [cl;interp1([lowMach,upMach],[LowMachPolar;UpMachPolar],desiredMach)];
+%     varnames = who('Cd_Cn*');
+%     values = cellfun(@eval, varnames, 'UniformOutput', false);
+%     figure()
+%     hold on
+%     LegendStr=cell(0);
+%     for i=1:length(varnames)
+%         plot(values{i}(:,2),values{i}(:,1),':','LineWidth',1.25,'Color',Colors(i,:));
+%         LegendStr{end+1} = ['$M_\infty=',num2str(values{i}(1,3)),'\ \ Re=',num2str(values{i}(1,4)/1e6),'e6$']; %#ok<AGROW>
+%     end
+%     title('NACA Airfoil SC(3)-0712(B) - Experimental Data','interpreter','latex')
+%     xlabel('$C_l\ [-]$','interpreter','latex')
+%     ylabel('$C_d\ [-]$','interpreter','latex')
+%     xlim([0.005,0.037])
+% 	  ylim([-0.25,1.2])
+%     legend(LegendStr,'Location','southeast','interpreter','latex')
+%     legend('boxoff')
+%     plot(Cn_Cd(lowMachLowReIndex,3),Cn_Cd(lowMachLowReIndex,4),':r')
+%     plot(Cn_Cd( lowMachUpReIndex,3),Cn_Cd( lowMachUpReIndex,4),':b')
+%     plot(Cn_Cd( upMachLowReIndex,3),Cn_Cd( upMachLowReIndex,4),':g')
+%     plot(Cn_Cd(  upMachUpReIndex,3),Cn_Cd(  upMachUpReIndex,4),':k')
+%     plot(cl,LowMachLowRePolar,'r')
+%     plot(cl, LowMachUpRePolar,'b')
+%     plot(cl, UpMachLowRePolar,'g')
+%     plot(cl,  UpMachUpRePolar,'k')
+%     plot(cl,LowMachPolar)
+%     plot(cl,UpMachPolar)
+%     plot(cl,Polar)
+    
+    
+    
 
 if flag    
 %NORMAL FORCE COEFFICIENT
-    [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex] = getMachReIndexes(desiredMach,desiredReynolds,Cn_alpha);
+    [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex,...
+     lowMach,upMach,lowMachLowRe,lowMachUpRe,upMachLowRe,upMachUpRe] = getMachReIndexes(desiredMach,desiredReynolds,Cn_alpha);
     lowMachLowReCl = interp1(Cn_alpha(lowMachLowReIndex,4),Cn_alpha(lowMachLowReIndex,3),desiredAlpha);
     lowMachUpReCl  = interp1(Cn_alpha( lowMachUpReIndex,4),Cn_alpha( lowMachUpReIndex,3),desiredAlpha);
     upMachLowReCl  = interp1(Cn_alpha( upMachLowReIndex,4),Cn_alpha( upMachLowReIndex,3),desiredAlpha);
     upMachUpReCl   = interp1(Cn_alpha(  upMachUpReIndex,4),Cn_alpha(  upMachUpReIndex,3),desiredAlpha);
-    lowMach_Cl = mean([lowMachLowReCl,lowMachUpReCl]);
-    upMach_Cl  = mean([ upMachLowReCl, upMachUpReCl]);
-    Cl = mean([lowMach_Cl,upMach_Cl]);
+    lowMach_Cl = interp1([lowMachLowRe,lowMachUpRe],[lowMachLowReCl,lowMachUpReCl],desiredReynolds);
+    upMach_Cl  = interp1([ upMachLowRe, upMachUpRe],[ upMachLowReCl, upMachUpReCl],desiredReynolds);
+    Cl = interp1([lowMach,upMach],[lowMach_Cl,upMach_Cl],desiredMach);
     
     
 %DRAG COEFFICIENT
-    [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex] = getMachReIndexes(desiredMach,desiredReynolds,Cn_Cd);
+    [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex,...
+     lowMach,upMach,lowMachLowRe,lowMachUpRe,upMachLowRe,upMachUpRe] = getMachReIndexes(desiredMach,desiredReynolds,Cn_Cd);
     lowMachLowReCd = interp1(Cn_Cd(lowMachLowReIndex,3),Cn_Cd(lowMachLowReIndex,4),Cl);
     lowMachUpReCd  = interp1(Cn_Cd( lowMachUpReIndex,3),Cn_Cd( lowMachUpReIndex,4),Cl);
     upMachLowReCd  = interp1(Cn_Cd( upMachLowReIndex,3),Cn_Cd( upMachLowReIndex,4),Cl);
     upMachUpReCd   = interp1(Cn_Cd(  upMachUpReIndex,3),Cn_Cd(  upMachUpReIndex,4),Cl);
-    lowMach_Cd = mean([lowMachLowReCd,lowMachUpReCd]);
-    upMach_Cd  = mean([ upMachLowReCd, upMachUpReCd]);
-    Cd = mean([lowMach_Cd,upMach_Cd]);
+    lowMach_Cd = interp1([lowMachLowRe,lowMachUpRe],[lowMachLowReCd,lowMachUpReCd],desiredReynolds);
+    upMach_Cd  = interp1([ upMachLowRe, upMachUpRe],[ upMachLowReCd, upMachUpReCd],desiredReynolds);
+    Cd = interp1([lowMach,upMach],[lowMach_Cd,upMach_Cd],desiredMach);
+    
     
     
 %PITCHING MOMENT COEFFICIENT
-    [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex] = getMachReIndexes(desiredMach,desiredReynolds,Cn_Cm);
+    [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex,...
+     lowMach,upMach,lowMachLowRe,lowMachUpRe,upMachLowRe,upMachUpRe] = getMachReIndexes(desiredMach,desiredReynolds,Cn_Cm);
     lowMachLowReCm = interp1(Cn_Cm(lowMachLowReIndex,3),Cn_Cm(lowMachLowReIndex,4),Cl);
     lowMachUpReCm  = interp1(Cn_Cm( lowMachUpReIndex,3),Cn_Cm( lowMachUpReIndex,4),Cl);
     upMachLowReCm  = interp1(Cn_Cm( upMachLowReIndex,3),Cn_Cm( upMachLowReIndex,4),Cl);
     upMachUpReCm   = interp1(Cn_Cm(  upMachUpReIndex,3),Cn_Cm(  upMachUpReIndex,4),Cl);
-    lowMach_Cm = mean([lowMachLowReCm,lowMachUpReCm]);
-    upMach_Cm  = mean([ upMachLowReCm, upMachUpReCm]);
-    Cm = mean([lowMach_Cm,upMach_Cm]);    
+    lowMach_Cm = interp1([lowMachLowRe,lowMachUpRe],[lowMachLowReCm,lowMachUpReCm],desiredReynolds);
+    upMach_Cm  = interp1([ upMachLowRe, upMachUpRe],[ upMachLowReCm, upMachUpReCm],desiredReynolds);
+    Cm = interp1([lowMach,upMach],[lowMach_Cm,upMach_Cm],desiredMach);    
     
 end    
     
@@ -194,7 +243,8 @@ end
 
 
 
-function [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex] = getMachReIndexes(desiredMach,desiredReynolds,dataArray)
+function [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex,...
+          lowMach,upMach,lowMachLowRe,lowMachUpRe,upMachLowRe,upMachUpRe] = getMachReIndexes(desiredMach,desiredReynolds,dataArray)
 
     MachArray = unique(dataArray(:,1));
     [~,MachIndex] = min(abs(MachArray-desiredMach));

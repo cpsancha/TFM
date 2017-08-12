@@ -41,6 +41,9 @@ AC.Engine.SFC         = enginesSFC(index(indexmin));
 AC.Engine.TotalPower  = enginesPower(index(indexmin));
 AC.Engine.Power       = turbopropDataBase(index(indexmin)).Power*CF.hp2watts;
 AC.Engine.Weight      = turbopropDataBase(index(indexmin)).Weight*CF.lbm2kg;
+AC.Engine.Length      = turbopropDataBase(index(indexmin)).Length*CF.in2m;
+AC.Engine.Width       = turbopropDataBase(index(indexmin)).Width*CF.in2m;
+AC.Engine.Swet        = pi*AC.Engine.Width*AC.Engine.Length; %Aproximacion cutre por un cilindro sin base xd
 %         [min,indexmin]= min(abs(enginesPower-AC.Engine.TotalPower)); % Closest to power selected
 %%        
  figure(); hold on;
@@ -101,6 +104,7 @@ Dp = sqrt(AC.Engine.Power/CF.hp2watts /Pto_DP2 );
 %  [~, a, ~, rho] = atmosisa(ME.Cruise.Altitude);
 % D = a/pi/4*sqrt(0.8^2-ME.Cruise.Mach^2)
 
+AC.Engine.propDiameter = Dp;
 AC.Engine.Position= [NaN,(AC.Engine.Power/CF.hp2watts/100*1.65e-2+0.1)+Dp/2+AC.Fuselage.fusWidth/2, NaN];
         
 %% WING CONFIGURATION --> Chapter 6 & 7

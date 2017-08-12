@@ -32,6 +32,10 @@
     %Cl_max
         AC.Wing1.Airfoil.Cl_max = 1.7;
         AC.Wing2.Airfoil.Cl_max = 1.7;
+    %Transition point/chord
+        AC.Wing1.Airfoil.transition_c = 0.05;
+        AC.Wing2.Airfoil.transition_c = 0.05;
+        
 
     
         
@@ -120,11 +124,12 @@
 
 %Reynolds
         [rho,a,T,P,nu,~] = atmos(DP.CruiseAltitude); %#ok<ASGLU>
-        CruiseMach = DP.CruiseSpeed/a;
-        Beta1       = sqrt(1-(CruiseMach)^2); %Prandtl compresibility correction
-        Beta2       = sqrt(1-(CruiseMach)^2); %Prandtl compresibility correction
-        Reynolds1  = DP.CruiseSpeed * AC.Wing1.CMA / nu;
-        Reynolds2  = DP.CruiseSpeed * AC.Wing2.CMA / nu;
+        CruiseMach1 = sqrt(DP.CruiseSpeed^2*Parameters.q1_qinf)/a;
+        CruiseMach2 = sqrt(DP.CruiseSpeed^2*Parameters.q2_qinf)/a;
+        Beta1       = sqrt(1-(CruiseMach1)^2); %Prandtl compresibility correction
+        Beta2       = sqrt(1-(CruiseMach2)^2); %Prandtl compresibility correction
+        AC.Wing1.Reynolds  = sqrt(DP.CruiseSpeed^2*Parameters.q1_qinf) * AC.Wing1.CMA / nu;
+        AC.Wing2.Reynolds  = sqrt(DP.CruiseSpeed^2*Parameters.q2_qinf) * AC.Wing2.CMA / nu;
     
 %Wing design CL
     AC.Wing1.CLdesign = AC.Wing1.Airfoil.Cldesign*(cosd(AC.Wing1.Sweep_14))^2;
@@ -202,15 +207,18 @@
     end
     
     
+    
 %% LIFTING PROPERTIES OF AIRFOIL SECTIONS
 %Wing1
     [AC.Wing1.Airfoil.Cl_alpha,...
      AC.Wing1.Airfoil.alpha_zeroLift,...
-     AC.Wing1.Airfoil.Cm_ac,~,~,~] = getAirfoilData(CruiseMach*cosd(AC.Wing1.Sweep_14),Reynolds1,Parameters.Colors,ME.FiguresFolder,false);
+     AC.Wing1.Airfoil.Cm_ac,...
+     AC.Wing1.Airfoil.Polar,~,~,~] = getAirfoilData(CruiseMach1*cosd(AC.Wing1.Sweep_12),AC.Wing1.Reynolds,Parameters.Colors,ME.FiguresFolder,false);
 %Wing2
     [AC.Wing2.Airfoil.Cl_alpha,...
      AC.Wing2.Airfoil.alpha_zeroLift,...
-     AC.Wing2.Airfoil.Cm_ac,~,~,~] = getAirfoilData(CruiseMach*cosd(AC.Wing2.Sweep_14),Reynolds2,Parameters.Colors,ME.FiguresFolder,false);
+     AC.Wing2.Airfoil.Cm_ac,...
+     AC.Wing2.Airfoil.Polar,~,~,~] = getAirfoilData(CruiseMach2*cosd(AC.Wing2.Sweep_12),AC.Wing2.Reynolds,Parameters.Colors,ME.FiguresFolder,false);
 
 
 
@@ -227,7 +235,7 @@
 %Polhamus Method - NACA Technical Note 3911
     CL_alpha_Polhamus  = (AC.Wing1.Airfoil.Cl_alpha*AC.Wing1.AspectRatio) / ((AC.Wing1.Airfoil.Cl_alpha/pi) + ...
                          sqrt((AC.Wing1.AspectRatio/cosd(AC.Wing1.Sweep_12))^2+(AC.Wing1.Airfoil.Cl_alpha/pi)^2 - ...
-                         (AC.Wing1.AspectRatio*CruiseMach)^2));
+                         (AC.Wing1.AspectRatio*CruiseMach1)^2));
     if abs(CL_alpha_Torenbeek-CL_alpha_DATCOM) > 1e-6
         if ~ismember('AC:notDefinedCoG',ME.errorList)
             ME.errorList{end+1} = 'AC:CL_alpha_Torenbeek_DATCOM';
@@ -361,19 +369,23 @@
 if DP.ShowReportFigures
     figure()
     hold on
-        plot(AC.Wing1.eta,AC.Wing1.CLmax.*Cla1);
-        plot(AC.Wing1.eta,Clb1);
-        plot(AC.Wing1.eta,Cl1);
         [~,index] = max(Cl1);
-        plot(AC.Wing1.eta(index),Cl1(index),'o')
-%         plot(AC.Wing2.eta,AC.Wing2.CLmax.*Cla2,':');
-%         plot(AC.Wing2.eta,Clb2,':');
-%         plot(AC.Wing2.eta,Cl2,':');
-        legend('Aditional lift distribution','Basic lift distribution','Total lift distribution','First point of stall','Location','best')
+        plot(AC.Wing1.eta(index),Cl1(index),'o','LineWidth',1.25,'Color',Parameters.Colors(1,:))
+        plot(AC.Wing1.eta,ones(1,length(AC.Wing1.eta)).*AC.Wing1.Airfoil.Cl_max*cosd(AC.Wing1.Sweep_14),'--','LineWidth',1.25,'Color',Parameters.Colors(2,:));
+        plot(AC.Wing1.eta,Cl1,'LineWidth',1.25,'Color',Parameters.Colors(3,:));
+        plot(AC.Wing1.eta,Clb1,'LineWidth',1.25,'Color',Parameters.Colors(6,:));
+        plot(AC.Wing1.eta,AC.Wing1.CLmax.*Cla1,'LineWidth',1.25,'Color',Parameters.Colors(8,:));
+        plot(AC.Wing1.eta,Cla1,'LineWidth',1.25,'Color',Parameters.Colors(4,:));
+
+%         plot(AC.Wing2.eta,AC.Wing2.CLmax.*Cla2,':','LineWidth',1.25,'Color',Parameters.Colors(7,:));
+%         plot(AC.Wing2.eta,Clb2,':','LineWidth',1.25,'Color',Parameters.Colors(8,:));
+%         plot(AC.Wing2.eta,Cl2,':','LineWidth',1.25,'Color',Parameters.Colors(9,:));
+
+        legend('First point of stall','Maximum lift of the airfoil','Total lift distribution','Basic lift distribution','Aditional lift distribution','Aditional lift distribution for C_{L_{max}}=1','Location','southwest')
         legend('boxoff')
         xlabel('$\frac{y}{b/2}$','interpreter','latex')
         ylabel('$C_l$','interpreter','latex')
-        title(['Spanwise Lift Distribution for $C_{Lmax}=',num2str(AC.Wing1.CLmax),'$ and $\varepsilon_t=',num2str(AC.Wing1.TipTwist),'$'],'interpreter','latex')
+        title(['Spanwise Lift Distribution for $C_{Lmax}=',num2str(AC.Wing1.CLmax),'$ and $\varepsilon_t=',num2str(AC.Wing1.TipTwist),'^o$'],'interpreter','latex')
         saveFigure(ME.FiguresFolder,'SpanwiseLiftDistribution')
 end
     
@@ -388,7 +400,8 @@ end
 
 %Lift Coefficient in the linear range
     AC.Wing1.CL_w = AC.Wing1.CL_alpha_w * deg2rad(AC.Wing1.Incidence+AC.Fuselage.fuselage_AoA-AC.Wing1.Airfoil.alpha_zeroLift-twist_0lift_1*AC.Wing1.TipTwist);
-    AC.Wing2.CL_w = AC.Wing2.CL_alpha_w * deg2rad(AC.Wing2.Incidence+AC.Fuselage.fuselage_AoA*0.9*(1-deltaE_deltaAlpha)-AC.Wing2.Airfoil.alpha_zeroLift-twist_0lift_2*AC.Wing2.TipTwist);
+    AC.Wing2.CL_w = AC.Wing2.CL_alpha_w * deg2rad(AC.Wing2.Incidence+AC.Fuselage.fuselage_AoA*0.9*(1-deltaE_deltaAlpha)-...
+                    AC.Wing2.Airfoil.alpha_zeroLift-twist_0lift_2*AC.Wing2.TipTwist)+AC.Wing2.deltaCLdeltaE;
 
     
 
@@ -408,6 +421,8 @@ end
     
 %Pitching moment coefficient of the wings
     AC.Weight.x_cg = DP.x_cg;  %WARNING!!!  <-- TO BE REMOVED
+    AC.Weight.y_cg = DP.y_cg;
+    AC.Weight.z_cg = DP.z_cg;
     
     if ~ismember('AC:notDefinedCoG',ME.errorList)
         ME.errorList{end+1} = 'AC:notDefinedCoG';
@@ -445,8 +460,8 @@ end
 %Lift coefficient taking into acount the fuselage interference
     AC.Wing1.CL_wf = AC.Wing1.CL_alpha_wf * deg2rad(AC.Fuselage.fuselage_AoA - twist_0lift_1*AC.Wing1.TipTwist + (KII_1/KI_1) * ...
                     (AC.Wing1.Incidence - AC.Wing1.Airfoil.alpha_zeroLift)) + deltazCL_1;
-    AC.Wing2.CL_wf = AC.Wing2.CL_alpha_wf * deg2rad(AC.Fuselage.fuselage_AoA*0.9*(1-deltaE_deltaAlpha) - twist_0lift_2*AC.Wing2.TipTwist + (KII_2/KI_2) * ...
-                    (AC.Wing2.Incidence - AC.Wing2.Airfoil.alpha_zeroLift)) + deltazCL_2;
+    AC.Wing2.CL_wf = AC.Wing2.CL_alpha_wf * deg2rad(AC.Fuselage.fuselage_AoA*0.9*(1-deltaE_deltaAlpha) - twist_0lift_2*AC.Wing2.TipTwist + ...
+                    (KII_2/KI_2) * (AC.Wing2.Incidence - AC.Wing2.Airfoil.alpha_zeroLift)) + deltazCL_2 + AC.Wing2.deltaCLdeltaE;
     
 
 
@@ -505,16 +520,12 @@ clear lengthFusNose1 lengthFusNose2 deltaF1ac_1 deltaF1ac_2 deltaF2ac_1 deltaF2a
     
     
 %% LIFT OF THE COMPLETE AIRCRAFT
-    %Relaciones de presión dinámica segun torenbeek
-    q1_qinf = 1.00; 
-    q2_qinf = 0.85; %Torenbeek E-10.1
-    
     %Coeficiente de sustentación y de momentos del avión completo
-    AC.Wing.CL_wf = q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CL_wf + q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CL_wf;
-    AC.Wing.Cm_wf = q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CMA / AC.Wing.CMA * AC.Wing1.Cm_ac_wf + ...
-                    q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CMA / AC.Wing.CMA * AC.Wing2.Cm_ac_wf + ...
-                    q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CL_wf * (AC.Weight.x_cg - AC.Wing1.x_ac_wf) + ...
-                    q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CL_wf * (AC.Weight.x_cg - AC.Wing2.x_ac_wf);
+    AC.Wing.CL_wf = Parameters.q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CL_wf + Parameters.q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CL_wf;
+    AC.Wing.Cm_wf = Parameters.q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CMA / AC.Wing.CMA * AC.Wing1.Cm_ac_wf + ...
+                    Parameters.q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CMA / AC.Wing.CMA * AC.Wing2.Cm_ac_wf + ...
+                    Parameters.q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CL_wf * (AC.Weight.x_cg - AC.Wing1.x_ac_wf) + ...
+                    Parameters.q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CL_wf * (AC.Weight.x_cg - AC.Wing2.x_ac_wf);
 
 
 
@@ -577,6 +588,9 @@ figure()
         %position c/4
             plot([AC.Wing1.Root_LE+AC.Wing1.RootChord/4,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord/4],[ 0, AC.Wing1.WingSpan/2],'g')
             plot([AC.Wing1.Root_LE+AC.Wing1.RootChord/4,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord/4],[-0,-AC.Wing1.WingSpan/2],'g')
+        %MAC
+            plot([AC.Wing1.CMA_LE,AC.Wing1.CMA_LE+AC.Wing1.CMA],[ AC.Wing1.CMA_b, AC.Wing1.CMA_b],'m')
+            plot([AC.Wing1.CMA_LE,AC.Wing1.CMA_LE+AC.Wing1.CMA],[-AC.Wing1.CMA_b,-AC.Wing1.CMA_b],'m')
     %WING2
         %root chord
             plot([AC.Wing2.Root_LE,AC.Wing2.Root_LE+AC.Wing2.RootChord],[ 0, 0],'b')
@@ -593,17 +607,23 @@ figure()
         %position c/4
             plot([AC.Wing2.Root_LE+AC.Wing2.RootChord/4,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord/4],[ 0, AC.Wing2.WingSpan/2],'g')
             plot([AC.Wing2.Root_LE+AC.Wing2.RootChord/4,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord/4],[-0,-AC.Wing2.WingSpan/2],'g')
+        %MAC
+            plot([AC.Wing2.CMA_LE,AC.Wing2.CMA_LE+AC.Wing2.CMA],[ AC.Wing2.CMA_b, AC.Wing2.CMA_b],'m')
+            plot([AC.Wing2.CMA_LE,AC.Wing2.CMA_LE+AC.Wing2.CMA],[-AC.Wing2.CMA_b,-AC.Wing2.CMA_b],'m')
+    %WEIGHT
+        %Center of gravity
+            plot(AC.Weight.x_cg,AC.Weight.y_cg,'*')
     clear Xfus Yfus
 end     
     
     
-clear a T P rho nu Reynolds1 Reynolds2 CruiseMach EffectiveSweep1 EffectiveSweep2
+clear a T P rho nu EffectiveSweep1 EffectiveSweep2 CruiseMach
 clear f_00deg f_30deg f_45deg f_60deg index DiederichCoordinate1 DiederichCoordinate2
 clear C1x C2x C3x C4x C1y C2y C3y C4y f0x f0y f30x f30y f_low f_hight
 clear C1_1 C1_2 C2_1 C2_2 C3_1 C3_2 f1 f2 C4_1 C4_2 CL_wing1 CL_wing2 Clb1 Clb2
 clear La1 La2 Lb1 Lb2 twist_0lift_1 twist_0lift_2 Cl1 Cl2 y1 y2 Cla1 Cla2
 clear Cm_ac_basic1 Cm_ac_basic2 deltaEpsilonCm_ac1 deltaEpsilonCm_ac2 Cm_ac_w1 Cm_ac_w2
-clear KI_1 KI_2 KII_1 KII_2 deltazCL_1 deltazCL_2 deltaNac_1 deltaNac_2 deltaE_deltaAlpha q1_qinf q2_qinf m r
+clear KI_1 KI_2 KII_1 KII_2 deltazCL_1 deltazCL_2 deltaNac_1 deltaNac_2 deltaE_deltaAlpha m r
     
     
 %% USEFUL FUNCTIONS

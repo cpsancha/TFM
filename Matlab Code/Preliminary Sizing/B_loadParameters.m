@@ -20,6 +20,12 @@ end
 Parameters.Colors = distinguishable_colors(20);
 
 
+%% DYNAMIC PRESSURE RELATIONS
+%Relaciones de presión dinámica segun torenbeek
+    Parameters.q1_qinf = 1.00; 
+    Parameters.q2_qinf = 0.85; %Torenbeek E-10.1
+    
+
 %% Table 2.2: Suggested Values For L/D, c_j, n_p and c_p for several mission phases:
 switch ME.MissionType
     case 5

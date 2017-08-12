@@ -228,24 +228,44 @@ end
 run B_loadParameters.m
 run C05_weightEstimation.m
 run D05_airplaneDesignParameters.m
+AC.Wing2.deltaCLdeltaE = 0;
 run F05_wingConfiguration
-options = optimoptions('fsolve',...
-                       'StepTolerance',1e-9,...
-                       'Display','none');
-    X0 = [DP.Incidence_1, DP.Incidence_2, DP.Stagger];
-    [X,~,exitflag,~] = fsolve(@(X)getWings(X, AC, ME, DP, Parameters, CST, CF),X0,options);
-    DP.Incidence_1 = X(1);
-    DP.Incidence_2 = X(2);
-    DP.Stagger     = X(3);
-    if ~isequal(exitflag,1)
-        error('El solver que calcula las incidencias y el stagger no ha logrado converger correctamente. Se debería revisar el resultado.')
-    else
-        clear exitflag  options X0 X
-    end
+globalOptions = optimoptions('fsolve', 'StepTolerance',1e-9, 'Display','none');
+X0 = [DP.Incidence_1, DP.Incidence_2, DP.Stagger];
+[X,~,exitflag,~] = fsolve(@(X)getWingsIncidence(X, AC, ME, DP, Parameters, CST, CF),X0,globalOptions);
+DP.Incidence_1 = X(1);
+DP.Incidence_2 = X(2);
+DP.Stagger     = X(3);
+if ~isequal(exitflag,1)
+    error('El solver que calcula las incidencias y el stagger no ha logrado converger correctamente. Se debería revisar el resultado.')
+else
+    clear exitflag  X0 X
+end
+    
 % DP.ShowAircraftLayout = true;
 % DP.ShowReportFigures  = true;
 run F05_wingConfiguration
-run G05_polarPrediction
+% DP.ShowReportFigures  = false;
+
+X0 = [DP.fuselage_AoA, 0];
+AircraftWeight = linspace(AC.Weight.MTOW*prod([Parameters.fuelFraction(1:6).value]),AC.Weight.MTOW*prod([Parameters.fuelFraction(1:4).value]),50);
+for i=1:length(AircraftWeight)
+    [X,~,exitflag,~] = fsolve(@(X)trimAircraft(X, AircraftWeight(i), AC, ME, DP, Parameters, CST, CF),X0,globalOptions);
+    [~, AC] = trimAircraft(X, AircraftWeight(i), AC, ME, DP, Parameters, CST, CF);
+    Polar.Weight(i)       = AircraftWeight(i);
+    Polar.Fuselage_AoA(i) = AC.Fuselage.fuselage_AoA;
+    Polar.Wing1.CL(i)     = AC.Wing1.CL_wf;
+    Polar.Wing1.Cma(i)    = AC.Wing1.Cm_ac_wf;
+    Polar.Wing2.CL(i)     = AC.Wing2.CL_wf;
+    Polar.Wing2.Cma(i)    = AC.Wing2.Cm_ac_wf;
+    Polar.Wing2.deltaCLdeltaE(i) = AC.Wing2.deltaCLdeltaE;
+    run G05_polarPrediction
+    Polar.Wing1.CD(i) = D.CD_1;
+    Polar.Wing2.CD(i) = D.CD_2;
+end
+% AC.Wing2.deltaCLdeltaE = 0;
+% run F05_wingConfiguration
+% run G05_polarPrediction
 
 
 
@@ -267,7 +287,8 @@ run G05_polarPrediction
 % legend('-5º','-2.5º','0º','2.5º','5º')
 
 
-function [Error, AC] = getWings(X, AC, ME, DP, Parameters, CST, CF) %#ok<INUSD,INUSL>
+
+function [Error, AC, ME, DP, Parameters] = getWingsIncidence(X, AC, ME, DP, Parameters, CST, CF) %#ok<INUSD>
   %INPUTS:  
     %X(1) = Wing1 Incidence [º]
     %X(2) = Wing2 Incidence [º]
@@ -296,4 +317,21 @@ function [Error, AC] = getWings(X, AC, ME, DP, Parameters, CST, CF) %#ok<INUSD,I
     Error(3) =  DP.Wing1_Wing2 - (AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CL_w / CL0);
 %     Error(3) = (DP.Wing1_Wing2*designWeight*CST.GravitySI - 0.5*rho*DP.CruiseSpeed^2*AC.Wing1.Sw*AC.Wing1.CL_wf)*1e-3;
     
+end
+
+function [Error, AC] = trimAircraft(X, AircraftWeight, AC, ME, DP, Parameters, CST, CF)  %#ok<INUSD,INUSL>
+  %Parse inputs
+    AC.Fuselage.fuselage_AoA = X(1);
+    AC.Wing2.deltaCLdeltaE   = X(2);
+    
+  %Run wing's script
+    run F05_wingConfiguration
+    
+  %Necessary calculation
+	[rho,~,~,~,~,~] = atmos(DP.CruiseAltitude);
+ 	CL0             = AircraftWeight*CST.GravitySI / (0.5*rho*DP.CruiseSpeed^2*AC.Wing.Sw); 
+    
+  %Parse outputs
+    Error(1) =  AC.Wing.CL_wf - CL0;
+    Error(2) =  AC.Wing.Cm_wf;   
 end

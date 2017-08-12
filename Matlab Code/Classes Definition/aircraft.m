@@ -12,6 +12,7 @@ classdef aircraft < handle
         Wing         wing           % The main wing of the aircraft
         Wing1        wing           % Front wing
         Wing2        wing           % Rear wing
+        VTP          wing           % Vertical stabilizer
         Engine       engines        % The engines of the aircraft
         Weight       weights        % The weights of the aircraft
         Payload      payload        % The payload/passengers

@@ -35,18 +35,21 @@ classdef wing < handle
         Cm_wf           double  %[double] Coefficient of pitching moment, taking into acount the fuselage interference [-]
         Cm_ac_w         double  %[double] Coefficient of pitching moment in the aerodynamic center [-]
         Cm_ac_wf        double  %[double] Coefficient of pitching moment in the aerodynamic center, taking into acount the fuselage [-]
+        deltaCLdeltaE   double  %[double] Additional CL due to the elevator deflection [-]
         Dihedral        double  %[double] Dihedral of the wing [º]
-        eta             double  % Adimensionalized spanwise coordinate
+        eta             double  %[double] Adimensionalized spanwise coordinate [-]
         Incidence       double  %[double] Angle of the wing/body incidence (iw) mesaured from fuselage floor [º]
         LongPos         double  %[double] Definida como el cociente entre la distancia longitudinal del punto un cuarto de la cuerda media aerodinámica al morro del avión y la longitud del fuselaje.
         MachDiv         double  %[double] Mach of divergence, for which drag increases a lot [-]
         RealSemiSpan    double  %[double] Distance from the fuselage (root chord) to the tip chord
+        Reynolds        double  % Reynolds number at each chord station [-]
         Root_AoA        double  %[double] Angle of attack at the root [º](Angle between root chord and direction of undisturbed flow)
         Root_LE         double  %[double] Longitudinal Position of the Root Leading Edge 
         RootChord       double  %[double] Chord at the root [m]
         RootWidth       double  %[double] t at the root [m]
         Snet            double  %[double] Total wing surface subtracting the portion contained in the fuselage [m^2]
         Sw              double  %[double] Total Wing Surface [m^2]
+        Swet            double  % Wet surface [m^2]
         Sweep_12        double  %[double] Sweep of the wing at the point 1/2 of CMA [º]
         Sweep_14        double  %[double] Sweep of the wing at the point 1/4 of CMA [º]
         Sweep_LE        double  %[double] Sweep of the wing at the leading edge [º]

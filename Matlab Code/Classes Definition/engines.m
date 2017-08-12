@@ -5,8 +5,9 @@ classdef engines < handle
     
     properties (SetObservable)
         Diameter     double     %[double] Maximum diameter of the engine [m]
+        propDiameter double     % Propeller diameter [m]
         etaPropeller double     %[double] Propeller efficiency [-]
-        Length       double     %[double] Maximum length of the engine [m]
+        Length       double     %[double] Maximum length of the engine,inculding propeller [m]
         Manufacturer string     %[string] Engine's manufacturer.
         Model        string     %[string] Engine's model.
         Number       double     %[double] Number of engines in the plane.
@@ -14,6 +15,7 @@ classdef engines < handle
         PositionStr  string     %[string] Verbose Position of the engine/engines
         Power        double     %[double] Power at take-off [W]   
         SFC          double     %[double] Specific fuel consumption [lb/(shp·h)]
+        Swet         double     % Wet surface of the engine (prop not included) [m^2]
         Thrust       double     %[double] Thrust of the engine [N].
         TotalPower   double     %[double] Total take-off power [kW]
         TotalThrust  double     %[double] Total thrust of the engines [N].
@@ -22,6 +24,7 @@ classdef engines < handle
         TSFC_TO      double     %[double] Thrust specific fuel consumption at Take-Off [lb/(lbf·h)]
         Type         string     %[string] Type of engine (jet, propeller, turbofan,...)
         Weight       double     %[double] Mass of the engine [kg]. ONE ENGINE
+        Width        double     % Maximum width of the nacelle [m]
     end
     
     

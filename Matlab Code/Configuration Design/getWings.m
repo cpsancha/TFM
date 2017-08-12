@@ -198,6 +198,9 @@ deltaCmac = -1.8*(1 - 2.5 * AC.Fuselage.fusWidth/AC.Fuselage.fusLength)...
     /(4*AC.Wing1.Sw*AC.Wing1.CMG*CL_alpha_wf);   %Falta meter corrección por área no circular
 
 %% Final values of Wing1
+ [~,~,~,~,nu,~] = atmos(ME.Cruise.Altitude);
+ 
+
 AC.Wing1.alpha_zeroLift = alpha_L_0_r;
 AC.Wing1.x_ac_wf = x_ac_wf;
 AC.Wing1.CL_wf = CL_alpha_wf *( (alpha_f - alpha_0_1*AC.Wing1.Torsion)+ K_I/K_II*(AC.Wing1.Incidence - AF.alpha_l0))+deltazCL;
@@ -205,6 +208,7 @@ AC.Wing1.Cm_ac_wf = Cmac_w + deltaCmac;
 AC.Wing1.CL_alpha_wf = CL_alpha_wf;
 AC.Wing1.cl = cl;
 AC.Wing1.c = c;
+AC.Wing1.Reynolds = ME.Cruise.Speed .* AC.Wing1.c ./ nu;
 AC.Wing1.eta = eta;
 
 
@@ -255,9 +259,12 @@ AC.Wing2.c = c;
 AC.Wing2.eta = eta;
 
 
+qh_q = 0.85;
+AC.Wing2.Reynolds = sqrt(ME.Cruise.Speed^2*qh_q).* AC.Wing2.c ./ nu;
+
 %% Equations:
 
-qh_q = 0.85;
+
 Sh_S = AC.Wing1.Sw / AC.Wing2.Sw;
 ch_c = AC.Wing1.CMA / AC.Wing2.CMA;
 lh   = AC.Wing2.Root_LE + AC.Wing2.x_ac_wf;

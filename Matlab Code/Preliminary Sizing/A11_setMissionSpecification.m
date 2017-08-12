@@ -35,6 +35,7 @@ end
     CF.m2ft     = 3.28084;
     CF.ft2m     = 0.3048;
     CF.sm2m     = 1609.3; %Static miles to m
+    CF.in2m     = 0.0254;
 %speed
     CF.mph2ms   = 0.44704;
     CF.kts2ms   = 0.514444;
@@ -214,7 +215,14 @@ AC = aircraft();
         AC.Fuselage.fusLength  = 12.13+ME.Cargo.Volume/2.332;% A=3.286m^2: cilindric section; %Area form Catia
         AC.Fuselage.fusWidth   = 1.1*2.15;
         AC.Fuselage.fusHeight  = 1.1*2.734517;
-        AC.Fuselage.Volume     = AC.Fuselage.fusHeight*AC.Fuselage.fusWidth *  AC.Fuselage.fusLength;
+        AC.Fuselage.Volume     = AC.Fuselage.fusHeight*AC.Fuselage.fusWidth * AC.Fuselage.fusLength;
+        AC.Fuselage.frontArea  = 3.286;
+        AC.Fuselage.la         = 0.2*AC.Fuselage.fusLength;
+        AC.Fuselage.ln         = 0.3*AC.Fuselage.fusLength;
+        AC.Fuselage.Swet       = pi*(AC.Fuselage.fusHeight+AC.Fuselage.fusWidth)/2 * AC.Fuselage.fusLength;
+        AC.Fuselage.A_I        = (AC.Fuselage.fusLength - AC.Fuselage.la )* AC.Fuselage.fusWidth;
+        AC.Fuselage.A_II       = AC.Fuselage.la*AC.Fuselage.fusWidth/2;
+        AC.Fuselage.beta       = 17; % grados
 
 
 %% EXAMPLE OF HOW TO OBTAIN MEAN VALUES FROM SIMILAR PLANES
