@@ -59,8 +59,9 @@ switch ME.MissionType
         
         %Wing - Airfoil
         DP.Wing1_Wing2     = 0.75; %[-] - Parte de la sustentación que se lleva el ala delantera,
-        DP.Incidence_1     = 2.85; %[º] - Degrees of angle of the wing/body incidence of wing 1 at root section
-        DP.Incidence_2     = 1.10; %[º] - Degrees of angle of the wing/body incidence of wing 2 at root section
+        DP.Incidence_1     = 0;%2.85; %[º] - Degrees of angle of the wing/body incidence of wing 1 at root section
+        DP.Incidence_2     = 0;%1.10; %[º] - Degrees of angle of the wing/body incidence of wing 2 at root section
+        DP.WingLoading     =  400; %[kg/m^2] - Default value if selection not active
         DP.AspectRatio     =    8; %[-] - Aspect ratio, from similar planes: max-->9.7166, min-->8.0139, mean-->9.0017
         DP.TaperRatio      =  0.6; %[-]
         DP.Dihedral        =  0.0; %[º]

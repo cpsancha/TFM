@@ -232,6 +232,8 @@ AC.Wing2.deltaCLdeltaE = 0;
 run F05_wingConfiguration
 globalOptions = optimoptions('fsolve', 'StepTolerance',1e-9, 'Display','none');
 X0 = [DP.Incidence_1, DP.Incidence_2, DP.Stagger];
+DP.ShowReportFigures  = false;
+DP.ShowAircraftLayout = false;
 [X,~,exitflag,~] = fsolve(@(X)getWingsIncidence(X, AC, ME, DP, Parameters, CST, CF),X0,globalOptions);
 DP.Incidence_1 = X(1);
 DP.Incidence_2 = X(2);
@@ -241,17 +243,18 @@ if ~isequal(exitflag,1)
 else
     clear exitflag  X0 X
 end
-    
-% DP.ShowAircraftLayout = true;
-% DP.ShowReportFigures  = true;
-run F05_wingConfiguration
-% DP.ShowReportFigures  = false;
-
 X0 = [DP.fuselage_AoA, 0];
 AircraftWeight = linspace(AC.Weight.MTOW*prod([Parameters.fuelFraction(1:6).value]),AC.Weight.MTOW*prod([Parameters.fuelFraction(1:4).value]),50);
+DP.ShowReportFigures  = false;
+DP.ShowAircraftLayout = false;
 for i=1:length(AircraftWeight)
     [X,~,exitflag,~] = fsolve(@(X)trimAircraft(X, AircraftWeight(i), AC, ME, DP, Parameters, CST, CF),X0,globalOptions);
-    [~, AC] = trimAircraft(X, AircraftWeight(i), AC, ME, DP, Parameters, CST, CF);
+    if ~isequal(exitflag,1)
+        error('El solver del trimado no ha logrado converger correctamente. Se debería revisar el resultado.')
+    else
+        clear exitflag
+    end
+    [~] = trimAircraft(X, AircraftWeight(i), AC, ME, DP, Parameters, CST, CF);
     Polar.Weight(i)       = AircraftWeight(i);
     Polar.Fuselage_AoA(i) = AC.Fuselage.fuselage_AoA;
     Polar.Wing1.CL(i)     = AC.Wing1.CL_wf;
@@ -262,8 +265,18 @@ for i=1:length(AircraftWeight)
     Polar.CL(i) = Parameters.q1_qinf * AC.Wing1.Sw/AC.Wing.Sw * AC.Wing1.CL_wf + Parameters.q2_qinf * AC.Wing2.Sw/AC.Wing.Sw * AC.Wing2.CL_wf;
     run G05_polarPrediction
     Polar.CD(i) = CD;
+    Polar.D{i}  = D;
+    Polar.DS{i} = DS;
+    clear D DS
 end
 Polar.PolarFit = polyfit(Polar.CL,Polar.CD,2);
+figure(); hold on;
+plot(Polar.CL,Polar.CD,'r')
+plot(linspace(min(Polar.CL),max(Polar.CL),50), polyval(Parameters.Polar.LongRangeCruise,linspace(min(Polar.CL),max(Polar.CL),50)),'b')
+legend('Calculated Polar','Design Polar')
+xlabel('C_L')
+ylabel('C_D')
+% AC.Fuselage.fuselage_AoA = 0;
 % AC.Wing2.deltaCLdeltaE = 0;
 % run F05_wingConfiguration
 % run G05_polarPrediction
@@ -284,9 +297,9 @@ Polar.PolarFit = polyfit(Polar.CL,Polar.CD,2);
 % end
 % legend('-5º','-2.5º','0º','2.5º','5º')
 
+clear X X0 i exitflag globalOptions AircraftWeight
 
-
-function [Error, AC, ME, DP, Parameters] = getWingsIncidence(X, AC, ME, DP, Parameters, CST, CF) %#ok<INUSD>
+function [Error] = getWingsIncidence(X, AC, ME, DP, Parameters, CST, CF) %#ok<INUSL,INUSD>
   %INPUTS:  
     %X(1) = Wing1 Incidence [º]
     %X(2) = Wing2 Incidence [º]
@@ -317,7 +330,7 @@ function [Error, AC, ME, DP, Parameters] = getWingsIncidence(X, AC, ME, DP, Para
     
 end
 
-function [Error, AC] = trimAircraft(X, AircraftWeight, AC, ME, DP, Parameters, CST, CF)  %#ok<INUSD,INUSL>
+function [Error] = trimAircraft(X, AircraftWeight, AC, ME, DP, Parameters, CST, CF)  %#ok<INUSD,INUSL>
   %Parse inputs
     AC.Fuselage.fuselage_AoA = X(1);
     AC.Wing2.deltaCLdeltaE   = X(2);

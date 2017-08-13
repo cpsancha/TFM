@@ -180,7 +180,8 @@ clear gof indexFus indexPar MFW_MTOW_ac_old MFW_MTOW_ac_new parametro_ac_old par
 
 
 % Define more AC weights;
-    AC.Weight.MTOW = mean([MTOW.newRoskam,MTOW.newTorenbeek]);
+%     AC.Weight.MTOW = mean([MTOW.newRoskam,MTOW.newTorenbeek]);
+    AC.Weight.MTOW = MTOW.newTorenbeek + 0.75 * (MTOW.newRoskam - MTOW.newTorenbeek);
     %AC.Weight.EW   = mean([EW.newRoskam,EW.newTorenbeek]);
     %AC.Weight.MFW  = mean([MFW.newRoskam,MFW.newTorenbeek]);
     [~, AC.Weight.MTOW, AC.Weight.EW, AC.Weight.MFW] = getWeights( AC.Weight.MTOW, ME, CST, CF, Parameters, 'EW_new');

@@ -500,7 +500,7 @@ if DP.ShowReportFigures
         end
     end
     else
-        x =  382.5; %[kg/m^2] WingLoad
+        x =  DP.WingLoading; %[kg/m^2] WingLoading
         for i=1:length(Parameters.EngineOptions)
             usedEngine(i) = strcmp(Parameters.EngineOptions(i).Model,DP.EngineModel); %#ok<SAGROW>
         end
@@ -510,7 +510,7 @@ if DP.ShowReportFigures
     saveFigure(ME.FiguresFolder,'DesignPoint')
     clear choiceFlag choice p LegendStr i
 else
-    x =  382.5; %[kg/m^2] WingLoad
+    x =  DP.WingLoading; %[kg/m^2] WingLoading
     for i=1:length(Parameters.EngineOptions)
         usedEngine(i) = strcmp(Parameters.EngineOptions(i).Model,DP.EngineModel);  %#ok<SAGROW>
     end
