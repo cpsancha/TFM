@@ -136,7 +136,7 @@ switch ME.MissionType
         ME.Cruise.beta = sqrt(1-ME.Cruise.Mach^2);
         ME.Cruise.Density = rho;
         ME.Cruise.q = 0.5*ME.Cruise.Density*ME.Cruise.Speed^2;
-        DP.x_cg = 8;
+        DP.x_cg = 10;
         clear a rho
 end
 

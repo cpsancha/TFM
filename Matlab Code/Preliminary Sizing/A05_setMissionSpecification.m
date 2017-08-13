@@ -259,16 +259,14 @@ for i=1:length(AircraftWeight)
     Polar.Wing2.CL(i)     = AC.Wing2.CL_wf;
     Polar.Wing2.Cma(i)    = AC.Wing2.Cm_ac_wf;
     Polar.Wing2.deltaCLdeltaE(i) = AC.Wing2.deltaCLdeltaE;
+    Polar.CL(i) = Parameters.q1_qinf * AC.Wing1.Sw/AC.Wing.Sw * AC.Wing1.CL_wf + Parameters.q2_qinf * AC.Wing2.Sw/AC.Wing.Sw * AC.Wing2.CL_wf;
     run G05_polarPrediction
-    Polar.Wing1.CD(i) = D.CD_1;
-    Polar.Wing2.CD(i) = D.CD_2;
+    Polar.CD(i) = CD;
 end
+Polar.PolarFit = polyfit(Polar.CL,Polar.CD,2);
 % AC.Wing2.deltaCLdeltaE = 0;
 % run F05_wingConfiguration
 % run G05_polarPrediction
-
-
-
 
 
 

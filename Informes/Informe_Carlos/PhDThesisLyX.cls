@@ -471,12 +471,20 @@ font in the preamble.tex file by specifying `customfont' in the class options}
 \newcommand{\degreedate}[1]{\renewcommand{\@degreedate}{#1}}
 
 % The full (unabbreviated) name of the degree
-\newcommand{\@degree}{}
-\newcommand{\degree}[1]{\renewcommand{\@degree}{#1}}
+\newcommand{\@studies}{}
+\newcommand{\studies}[1]{\renewcommand{\@studies}{#1}}
 
 % The name of your department(eg. Engineering, Maths, Physics)
 \newcommand{\@dept}{}
 \newcommand{\dept}[1]{\renewcommand{\@dept}{#1}}
+
+% The name of your first project director
+\newcommand{\@prof}{}
+\newcommand{\prof}[1]{\renewcommand{\@prof}{#1}}
+
+% The name of your second project director
+\newcommand{\@proff}{}
+\newcommand{\proff}[1]{\renewcommand{\@proff}{#1}}
 
 % The name of your college (eg. King's)
 \newcommand{\@college}{}
@@ -557,33 +565,41 @@ font in the preamble.tex file by specifying `customfont' in the class options}
 %{\Large{\bfseries{\@title}} \par}
 %\vspace{.15\PHD@titlepagespacing}
 {\LARGE{\mdseries{\@title}} \par}
-\vspace{.20\PHD@titlepagespacing}
+\vspace{.10\PHD@titlepagespacing}
 
 % Crest
 %{\@crest \par}
-%\vspace{.2\PHD@titlepagespacing}
+%\vspace{.1PHD@titlepagespacing}
 
 % Logo
 {\@logo \par}
-\vspace{.2\PHD@titlepagespacing}
+\vspace{.10\PHD@titlepagespacing}
 
 % degree and University
 {\large \@college \par}
 \vspace*{1ex}
-{\normalsize \@degree \par}
-\vspace{.3\PHD@titlepagespacing}
-
+{\normalsize \@studies \par}
+\vspace{.13\PHD@titlepagespacing}
 
 % Author
-{\Large {\@author} \par}
-\vspace*{10ex}
-{\normalsize {\@degreedate}}
+{\large Autor: \par}
+\vspace*{1ex}
+{\large {\@author} \par}
+\vspace*{8ex}
 
+
+% Professor
+{\large Directores del Proyecto: \par}
+\vspace*{1ex}
+{\large {\@prof} \par}
+{\large {\@proff} \par}
+\vspace*{8ex}
+{\normalsize {\@degreedate}}
 
 % Submission Text
 %{\large \submissiontext \par}
 %\vspace*{1ex}
-%{\large \textit {\@degree} \par}
+%{\large \textit {\@studies} \par}
 
 
 \end{center}
@@ -648,22 +664,31 @@ font in the preamble.tex file by specifying `customfont' in the class options}
 
 % ******************************* Nomenclature *********************************
 \RequirePackage[intoc]{nomencl}
+\newlength{\nomitemorigsep}
+\setlength{\nomitemorigsep}{\nomitemsep}
+\setlength{\nomitemsep}{-0.5pt}
 \makenomenclature
 \renewcommand{\nomgroup}[1]{%
-\ifthenelse{\equal{#1}{A}}{\item[\textbf{Roman Symbols}]}{%
-\ifthenelse{\equal{#1}{G}}{\item[\textbf{Greek Symbols}]}{%
-\ifthenelse{\equal{#1}{Z}}{\item[\textbf{Acronyms / Abbreviations}]}{%
-\ifthenelse{\equal{#1}{R}}{\item[\textbf{Superscripts}]}{%
-\ifthenelse{\equal{#1}{S}}{\item[\textbf{Subscripts}]}{%
-\ifthenelse{\equal{#1}{X}}{\item[\textbf{Other Symbols}]}
+\itemsep\nomitemorigsep%
+\ifthenelse{\equal{#1}{A}}{\item[\textbf{S{\'{i}}mbolos Romanos}]}{%
+\ifthenelse{\equal{#1}{G}}{\item[\textbf{S{\'{i}}mbolos Griegos}]}{%
+\ifthenelse{\equal{#1}{Z}}{\item[\textbf{Acr{\'{o}}nimos / Abreviaturas}]}{%
+\ifthenelse{\equal{#1}{R}}{\item[\textbf{Super{\'{i}}ndices}]}{%
+\ifthenelse{\equal{#1}{S}}{\item[\textbf{Sub{\'{i}}ndices}]}{%
+\ifthenelse{\equal{#1}{X}}{\item[\textbf{Otros S{\'{i}}mbolos}]}
 {}
 }% matches mathematical symbols > X
 }% matches Subscripts           > S
 }% matches Superscripts         > R
 }% matches Abbreviations        > Z
 }% matches Greek Symbols        > G
+\itemsep\nomitemsep% Restore spacing
 }% matches Roman Symbols        > A
 
+%Add nomenclature units
+\newcommand{\nomunit}[1]{%
+ \renewcommand{\nomentryend}{\hspace*{\fill}#1}}
+ 
 % To add nomenclature in the header
 \renewcommand{\nompreamble}{\markboth{\nomname}{\nomname}}
 
@@ -806,7 +831,7 @@ font in the preamble.tex file by specifying `customfont' in the class options}
 \begin{center}
 \large \submissiontext \par
 \vspace*{1ex}
-\large \textit {\@degree} \par
+\large \textit {\@studies} \par
 \end{center}
 \end{minipage}
 \end{lrbox}

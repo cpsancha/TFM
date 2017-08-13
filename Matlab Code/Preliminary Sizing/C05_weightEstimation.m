@@ -196,6 +196,14 @@ clear gof indexFus indexPar MFW_MTOW_ac_old MFW_MTOW_ac_new parametro_ac_old par
     AC.Fuselage.fusWidth     = DP.fusWidth;
     AC.Fuselage.fuselage_AoA = DP.fuselage_AoA;
     AC.Fuselage.Volume       = DP.totalFusVolume;
+    AC.Fuselage.cabLength    = DP.cabLength;
+    AC.Fuselage.ln           = DP.ln;
+    AC.Fuselage.la           = DP.la;
+    AC.Fuselage.frontArea    = DP.frontArea;
+    AC.Fuselage.Swet         = DP.Swet;
+    AC.Fuselage.A_I          = DP.A_I;
+    AC.Fuselage.A_II         = DP.A_II;
+    AC.Fuselage.beta         = DP.tailConeAngle;
 
 
 

@@ -46,6 +46,7 @@ switch ME.MissionType
         AC.Weight.OEW = AC.Weight.EW + 0.005*AC.Weight.MTOW + ME.CrewWeight;
         AC.Weight.BOW = AC.Weight.OEW;
     case 11
+        AC.Weight.MLW = 0.8 * AC.Weight.MTOW; % Fraccion random!
 end
 
 

@@ -14,6 +14,9 @@ classdef engines < handle
         Position     double     %[double] Position of the CoG (x y z) of the engine [m].
         PositionStr  string     %[string] Verbose Position of the engine/engines
         Power        double     %[double] Power at take-off [W]   
+        Pylon_t_c    double     %[double] Relative width of the pylon airfoil [-]
+        Pylon_Swet   double     %[double] Pylon total wet surface [m^2]
+        Pylon_Sweep  double     %[double] Pylon sweep angle [º]
         SFC          double     %[double] Specific fuel consumption [lb/(shp·h)]
         Swet         double     % Wet surface of the engine (prop not included) [m^2]
         Thrust       double     %[double] Thrust of the engine [N].

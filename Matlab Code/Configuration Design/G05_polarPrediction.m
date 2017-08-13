@@ -25,8 +25,8 @@
                     ' valores de los parámetros v y w que determinan la resistencia inducida debida a la torsion.'])
         end
     end
-    D.deltaEpsilonCDv_1 = AC.Wing1.CL_wf*(deg2rad(AC.Wing1.TipTwist)*AC.Wing1.CL_alpha_wf/E1)*v+(deg2rad(AC.Wing1.TipTwist)*AC.Wing1.CL_alpha_wf/E1)^2*w;
-    D.deltaEpsilonCDv_2 = AC.Wing2.CL_wf*(deg2rad(AC.Wing2.TipTwist)*AC.Wing2.CL_alpha_wf/E2)*v+(deg2rad(AC.Wing2.TipTwist)*AC.Wing2.CL_alpha_wf/E2)^2*w;
+    D.deltaEpsilonCDv_1 = AC.Wing1.CL_wf*(deg2rad(AC.Wing1.TipTwist)*AC.Wing1.CL_alpha_wf/AC.Wing1.E)*v+(deg2rad(AC.Wing1.TipTwist)*AC.Wing1.CL_alpha_wf/AC.Wing1.E)^2*w;
+    D.deltaEpsilonCDv_2 = AC.Wing2.CL_wf*(deg2rad(AC.Wing2.TipTwist)*AC.Wing2.CL_alpha_wf/AC.Wing2.E)*v+(deg2rad(AC.Wing2.TipTwist)*AC.Wing2.CL_alpha_wf/AC.Wing2.E)^2*w;
     
 %INDUCED DRAG DUE TO WING TIP CORRECTION
     %No se corrije porq no se sabe como
@@ -44,31 +44,39 @@
     [rho,a,T,P,nu,~] = atmos(DP.CruiseAltitude);
     
 %Minimum Cd profile
-    [D.Cdp_min_1,index_1] = min(AC.Wing1.Airfoil.Polar(2,:));
-    [D.Cdp_min_2,index_2] = min(AC.Wing2.Airfoil.Polar(2,:));
+    Phi_w_1 = 2.7*AC.Wing1.Airfoil.t_c + 100* AC.Wing1.Airfoil.t_c^4;
+    Phi_w_2 = 2.7*AC.Wing2.Airfoil.t_c + 100* AC.Wing2.Airfoil.t_c^4;
+    Cf_airfoil_1 = getCf ( AC.Wing1.Reynolds, AC.Wing1.Airfoil.transition_c);
+    Cf_airfoil_2 = getCf ( AC.Wing2.Reynolds, AC.Wing2.Airfoil.transition_c);
+    D.Cdp_min_1 = 2*Cf_airfoil_1*(1+Phi_w_1);
+    D.Cdp_min_2 = 2*Cf_airfoil_2*(1+Phi_w_2);
+
     
 %Cl for minimum Cd profile
-    D.Cli_1 = AC.Wing1.Airfoil.Polar(1,index_1);
-    D.Cli_2 = AC.Wing2.Airfoil.Polar(1,index_2);
+    D.Cli_1     = AC.Wing1.Airfoil.Cldesign;
+    D.Cli_2     = AC.Wing2.Airfoil.Cldesign;
+ 
+    
     
 %Extrapolated profile drag increment at stalling angle of attack
-    HighCLSpeed = sqrt((2*DP.Wing1_Wing2*AC.Weight.Weight*CST.GravitySI)/(rho*AC.Wing1.Sw*AC.Wing1.Airfoil.Cl_max*0.75))/cosd(AC.Wing1.Sweep_14);
-    Reynolds1  = HighCLSpeed * AC.Wing1.CMA / nu;
-    Reynolds2  = HighCLSpeed * AC.Wing2.CMA / nu;
-    if Reynolds1 < 1e7
-        deltaLCdp_ref_1 = (67*AC.Wing1.Airfoil.Cl_max)/(log10(Reynolds1))^4.5 - 0.0046*(1+2.75*AC.Wing1.Airfoil.t_c);
+    W_WTO = prod([Parameters.fuelFraction(1:4).value]);
+    HighCLSpeed = sqrt((2*DP.Wing1_Wing2*AC.Weight.MTOW*W_WTO*CST.GravitySI)/(rho*AC.Wing1.Sw*AC.Wing1.Airfoil.Cl_max*cosd(AC.Wing1.Sweep_14)*0.75));
+    AirfoilReynolds1  = sqrt(HighCLSpeed^2*Parameters.q1_qinf) * AC.Wing1.CMA / nu;
+    AirfoilReynolds2  = sqrt(HighCLSpeed^2*Parameters.q2_qinf) * AC.Wing2.CMA / nu;
+    if AirfoilReynolds1 < 1e7
+        deltaLCdp_ref_1 = (67*AC.Wing1.Airfoil.Cl_max)/(log10(AirfoilReynolds1))^4.5 - 0.0046*(1+2.75*AC.Wing1.Airfoil.t_c);
     else
         deltaLCdp_ref_1 = 0.01*AC.Wing1.Airfoil.Cl_max - 0.0046*(1+2.75*AC.Wing1.Airfoil.t_c);
     end
-    if Reynolds2 < 1e7
-        deltaLCdp_ref_2 = (67*AC.Wing2.Airfoil.Cl_max)/(log10(Reynolds2))^4.5 - 0.0046*(1+2.75*AC.Wing2.Airfoil.t_c);
+    if AirfoilReynolds2 < 1e7
+        deltaLCdp_ref_2 = (67*AC.Wing2.Airfoil.Cl_max)/(log10(AirfoilReynolds2))^4.5 - 0.0046*(1+2.75*AC.Wing2.Airfoil.t_c);
     else
         deltaLCdp_ref_2 = 0.01*AC.Wing2.Airfoil.Cl_max - 0.0046*(1+2.75*AC.Wing2.Airfoil.t_c);
     end
     
     run generalized_Profile_Drag
-    cl_1 = linspace(-0.5,AC.Wing1.Airfoil.Cl_max,50);
-    cl_2 = linspace(-0.5,AC.Wing2.Airfoil.Cl_max,50);
+    cl_1 = linspace(-0.25,AC.Wing1.Airfoil.Cl_max,50);
+    cl_2 = linspace(-0.25,AC.Wing2.Airfoil.Cl_max,50);
     D.deltaLCdp_1 = deltaLCdp_ref_1 .* interp1(generalizedProfileDrag(:,1),generalizedProfileDrag(:,2),...
                     ((cl_1-D.Cli_1)./(AC.Wing1.Airfoil.Cl_max-D.Cli_1)).^2);
     D.deltaLCdp_2 = deltaLCdp_ref_2 .* interp1(generalizedProfileDrag(:,1),generalizedProfileDrag(:,2),...
@@ -87,50 +95,144 @@
     
 %WINGS
     %Three dimensional profile drag coefficient derived from data at MAC airfoil
-    D.CDp_1 = D.Cdp_min_1 * (AC.Wing1.Snet/AC.Wing1.Sw) + 0.75*deltaLCdp_ref_1*((AC.Wing1.CL_wf-D.Cli_1)/(AC.Wing1.CLmax-D.Cli_1))^2;
-    D.CDp_2 = D.Cdp_min_2 * (AC.Wing2.Snet/AC.Wing2.Sw) + 0.75*deltaLCdp_ref_2*((AC.Wing2.CL_wf-D.Cli_2)/(AC.Wing2.CLmax-D.Cli_2))^2;
+    D.Cdp_wing_min_1 = 2*Cf_airfoil_1*(1+Phi_w_1*cosd(AC.Wing1.Sweep_12));
+    D.Cdp_wing_min_2 = 2*Cf_airfoil_2*(1+Phi_w_2*cosd(AC.Wing2.Sweep_12));
+    D.Cli_wing_1 = AC.Wing1.Airfoil.Cldesign*cosd(AC.Wing1.Sweep_12);
+    D.Cli_wing_2 = AC.Wing2.Airfoil.Cldesign*cosd(AC.Wing2.Sweep_12);
+    D.CDp_wing_1 = D.Cdp_wing_min_1 * (AC.Wing1.Snet/AC.Wing1.Sw) + 0.75*deltaLCdp_ref_1*((AC.Wing1.CL_wf-D.Cli_wing_1)/(AC.Wing1.CLmax*cosd(AC.Wing1.Sweep_12)-D.Cli_wing_1))^2;
+    D.CDp_wing_2 = D.Cdp_wing_min_2 * (AC.Wing2.Snet/AC.Wing2.Sw) + 0.75*deltaLCdp_ref_2*((AC.Wing2.CL_wf-D.Cli_wing_2)/(AC.Wing2.CLmax*cosd(AC.Wing2.Sweep_12)-D.Cli_wing_2))^2;
 
-    D.CD_1 = D.CDv_1 + D.CDp_1;
-    D.CD_2 = D.CDv_2 + D.CDp_2;
+   
+    
     
 %FUSELAGE
-beta = 17; %grados
-%NACELLES
+    fusReynolds = DP.CruiseSpeed * AC.Fuselage.fusLength / nu;
+    Cf_fus = getCf(fusReynolds, 0.05);
+    Df_eff     = sqrt(4*AC.Fuselage.frontArea/pi);
+    lambda_eff = min([AC.Fuselage.fusLength/Df_eff,(AC.Fuselage.la+AC.Fuselage.ln)/Df_eff+2]);
+    Phi_f      = 2.2/lambda_eff^1.5 + 3.8/lambda_eff^3;
 
+
+    DS.fuselageProfileBasic    = Cf_fus*AC.Fuselage.Swet*(1+Phi_f); 
+    DS.fuselageProfileDeltaAoA = AC.Fuselage.A_I * abs(sind(AC.Fuselage.fuselage_AoA)^3)+ AC.Fuselage.A_II * ...
+                                 abs(sind(AC.Fuselage.fuselage_AoA - AC.Fuselage.beta)^3)/cosd(AC.Fuselage.beta);
+
+%     alpha_f_prime = AC.Fuselage.beta * (sqrt(AC.Fuselage.A_I/AC.Fuselage.A_II)-1)/(AC.Fuselage.A_I/AC.Fuselage.A_II-1);
+%     [Wf_Wto_fit,gof] = fit(parametro(indexPar)',Wf_Wto(indexPar)','a*x^2+b*x+c','StartPoint',[0.1 0.1 0],'Lower',[0 -Inf,0],'Upper',[Inf Inf 0]); %order-->[a,b,c]
+
+%NACELLES
+    %4 Contribuciones:  *Fan cowling & Gas Generator cowling & Plug & Pylon
+    nacReynolds  = sqrt(DP.CruiseSpeed^2*Parameters.q1_qinf) * AC.Engine.Length / nu;
+    Cf_nac       = getCf(nacReynolds,0);
+    %FAN COWLING
+        SwetNacelles = pi * AC.Engine.Diameter * AC.Engine.Length;
+        DS.nacellesProfileFan = 1.25*AC.Engine.Number*Cf_nac*SwetNacelles;
+    %GAS GENERATOR COWLING
+        %Included in effective thrust loss
+    %PLUG
+        %Ususally considered as a loss in engine fross trhust
+    %PYLON
+%         DS.nacellesProfilePylon = AC.Engine.Number*Cf_nac*(1+2.75*AC.Engine.Pylon_t_c*cosd(AC.Engine.Pylon_Sweep)^2)*AC.Engine.Pylon_Swet;
+        DS.nacellesProfilePylon = 0;
+        %https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19870009105.pdf
+ 
+
+%VERTICAL TAIL PLANE
+%     VTPReynolds = DP.CruiseSpeed * AC.VTP.CMA / nu;
+% 	Cf_VTP = getCf( VTPReynolds, 0);
+% 	DS.VTPProfile = 2*Cf_VTP*(1+2.75*AC.VTP.t_c*cosd(AC.VTP.Sweep_12)^2)*AC.VTP.Sw;
+    DS.VTPProfile = 0;
+    if ~ismember('AC:notDefinedVTP',ME.errorList)
+        ME.errorList{end+1} = 'AC:notDefinedVTP';
+        warning('AC:notDefinedVTP','Cuando se defina el VTP y se metan los datos hay que descomentar su resistencia.')
+    end
 
 
 %% INTERFERENCE EFFECTS
 %WETTED AREA CORRECTIONS
+    %Nada, al considerar gross wetted areas para todo, ya es mayor de la real y así se incorpora una "correccion"
 %WING/FUSELAGE INTERFERENCE
+    fusDiameter = (AC.Fuselage.fusHeight+AC.Fuselage.fusWidth)/2; %Fuselage diameter in [m]
+    %Inducida
+        eta_fus_1 = fusDiameter/AC.Wing1.WingSpan;
+        eta_fus_2 = fusDiameter/AC.Wing2.WingSpan;
+        D.deltaICDv_1 = (0.55*eta_fus_1*(2-pi*eta_fus_1)*AC.Wing1.CL_wf^2)/((1+AC.Wing1.TaperRatio)*pi*AC.Wing1.AspectRatio);
+        D.deltaICDv_2 = (0.55*eta_fus_2*(2-pi*eta_fus_2)*AC.Wing2.CL_wf^2)/((1+AC.Wing2.TaperRatio)*pi*AC.Wing2.AspectRatio);
+    %Viscosa debida al engordamiento de la capa limite en la interseccion
+        Cci_1 = 4.5*AC.Wing1.RootChord; % Length for both wing halves of the wing/fuselage intersection line, aprox 4.5 times the root chord
+        Cci_2 = 4.5*AC.Wing2.RootChord; % Length for both wing halves of the wing/fuselage intersection line, aprox 4.5 times the root chord
+        RootReynolds_1 = sqrt(DP.CruiseSpeed^2*Parameters.q1_qinf) * AC.Wing1.RootChord / nu;
+        RootReynolds_2 = sqrt(DP.CruiseSpeed^2*Parameters.q2_qinf) * AC.Wing2.RootChord / nu;
+        Cf_root_1 = getCf( RootReynolds_1, 0);
+        Cf_root_2 = getCf( RootReynolds_2, 0);
+        DS.deltaIDp_boundary_1 = 1.5*Cf_root_1*AC.Wing1.Airfoil.t_c*AC.Wing1.RootChord*Cci_1*cosd(AC.Wing1.Sweep_12)^2;
+        DS.deltaIDp_boundary_2 = 1.5*Cf_root_2*AC.Wing2.Airfoil.t_c*AC.Wing2.RootChord*Cci_2*cosd(AC.Wing2.Sweep_12)^2;
+    %Viscosa debida al incremento de velocidad sobre la cara superior del ala frente a la parte de abajo debido a la sustentacion
+        CMAReynolds_1 = sqrt(DP.CruiseSpeed^2*Parameters.q1_qinf) * AC.Wing1.RootChord / nu;
+        CMAReynolds_2 = sqrt(DP.CruiseSpeed^2*Parameters.q2_qinf) * AC.Wing2.RootChord / nu;
+        Cf_CMA_1 = getCf( CMAReynolds_1, 0);
+        Cf_CMA_2 = getCf( CMAReynolds_2, 0);
+        DS.deltaIDp_speed_1 = -0.81*Cf_CMA_1*AC.Wing1.CL_wf*AC.Wing1.RootChord*fusDiameter; %Valid for high wing
+        DS.deltaIDp_speed_2 = -0.81*Cf_CMA_2*AC.Wing2.CL_wf*AC.Wing2.RootChord*fusDiameter; %Valid for high wing
 %NACELLES/AIRFRAME INTERFERENCE
-%TAILPLANE/AIRFRAME INTERFERENCE
-
+        %Jet engines
+        DS.deltaIDp_nacelles = 0.2*(DS.nacellesProfileFan + DS.nacellesProfilePylon);
+%TAILPLANE/AIRFRAME INTERFERENCE --> Wing2 / Wing 1 interference
+        
 
 
 %% PROTUBERANCES AND IMPERFECTIONS
 %FIXED UNDERCARRIAGE
-    %No tenemos en nuestro caso
-%CANOPIES AND WINDSHIELDS (LAS VENTANILLAS DE LOS PILOTOS)
+%CANOPIES AND WINDSHIELDS
+    %Canopies (Las cubiertas de las cabinas que sobresalen, por ejemplo en los cazas) --> No hay
+    %Windshields
+        DS.windshieldsProtuberance = 0.02*DS.fuselageProfileBasic; % 2-3% del fuselage drag
+%WHEELS
+%STREAMLINE STRUTS
 %POWERPLANT INSTALLATION
 %EXTERNAL FUEL TANKS
-    %No se aplica
-%OTHER EFFECTS
+%OTHER EFFECTS, SURFACE IMPERFECTIONS
     %Meter los porcentajes que dice
+    DS.Imperfections = 0.06 * Parameters.q1_qinf * AC.Wing1.Sw * D.CDp_wing_1 + ...
+                       0.06 * Parameters.q2_qinf * AC.Wing2.Sw * D.CDp_wing_2 + ...
+                       0.07 * DS.fuselageProfileBasic + ...
+                       0.15 * DS.nacellesProfileFan + ...
+                       0.03 * (Parameters.q1_qinf * AC.Wing1.Sw * D.CDp_wing_1 + ...
+                               Parameters.q2_qinf * AC.Wing2.Sw * D.CDp_wing_2 + ...
+                               DS.fuselageProfileBasic + DS.fuselageProfileDeltaAoA + ...
+                               DS.nacellesProfileFan + DS.nacellesProfilePylon + ...
+                               DS.VTPProfile);
 
 
 
 
 
 
+%% TOTAL DRAG
+    DS.Induced = Parameters.q1_qinf*AC.Wing1.Sw*(D.CDv_1 + D.deltaEpsilonCDv_1) + ...
+                 Parameters.q2_qinf*AC.Wing2.Sw*(D.CDv_2 + D.deltaEpsilonCDv_2) + ...
+                 DS.fuselageInduced;
 
+    DS.Profile = Parameters.q1_qinf * AC.Wing1.Sw * D.CDp_wing_1 + ...
+                 Parameters.q2_qinf * AC.Wing2.Sw * D.CDp_wing_2 + ...
+                 DS.fuselageProfileBasic + DS.fuselageProfileDeltaAoA + ...
+                 DS.nacellesProfileFan + DS.nacellesProfilePylon + ...
+                 DS.VTPProfile;
 
-
-
-
-
-
-
+    DS.Interferences = Parameters.q1_qinf * AC.Wing1.Sw * D.deltaICDv_1 + ...
+                       Parameters.q2_qinf * AC.Wing2.Sw * D.deltaICDv_2 + ...
+                       DS.deltaIDp_boundary_1 + DS.deltaIDp_boundary_2 + ...
+                       DS.deltaIDp_speed_1 + DS.deltaIDp_speed_1 + ...
+                       DS.deltaIDp_nacelles;
+                   
+    CD = (DS.Induced + DS.Profile + DS.Interferences + DS.Imperfections)/AC.Wing.Sw;
+    
+clear D DS
 
     
-% clear C1_1 C1_2 C2_1 C2_2 C3_1 C3_2 f1 f2 c1 c2 y1 y2 eta1 eta2 Twist1 Twist2
-% clear eta_cp_1 eta_cp_2 delta_1 delta_2 
+%% CLEAR WORKSPACE
+clear a T P rho nu cl_1 cl_2 Cci_1 Cci_2 Df_eff eta_cp_1 eta_cp_2 eta_fus_1 eta_fus_2
+clear Cf_airfoil_1 Cf_airfoil_2 Cf_CMA_1 Cf_CMA_2 Cf_fus Cf_nac Cf_root_1 Cf_root_2 Cf_VTP
+clear fusDiameter fusReynolds CMAReynolds_1 CMAReynolds_2 generalizedProfileDrag lambda_eff
+clear W_WTO HighCLSpeed delta_1 delta_2 deltaLCdp_ref_1 deltaLCdp_ref_2 nacReynolds SwetNacelles
+clear Phi_f Phi_w_1 Phi_w_2 AirfoilReynolds1 AirfoilReynolds2 RootReynolds_1 RootReynolds_2 v w 

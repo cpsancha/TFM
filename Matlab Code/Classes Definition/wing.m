@@ -37,6 +37,7 @@ classdef wing < handle
         Cm_ac_wf        double  %[double] Coefficient of pitching moment in the aerodynamic center, taking into acount the fuselage [-]
         deltaCLdeltaE   double  %[double] Additional CL due to the elevator deflection [-]
         Dihedral        double  %[double] Dihedral of the wing [º]
+        E               double  %[double] Jones velocity correction [-]
         eta             double  %[double] Adimensionalized spanwise coordinate [-]
         Incidence       double  %[double] Angle of the wing/body incidence (iw) mesaured from fuselage floor [º]
         LongPos         double  %[double] Definida como el cociente entre la distancia longitudinal del punto un cuarto de la cuerda media aerodinámica al morro del avión y la longitud del fuselaje.

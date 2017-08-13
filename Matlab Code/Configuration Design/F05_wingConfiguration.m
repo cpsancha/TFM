@@ -322,8 +322,8 @@
     La2 = C1_2.*AC.Wing2.c./AC.Wing2.CMG + C2_2.*4./pi.*sqrt(1-AC.Wing2.eta.^2) + C3_2.*f2;
 
  %Jone's edge velocity correction E=semiperimeter/semispan
-    E1 = 1+((2*AC.Wing1.TaperRatio)/(AC.Wing1.AspectRatio*(1+AC.Wing1.TaperRatio)));
-    E2 = 1+((2*AC.Wing2.TaperRatio)/(AC.Wing2.AspectRatio*(1+AC.Wing2.TaperRatio)));
+    AC.Wing1.E = 1+((2*AC.Wing1.TaperRatio)/(AC.Wing1.AspectRatio*(1+AC.Wing1.TaperRatio)));
+    AC.Wing2.E = 1+((2*AC.Wing2.TaperRatio)/(AC.Wing2.AspectRatio*(1+AC.Wing2.TaperRatio)));
 
 %Linear Lofted (Geometrical) Twist    
 %     Twist1 = AC.Wing1.TipTwist .* (AC.Wing1.TaperRatio.*AC.Wing1.eta./(1-(1-AC.Wing1.TaperRatio).*AC.Wing1.eta));
@@ -338,8 +338,8 @@
     twist_0lift_2 = -trapz(AC.Wing2.eta,(Twist2./AC.Wing2.TipTwist).*La2); %Torenbeek Eq. E-16 [adimensional, must be multiplied by TipTwist]
     
 %Basic lift distribution (Lb)    
-    Lb1 = La1.*C4_1.*cos(EffectiveSweep1).*((Twist1./AC.Wing1.TipTwist)+twist_0lift_1).*Beta1.*E1;
-    Lb2 = La2.*C4_2.*cos(EffectiveSweep2).*((Twist2./AC.Wing2.TipTwist)+twist_0lift_2).*Beta2.*E2;
+    Lb1 = La1.*C4_1.*cos(EffectiveSweep1).*((Twist1./AC.Wing1.TipTwist)+twist_0lift_1).*Beta1.*AC.Wing1.E;
+    Lb2 = La2.*C4_2.*cos(EffectiveSweep2).*((Twist2./AC.Wing2.TipTwist)+twist_0lift_2).*Beta2.*AC.Wing2.E;
 
 %Assumption of CL of the wing to calculate the real one
     CL_wing1 = 1;
@@ -350,8 +350,8 @@
     Cla2 = CL_wing2.*AC.Wing2.CMG.*La2./AC.Wing2.c;
     
 %Coefficient of Basic Lift
-    Clb1 = Lb1.*deg2rad(AC.Wing1.TipTwist).*AC.Wing1.Airfoil.Cl_alpha.*AC.Wing1.CMG./(E1.*AC.Wing1.c);
-    Clb2 = Lb2.*deg2rad(AC.Wing2.TipTwist).*AC.Wing2.Airfoil.Cl_alpha.*AC.Wing2.CMG./(E2.*AC.Wing2.c);
+    Clb1 = Lb1.*deg2rad(AC.Wing1.TipTwist).*AC.Wing1.Airfoil.Cl_alpha.*AC.Wing1.CMG./(AC.Wing1.E.*AC.Wing1.c);
+    Clb2 = Lb2.*deg2rad(AC.Wing2.TipTwist).*AC.Wing2.Airfoil.Cl_alpha.*AC.Wing2.CMG./(AC.Wing2.E.*AC.Wing2.c);
 
 %Zero Lift Angle
     AC.Wing1.alpha_zeroLift = AC.Wing1.Airfoil.alpha_zeroLift + twist_0lift_1*AC.Wing1.TipTwist; %[degrees]
@@ -367,8 +367,9 @@
 
 %Display Wing Lift Distribution    
 if DP.ShowReportFigures
-    figure()
-    hold on
+    %Wing 1
+        figure()
+        hold on
         [~,index] = max(Cl1);
         plot(AC.Wing1.eta(index),Cl1(index),'o','LineWidth',1.25,'Color',Parameters.Colors(1,:))
         plot(AC.Wing1.eta,ones(1,length(AC.Wing1.eta)).*AC.Wing1.Airfoil.Cl_max*cosd(AC.Wing1.Sweep_14),'--','LineWidth',1.25,'Color',Parameters.Colors(2,:));
@@ -376,17 +377,28 @@ if DP.ShowReportFigures
         plot(AC.Wing1.eta,Clb1,'LineWidth',1.25,'Color',Parameters.Colors(6,:));
         plot(AC.Wing1.eta,AC.Wing1.CLmax.*Cla1,'LineWidth',1.25,'Color',Parameters.Colors(8,:));
         plot(AC.Wing1.eta,Cla1,'LineWidth',1.25,'Color',Parameters.Colors(4,:));
-
-%         plot(AC.Wing2.eta,AC.Wing2.CLmax.*Cla2,':','LineWidth',1.25,'Color',Parameters.Colors(7,:));
-%         plot(AC.Wing2.eta,Clb2,':','LineWidth',1.25,'Color',Parameters.Colors(8,:));
-%         plot(AC.Wing2.eta,Cl2,':','LineWidth',1.25,'Color',Parameters.Colors(9,:));
-
         legend('First point of stall','Maximum lift of the airfoil','Total lift distribution','Basic lift distribution','Aditional lift distribution','Aditional lift distribution for C_{L_{max}}=1','Location','southwest')
         legend('boxoff')
         xlabel('$\frac{y}{b/2}$','interpreter','latex')
         ylabel('$C_l$','interpreter','latex')
-        title(['Spanwise Lift Distribution for $C_{Lmax}=',num2str(AC.Wing1.CLmax),'$ and $\varepsilon_t=',num2str(AC.Wing1.TipTwist),'^o$'],'interpreter','latex')
-        saveFigure(ME.FiguresFolder,'SpanwiseLiftDistribution')
+        title(['Spanwise Lift Distribution of wing 1 for $C_{Lmax}=',num2str(AC.Wing1.CLmax),'$ and $\varepsilon_t=',num2str(AC.Wing1.TipTwist),'^o$'],'interpreter','latex')
+        saveFigure(ME.FiguresFolder,'SpanwiseLiftDistribution_1')
+    %Wing 2
+        figure()
+        hold on
+        [~,index] = max(Cl2);
+        plot(AC.Wing2.eta(index),Cl2(index),'o','LineWidth',1.25,'Color',Parameters.Colors(1,:))
+        plot(AC.Wing2.eta,ones(1,length(AC.Wing2.eta)).*AC.Wing2.Airfoil.Cl_max*cosd(AC.Wing2.Sweep_14),'--','LineWidth',1.25,'Color',Parameters.Colors(2,:));
+        plot(AC.Wing2.eta,Cl2,'LineWidth',1.25,'Color',Parameters.Colors(3,:));
+        plot(AC.Wing2.eta,Clb2,'LineWidth',1.25,'Color',Parameters.Colors(6,:));
+        plot(AC.Wing2.eta,AC.Wing2.CLmax.*Cla2,'LineWidth',1.25,'Color',Parameters.Colors(8,:));
+        plot(AC.Wing2.eta,Cla2,'LineWidth',1.25,'Color',Parameters.Colors(4,:));
+        legend('First point of stall','Maximum lift of the airfoil','Total lift distribution','Basic lift distribution','Aditional lift distribution','Aditional lift distribution for C_{L_{max}}=1','Location','southwest')
+        legend('boxoff')
+        xlabel('$\frac{y}{b/2}$','interpreter','latex')
+        ylabel('$C_l$','interpreter','latex')
+        title(['Spanwise Lift Distribution of wing 2 for $C_{Lmax}=',num2str(AC.Wing2.CLmax),'$ and $\varepsilon_t=',num2str(AC.Wing2.TipTwist),'^o$'],'interpreter','latex')
+        saveFigure(ME.FiguresFolder,'SpanwiseLiftDistribution_2')
 end
     
 
@@ -535,8 +547,8 @@ clear lengthFusNose1 lengthFusNose2 deltaF1ac_1 deltaF1ac_2 deltaF2ac_1 deltaF2a
     AC.Wing2.cla = AC.Wing2.CL_wf.*AC.Wing2.CMG.*La2./AC.Wing2.c;
     
 %Coefficient of Basic Lift
-    AC.Wing1.clb = Lb1.*deg2rad(AC.Wing1.TipTwist).*AC.Wing1.Airfoil.Cl_alpha.*AC.Wing1.CMG./(E1.*AC.Wing1.c);
-    AC.Wing2.clb = Lb2.*deg2rad(AC.Wing2.TipTwist).*AC.Wing2.Airfoil.Cl_alpha.*AC.Wing2.CMG./(E2.*AC.Wing2.c);
+    AC.Wing1.clb = Lb1.*deg2rad(AC.Wing1.TipTwist).*AC.Wing1.Airfoil.Cl_alpha.*AC.Wing1.CMG./(AC.Wing1.E.*AC.Wing1.c);
+    AC.Wing2.clb = Lb2.*deg2rad(AC.Wing2.TipTwist).*AC.Wing2.Airfoil.Cl_alpha.*AC.Wing2.CMG./(AC.Wing2.E.*AC.Wing2.c);
 
 %Total Lift Distribution
     AC.Wing1.cl = AC.Wing1.cla + AC.Wing1.clb;
@@ -617,11 +629,11 @@ figure()
 end     
     
     
-clear a T P rho nu EffectiveSweep1 EffectiveSweep2 CruiseMach
+clear a T P rho nu EffectiveSweep1 EffectiveSweep2 CruiseMach1 CruiseMach2
 clear f_00deg f_30deg f_45deg f_60deg index DiederichCoordinate1 DiederichCoordinate2
-clear C1x C2x C3x C4x C1y C2y C3y C4y f0x f0y f30x f30y f_low f_hight
+clear C1x C2x C3x C4x C1y C2y C3y C4y f0x f0y f30x f30y f_low f_hight Twist1 Twist2
 clear C1_1 C1_2 C2_1 C2_2 C3_1 C3_2 f1 f2 C4_1 C4_2 CL_wing1 CL_wing2 Clb1 Clb2
-clear La1 La2 Lb1 Lb2 twist_0lift_1 twist_0lift_2 Cl1 Cl2 y1 y2 Cla1 Cla2
+clear La1 La2 Lb1 Lb2 twist_0lift_1 twist_0lift_2 Cl1 Cl2 y1 y2 Cla1 Cla2 Beta1 Beta2
 clear Cm_ac_basic1 Cm_ac_basic2 deltaEpsilonCm_ac1 deltaEpsilonCm_ac2 Cm_ac_w1 Cm_ac_w2
 clear KI_1 KI_2 KII_1 KII_2 deltazCL_1 deltazCL_2 deltaNac_1 deltaNac_2 deltaE_deltaAlpha m r
     

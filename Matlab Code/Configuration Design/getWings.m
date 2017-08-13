@@ -19,7 +19,7 @@
     function F = getWings (incidences,AC, DP, ME, Parameters, AF,plotFlag , W)
 
 AC.Wing1.Incidence = incidences(1);
-DP.Stagger=     incidences(3)
+DP.Stagger=     incidences(3);
 alpha_f=0;
 
 %%
@@ -283,9 +283,9 @@ F(2) = AC.Wing1.Cm_ac_wf + AC.Wing2.Cm_ac_wf*qh_q*Sh_S*ch_c ...
 % AC.Wing1.CL_wf/(AC.Wing1.CL_wf+AC.Wing2.CL_wf)
 % 
 % (x_cg-x_ac)/AC.Wing1.CMA
-% qh_q*Sh_S*(lh-x_cg)/AC.Wing1.CMA
- L1=AC.Wing1.CL_wf*ME.Cruise.q*AC.Wing1.Sw
- L2=AC.Wing2.CL_wf*ME.Cruise.q*qh_q*AC.Wing2.Sw
+% % qh_q*Sh_S*(lh-x_cg)/AC.Wing1.CMA
+ L1=AC.Wing1.CL_wf*ME.Cruise.q*AC.Wing1.Sw;
+ L2=AC.Wing2.CL_wf*ME.Cruise.q*qh_q*AC.Wing2.Sw;
 %  W
  F(3) = 0.7*W-L1;
 % AC.Wing1.CL_wf/( W/ME.Cruise.q/AC.Wing1.Sw)

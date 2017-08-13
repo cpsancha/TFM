@@ -51,8 +51,7 @@ CruiseFF = 1; %Mission Fuel Fraction
 for i=1:4
     CruiseFF = CruiseFF*Parameters.fuelFraction(i).value;
 end
-W = CST.GravitySI*AC.Weight.MTOW*(CruiseFF + CruiseFF*Parameters.fuelFraction(5).value)/2;
-
+W =CST.GravitySI*AC.Weight.MTOW*(CruiseFF + CruiseFF*Parameters.fuelFraction(5).value)/2;
 
 incidences = fsolve(@(incidences)getWings(incidences,AC, DP, ME, Parameters, AF, plotFlag,W), [0.1,0.1,10],options);   
 

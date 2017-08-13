@@ -8,7 +8,7 @@ classdef fuselage < handle
         beta           double    % Upsweep angle of the afterbody [º]
         bagVolume      double    %[double]  Total volume of the baggage [m^3]
         cabHeight      double    %[double]  Height of the cabin [m]
-        cabLength      double    %[double]  Net length of the cabin excluding cockpit and baggage [m]
+        cabLength      double    %[double]  Net length of the cabin excluding cockpit and baggage (includes gallery) [m]
         cabVolume      double    %[double]  Total volume of the cabin [m^3]
         cabWidth       double    %[double]  Net wide of the cabin [m]
         finenessRatio  double    %[double]  The ratio of the length of a body to its maximum width (Esbeltez) [-]

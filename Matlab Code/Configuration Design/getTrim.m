@@ -171,7 +171,7 @@ deltaf2 = tan(AC.Wing1.Sweep_14*pi/180)*0.273*AC.Fuselage.fusWidth*AC.Wing1.CMG*
 
 x_ac_wf  = AC.Wing1.CMG * (x_ac/AC.Wing1.CMG + deltaf1+ deltaf2);
 %% Correction3: Pitching moment Cmac_wf
-CL0 = CL_alpha_wf *( (alpha_f - alpha_0_1*AC.Wing1.Torsion)+ K_I/K_II*(AC.Wing1.Incidence - AF.alpha_l0))+deltazCL; %Creo que esta mal, yo al menos no lo entiendo asi
+CL0 = CL_alpha_wf *( (alpha_f - alpha_0_1*AC.Wing1.Torsion)+ K_I/K_II*(AC.Wing1.Incidence - AF.alpha_l0))+deltazCL; 
 deltaCmac = -1.8*(1 - 2.5 * AC.Fuselage.fusWidth/AC.Fuselage.fusLength)...
     *pi*AC.Fuselage.fusWidth*AC.Fuselage.fusHeight*AC.Fuselage.fusLength*CL0...
     /(4*AC.Wing1.Sw*AC.Wing1.CMG*CL_alpha_wf);   %Falta meter corrección por área no circular
@@ -188,10 +188,12 @@ AC.Wing1.eta = eta;
 
 
 %% WING2: parameters
+incidence2 = AC.Wing2.Incidence;
 for fn = fieldnames(AC.Wing1)'
    AC.Wing2.(fn{1}) = AC.Wing1.(fn{1});
 end
 
+AC.Wing2.Incidence = incidence2;
 
 AC.Wing2.Root_LE = AC.Wing1.Root_LE + AC.Wing1.RootChord + DP.Stagger;
 
@@ -230,9 +232,12 @@ AC.Wing2.c = c;
 AC.Wing2.eta = eta;
 
 
+qh_q = 0.85;
+% AC.Wing2.Reynolds = sqrt(ME.Cruise.Speed^2*qh_q).* AC.Wing2.c ./ nu;
+
 %% Equations:
 
-qh_q = 0.85;
+
 Sh_S = AC.Wing1.Sw / AC.Wing2.Sw;
 ch_c = AC.Wing1.CMA / AC.Wing2.CMA;
 lh   = AC.Wing2.Root_LE + AC.Wing2.x_ac_wf;
@@ -241,12 +246,22 @@ x_cg = DP.x_cg;
 
 
 %L1+L2=W
-F(1) = 1*(AC.Wing1.CL_wf + AC.Wing2.CL_wf*qh_q*AC.Wing2.Sw/AC.Wing1.Sw - W/ME.Cruise.q/AC.Wing1.Sw);
+F(1) = AC.Wing1.CL_wf + AC.Wing2.CL_wf*qh_q*AC.Wing2.Sw/AC.Wing1.Sw - W/(ME.Cruise.q*AC.Wing1.Sw);
 
 %M=0
-F(2) = 1*(AC.Wing1.Cm_ac_wf + AC.Wing2.Cm_ac_wf*qh_q*Sh_S*ch_c ...
-    + AC.Wing1.CL_wf*(x_ac-x_cg)/AC.Wing1.CMA ...
-    - AC.Wing2.CL_wf*qh_q*Sh_S*(lh-x_cg)/AC.Wing1.CMA);
+F(2) = AC.Wing1.Cm_ac_wf + AC.Wing2.Cm_ac_wf*qh_q*Sh_S*ch_c ...
+    + AC.Wing1.CL_wf*(x_cg-x_ac)/AC.Wing1.CMA ...
+    - AC.Wing2.CL_wf*qh_q*Sh_S*(lh-x_cg)/AC.Wing1.CMA;
+
+% AC.Wing1.CL_wf/(AC.Wing1.CL_wf+AC.Wing2.CL_wf)
+% 
+% (x_cg-x_ac)/AC.Wing1.CMA
+% % qh_q*Sh_S*(lh-x_cg)/AC.Wing1.CMA
+ L1=AC.Wing1.CL_wf*ME.Cruise.q*AC.Wing1.Sw;
+ L2=AC.Wing2.CL_wf*ME.Cruise.q*qh_q*AC.Wing2.Sw;
+%  W
+%  F(3) = 0.7*W-L1;
+% AC.Wing1.CL_wf/( W/ME.Cruise.q/AC.Wing1.Sw)
 
 %% Lift distribution at this CL
 

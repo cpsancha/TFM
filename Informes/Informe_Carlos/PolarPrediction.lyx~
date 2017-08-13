@@ -1,0 +1,591 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\usepackage{changepage}
+
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{0.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Determinación de la polar
+\end_layout
+
+\begin_layout Standard
+Una vez determinadas la forma en planta, posición, principales parámetros
+ geométricos e incidencia de las alas, así como la geometría exterior del
+ fuselaje y la posición y geometría de los motores, es el momento de realizar
+ un cálculo de la polar de la aeronave mucho más preciso que la aproximación
+ realizada anteriormente en el apartado 
+\color red
+METER APARTADO
+\color inherit
+.
+\end_layout
+
+\begin_layout Standard
+Para ello, se ha dividido la resistencia en sus cuatro contribuciones, calculánd
+ose cada una de ellas por separado, véase resistencia inducida, resistencia
+ de forma, resistencia debida a interferencias y resistencia debida a protuberan
+cias o imperfecciones, para posteriormente combinar sus efectos y realizar
+ una regresión parabólica respecto al coeficiente de sustentación global
+ de la aeronave, de la forma:
+\begin_inset Formula 
+\[
+C_{D}=A+B\,C_{L}+D\,C_{L}^{2}
+\]
+
+\end_inset
+
+que proporcione el valor del coeficiente de resistencia total de la aeronave
+ en función del coeficiente de sustentación global.
+\end_layout
+
+\begin_layout Section
+Resistencia inducida debida a los torbellinos
+\end_layout
+
+\begin_layout Standard
+La primera de las contribuciones a estudiar es la debida a la energía cinética
+ requerida para generar los torbellinos de borde de salida y la estela.
+ Si consideramos las diferentes partes de la aeronave como cuerpos separados,
+ esta contribución puede ser calculada con bastante precisión utilizando
+ los métodos potenciales clásicos.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\eta$"
+description "Cordenada adimensional respecto a la envergadura ($\\eta=2y/b$) \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$y$"
+description "Cordenada en la envergadura, medida desde el plano de simetría \\nomunit{[$m$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$b$"
+description "Envergadura ala \\nomunit{[$m$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$S_{net}$"
+description "Superficie alar neta, descontando la proyección del fuselaje  \\nomunit{[$m^2$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\Lambda$"
+description "Flecha del ala, en la línea $\\nicefrac{c}{4}$ salvo que se indique lo contrario \\nomunit{[$\\degree$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\Lambda_{\\beta}$"
+description "Flecha efectiva del ala  ($tan(\\Lambda_{\\beta})=tan(\\Lambda)/\\beta$)  \\nomunit{[$\\degree$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\delta$"
+description "Incremento del coeficiente de resistencia inducida debido a la sustentación adicional  \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$C_{D_{v}}$"
+description "Coeficiente de resistencia inducida debido a la vorticidad \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\eta_{cp}$"
+description "Posición adimentsional del centro de presiones en la envergadura \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Un método para estimar esta contribución una vez se conoce la distribución
+ de sustenctación sobre el ala, es el presentado por H.
+ Garner en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Garner1968"
+
+\end_inset
+
+.
+ Para ello, se supondrá temporalmente que toda la sustentación de la aeronave
+ es proporcionada por un ala sin torsión, pudiendose expresar por tanto
+ el coeficiente de resistencia inducida como:
+\begin_inset Formula 
+\[
+C_{D_{v}}=\left(1+\delta\right)\frac{C_{L}^{2}}{\pi A}
+\]
+
+\end_inset
+
+ donde 
+\begin_inset Formula $\delta$
+\end_inset
+
+ es el incremento del coeficiente de resistencia inducida debido a la sustentaci
+ón adicional.
+ En esta referencia, Garner muestra que existe una correlación entre 
+\begin_inset Formula $\delta$
+\end_inset
+
+ y la posición adimensional en la envergadura del centro de presiones (
+\begin_inset Formula $\eta_{cp}$
+\end_inset
+
+), la cual viene dada por:
+\begin_inset Formula 
+\[
+\delta=46.264\left(\eta_{cp}-\frac{4}{3\pi}\right)^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A su vez, 
+\begin_inset Formula $\eta_{cp}$
+\end_inset
+
+ se puede calcular a partir del coeficiente de sustentcación del ala y de
+ la distribución de sustentación adicional, calculada como se muestra en
+ el apartado
+\color red
+ METER APARTADO
+\color inherit
+, como: 
+\begin_inset Formula 
+\[
+\eta_{cp}=\int_{0}^{1}\frac{c_{l}\,c}{C_{L}\,c_{g}}\,\eta\,d\eta
+\]
+
+\end_inset
+
+teniendo cuidado de introducir en 
+\begin_inset Formula $c_{l}$
+\end_inset
+
+ la distribución de sustentación adicional, no la total, para considerar
+ que el ala no tiene torsión ya que la correlación anterior solo es válida
+ para éstas.
+\end_layout
+
+\begin_layout Standard
+La forma de la distribución de sustentación de un ala sin torsión es independien
+te del valor del 
+\begin_inset Formula $C_{L}$
+\end_inset
+
+, sin embargo, para un ala con torsión, la sustentación básica debida precisamen
+te a la torsión, hace que la forma final de la distribución de sustentación
+ varíe con éste, de hecho, para un valor de 
+\begin_inset Formula $C_{L}=0$
+\end_inset
+
+, la resistencia inducida debido a la sutentación en un ala sin torsión
+ es nula, sin embargo, de existir torsión, la distribución de sustentación
+ básica produce una componete de resistencia inducida que debe ser tenida
+ en cuenta.
+ Por lo tanto, una vez obtenido este primer valor de 
+\begin_inset Formula $C_{D_{v}}$
+\end_inset
+
+, es necesario añadirle la contribución de la torsión.me 
+\end_layout
+
+\begin_layout Standard
+Anderson, en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Anderson1937"
+
+\end_inset
+
+ representa esta contribución al coeficiente de resistencia inducida debido
+ a la torsión como:
+\begin_inset Formula 
+\[
+\Delta_{\varepsilon}C_{D_{V}}=C_{L}\,\left(\frac{\varepsilon_{t}C_{l_{\alpha}}}{E}\right)\,v+\left(\frac{\varepsilon_{t}C_{l_{\alpha}}}{E}\right)^{2}\,w
+\]
+
+\end_inset
+
+donde los coeficientes 
+\begin_inset Formula $v$
+\end_inset
+
+ y 
+\begin_inset Formula $w$
+\end_inset
+
+ se obtienen de las figuras 11 y 12 de la referencia 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Abbott1959"
+
+\end_inset
+
+ que se presentan a continuación en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Gráficas-para-obtener-v-w"
+
+\end_inset
+
+ por comodidad.
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-1cm}{-1cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/v-factor.JPG
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/w-factor.JPG
+	width 55text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Factores 
+\begin_inset Formula $v$
+\end_inset
+
+ y 
+\begin_inset Formula $w$
+\end_inset
+
+, obtenidas de 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Abbott1959"
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Gráficas-para-obtener-v-w"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Otro efecto conocido que presenta influencia en la resistencia inducida
+ de las alas es la forma de la punta.
+ Este efecto es conocido desde que Schaufele y Ebeling mostrasen en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Schaufele1967"
+
+\end_inset
+
+ cómo un pequeño cambio en la forma de la punta de éstas puede conllevar
+ un significativo cambio en el peso máximo de despegue de la aeronave.
+ Desgraciadamente, no existen métodos analíticos que permitan estimar fácilmente
+ este efecto, por lo que en esta fase de diseño preliminar no será tenido
+ en cuenta, debiéndose realizar un estudio más detallado de estos efectos
+ de continuarse con el estudio de esta aeronave.
+\end_layout
+
+\begin_layout Standard
+Por último, se calculará la contribución del fuselaje a la resistencia inducida.
+ Si bien, un cuerpo cerrado en un fluido no viscoso no produciría sustentación
+ aunque se encontrase a un determinado ángulo de ataque, en la vida real
+ existe una importante componente viscosa que hace que se genere una capa
+ límite sobre el cuerpo y que efectivamente el fuselaje también sustente,
+ y por tanto, contribuya a la resistencia inducida.
+\end_layout
+
+\begin_layout Standard
+Para calcular esta contribución, Torenbeek en el apéndice F de 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Torenbeek1982"
+
+\end_inset
+
+ propone una sencilla expresión basada en datos experimentales para cuerpos
+ de revolución o cercanos a estos, como es el caso de nuestra aeronave,
+ véase:
+\begin_inset Formula 
+\[
+C_{D}S=0.15\alpha_{f}^{2}V_{f}^{\nicefrac{2}{3}}
+\]
+
+\end_inset
+
+donde 
+\begin_inset Formula $\alpha_{f}$
+\end_inset
+
+ es el ángulo de ataque del fuselaje en radianes y 
+\begin_inset Formula $V_{f}$
+\end_inset
+
+ el volumen contenido por el fuselaje.
+\end_layout
+
+\begin_layout Standard
+Como se puede ver, en la expresión anterior no se ha calculado la contribución
+ directa al coeficiente de resistencia, sino que se calcula la denominada
+ 
+\begin_inset Quotes eld
+\end_inset
+
+área de resistencia
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Esto será una práctica habitual para evitar malentendidos en la adimensionaliza
+ción cuando no resulte evidente el área al que va referido dicho coeficiente.
+\end_layout
+
+\begin_layout Standard
+Cuando se acaben de calcular todas las contribuciones a la resistencia se
+ podrá establecer el coeficiente de resistencia global multiplicando los
+ coeficientes de cada una de las alas por su respectiva área, sumando todas
+ las áreas de resistencia y adimensionalizando de nuevo el coeficiente con
+ el área total calculado en el capítulo 
+\color red
+METER APARTADO
+\color inherit
+, de forma que:
+\begin_inset Formula 
+\[
+C_{D}=\frac{\sum\left(C_{D}S\right)_{j}}{S_{w}}
+\]
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Section
+Resistencia de forma
+\end_layout
+
+\begin_layout Standard
+La segunda contribución se debe a la resistencia producida capa límite de
+ los cuerpos y las regiones de flujo desadherido existentes.
+ Para cuerpos aerodinámicos a bajos ángulos de ataque, la componente principal
+ es la debida a la fricción con el aire, siendo una componente mucho menor
+ la debida a la presión.
+ Esta componente también puede ser aproximada con bastante exactitud para
+ la mayoría de formas de fuselaje existentes.
+ 
+\end_layout
+
+\begin_layout Section
+Resistencia debida a las interferencias
+\end_layout
+
+\begin_layout Standard
+Las dos contribuciones anteriores se han calculado suponiendo que las diferentes
+ partes de la aeronave se encuentran aisladas y no existen interferencias
+ entre ellas.
+ Sin embargo, en la realidad esto no es así y la contribución a la resistencia
+ de cada componente de la aeronave se ve afectada por las componentes cercanas.
+ Para tener en cuenta este efecto se han tratado de incorporar algunas correccio
+nes experimentales, aunque esta componente es pequeña, suele representar
+ como máximo un 5-10% de la sustentación global, y los métodos para estimarla
+ son de baja precisión.
+\end_layout
+
+\begin_layout Section
+Resistencia debida a protuberancias o imperfecciones
+\end_layout
+
+\begin_layout Standard
+Por último, existe una componente de la resistencia debida a las imperfecciones
+ de la superficie, las protuberancias o salientes de ésta y otros aspectos
+ adicionales.
+ El cálculo de esta componente debe realizarse en parte basado en la geometría
+ real del fuselaje (cabina, tomas de aire,...) y en parte basado en correlaciones
+ estadísticas (número de remaches, uniones,...).
+\end_layout
+
+\end_body
+\end_document

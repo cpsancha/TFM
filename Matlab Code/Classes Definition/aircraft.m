@@ -32,6 +32,7 @@ classdef aircraft < handle
             obj.Wing       = wing();   
             obj.Wing1      = wing();          
             obj.Wing2      = wing();
+            obj.VTP        = wing();
             obj.Weight     = weights(obj);
             obj.Engine     = engines(obj);
             obj.Payload    = payload();

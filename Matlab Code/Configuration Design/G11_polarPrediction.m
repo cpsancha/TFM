@@ -1,7 +1,13 @@
 % Appendix F PolarTorenbeek
 
 % CL vector definition
-CL = linspace(0.03,0.03,1);
+Wvec = CST.GravitySI.*linspace(AC.Weight.MTOW, 0.6*AC.Weight.MTOW,10);
+CL = Wvec./(ME.Cruise.q*AC.Wing.Sw);
+% CL = linspace(0,3,20);
+% CL = linspace(0.6631/2,0.6631/2,1);
+% CL = 2.0930e+05/(ME.Cruise.q*AC.Wing.Sw);
+
+
 
 %% INDUCED DRAG
 for i=1:length(CL)
@@ -10,9 +16,13 @@ for i=1:length(CL)
     options = optimoptions('fsolve','FunctionTolerance',1e-12,...
                            'StepTolerance',1e-9,...
                            'Display','none');
-    x = fsolve(@(x)getTrim( x, AC, DP, ME, Parameters, AF,plotFlag , W(i)), [-0.1,0.1],options);  
+    x = fsolve(@(x)getTrim( x, AC, DP, ME, Parameters, AF,plotFlag , W(i)), [0.1,20],options);  
 
+    
+clfront(i) = AC.Wing1.CL_wf;
+clrear(i) = AC.Wing2.CL_wf;
 alpha_f(i) = x(1);
+
 % Wing 1
 c   = AC.Wing1.c;
 cl  = AC.Wing1.cl;
@@ -32,23 +42,13 @@ delta = 46.264*(eta_cp - 4/3/pi)^2;
 CD.i.wing2(i) = (1 + delta).*AC.Wing2.CL_wf.^2./(pi*AC.Wing1.AspectRatio) + 3.7e-5.*AC.Wing2.Torsion.^2; %increment due to torsion
 
 
-clfront(i) = AC.Wing1.CL_wf;
-clrear(i) = AC.Wing2.CL_wf;
+
 
 % Fuselage
 CDS.i.fuselage(i) = 0.15.*alpha_f(i).^2.*AC.Fuselage.Volume^(2/3) ;%<---Falta una superficie
 
 
-% figure()
-% hold on
-% plot(CL, CD.i.wing1,'b')
-% plot(CL, CD.i.wing2,'r')
-% 
-% figure()
-% hold on
-% plot(CL, clfront, 'b')
-% plot(CL, clrear, 'r')
-% plot(CL, CD.i.fuselage,'k')
+
 
 
 
@@ -134,9 +134,9 @@ lambdan_eff = AC.Engine.Length / AC.Engine.Width;
 %Acordarse de que hay 2 motores !
 CDS.p.nacelles(i) = Cf*(1+2.2/lambdan_eff^1.5 + 3.8/lambdan_eff^3)*AC.Engine.Swet;
 
-%% Vertical Tailplane
-Cf = getCf ( ME.Cruise.Speed * AC.VTP.CMA/ nu, 0);
-CDS.p.VTP(i) = 2*Cf*(1+2.75*AC.VTP.t_c*cos(AC.VTP.Sweep_12*pi/180)^2)*AC.VTP.Swet;
+% %% Vertical Tailplane
+% Cf = getCf ( ME.Cruise.Speed * AC.VTP.CMA/ nu, 0);
+% CDS.p.VTP(i) = Cf*(1+2.75*AC.VTP.t_c*cos(AC.VTP.Sweep_12*pi/180)^2)*AC.VTP.Swet;
 
 
 %% INTERFERENCE EFFECTS
@@ -181,9 +181,21 @@ CDS.p.VTP(i) = 2*Cf*(1+2.75*AC.VTP.t_c*cos(AC.VTP.Sweep_12*pi/180)^2)*AC.VTP.Swe
 %% Streamlined Struts
 % D_st = (0.015*(1+t_c)+t_c^2)*chord*length;
 
-
-
 end
+
+%% Plotting
+
+% figure()
+% hold on
+% plot(CL, CD.i.wing1,'b')
+% plot(CL, CD.i.wing2,'r')
+% 
+figure()
+hold on
+plot(CL, clfront, 'b')
+plot(CL, clrear, 'r')
+% plot(CL, CD.i.fuselage,'k')
+
 %% AUXILIAR FUNCTIONS
    function [Cf] = getCf( Reynolds, xt_c)
 x=[1e6,    1e7];

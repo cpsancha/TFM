@@ -87,6 +87,9 @@ switch ME.MissionType
         %Engines
         DP.EngineNumber    = 2;
         DP.EngineModel     = 'Snecma Silvercrest 2D';%'Rolls-Royce AE 3007A1E';
+        DP.Pylon_t_c       = 0.12; %NACA 0012
+        DP.Pylon_Swet      = 0.25;
+        DP.Pylon_Sweep     =   30; %[º]
         
         %Crew
         DP.CrewNumber     = 2;
@@ -95,10 +98,18 @@ switch ME.MissionType
         DP.fuselage_AoA   =     0; %[º] Angle of attack of the fuselage
         DP.fusWidth       =  2.50; %[m]
         DP.fusHeight      = 2.735; %[m]
-        DP.fusLength      =    23; %12.15 + 3*(DP.fusWidth+DP.fusHeight)/2;
-        DP.totalFusVolume =  pi*DP.fusWidth*DP.fusHeight*DP.fusLength/4; %[m^3]
-
-        
+        DP.fusLength      =  18.6; %[m] Total length
+        DP.cabLength      = 8.575; %[m] Length of the cabin including the gallery and lavatory,  Gallery: 1.48m   Cabin: 5.05m
+        DP.ln             = 3.625; %[m] Length of the nose
+        DP.la             = DP.fusLength-DP.ln-DP.cabLength; %[m]
+        DP.frontArea      = pi*DP.fusWidth*DP.fusHeight/4;   %[m^2]
+        DP.totalFusVolume =     DP.frontArea*DP.fusLength;   %[m^3]
+        DP.Swet           = pi/2*(DP.fusWidth+DP.fusHeight)*DP.fusLength; %[m^2] Exterior wet surface
+        DP.A_I            = 28.13; %[m^2]
+        DP.A_II           = 11.09; %[m^2]
+        DP.tailConeAngle  =    17; %[º]
+         
+  
         
         
         

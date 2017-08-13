@@ -537,6 +537,9 @@ end
     AC.Engine.Number      = DP.EngineNumber;
     AC.Engine.TotalThrust = AC.Weight.Tto_MTOW*(AC.Weight.MTOW*CST.GravitySI);
     AC.Engine.TotalWeight = AC.Engine.Number*AC.Engine.Weight;
+    AC.Engine.Pylon_t_c   = DP.Pylon_t_c;
+    AC.Engine.Pylon_Swet  = DP.Pylon_Swet;
+    AC.Engine.Pylon_Sweep = DP.Pylon_Sweep;
 
     
 
