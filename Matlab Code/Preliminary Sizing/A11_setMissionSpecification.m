@@ -102,7 +102,7 @@ switch ME.MissionType
         
     case 11 % amphibious
         ME.TakeOff.Altitude = 0;  % Take off altitude in m
-        ME.TakeOff.S_TOFL = 750;  % Take off distance in m
+        ME.TakeOff.S_TOFL = 700;  % Take off distance in m
 end
 
 
@@ -244,4 +244,4 @@ run B_loadParameters.m
 run C11_weightEstimation.m
 run D11_airplaneDesignParameters.m
 run E11_configurationDesign.m
-run F11_wingConfiguration.m
+% run F11_wingConfiguration.m

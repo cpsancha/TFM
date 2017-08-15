@@ -101,10 +101,9 @@ Una vez determinadas la forma en planta, posición, principales parámetros
  fuselaje y la posición y geometría de los motores, es el momento de realizar
  un cálculo de la polar de la aeronave mucho más preciso que la aproximación
  realizada anteriormente en el apartado 
+\series bold
 \color red
 METER APARTADO
-\color inherit
-.
 \end_layout
 
 \begin_layout Standard
@@ -274,9 +273,11 @@ A su vez,
 
  se puede calcular a partir del coeficiente de sustentcación del ala y de
  la distribución de sustentación adicional, calculada como se muestra en
- el apartado
+ el apartado 
+\series bold
 \color red
- METER APARTADO
+METER APARTADO
+\series default
 \color inherit
 , como: 
 \begin_inset Formula 
@@ -529,8 +530,10 @@ Cuando se acaben de calcular todas las contribuciones a la resistencia se
  coeficientes de cada una de las alas por su respectiva área, sumando todas
  las áreas de resistencia y adimensionalizando de nuevo el coeficiente con
  el área total calculado en el capítulo 
+\series bold
 \color red
 METER APARTADO
+\series default
 \color inherit
 , de forma que:
 \begin_inset Formula 

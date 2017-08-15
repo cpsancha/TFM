@@ -46,7 +46,8 @@ switch ME.MissionType
         AC.Weight.OEW = AC.Weight.EW + 0.005*AC.Weight.MTOW + ME.CrewWeight;
         AC.Weight.BOW = AC.Weight.OEW;
     case 11
-        AC.Weight.MLW = 0.8 * AC.Weight.MTOW; % Fraccion random!
+        MLW_MTOW = mean(loadFields(SP,'Weight.MLW_MTOW'),'omitnan');
+        AC.Weight.MLW = MLW_MTOW * AC.Weight.MTOW; 
 end
 
 

@@ -82,15 +82,18 @@
     D.deltaLCdp_2 = deltaLCdp_ref_2 .* interp1(generalizedProfileDrag(:,1),generalizedProfileDrag(:,2),...
                     ((cl_2-D.Cli_2)./(AC.Wing2.Airfoil.Cl_max-D.Cli_2)).^2);
     
-%     figure()
-%     hold on
-%     plot(cl_1,D.Cdp_min_1+D.deltaLCdp_1,'r')
-%     plot(cl_2,D.Cdp_min_2+D.deltaLCdp_2,'b')
-%     title('Profile Drag of an Airfoil Section','interpreter','latex')
-%     xlabel('$C_l$','interpreter','latex')
-%     ylabel('$C_d$','interpreter','latex')
-%     saveFigure(ME.FiguresFolder,'AirfoilProfileDrag')
-
+if DP.ShowReportFigures          
+    figure()
+    hold on
+    plot(cl_1,D.Cdp_min_1+D.deltaLCdp_1,'r')
+    plot(cl_2,D.Cdp_min_2+D.deltaLCdp_2,'b')
+    title('Profile Drag of an SC(3)-0712 Airfoil Section','interpreter','latex')
+    xlabel('$C_l$','interpreter','latex')
+    ylabel('$C_d$','interpreter','latex')
+    legend('Lead Wing','Rear Wing','Location','southeast')
+    legend('boxoff')
+    saveFigure(ME.FiguresFolder,'AirfoilProfileDrag')
+end
     
     
 %WINGS
@@ -125,7 +128,7 @@
     nacReynolds  = sqrt(DP.CruiseSpeed^2*Parameters.q1_qinf) * AC.Engine.Length / nu;
     Cf_nac       = getCf(nacReynolds,0);
     %FAN COWLING
-        SwetNacelles = pi * AC.Engine.Diameter * AC.Engine.Length;
+        SwetNacelles = pi * AC.Engine.Diameter * 0.25*AC.Engine.Length;
         DS.nacellesProfileFan = 1.25*AC.Engine.Number*Cf_nac*SwetNacelles;
     %GAS GENERATOR COWLING
         %Included in effective thrust loss
@@ -168,8 +171,8 @@
         DS.deltaIDp_boundary_1 = 1.5*Cf_root_1*AC.Wing1.Airfoil.t_c*AC.Wing1.RootChord*Cci_1*cosd(AC.Wing1.Sweep_12)^2;
         DS.deltaIDp_boundary_2 = 1.5*Cf_root_2*AC.Wing2.Airfoil.t_c*AC.Wing2.RootChord*Cci_2*cosd(AC.Wing2.Sweep_12)^2;
     %Viscosa debida al incremento de velocidad sobre la cara superior del ala frente a la parte de abajo debido a la sustentacion
-        CMAReynolds_1 = sqrt(DP.CruiseSpeed^2*Parameters.q1_qinf) * AC.Wing1.RootChord / nu;
-        CMAReynolds_2 = sqrt(DP.CruiseSpeed^2*Parameters.q2_qinf) * AC.Wing2.RootChord / nu;
+        CMAReynolds_1 = sqrt(DP.CruiseSpeed^2*Parameters.q1_qinf) * AC.Wing1.CMA / nu;
+        CMAReynolds_2 = sqrt(DP.CruiseSpeed^2*Parameters.q2_qinf) * AC.Wing2.CMA / nu;
         Cf_CMA_1 = getCf( CMAReynolds_1, 0);
         Cf_CMA_2 = getCf( CMAReynolds_2, 0);
         DS.deltaIDp_speed_1 = -0.81*Cf_CMA_1*AC.Wing1.CL_wf*AC.Wing1.RootChord*fusDiameter; %Valid for high wing
@@ -193,7 +196,8 @@
 %EXTERNAL FUEL TANKS
 %OTHER EFFECTS, SURFACE IMPERFECTIONS
     %Meter los porcentajes que dice
-    DS.Imperfections = 0.06 * Parameters.q1_qinf * AC.Wing1.Sw * D.CDp_wing_1 + ...
+    DS.Imperfections = DS.windshieldsProtuberance + ...
+					   0.06 * Parameters.q1_qinf * AC.Wing1.Sw * D.CDp_wing_1 + ...
                        0.06 * Parameters.q2_qinf * AC.Wing2.Sw * D.CDp_wing_2 + ...
                        0.07 * DS.fuselageProfileBasic + ...
                        0.15 * DS.nacellesProfileFan + ...

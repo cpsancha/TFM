@@ -1,0 +1,222 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\usepackage{geometry}
+\geometry{	a4paper,
+top=20mm,
+left=30mm,
+right=25mm,
+bottom=20mm}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+\begin_inset Graphics
+	filename pegado1.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pegado2.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Eleccion del numero de motores: 
+\end_layout
+
+\begin_layout Standard
+Comparar resultados con 2 y 4 motores en selecion del pubnto de diseño
+\end_layout
+
+\begin_layout Standard
+2: mantenimiento mas facil
+\end_layout
+
+\begin_layout Standard
+De haber escogido 4 motores, habría una gama mucho mas amplia entre la que
+ escoger y se relajarían considerablemente los restricciones relativas a
+ fallo motor.
+ 4 motores tambien conllevaría la complicacion de la restriccion geométrica
+ de las hélices dejando espacio entre motores (al ser ala tandem, cada una
+ de las alas será mas corta, menos sitio).
+ También podrían distribuirse 2 y 2, pero aparece el problema de que los
+ motores del ala trasera quedan embebidos en el ala delantera
+\end_layout
+
+\begin_layout Subsection
+Datos historicos de SFC de turobprop torenbeeeck p156 pdf
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename pegado3.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Discusión sobre Aspect Ratio, explicación de semejantes en a la izda de
+ la restriccion de rafagas p.234 torenbeek pdf
+\end_layout
+
+\begin_layout Standard
+For light aircraft, the wing loading is usually fairly low, the complication
+ of a sophisticated high-lift system generally being considered as undesirable
+ by most manufacturers.
+ Consequently, the optimum cruising speed for long-range flight may be too
+ slow to make it an attractive speed, particularly when the altitude is
+ limited to some 10,000 ft (3,000 m).
+ These aircraft are usually flown at the maximum cruise rating and it can
+ readily be shown that a large increase in A results in a relatively modest
+ gain in speed and range.
+ For example, increasing the aspect ratio of an aircraft with W= 3,300 lb
+ (1,500 kg), S = 160 sq.ft (15 m2 ), P = 180 hp and COo = .025 from 6 to 10
+ results in a speed increment at sea level from 128 knots (238 km/h) to
+ 134 knots (248 km/h) , a gain of only 4%.
+ A high aspect ratio may result in a low drag in the landing configuration,
+ which tends to flatten the approach glide, makes judgment of the landing
+ point more difficult to the pilot and gives the aircraft a tendency to
+ "float" after the landing flare.
+ In addition, a high aspect ratio wing does not favor good maneuverability
+ in roll due to its large damping and the reduced effectiveness of the small-cho
+rd ailerons (Ref.
+ 7-96).
+ In conclusion, moderate aspect ratios between 7 and 9 are usually applied
+ for twinengine general aviation aircraft; for single-engine aircraft these
+ values are usually somewhat lower, e.g.
+ between 5.5 and 8
+\end_layout
+
+\begin_layout Subsection
+Propeller diameter
+\end_layout
+
+\begin_layout Subsubsection
+Clearance values p 223 pdf
+\end_layout
+
+\begin_layout Standard
+The values stated above are absolute minima; in order to limit cabin noise
+ level it is advisable to provide a propeller tip / fuselage clearance of
+ at least 4 inches (10 cm) plus .65 inch (1.65 em) per 100 hp of one engine.
+ It should also be kept in mind that in the case of engine power growth
+ the optimum diameter of the propeller is likely to i~crease.
+ d.
+ In the case of seaplanes and flying boats there must be a clearance of
+ at least 18 inches (46 cm) between each propeller and the water, but it
+ is recommended that this clearance should be at least 40 per cent of the
+ propeller diameter.
+\end_layout
+
+\begin_layout Subsection
+Pto diseño
+\end_layout
+
+\begin_layout Standard
+espacio de diseño reducido, donde se encuentran los demás semejantes que
+ interesan.
+ Estos tienen mas potencia debido a que su objetivo principal es reducir
+ la stow_water, desvian potencia para soplado capa limite
+\end_layout
+
+\begin_layout Section
+VTP p355
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+For multi-engine aircraft with wing-mounted engines a lower limit for Sv'
+ can be derived from Fig.
+ 9-23.
+ A subsequent check should be made to ascertain that the volume is not less
+ than the value dictated by Fig.
+ 9-24~ If sufficient data are available, the crosswind criterion given by
+ (9-68) should also be checked
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\end_body
+\end_document

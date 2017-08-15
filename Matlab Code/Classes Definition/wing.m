@@ -39,6 +39,9 @@ classdef wing < handle
         Dihedral        double  %[double] Dihedral of the wing [º]
         E               double  %[double] Jones velocity correction [-]
         eta             double  %[double] Adimensionalized spanwise coordinate [-]
+        eta_inboard     double  % flaps beggining [-]
+        eta_outboard    double  % flaps ending  [-]
+        fuelVolume      double  %[double] Available volume inside the wing than can be used as fuel deposit [m^3]
         Incidence       double  %[double] Angle of the wing/body incidence (iw) mesaured from fuselage floor [º]
         LongPos         double  %[double] Definida como el cociente entre la distancia longitudinal del punto un cuarto de la cuerda media aerodinámica al morro del avión y la longitud del fuselaje.
         MachDiv         double  %[double] Mach of divergence, for which drag increases a lot [-]
@@ -51,6 +54,7 @@ classdef wing < handle
         Snet            double  %[double] Total wing surface subtracting the portion contained in the fuselage [m^2]
         Sw              double  %[double] Total Wing Surface [m^2]
         Swet            double  % Wet surface [m^2]
+        Swf             double  % Surface ocuppied by sections with flap [m^2]
         Sweep_12        double  %[double] Sweep of the wing at the point 1/2 of CMA [º]
         Sweep_14        double  %[double] Sweep of the wing at the point 1/4 of CMA [º]
         Sweep_LE        double  %[double] Sweep of the wing at the leading edge [º]

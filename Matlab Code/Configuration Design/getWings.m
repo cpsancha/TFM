@@ -258,12 +258,12 @@ AC.Wing2.cl = cl;
 AC.Wing2.c = c;
 AC.Wing2.eta = eta;
 
-
-qh_q = 0.85;
+Parameters.q2_qinf = 0.85;
+qh_q = Parameters.q2_qinf;
 AC.Wing2.Reynolds = sqrt(ME.Cruise.Speed^2*qh_q).* AC.Wing2.c ./ nu;
 
 %% Equations:
-
+        
 
 Sh_S = AC.Wing1.Sw / AC.Wing2.Sw;
 ch_c = AC.Wing1.CMA / AC.Wing2.CMA;
@@ -302,6 +302,13 @@ AC.Wing2.clb = AC.Wing2.Torsion .* AF.cl_alpha .* AC.Wing2.CMG .* Lb ./ (E.*c);
 
 %% Plotting
 if plotFlag==1
+    
+CL = AC.Wing1.CLmax;
+cl = (La.*CL+AC.Wing1.Torsion.*AF.cl_alpha.*Lb./E)./c.*AC.Wing1.CMG;
+cla = CL.*AC.Wing1.CMG.*La./c;
+clb = AC.Wing1.Torsion .* AF.cl_alpha .* AC.Wing1.CMG .* Lb ./ (E.*c);
+
+
     figure()
     hold on
         plot(eta,AC.Wing1.CLmax.*cla);
@@ -365,7 +372,12 @@ figure()
             plot([AC.Wing2.Root_LE+AC.Wing2.TipSweep,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord],[-AC.Wing2.WingSpan/2,-AC.Wing2.WingSpan/2],'b')
        %CG
        plot(DP.x_cg,0,'x')
- 
+       
+       %VTP
+       
+       plot(AC.VTP.Root_LE+AC.VTP.Airfoil.Points.xU*AC.VTP.RootChord,AC.VTP.Airfoil.Points.zU*AC.VTP.RootChord,'b')  
+       plot(AC.VTP.Root_LE+AC.VTP.Airfoil.Points.xL*AC.VTP.RootChord,AC.VTP.Airfoil.Points.zL*AC.VTP.RootChord,'b')
+
 end
 
     end

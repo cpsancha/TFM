@@ -109,6 +109,17 @@ Comparar resultados con 2 y 4 motores en selecion del pubnto de diseño
 2: mantenimiento mas facil
 \end_layout
 
+\begin_layout Standard
+De haber escogido 4 motores, habría una gama mucho mas amplia entre la que
+ escoger y se relajarían considerablemente los restricciones relativas a
+ fallo motor.
+ 4 motores tambien conllevaría la complicacion de la restriccion geométrica
+ de las hélices dejando espacio entre motores (al ser ala tandem, cada una
+ de las alas será mas corta, menos sitio).
+ También podrían distribuirse 2 y 2, pero aparece el problema de que los
+ motores del ala trasera quedan embebidos en el ala delantera
+\end_layout
+
 \begin_layout Subsection
 Datos historicos de SFC de turobprop torenbeeeck p156 pdf
 \end_layout
@@ -174,6 +185,33 @@ The values stated above are absolute minima; in order to limit cabin noise
  at least 18 inches (46 cm) between each propeller and the water, but it
  is recommended that this clearance should be at least 40 per cent of the
  propeller diameter.
+\end_layout
+
+\begin_layout Subsection
+Pto diseño
+\end_layout
+
+\begin_layout Standard
+espacio de diseño reducido, donde se encuentran los demás semejantes que
+ interesan.
+ Estos tienen mas potencia debido a que su objetivo principal es reducir
+ la stow_water, desvian potencia para soplado capa limite
+\end_layout
+
+\begin_layout Section
+VTP p355
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+For multi-engine aircraft with wing-mounted engines a lower limit for Sv'
+ can be derived from Fig.
+ 9-23.
+ A subsequent check should be made to ascertain that the volume is not less
+ than the value dictated by Fig.
+ 9-24~ If sufficient data are available, the crosswind criterion given by
+ (9-68) should also be checked
 \end_layout
 
 \end_body

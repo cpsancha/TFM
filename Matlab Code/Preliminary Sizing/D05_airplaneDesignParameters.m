@@ -519,27 +519,28 @@ end
 
 
     %Store design point into AC structure
-    AC.Wing.WingLoading   = x;
-    AC.Weight.Tto_MTOW    = y;
-    AC.Wing.AspectRatio   = DP.AspectRatio;
-    AC.Wing.Sw            = AC.Weight.MTOW/AC.Wing.WingLoading;
-    AC.Wing.WingSpan      = sqrt(AC.Wing.AspectRatio*AC.Wing.Sw);
-    AC.Wing.TaperRatio    = DP.TaperRatio;
-    AC.Wing.RootChord     = (2/(1+AC.Wing.TaperRatio))*sqrt(AC.Wing.Sw/AC.Wing.AspectRatio);
-    AC.Wing.TipChord      = AC.Wing.TaperRatio*AC.Wing.RootChord;
-    AC.Wing.CMG           = AC.Wing.RootChord*((1+AC.Wing.TaperRatio)/2);
-    AC.Wing.CMA           = (2/3)*AC.Wing.RootChord*((1+AC.Wing.TaperRatio+AC.Wing.TaperRatio^2)/(1+AC.Wing.TaperRatio));
-    AC.Wing.CLdesign      = 2*AC.Weight.MTOW*prod([Parameters.fuelFraction(1:4).value])*CST.GravitySI/(rho*AC.Wing.Sw*DP.CruiseSpeed^2);
-    AC.Wing.CLmax         = DP.CLmax;
-    AC.Wing.CLmax_TO      = DP.CLmax_TO;
-    AC.Wing.CLmax_L       = DP.CLmax_L;
-    AC.Engine             = Parameters.EngineOptions(find(usedEngine,1));
-    AC.Engine.Number      = DP.EngineNumber;
-    AC.Engine.TotalThrust = AC.Weight.Tto_MTOW*(AC.Weight.MTOW*CST.GravitySI);
-    AC.Engine.TotalWeight = AC.Engine.Number*AC.Engine.Weight;
-    AC.Engine.Pylon_t_c   = DP.Pylon_t_c;
-    AC.Engine.Pylon_Swet  = DP.Pylon_Swet;
-    AC.Engine.Pylon_Sweep = DP.Pylon_Sweep;
+    AC.Wing.WingLoading    = x;
+    AC.Weight.Tto_MTOW     = y;
+    AC.Wing.AspectRatio    = DP.AspectRatio;
+    AC.Wing.Sw             = AC.Weight.MTOW/AC.Wing.WingLoading;
+    AC.Wing.WingSpan       = sqrt(AC.Wing.AspectRatio*AC.Wing.Sw);
+    AC.Wing.TaperRatio     = DP.TaperRatio;
+    AC.Wing.RootChord      = (2/(1+AC.Wing.TaperRatio))*sqrt(AC.Wing.Sw/AC.Wing.AspectRatio);
+    AC.Wing.TipChord       = AC.Wing.TaperRatio*AC.Wing.RootChord;
+    AC.Wing.CMG            = AC.Wing.RootChord*((1+AC.Wing.TaperRatio)/2);
+    AC.Wing.CMA            = (2/3)*AC.Wing.RootChord*((1+AC.Wing.TaperRatio+AC.Wing.TaperRatio^2)/(1+AC.Wing.TaperRatio));
+    AC.Wing.CLdesign       = 2*AC.Weight.MTOW*prod([Parameters.fuelFraction(1:4).value])*CST.GravitySI/(rho*AC.Wing.Sw*DP.CruiseSpeed^2);
+    AC.Wing.CLmax          = DP.CLmax;
+    AC.Wing.CLmax_TO       = DP.CLmax_TO;
+    AC.Wing.CLmax_L        = DP.CLmax_L;
+    AC.Wing2.deltaCLdeltaE = 0;
+    AC.Engine              = Parameters.EngineOptions(find(usedEngine,1));
+    AC.Engine.Number       = DP.EngineNumber;
+    AC.Engine.TotalThrust  = AC.Weight.Tto_MTOW*(AC.Weight.MTOW*CST.GravitySI);
+    AC.Engine.TotalWeight  = AC.Engine.Number*AC.Engine.Weight;
+    AC.Engine.Pylon_t_c    = DP.Pylon_t_c;
+    AC.Engine.Pylon_Swet   = DP.Pylon_Swet;
+    AC.Engine.Pylon_Sweep  = DP.Pylon_Sweep;
 
     
 

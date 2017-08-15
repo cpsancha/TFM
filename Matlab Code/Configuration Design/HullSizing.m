@@ -1,0 +1,1 @@
+Cdelta0=AC.Weight.MTOW/(CST.WaterDensity*AC.Hull.Beam).^3 ;

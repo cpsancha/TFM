@@ -228,8 +228,13 @@ end
 run B_loadParameters.m
 run C05_weightEstimation.m
 run D05_airplaneDesignParameters.m
-AC.Wing2.deltaCLdeltaE = 0;
 run F05_wingConfiguration
+if DP.ShowAircraftLayout
+    showAircraftFlag = true;
+    close
+else
+    showAircraftFlag = false;
+end
 globalOptions = optimoptions('fsolve', 'StepTolerance',1e-9, 'Display','none');
 X0 = [DP.Incidence_1, DP.Incidence_2, DP.Stagger];
 DP.ShowReportFigures  = false;
@@ -238,13 +243,14 @@ DP.ShowAircraftLayout = false;
 DP.Incidence_1 = X(1);
 DP.Incidence_2 = X(2);
 DP.Stagger     = X(3);
+
 if ~isequal(exitflag,1)
     error('El solver que calcula las incidencias y el stagger no ha logrado converger correctamente. Se debería revisar el resultado.')
 else
     clear exitflag  X0 X
 end
 X0 = [DP.fuselage_AoA, 0];
-AircraftWeight = linspace(AC.Weight.MTOW*prod([Parameters.fuelFraction(1:6).value]),AC.Weight.MTOW*prod([Parameters.fuelFraction(1:4).value]),50);
+AircraftWeight = linspace(AC.Weight.MTOW*prod([Parameters.fuelFraction(1:9).value]),AC.Weight.MTOW*prod([Parameters.fuelFraction(1:1).value]),50);
 DP.ShowReportFigures  = false;
 DP.ShowAircraftLayout = false;
 for i=1:length(AircraftWeight)
@@ -270,15 +276,28 @@ for i=1:length(AircraftWeight)
     clear D DS
 end
 Polar.PolarFit = polyfit(Polar.CL,Polar.CD,2);
-figure(); hold on;
-plot(Polar.CL,Polar.CD,'r')
-plot(linspace(min(Polar.CL),max(Polar.CL),50), polyval(Parameters.Polar.LongRangeCruise,linspace(min(Polar.CL),max(Polar.CL),50)),'b')
-legend('Calculated Polar','Design Polar')
-xlabel('C_L')
-ylabel('C_D')
-% AC.Fuselage.fuselage_AoA = 0;
-% AC.Wing2.deltaCLdeltaE = 0;
-% run F05_wingConfiguration
+%Show Aircraft Polar
+figure()
+    hold on
+    plot(Polar.CL,Polar.CD,'r')
+    txt=['$\ \leftarrow\ \ C_{D}=',num2str(Polar.PolarFit(3)),'',num2str(Polar.PolarFit(2)),...
+         'C_{L}+',num2str(Polar.PolarFit(1)),'C_{L}^2','$'];
+    text(Polar.CL(round(0.1*length(Polar.CL))),Polar.CD(round(0.1*length(Polar.CL))),txt,'HorizontalAlignment','left','Interpreter','Latex')
+    plot(linspace(min(Polar.CL),max(Polar.CL),50), polyval(Parameters.Polar.LongRangeCruise,linspace(min(Polar.CL),max(Polar.CL),50)),'b')
+    txt=['$C_{D}=',num2str(Parameters.Polar.LongRangeCruise(3)),'+',num2str(Parameters.Polar.LongRangeCruise(1)),'C_{L}^2','\ \ \rightarrow\ \ \ \ $'];
+    text(min(Polar.CL)+0.6*(max(Polar.CL)-min(Polar.CL)),polyval(Parameters.Polar.LongRangeCruise,min(Polar.CL)+0.6*(max(Polar.CL)-min(Polar.CL))),txt,'HorizontalAlignment','right','Interpreter','Latex')
+    legend('Calculated Polar','Design Polar','Location','southeast')
+    legend('boxoff')
+    title('Aircraft polar for the valid range of weights','interpreter','latex')
+    xlabel('C_L')
+    ylabel('C_D')
+    saveFigure(ME.FiguresFolder,'AircraftPolar')
+AC.Fuselage.fuselage_AoA = 0;
+AC.Wing2.deltaCLdeltaE = 0;
+if showAircraftFlag
+    DP.ShowAircraftLayout = true;
+    run F05_wingConfiguration
+end
 % run G05_polarPrediction
 
 
@@ -297,7 +316,7 @@ ylabel('C_D')
 % end
 % legend('-5º','-2.5º','0º','2.5º','5º')
 
-clear X X0 i exitflag globalOptions AircraftWeight
+clear X X0 i exitflag globalOptions AircraftWeight txt showAircraftFlag
 
 function [Error] = getWingsIncidence(X, AC, ME, DP, Parameters, CST, CF) %#ok<INUSL,INUSD>
   %INPUTS:  

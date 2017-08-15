@@ -32,8 +32,8 @@ CL_max_L_vec = 3.8;
 % CL_max_L_vec = [2.5, 3.5, 3.8];
 
 A_vec = 9.1;
-CL_max_TO_vec = 2.405;
-CL_max_L_vec = [2.2, 2.7, 2.8];
+CL_max_TO_vec = 2.15;%2.405;
+CL_max_L_vec = [2.2, 2.6, 2.6];
 end
 
 %A=9.1 Clto = 2.8 clL=3.8
@@ -84,7 +84,7 @@ Pto2Tto =2.9*CF.lbf2N/CF.hp2watts; %W to N
 [~, ~, ~, rho0] = atmosisa(0);
 sigma = rho/rho0;
 
-S_tofl = ME.TakeOff.S_TOFL/CF.ft2m; %stofl in ft
+S_tofl = 1.3*ME.TakeOff.S_TOFL/CF.ft2m; %stofl in ft
 TOP_25 = (S_tofl)/37.5; %TOP in lbs/ft^2 Eq 3.8
 Wto_S_to=Wto_S./(CF.lbf2N/CF.ft2m^2); %W/S to lbs/ft^2
 Tto_Wto_TO = Wto_S_to./ (Parameters.CL_max_TO*TOP_25*sigma); 
@@ -138,8 +138,8 @@ clear a c T_W_to
 [~, ~, ~, rho] = atmosisa(ME.Landing.Altitude); 
 
 %Roskam Method
-    MLW_MTOW = mean(loadFields(SP,'Weight.MLW_MTOW'),'omitnan');
-    Vapp_R   = sqrt(ME.Landing.S_LFL*CF.m2ft/0.3); %[kts] --> Roskam eq 3.16
+    
+    Vapp_R   = sqrt(1.1*ME.Landing.S_LFL*CF.m2ft/0.3); %[kts] --> Roskam eq 3.16
     VStall_L = Vapp_R/1.3;               %[kts] --> Roskam eq 3.15
     WL_Sw    = (rho*Parameters.CL_max_L*(VStall_L*CF.kts2ms)^2)/(2*CST.GravitySI); %[kg/m^2]
     WingLoading.LandingRoskam = WL_Sw/MLW_MTOW*CST.GravitySI;
@@ -515,8 +515,8 @@ WingLoading.Gust=fsolve(@(x)gustWingLoading(x,A, CST, AC, CF, ME),1000);
     %Take-off
             plot(Wto_S,P_W.take_off,'Color',Parameters.Colors(3,:),'LineStyle',line{ii+jj+kk-2});
             LegendStr{end+1} = 'Water Take off length';
-%             plot(Wto_S,P_W.take_off1,'Color',Parameters.Colors(4,:),'LineStyle',line{ii+jj+kk-2});
-%             LegendStr{end+1} = 'Ground Take off length';
+            plot(Wto_S,P_W.take_off1,'Color',Parameters.Colors(4,:),'LineStyle',line{ii+jj+kk-2});
+            LegendStr{end+1} = 'Ground Take off length';
             
     %Landing
             plot(WingLoading.LandingRoskam.*ones(1,100),linspace(0,100,100),'LineWidth',1.25,'Color',Parameters.Colors(5,:),'LineStyle',line{ii+jj+kk-2});
@@ -603,8 +603,8 @@ WingLoading.Gust=fsolve(@(x)gustWingLoading(x,A, CST, AC, CF, ME),1000);
         end
     end
     else
-        x = 3350; %[N/m^2] WingLoad
-        y =  19.55; %[W/N] Power to Weight ratio at take-off
+        x = 3378; %[N/m^2] WingLoad
+        y =  23.9988; % 21.2[W/N] Power to Weight ratio at take-off
 %         y =  21;
         plot(x,y,'ko');
     end
@@ -622,6 +622,8 @@ WingLoading.Gust=fsolve(@(x)gustWingLoading(x,A, CST, AC, CF, ME),1000);
     AC.Wing.Sw            = AC.Weight.MTOW*CST.GravitySI/AC.Wing.WingLoading;
     AC.Engine.TotalThrust = AC.Weight.Tto_MTOW*(AC.Weight.MTOW*CST.GravitySI);
     AC.Engine.TotalPower  = AC.Weight.Pto_MTOW*AC.Weight.MTOW*CST.GravitySI;
+%     Parameters.CL_max_L   = 
+%     Parameters.CL_max_TO  = 
     
     clear A x y rho rho5000 rho0 sigma
     

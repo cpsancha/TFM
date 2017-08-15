@@ -32,7 +32,7 @@
         
 index = find(enginesPower<1.1*AC.Engine.TotalPower & enginesPower>0.9*AC.Engine.TotalPower); %Find matching engines in a range
 % index = find(enginesPower<1.1*AC.Engine.TotalPower);
-indexSFC =  find(enginesSFC<0.5);
+indexSFC =  find(enginesSFC<0.5 & ~isnan(enginesSFC));
  
 [~,indexmin] = min(enginesSFC(index)); % In that range, select the one whose SFC is minimum
 
@@ -44,24 +44,31 @@ AC.Engine.Weight      = turbopropDataBase(index(indexmin)).Weight*CF.lbm2kg;
 AC.Engine.Length      = turbopropDataBase(index(indexmin)).Length*CF.in2m;
 AC.Engine.Width       = turbopropDataBase(index(indexmin)).Width*CF.in2m;
 AC.Engine.Swet        = pi*AC.Engine.Width*AC.Engine.Length; %Aproximacion cutre por un cilindro sin base xd
+
+AC.Weight.Pto_MTOW = AC.Engine.TotalPower/ (AC.Weight.MTOW*CST.GravitySI);
 %         [min,indexmin]= min(abs(enginesPower-AC.Engine.TotalPower)); % Closest to power selected
 %%        
  figure(); hold on;
  title('Engine selection')
  clear LegendStr
-   LegendStr=cell(0);
+   LegendStr=cell(1);
    grid on
  
 %    Engines plot
- for i=1:length(index) 
- plot(Wto_S,ones(1,length(Wto_S)).*enginesPower(index(i))./(AC.Weight.MTOW.*CST.GravitySI),'--')
- LegendStr{i} = enginesModel{index(i)};
- end
+%  for i=1:length(index) 
+%  plot(Wto_S,ones(1,length(Wto_S)).*enginesPower(index(i))./(AC.Weight.MTOW.*CST.GravitySI),'--')
+%  LegendStr{i} = enginesModel{index(i)};
+%  end
  
-%   for i=5:length(indexSFC) 
-%  plot(Wto_S,ones(1,length(Wto_S)).*enginesPower(indexSFC(i))./(AC.Weight.MTOW.*CST.GravitySI),'--')
+%  for i=1:length(indexSFC ) 
+%  plot(Wto_S,ones(1,length(Wto_S)).*enginesPower(indexSFC (i))./(AC.Weight.MTOW.*CST.GravitySI),'--')
 %  LegendStr{i} = enginesModel{indexSFC(i)};
-%   end
+%  end
+ 
+  for i=1:length(indexSFC) 
+ plot(Wto_S,ones(1,length(Wto_S)).*enginesPower(indexSFC(i))./(AC.Weight.MTOW.*CST.GravitySI),'--')
+ LegendStr{i} = enginesModel{indexSFC(i)};
+  end
  
 
  %Design point plot
@@ -90,9 +97,9 @@ AC.Engine.Swet        = pi*AC.Engine.Width*AC.Engine.Length; %Aproximacion cutre
         set(gcf,'PaperUnits', 'centimeters','PaperSize',[grafWidth grafWidth*grafAR], 'PaperPosition', [0 0 grafWidth grafWidth*grafAR]);
         set(gca,'FontSize',10,'FontName','Times new Roman','box','on')
         warning('off', 'MATLAB:handle_graphics:exceptions:SceneNode');
-        [~,objs]=columnlegend(2,LegendStr,'Location','northwest','FontSize',8,'boxoff');
+%         [~,objs]=columnlegend(2,LegendStr,'Location','northwest','FontSize',8,'boxoff');
         drawnow; % make sure everything is finished rendering 
-        set(findall(objs, 'type', 'text'), 'fontsize', 8, 'interpreter', 'tex')
+%         set(findall(objs, 'type', 'text'), 'fontsize', 8, 'interpreter', 'tex')
         warning('on', 'MATLAB:handle_graphics:exceptions:SceneNode');
         clear grafWidth grafAR showRoskamRequirements LegendStr objs
         

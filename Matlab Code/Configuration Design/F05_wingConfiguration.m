@@ -117,6 +117,10 @@
 %X_ac    
     AC.Wing1.x_ac_w = AC.Wing1.CMA_14;
     AC.Wing2.x_ac_w = AC.Wing2.CMA_14;
+    
+%Fuel Volume
+    AC.Wing1.fuelVolume = 0.54*AC.Wing1.Sw^2/AC.Wing1.WingSpan*AC.Wing1.Airfoil.t_c*((1+AC.Wing1.TaperRatio+AC.Wing1.TaperRatio^2)/(1+AC.Wing1.TaperRatio)^2);
+    AC.Wing1.fuelVolume = 0.54*AC.Wing2.Sw^2/AC.Wing2.WingSpan*AC.Wing2.Airfoil.t_c*((1+AC.Wing2.TaperRatio+AC.Wing2.TaperRatio^2)/(1+AC.Wing2.TaperRatio)^2);
 
 %Distance from Root_LE to Tip_LE
     AC.Wing1.TipSweep = (AC.Wing1.WingSpan/2)*tand(AC.Wing1.Sweep_LE);
@@ -561,7 +565,7 @@ clear lengthFusNose1 lengthFusNose2 deltaF1ac_1 deltaF1ac_2 deltaF2ac_1 deltaF2a
 
 %% PLOT WING LAYOUT
 if DP.ShowAircraftLayout
-%Import fuselage layout from data file
+%Import fuselage layout and tail cone layout from data file
 sr=which(mfilename);
 i=max(strfind(lower(sr),lower('MTORRES')))+6;
 if i>0
@@ -570,9 +574,11 @@ else
   error('Cannot locate MTORRES directory. You must add the path to the MTorres directory.')
 end
 FuselageFile = fullfile(sr,'Matlab Code',filesep,'Digitalized Data',filesep,'fuselage.dat');
+AfterbodyFile = fullfile(sr,'Matlab Code',filesep,'Digitalized Data',filesep,'tailCoordinates.dat');
 [Xfus,Yfus]  = importFuselage(FuselageFile);
-clear sr i FuselageFile
-   
+[Xtail,Ytail]  = importFuselage(AfterbodyFile);
+clear sr i FuselageFile AfterbodyFile
+
 
 %Create figure and plotting  
 figure()
@@ -582,8 +588,11 @@ figure()
         plot(Xfus, Yfus,'k')
         plot(Xfus,-Yfus,'k')
     %CABIN
-        plot([Xfus(end),AC.Fuselage.fusLength],[ Yfus(end), Yfus(end)],'k')
-        plot([Xfus(end),AC.Fuselage.fusLength],[-Yfus(end),-Yfus(end)],'k')
+        plot([AC.Fuselage.ln,AC.Fuselage.ln+AC.Fuselage.cabLength],[ AC.Fuselage.fusWidth/2, AC.Fuselage.fusWidth/2],'k')
+        plot([AC.Fuselage.ln,AC.Fuselage.ln+AC.Fuselage.cabLength],[-AC.Fuselage.fusWidth/2,-AC.Fuselage.fusWidth/2],'k')
+    %TAIL CONE
+        plot(AC.Fuselage.fusLength-AC.Fuselage.la+Xtail, Ytail,'k')
+        plot(AC.Fuselage.fusLength-AC.Fuselage.la+Xtail,-Ytail,'k')
     %WING1
         %root chord
             plot([AC.Wing1.Root_LE,AC.Wing1.Root_LE+AC.Wing1.RootChord],[ 0, 0],'r')
@@ -629,7 +638,7 @@ figure()
 end     
     
     
-clear a T P rho nu EffectiveSweep1 EffectiveSweep2 CruiseMach1 CruiseMach2
+clear a T P rho nu EffectiveSweep1 EffectiveSweep2 CruiseMach1 CruiseMach2 Xtail Ytail
 clear f_00deg f_30deg f_45deg f_60deg index DiederichCoordinate1 DiederichCoordinate2
 clear C1x C2x C3x C4x C1y C2y C3y C4y f0x f0y f30x f30y f_low f_hight Twist1 Twist2
 clear C1_1 C1_2 C2_1 C2_2 C3_1 C3_2 f1 f2 C4_1 C4_2 CL_wing1 CL_wing2 Clb1 Clb2

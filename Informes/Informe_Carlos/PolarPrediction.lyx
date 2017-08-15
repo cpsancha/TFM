@@ -547,18 +547,801 @@ C_{D}=\frac{\sum\left(C_{D}S\right)_{j}}{S_{w}}
 \end_layout
 
 \begin_layout Section
-Resistencia de forma
+Resistencia parásita debida a la forma
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Resistencia-parásita"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-La segunda contribución se debe a la resistencia producida capa límite de
- los cuerpos y las regiones de flujo desadherido existentes.
+La segunda contribución se debe a la resistencia producida por la capa límite
+ de los cuerpos y las regiones de flujo desadherido existentes.
  Para cuerpos aerodinámicos a bajos ángulos de ataque, la componente principal
- es la debida a la fricción con el aire, siendo una componente mucho menor
- la debida a la presión.
- Esta componente también puede ser aproximada con bastante exactitud para
- la mayoría de formas de fuselaje existentes.
+ es la debida a la fricción con el aire, siendo mucho menor la componente
+ debida a la disminución de presión que aparece tras el paso del cuerpo.
+ Esta componente de la resistencia también puede ser aproximada con bastante
+ exactitud para la mayoría de formas de fuselaje existentes.
+\end_layout
+
+\begin_layout Standard
+Para ello, en primer lugar se estudiará la resistencia de las diferentes
+ secciones que componen el ala, los perfiles, para a continuación pasar
+ a estimar la resistencia de las alas.
+ Por último, se estudiará la resistencia debida al fuselaje, los motores
+ y el VTP.
+ Durante todos los cálculos de esta sección se supondrá que las superficies
+ son lisas, sin rugosidad, y que las distintas partes de la aeronave a analizar
+ se encuentran aisladas del resto, calculándose las contribuciones debidas
+ a las interferencias en la siguiente sección.
+\end_layout
+
+\begin_layout Standard
+Estas suposiciones permiten aplicar la analogía de la placa plana a cada
+ una de las componentes, que se realizará de la siguiente forma:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-1.5em}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Se calculará la superficie mojada del correspondiente perfil, ala o cuerpo.
+\end_layout
+
+\begin_layout Enumerate
+Se calculará el coeficiente de fricción, 
+\begin_inset Formula $C_{F}$
+\end_inset
+
+, de la placa plana equivalente suponiendo que trata de una superficie lisa,
+ con la misma area mojada, misma longitud proyectada en dirección de la
+ corriente, mismo punto de transicción laminar-turbulento respecto de la
+ parte delantera del cuerpo y al correspondiente número de Reynolds en función
+ de la longitud característica del cuepo.
+\end_layout
+
+\begin_layout Enumerate
+Se calculará un factor corrector de forma, 
+\begin_inset Formula $\psi$
+\end_inset
+
+, que refleje las correcciones para los siguientes aspectos:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Existen diferencias en la forma en la que se desarrolla la capa límite respecto
+ a la placa plana.
+\end_layout
+
+\begin_layout Itemize
+Los cuerpos tienen un espesor que no se tiene en cuenta con la placa plana
+ y que modifica la velocidad del flujo exterior.
+\end_layout
+
+\begin_layout Itemize
+Los cuerpos presentan una determinada superficie frontal que origina una
+ resistencia de presión.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Finalmente, se calculará el área de resistencia de dicho cuerpo, en función
+ de los parámetros anteriores como:
+\begin_inset Formula 
+\[
+C_{D}S=C_{F}\left(1+\psi\right)S_{wet}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Resistencia parásita de los perfiles
+\end_layout
+
+\begin_layout Standard
+\begin_inset Wrap figure
+lines 12
+placement r
+overhang 0in
+width "45text%"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-1.5em}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename ../../../Master Ingenieria Aeronautica/4S/TFM/Informes/Informe_Carlos/Figs/ejemploResistenciaParasita.JPG
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Ejemplo de la resistencia parásita de un perfil
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Ejemplo-resistencia-parasita"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+En la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Ejemplo-resistencia-parasita"
+
+\end_inset
+
+ se muestra, a modo de ejemplo, la resistencia parásita obtenida de modo
+ experimental de un perfil en un flujo bidimensional.
+ Como se puede ver, la resistencia parásita presenta un mínimo de un valor
+ que denominaremos 
+\begin_inset Formula $C_{d_{p_{min}}}$
+\end_inset
+
+, obtenido para un determinado valor del coeficiente de sustentación del
+ perfil, que denominaremos 
+\begin_inset Formula $C_{l_{i}}$
+\end_inset
+
+ y que se suele corresponder con el valor del coeficiente de sustentación
+ de diseño del perfil, por lo que en nuestro caso se supondrá 
+\begin_inset Formula $C_{l_{i}}=0.7$
+\end_inset
+
+.
+ A partir de ese punto, la resistencia parásita aumenta, tanto al aumentar
+ el coeficiente de sustentación, como al disminuir su valor, por lo que
+ para facilitar su estimación, se expresará la resitencia parásita como:
+\begin_inset Formula 
+\begin{equation}
+C_{d_{p}}=C_{d_{p_{min}}}+\Delta_{l}C_{d_{p}}\label{eq:res_parasita}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El primero de los términos se puede calcular una vez que conozcamos su coeficien
+te de fricción y el parámetro de forma siguiendo el procedimiento indicado
+ en el apartado 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Resistencia-parásita"
+
+\end_inset
+
+, con la única diferencia de que el resultado tiene que ser multiplicado
+ por dos, ya que el 
+\begin_inset Formula $C_{F}$
+\end_inset
+
+ se calcula basado en la longitud de cuerda, mientras que el 
+\begin_inset Formula $C_{d_{p}}$
+\end_inset
+
+ está basado en el área mojada del perfil, con las dos caras expuestas al
+ flujo, resultando:
+\begin_inset Formula 
+\[
+C_{d_{p_{min}}}=2\,C_{F}\,\left(1+\psi_{\text{w}}\right)
+\]
+
+\end_inset
+
+donde el parámetro de forma se puede estimar como:
+\begin_inset Formula 
+\[
+\psi_{\text{w}}=2.7\frac{t}{c}+100\left(\frac{t}{c}\right)^{4}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El segundo de los términos de la ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:res_parasita"
+
+\end_inset
+
+, que aporta una corrección a la resistencia parásita para tener en cuenta
+ que el perfil no se encuentra proporcionando el 
+\begin_inset Formula $C_{l}$
+\end_inset
+
+ de diseño, se puede relacionar a través del coeficiente de sustentación
+ del perfil, su valor máximo y el de diseño, con el valor del incremento
+ de resistencia parástita que presenta el perfil en el momento de la entrada
+ en pérdida, es decir, con el 
+\begin_inset Formula $\Delta_{l}C_{d_{p}}$
+\end_inset
+
+ para el coeficiente de sustentación máximo del perfil, 
+\begin_inset Formula $C_{l_{max}}$
+\end_inset
+
+, que a partir de ahora denominaremos 
+\begin_inset Formula $\left(\Delta_{l}C_{d_{p}}\right)_{ref}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+La forma más aproximada que disponemos para estimar este valor en una fase
+ preliminar de diseño como es esta, es a través de regresiones realizadas
+ a partir de datos experimentales para las series NACA 4 y 5 en función
+ del número de Reynolds del perfil, resultando:
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+\left(\Delta_{l}C_{d_{p}}\right)_{ref}=\frac{67\,C_{l_{max}}}{\left(\log_{10}Re\right)^{4.5}}-0.0046\left(1+2.75\,\nicefrac{t}{c}\right) & \,\,\,\,\, & \text{Para }Re\leq10^{7}\\
+\\
+\left(\Delta_{l}C_{d_{p}}\right)_{ref}=0.01\,C_{l_{max}}-0.0046\left(1+2.75\,\nicefrac{t}{c}\right) & \,\,\,\,\, & \text{Para }Re>10^{7}
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El valor del Reynolds de la ecuación anterior deberá ser calculado para
+ una condición de vuelo de alta sustentación, en la que la velocidad de
+ vuelo será menor que la velocidad a la que se ha calculado el valor mínimo
+ de la resistencia parásita.
+\end_layout
+
+\begin_layout Standard
+En nuestro caso se ha decidido usar un 
+\begin_inset Formula $75\%$
+\end_inset
+
+ del 
+\begin_inset Formula $C_{l_{max}}$
+\end_inset
+
+ con un peso típico de fin de la fase de ascenso, lo cual resulta en una
+ velocidad de aproximadamente 
+\begin_inset Formula $650$
+\end_inset
+
+ km/h, y unos Reynolds de 
+\begin_inset Formula $8.2e6$
+\end_inset
+
+ en el perfil delantero y de 
+\begin_inset Formula $7.6e6$
+\end_inset
+
+ en el trasero, ya que recordemos que según la ecuación anterior, la presión
+ dinámica, y por tanto la velocidad al suponer densidad constante, que ve
+ el segundo ala es menor, resultando en:
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+\left(\Delta_{l}C_{d_{p}}\right)_{ref_{1}}=0.0128 & \,\,\,\,\, & \left(\Delta_{l}C_{d_{p}}\right)_{ref_{2}}=0.0133\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-1em}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ../../../Master Ingenieria Aeronautica/4S/TFM/Informes/Informe_Carlos/Figs/profileDragFunction.JPG
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Relación de la resistencia parásita con la sustentación.
  
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Torenbeek1982"
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Relacion-resistencia-parasita"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por último, entrando en la gráfica de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Relacion-resistencia-parasita"
+
+\end_inset
+
+ con cada valor del coeficiente de sustentación, se puede calcular la resistenci
+a parásita del perfil en función de la sustentación que se encuentre proporciona
+ndo, la cual se encuentra representada para ambos perfiles en la figura
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Resistencia-parásita-perfiles"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/AirfoilProfileDrag.eps
+	width 85text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Resistencia parásita de los perfiles
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Resistencia-parásita-perfiles"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Resistencia parásita de las alas
+\end_layout
+
+\begin_layout Standard
+Una vez conocido el 
+\begin_inset Formula $C_{d_{p}}$
+\end_inset
+
+ de las secciones en función del valor del 
+\begin_inset Formula $C_{l}$
+\end_inset
+
+ local de éstas, se puede calcular el coeficiente de resistencia parásita
+ de las alas, 
+\begin_inset Formula $C_{D_{p}}$
+\end_inset
+
+, para cada valor del coeficiente de sustentación de éstas, 
+\begin_inset Formula $C_{L}$
+\end_inset
+
+, sin más que calcular la distribucción de sustentación para dicho 
+\begin_inset Formula $C_{L}$
+\end_inset
+
+ siguiendo el procedimiento explicado en la sección 
+\color red
+SECCION
+\color inherit
+, lo que nos proporcionaría 
+\begin_inset Formula $C_{l}(y)$
+\end_inset
+
+, calcular la distribución de distribución parásita considerando el ala
+ como un conjunto de secciones independientes, obteniendo 
+\begin_inset Formula $C_{d_{p}}(y)$
+\end_inset
+
+ y por último integrando esta distribución a lo largo de la envergadura:
+\begin_inset Formula 
+\[
+C_{D_{p}}=\frac{2}{S_{w}}\int_{\nicefrac{b_{f}}{2}}^{\nicefrac{b}{2}}c_{d_{p}}\,c\,dy
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Este procedimiento descrito proporciona resultados bastante precisos en
+ alas sin flecha.
+ Para alas con flecha se pueden incorporar correcciones al factor de forma
+ de los perfiles, resultando:
+\begin_inset Formula 
+\[
+C_{d_{p_{min}}}=2\,C_{F}\,\left(1+\psi_{\text{w}}\cos^{2}\Lambda_{\nicefrac{1}{2}}\right)
+\]
+
+\end_inset
+
+pero incluso con estas correcciones los resultados no logran asemejarse
+ a la realidad, siendo la razón de esto el flujo cruzado que aparece, modificand
+o la forma de desarrollarse de la capa límite y no permitiendo suponer el
+ ala compuesta por secciones independientes.
+\end_layout
+
+\begin_layout Standard
+Otro método semiempírico para alas con flecha que reproduce mejor los resultados
+ experimentales y que por tanto es el que se ha usado para estimar la resistenci
+a parásita de nuestras alas debido a su alta flecha es el presentado por
+ Torenbeek en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Torenbeek1982"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+En este método se sugiere calcular los valores de 
+\begin_inset Formula $\overline{Re}$
+\end_inset
+
+, 
+\begin_inset Formula $\overline{C}_{l_{i}}$
+\end_inset
+
+, 
+\begin_inset Formula $\overline{C}_{l_{max}}$
+\end_inset
+
+, 
+\begin_inset Formula $\overline{C}_{d_{p_{min}}}$
+\end_inset
+
+ y 
+\begin_inset Formula $\left(\Delta_{l}\overline{C}_{d_{p}}\right)_{ref}$
+\end_inset
+
+ de una sección característica del ala, situada a una posición aproximadamente
+ equidistante de la punta y del fuselaje, que en nuestro caso se ha tomado
+ como la posición de la cuerda media aerodinámica, y a partir de esos valores
+ de referencia obtenidos del caso bidimensional, calcular el coeficiente
+ de resistencia parásita tridimensional de la forma:
+\begin_inset Formula 
+\[
+C_{D}=\overline{C}_{d_{p_{min}}}\frac{S_{net}}{S_{w}}+0.75\left(\Delta_{l}\overline{C}_{d_{p}}\right)_{ref}\left(\frac{C_{L}-C_{L_{i}}}{C_{L_{max}}-C_{L_{i}}}\right)^{2}
+\]
+
+\end_inset
+
+donde 
+\begin_inset Formula $C_{L_{i}}$
+\end_inset
+
+ se considera igual a 
+\begin_inset Formula $C_{l_{i}}$
+\end_inset
+
+, 
+\begin_inset Formula $C_{L_{max}}$
+\end_inset
+
+ se ha estimado anteriormente en la sección 
+\color red
+SECCION
+\color inherit
+ y 
+\begin_inset Formula $S_{net}$
+\end_inset
+
+ se obtiene restando a la superficie alar total el área resultante de proyectar
+ el fuselaje sobre las alas.
+\end_layout
+
+\begin_layout Subsection
+Resistencia parásita del fuselaje
+\end_layout
+
+\begin_layout Standard
+Para calcular la resistencia del fuselaje se supondrá que se trata de un
+ cuerpo de revolución, liso, sin imperfecciones ni protuberancias, calculándose
+ los efectos de estas últimas más adelante, y que por tanto su resistencia
+ se puede descomponer en una resistencia básica debida al rozamiento del
+ aire con el cuerpo y a una contribución por el ángulo de ataque del fuselaje
+ y el cono de cola, pudiéndose escribir:
+\begin_inset Formula 
+\[
+\left(C_{D}S\right)_{fus}=\left(C_{D}S\right)_{basic}+\Delta_{\alpha\beta}\left(C_{D}S\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La resistencia básica es la más importante, ya que la superficie mojada
+ es muy grande y en cambio los ángulos de ataque del fuselaje suelen ser
+ pequeños, pudiéndose expresar en función del coeficiente de fricción, basado
+ en la longitud del fuselaje y considerando que la transicción a turbulento
+ sucede en las cercanías al morro del avión, en función del factor de forma,
+ altamente dependiente de la esbeltez del fuselaje, y de la superficie mojada.
+\begin_inset Formula 
+\[
+\left(C_{D}S\right)_{basic}=C_{F}\,\left(1+\psi_{f}\right)\,S_{wet}
+\]
+
+\end_inset
+
+ donde 
+\begin_inset Formula $\psi_{f}$
+\end_inset
+
+ se puede obener en función de la esbeltez efectiva del fuselaje, 
+\begin_inset Formula $\lambda_{eff}$
+\end_inset
+
+, como:
+\begin_inset Formula 
+\[
+\psi_{f}=\frac{2.2}{\lambda_{eff}^{1.5}}+\frac{3.8}{\lambda_{eff}^{3}}
+\]
+
+\end_inset
+
+la cual a su vez viene determinada por:
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+\lambda_{eff}=\min\left(\frac{l_{f}}{D_{f_{eff}}},\ \frac{l_{N}+l_{A}}{D_{f_{eff}}}+2\right) & \,\,\,\,\, & D_{f_{eff}}=\sqrt{\frac{4}{\pi}\,A_{c}}\end{array}
+\]
+
+\end_inset
+
+donde 
+\begin_inset Formula $A_{c}$
+\end_inset
+
+ es el área transversal
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$A_{c}$"
+description "Área transversal de un cuerpo aerodinámico \\nomunit{[$m^2$]}"
+
+\end_inset
+
+, 
+\begin_inset Formula $l_{N}$
+\end_inset
+
+ es la longitud desde el morro del avión hasta que comienza la parte cilíndrica
+ y 
+\begin_inset Formula $l_{A}$
+\end_inset
+
+ es la longitud de la parte trasera del fuselaje donde deja de ser cilíndrico.
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$l_{A}$"
+description "Longitud de la parte trasera del fuselaje (Afterbody) \\nomunit{[$m$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$l_{N}$"
+description "Longitud de la parte delantera del fuselaje (Nose) \\nomunit{[$m$]}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para estimar la contribución debida al ángulo de ataque del fuselaje, 
+\begin_inset Formula $\alpha_{f}$
+\end_inset
+
+, y al ángulo del cono de cola, 
+\begin_inset Formula $\beta$
+\end_inset
+
+, se puede suponer que el coeficiente de resistencia efectivo del fuselaje
+ frente a un flujo transversal con un ángulo de ataque 
+\begin_inset Formula $\alpha_{f}$
+\end_inset
+
+ es el de un cilindro de longitud infinita y área transversal igual al área
+ transversal del avión en dirección perpendicular al flujo, corregido para
+ tener en cuenta la longitud finita del fuselaje y calculado a un 
+\begin_inset Formula $Re$
+\end_inset
+
+ equivalente al del flujo transversal al fuselaje, que para fuselajes cilíndrico
+s o casi cilíndricos se puede suponer 
+\begin_inset Formula $C_{d_{c}}\approx1.0$
+\end_inset
+
+.
+ Siendo por tanto el área de resistencia:
+\begin_inset Formula 
+\[
+\Delta_{\alpha\beta}\left(C_{D}S\right)=\int_{0}^{l_{f}}\left|\sin^{3}\left(\alpha_{f}-\beta\right)\right|\,C_{d_{c}}\,\frac{b}{\cos\beta}\,dx
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La integral anterior se puede resolver numéricamente para una geometría
+ arbitraria, sin embargo para un fuselaje de revolución, con ángulo del
+ cono de cola constante, que en nuestro caso vale 
+\begin_inset Formula $17\degree$
+\end_inset
+
+ y suponiendo 
+\begin_inset Formula $C_{d_{c}}=1.0$
+\end_inset
+
+, se puede simplificar en función de las áreas proyectadas del fuselaje
+ para la sección de revolución, 
+\begin_inset Formula $A_{I}$
+\end_inset
+
+, y para la sección del cono de cola, 
+\begin_inset Formula $A_{II}$
+\end_inset
+
+, las cuales se muestran en la figura 
+\color red
+FIGURA
+\color inherit
+,
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$A_{I}$"
+description "Área en planta del fuselaje de revolución \\nomunit{[$m^2$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$A_{II}$"
+description "Área en planta del cono de cola \\nomunit{[$m^2$]}"
+
+\end_inset
+
+ resultando:
+\begin_inset Formula 
+\[
+\Delta_{\alpha\beta}\left(C_{D}S\right)=A_{I}\,\left|\sin^{3}\alpha_{f}\right|+A_{II}\,\frac{\left|\sin^{3}\left(\alpha_{f}-\beta\right)\right|}{\cos\beta}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Resistencia parásita de los motores
+\end_layout
+
+\begin_layout Subsection
+Resistencia parásita del VTP
 \end_layout
 
 \begin_layout Section

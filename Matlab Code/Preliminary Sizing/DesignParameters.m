@@ -19,8 +19,8 @@ switch ME.MissionType
         
         
     %% PLOTTING OPTIONS
-        DP.ShowReportFigures      = false; %Show all the available figures for reports [true] or only the most relevant ones [false]
-        DP.ShowAircraftLayout     = false;  %Show a layout of the aircraft and the wings
+        DP.ShowReportFigures      = true; %Show all the available figures for reports [true] or only the most relevant ones [false]
+        DP.ShowAircraftLayout     = true;  %Show a layout of the aircraft and the wings
         DP.selectDesignPoint      = false; %Ask user to select design point [true] or use the saved value [false]
         DP.showRoskamRequirements = false; %Show the Take-Off and Landing requirements obtained with Roskam constants [true] or only the SP ones [false]
         
@@ -44,7 +44,7 @@ switch ME.MissionType
         %Loiter
         DP.LoiterTime          =  30*60;  %[s]
         DP.LoiterEfficiency    =     14;  %[-] mean(loadFields(SP,'Actuations.L_D'),'omitnan') --> 12.25
-        DP.LoiterTSFC          =    0.35;  %[lbm/(lbf·h)] mean(loadFields(SP,'Engine.TSFC'),'omitnan') --> 0.661
+        DP.LoiterTSFC          =   0.35;  %[lbm/(lbf·h)] mean(loadFields(SP,'Engine.TSFC'),'omitnan') --> 0.661
         
         %Low Height
         DP.LowHeightEfficiency =     12;  %Lower than CruiseEfficiency because of lower altitude (Typically lower than 10.000ft)
@@ -68,14 +68,14 @@ switch ME.MissionType
         DP.TipTwist        = -5.0; %[º] - Positive twist: nose rotated upwards (Wash-in). Negative twist: nose rotated downwards (Wash-out)
         DP.Stagger         = 6.75; %[m]
         DP.VerticalGap     =    0; %[m]
-        DP.Wing1LongPos    =    4; %[m] Longitudinal position of the first wing
+        DP.Wing1LongPos    = 3.65; %[m] Longitudinal position of the first wing
         DP.Sweep_14        =   30; %[º] Flecha en la linea 1/4 
         DP.CLmax           =  1.2; %Porque si, hay que calcularlo bien... los valores estimados en crucero son muy bajos por ser la velocidad muy alta
         DP.CLmax_TO        =  2.0; %From similar planes: max-->2.3447, min-->1.5414, mean-->2.0622
         DP.CLmax_L         =  2.8; %From similar planes: max-->3.7689, min-->2.2523, mean-->3.0764
         
         %Weight
-        DP.x_cg            =    11; %[m] Posición longitudinal del centro de gravedad, se debe calcular, solo es para que no pete el código.
+        DP.x_cg            =   9.5; %[m] Posición longitudinal del centro de gravedad, se debe calcular, solo es para que no pete el código.
         DP.y_cg            =     0; %[m] Posición lateral del centro de gravedad.
         DP.z_cg            =     0; %[m] Posición vertical del centro de gravedad, se debe calcular, solo es para que no pete el código.
         DP.MLW_MTOW        =  0.85; %From SP: min-->0.7900, max-->0.9267, mean-->0.8753
@@ -122,7 +122,7 @@ switch ME.MissionType
         DP.ShowReportFigures      = true; %Show all the available figures for reports [true] or only the most relevant ones [false]
         DP.selectDesignPoint      = false; %Ask user to select design point [true] or use the saved value [false]
         DP.showRoskamRequirements = false; %Show the Take-Off and Landing requirements obtained with Roskam constants [true] or only the SP ones [false]
-        
+
         
         
         
