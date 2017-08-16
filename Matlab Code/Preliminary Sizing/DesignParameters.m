@@ -19,7 +19,7 @@ switch ME.MissionType
         
         
     %% PLOTTING OPTIONS
-        DP.ShowReportFigures      = true; %Show all the available figures for reports [true] or only the most relevant ones [false]
+        DP.ShowReportFigures      = false; %Show all the available figures for reports [true] or only the most relevant ones [false]
         DP.ShowAircraftLayout     = true;  %Show a layout of the aircraft and the wings
         DP.selectDesignPoint      = false; %Ask user to select design point [true] or use the saved value [false]
         DP.showRoskamRequirements = false; %Show the Take-Off and Landing requirements obtained with Roskam constants [true] or only the SP ones [false]
@@ -88,6 +88,9 @@ switch ME.MissionType
         %Engines
         DP.EngineNumber    = 2;
         DP.EngineModel     = 'Snecma Silvercrest 2D';%'Rolls-Royce AE 3007A1E';
+        DP.xEngine         = 15;
+        DP.yEngine         = 1.40;
+        DP.zEngine         = 0;
         DP.Pylon_t_c       = 0.12; %NACA 0012
         DP.Pylon_Swet      = 0.25;
         DP.Pylon_Sweep     =   30; %[º]
@@ -111,7 +114,21 @@ switch ME.MissionType
         DP.tailConeAngle  =    17; %[º]
          
   
-        
+        % VTP
+        DP.VTP_X_ac        = 16.5;
+        DP.VTP_AspectRatio = 1.80;
+        DP.VTP_Sweep_LE    = 45.0; %[º] Leading edge VTP sweep
+        DP.VTP_Sweep_r     = 25.0; %[º] Rudder sweep
+        DP.VTP_Sr_Sv       = 0.25;
+        DP.VTP_TaperRatio  = 0.40;
+        DP.VTP_deltar_max  = 35.0;
+        DP.VTP_t_c         = 0.15;
+        DP.VTP_Airfoil     ='0015';
+        DP.VTP_b_14        = 2.50;
+        DP.VTP_b_34        = 2.43;
+        DP.VTP_h_14        = 2.30;
+        DP.VTP_h_34        = 2.28;
+        DP.VTP_Svertical   = 36.476;
         
         
         

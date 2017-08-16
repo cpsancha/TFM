@@ -72,7 +72,7 @@ Sr_S = 0.25;
 AC.VTP.AspectRatio   = 1.9;
 AC.VTP.TaperRatio = 0.5; %Este completamente a boleo, sugerencias?
 AC.VTP.Sweep_14      = 35; %Grados
-Sweep_r = 0; % ángulo de la línea de rotacion del rudder respecto a la horizontal.
+Sweep_r = 0; % ángulo de la línea de rotacion del rudder respecto a la vertical.
 kdr = 1.05; %aprox, para deflexion máxima de 30º
 kv = 1; %por no ser cola en T
 

@@ -1,5 +1,84 @@
-%Apendice F
+%% AIRCRAFT POLAR --> Torenbeek Apendice F
 
+%Define range of weights to calculate polar
+AircraftWeight = linspace(AC.Weight.MTOW*prod([Parameters.fuelFraction(1:9).value]),...
+                          AC.Weight.MTOW*prod([Parameters.fuelFraction(1:1).value]),50);
+
+options = optimoptions('fsolve',...
+                       'StepTolerance',1e-9,...
+                       'Display','none');
+for i=1:length(AircraftWeight)
+    %Trim aircraft for that weight
+    [~,~,exitflag,~] = fsolve(@(X)trimAircraft(X, AircraftWeight(i), AC, ME, DP, Parameters, CST, CF),[DP.fuselage_AoA, 0],options);
+    if ~isequal(exitflag,1)
+        error('El solver del trimado no ha logrado converger correctamente. Se debería revisar el resultado.')
+    else
+        clear exitflag options
+    end
+    
+    %Store input polar data
+    Polar.Weight(i)       = AircraftWeight(i);
+    Polar.Fuselage_AoA(i) = AC.Fuselage.fuselage_AoA;
+    Polar.Wing1.CL(i)     = AC.Wing1.CL_wf;
+    Polar.Wing1.Cma(i)    = AC.Wing1.Cm_ac_wf;
+    Polar.Wing2.CL(i)     = AC.Wing2.CL_wf;
+    Polar.Wing2.Cma(i)    = AC.Wing2.Cm_ac_wf;
+    Polar.Wing2.deltaCLdeltaE(i) = AC.Wing2.deltaCLdeltaE;
+    Polar.CL(i) = Parameters.q1_qinf * AC.Wing1.Sw/AC.Wing.Sw * AC.Wing1.CL_wf + Parameters.q2_qinf * AC.Wing2.Sw/AC.Wing.Sw * AC.Wing2.CL_wf;
+    %Get polar and store outputs
+    [Polar.CD(i), Polar.D{i}, Polar.DS{i}, ME] = getPolar(AC, ME, DP, Parameters, CST, CF);
+end
+%Create polar regression
+Polar.PolarFit = polyfit(Polar.CL,Polar.CD,2);
+
+
+
+if DP.ShowReportFigures
+%Show Aircraft Polar
+figure()
+    hold on
+    plot(Polar.CL,Polar.CD,'r')
+    txt=['$\ \leftarrow\ \ C_{D}=',num2str(Polar.PolarFit(3)),'',num2str(Polar.PolarFit(2)),...
+         'C_{L}+',num2str(Polar.PolarFit(1)),'C_{L}^2','$'];
+    text(Polar.CL(round(0.1*length(Polar.CL))),Polar.CD(round(0.1*length(Polar.CL))),txt,'HorizontalAlignment','left','Interpreter','Latex')
+    plot(linspace(min(Polar.CL),max(Polar.CL),50), polyval(Parameters.Polar.LongRangeCruise,linspace(min(Polar.CL),max(Polar.CL),50)),'b')
+    txt=['$C_{D}=',num2str(Parameters.Polar.LongRangeCruise(3)),'+',num2str(Parameters.Polar.LongRangeCruise(1)),'C_{L}^2','\ \ \rightarrow\ \ \ \ $'];
+    text(min(Polar.CL)+0.6*(max(Polar.CL)-min(Polar.CL)),polyval(Parameters.Polar.LongRangeCruise,min(Polar.CL)+0.6*(max(Polar.CL)-min(Polar.CL))),txt,'HorizontalAlignment','right','Interpreter','Latex')
+    legend('Calculated Polar','Design Polar','Location','southeast')
+    legend('boxoff')
+    title('Aircraft polar for the valid range of weights','interpreter','latex')
+    xlabel('C_L')
+    ylabel('C_D')
+    saveFigure(ME.FiguresFolder,'AircraftPolar')
+end
+
+
+
+% AC.Fuselage.fuselage_AoA = 0;
+% AC.Wing2.deltaCLdeltaE = 0;
+
+
+clear i X
+
+%% USEFUL FUNCTIONS
+function [Error, ME] = trimAircraft(X, AircraftWeight, AC, ME, DP, Parameters, CST, CF)
+  %Parse inputs
+    AC.Fuselage.fuselage_AoA = X(1);
+    AC.Wing2.deltaCLdeltaE   = X(2);
+    
+  %Run wing's script
+    ME = wingsDesign(AC, ME, DP, Parameters, CST, CF);
+    
+  %Necessary calculation
+	[rho,~,~,~,~,~] = atmos(DP.CruiseAltitude);
+ 	CL0             = AircraftWeight*CST.GravitySI / (0.5*rho*DP.CruiseSpeed^2*AC.Wing.Sw); 
+    
+  %Parse outputs
+    Error(1) =  AC.Wing.CL_wf - CL0;
+    Error(2) =  AC.Wing.Cm_wf;   
+end
+
+function [CD, D, DS, ME] = getPolar(AC, ME, DP, Parameters, CST, CF) %#ok<INUSD>
 %% VORTEX INDUCED DRAG
 %METHOD A --> A. Garner [Ref. F-39]
 %Spanwise center of pressure    
@@ -41,7 +120,7 @@
     
 %% PROFILE DRAF OF SMOOTH, ISOLATED MAJOR COMPONENTS --> FLAT PLATE ANALOGY
 %WING SECTIONS
-    [rho,a,T,P,nu,~] = atmos(DP.CruiseAltitude);
+    [rho,~,~,~,nu,~] = atmos(DP.CruiseAltitude);
     
 %Minimum Cd profile
     Phi_w_1 = 2.7*AC.Wing1.Airfoil.t_c + 100* AC.Wing1.Airfoil.t_c^4;
@@ -78,12 +157,12 @@
     cl_1 = linspace(-0.25,AC.Wing1.Airfoil.Cl_max,50);
     cl_2 = linspace(-0.25,AC.Wing2.Airfoil.Cl_max,50);
     D.deltaLCdp_1 = deltaLCdp_ref_1 .* interp1(generalizedProfileDrag(:,1),generalizedProfileDrag(:,2),...
-                    ((cl_1-D.Cli_1)./(AC.Wing1.Airfoil.Cl_max-D.Cli_1)).^2);
+                    ((cl_1-D.Cli_1)./(AC.Wing1.Airfoil.Cl_max-D.Cli_1)).^2); %#ok<NODEF>
     D.deltaLCdp_2 = deltaLCdp_ref_2 .* interp1(generalizedProfileDrag(:,1),generalizedProfileDrag(:,2),...
                     ((cl_2-D.Cli_2)./(AC.Wing2.Airfoil.Cl_max-D.Cli_2)).^2);
     
-if DP.ShowReportFigures          
-    figure()
+if false          
+    figure() %#ok<UNRCH>
     hold on
     plot(cl_1,D.Cdp_min_1+D.deltaLCdp_1,'r')
     plot(cl_2,D.Cdp_min_2+D.deltaLCdp_2,'b')
@@ -240,3 +319,6 @@ clear Cf_airfoil_1 Cf_airfoil_2 Cf_CMA_1 Cf_CMA_2 Cf_fus Cf_nac Cf_root_1 Cf_roo
 clear fusDiameter fusReynolds CMAReynolds_1 CMAReynolds_2 generalizedProfileDrag lambda_eff
 clear W_WTO HighCLSpeed delta_1 delta_2 deltaLCdp_ref_1 deltaLCdp_ref_2 nacReynolds SwetNacelles
 clear Phi_f Phi_w_1 Phi_w_2 AirfoilReynolds1 AirfoilReynolds2 RootReynolds_1 RootReynolds_2 v w 
+
+
+end

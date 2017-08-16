@@ -16,6 +16,10 @@ classdef hull < handle
         Length            double  %Hull length [m]
         Length_Beam       double  %Hull to beam ratio
         Lf                double  %Forebody length [m]
+        La                double  %Afterbody length [m]
+        Lf_Beam           double  %forebody ratio
+        Cv0               double  %Static load coeficcient
+        Height            double  %
     end
     
     methods

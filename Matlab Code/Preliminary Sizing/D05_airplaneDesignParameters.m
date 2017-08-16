@@ -541,6 +541,7 @@ end
     AC.Engine.Pylon_t_c    = DP.Pylon_t_c;
     AC.Engine.Pylon_Swet   = DP.Pylon_Swet;
     AC.Engine.Pylon_Sweep  = DP.Pylon_Sweep;
+    AC.Engine.Position     = [DP.xEngine,DP.yEngine,DP.zEngine];
 
     
 

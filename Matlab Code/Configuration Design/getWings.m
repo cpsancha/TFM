@@ -334,9 +334,15 @@ if i>0
 else
   error('Cannot locate MTORRES directory. You must add the path to the MTorres directory.')
 end
+
+
+
 FuselageFile = fullfile(sr,'Matlab Code',filesep,'Digitalized Data',filesep,'fuselage.dat');
+AfterbodyFile = fullfile(sr,'Matlab Code',filesep,'Digitalized Data',filesep,'tailCoordinates.dat');
 [Xfus,Yfus]  = importFuselage(FuselageFile);
-clear sr i FuselageFile
+[Xtail,Ytail]  = importFuselage(AfterbodyFile);
+clear sr i FuselageFile AfterbodyFile
+
 figure()
     hold on
     axis equal
@@ -346,6 +352,9 @@ figure()
     %CABIN
         plot([Xfus(end),AC.Fuselage.fusLength],[ Yfus(end), Yfus(end)],'k')
         plot([Xfus(end),AC.Fuselage.fusLength],[-Yfus(end),-Yfus(end)],'k')
+    %TAIL CONE
+        plot(AC.Fuselage.fusLength-AC.Fuselage.la+Xtail, Ytail,'k')
+        plot(AC.Fuselage.fusLength-AC.Fuselage.la+Xtail,-Ytail,'k')
     % Wing 
         plot(AC.Wing1.Root_LE+x_leadingEdge,y,'b')
         plot(AC.Wing1.Root_LE+x_leadingEdge,-y,'b')

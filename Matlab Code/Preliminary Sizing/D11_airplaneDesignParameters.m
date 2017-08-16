@@ -112,6 +112,8 @@ Lf_B = mean(loadFields(SP,'Hull.Lf')./(loadFields(SP,'Hull.Beam')), 'omitnan');
 Beta = mean(loadFields(SP,'Hull.Beta') ,'omitnan');
 C_D0_to= C_D0 + Parameters.Table_3_6.deltaC_D0.take_off_flaps(end);
 
+
+
 %Solve a*x^2+b*x+c=0
 c = -( Wto_S./(ME.TakeOff.S_TOFL)-a(7)*rho*C_D0_to-a(8) )./(rho*Parameters.CL_max_TO)...
      +a(3)*Lf_B+a(4)/cos(Beta*pi/180)+a(5)*Cdelta0+a(6);
