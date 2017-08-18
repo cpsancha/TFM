@@ -58,7 +58,7 @@ switch ME.MissionType
         DP.StallSpeed_L    = NaN; %[m/s] -- Landing Stall Speed
         
         %Wing - Airfoil
-        DP.Wing1_Wing2     = 0.75; %[-] - Parte de la sustentación que se lleva el ala delantera,
+        DP.Wing1_Wing2     = 0.85; %[-] - Parte de la sustentación que se lleva el ala delantera,
         DP.Incidence_1     = 0;%2.85; %[º] - Degrees of angle of the wing/body incidence of wing 1 at root section
         DP.Incidence_2     = 0;%1.10; %[º] - Degrees of angle of the wing/body incidence of wing 2 at root section
         DP.WingLoading     =  400; %[kg/m^2] - Default value if selection not active
@@ -75,7 +75,7 @@ switch ME.MissionType
         DP.CLmax_L         =  2.8; %From similar planes: max-->3.7689, min-->2.2523, mean-->3.0764
         
         %Weight
-        DP.x_cg            =   9.5; %[m] Posición longitudinal del centro de gravedad, se debe calcular, solo es para que no pete el código.
+        DP.x_cg            =  9.75; %[m] Posición longitudinal del centro de gravedad, se debe calcular, solo es para que no pete el código.
         DP.y_cg            =     0; %[m] Posición lateral del centro de gravedad.
         DP.z_cg            =     0; %[m] Posición vertical del centro de gravedad, se debe calcular, solo es para que no pete el código.
         DP.MLW_MTOW        =  0.85; %From SP: min-->0.7900, max-->0.9267, mean-->0.8753
@@ -115,11 +115,11 @@ switch ME.MissionType
          
   
         % VTP
-        DP.VTP_X_ac        = 16.5;
-        DP.VTP_AspectRatio = 1.80;
+        DP.VTP_X_ac        = 17.0;
+        DP.VTP_AspectRatio = 1.60;
         DP.VTP_Sweep_LE    = 45.0; %[º] Leading edge VTP sweep
         DP.VTP_Sweep_r     = 25.0; %[º] Rudder sweep
-        DP.VTP_Sr_Sv       = 0.25;
+        DP.VTP_Sr_Sv       = 0.30;
         DP.VTP_TaperRatio  = 0.40;
         DP.VTP_deltar_max  = 35.0;
         DP.VTP_t_c         = 0.15;

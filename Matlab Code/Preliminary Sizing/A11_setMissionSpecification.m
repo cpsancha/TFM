@@ -136,7 +136,7 @@ switch ME.MissionType
         ME.Cruise.beta = sqrt(1-ME.Cruise.Mach^2);
         ME.Cruise.Density = rho;
         ME.Cruise.q = 0.5*ME.Cruise.Density*ME.Cruise.Speed^2;
-        DP.x_cg = 10;
+        
         clear a rho
 end
 
@@ -224,6 +224,9 @@ AC = aircraft();
         AC.Fuselage.A_II       = AC.Fuselage.la*AC.Fuselage.fusWidth/2;
         AC.Fuselage.beta       = 17; % grados
 
+        %% CG position
+        DP.x_cg = 10;
+        DP.y_cg = 0.5*AC.Fuselage.fusHeight;
 
 %% EXAMPLE OF HOW TO OBTAIN MEAN VALUES FROM SIMILAR PLANES
 % for i=1:length(SP)

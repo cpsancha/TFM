@@ -2,7 +2,7 @@
 
 %Define range of weights to calculate polar
 AircraftWeight = linspace(AC.Weight.MTOW*prod([Parameters.fuelFraction(1:9).value]),...
-                          AC.Weight.MTOW*prod([Parameters.fuelFraction(1:1).value]),50);
+                          AC.Weight.MTOW*prod([Parameters.fuelFraction(1:1).value]),25);
 
 options = optimoptions('fsolve',...
                        'StepTolerance',1e-9,...
@@ -13,7 +13,7 @@ for i=1:length(AircraftWeight)
     if ~isequal(exitflag,1)
         error('El solver del trimado no ha logrado converger correctamente. Se debería revisar el resultado.')
     else
-        clear exitflag options
+        clear exitflag
     end
     
     %Store input polar data
@@ -58,7 +58,7 @@ end
 % AC.Wing2.deltaCLdeltaE = 0;
 
 
-clear i X
+clear i X options AircraftWeight
 
 %% USEFUL FUNCTIONS
 function [Error, ME] = trimAircraft(X, AircraftWeight, AC, ME, DP, Parameters, CST, CF)
@@ -220,14 +220,14 @@ end
  
 
 %VERTICAL TAIL PLANE
-%     VTPReynolds = DP.CruiseSpeed * AC.VTP.CMA / nu;
-% 	Cf_VTP = getCf( VTPReynolds, 0);
-% 	DS.VTPProfile = 2*Cf_VTP*(1+2.75*AC.VTP.t_c*cosd(AC.VTP.Sweep_12)^2)*AC.VTP.Sw;
-    DS.VTPProfile = 0;
-    if ~ismember('AC:notDefinedVTP',ME.errorList)
-        ME.errorList{end+1} = 'AC:notDefinedVTP';
-        warning('AC:notDefinedVTP','Cuando se defina el VTP y se metan los datos hay que descomentar su resistencia.')
-    end
+    VTPReynolds   = DP.CruiseSpeed * AC.VTP.CMA / nu;
+	Cf_VTP        = getCf( VTPReynolds, 0);
+	DS.VTPProfile = 2*Cf_VTP*(1+2.75*AC.VTP.t_c*cosd(AC.VTP.Sweep_12)^2)*AC.VTP.Sw;
+%     DS.VTPProfile = 0;
+%     if ~ismember('AC:notDefinedVTP',ME.errorList)
+%         ME.errorList{end+1} = 'AC:notDefinedVTP';
+%         warning('AC:notDefinedVTP','Cuando se defina el VTP y se metan los datos hay que descomentar su resistencia.')
+%     end
 
 
 %% INTERFERENCE EFFECTS

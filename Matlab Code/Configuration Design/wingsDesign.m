@@ -21,6 +21,18 @@ function ME = wingsDesign(AC, ME, DP, Parameters, CST, CF) %#ok<INUSD>
     %Transition point/chord
         AC.Wing1.Airfoil.transition_c = 0.05;
         AC.Wing2.Airfoil.transition_c = 0.05;
+    %Airfoil coordinates
+        run SC0712_Coordinates
+        AC.Wing1.Airfoil.Coordinates.xU = NASASC20712AIRFOIL_U(:,1); %#ok<NODEF>
+        AC.Wing1.Airfoil.Coordinates.zU = NASASC20712AIRFOIL_U(:,2);
+        AC.Wing1.Airfoil.Coordinates.xL = NASASC20712AIRFOIL_L(:,1); %#ok<NODEF>
+        AC.Wing1.Airfoil.Coordinates.zL = NASASC20712AIRFOIL_L(:,2);
+        AC.Wing2.Airfoil.Coordinates.xU = NASASC20712AIRFOIL_U(:,1);
+        AC.Wing2.Airfoil.Coordinates.zU = NASASC20712AIRFOIL_U(:,2);
+        AC.Wing2.Airfoil.Coordinates.xL = NASASC20712AIRFOIL_L(:,1);
+        AC.Wing2.Airfoil.Coordinates.zL = NASASC20712AIRFOIL_L(:,2);
+        
+        clear NASASC20712AIRFOIL_U NASASC20712AIRFOIL_L
         
         
     
@@ -469,11 +481,12 @@ clear lengthFusNose1 lengthFusNose2 deltaF1ac_1 deltaF1ac_2 deltaF2ac_1 deltaF2a
     
 %% LIFT OF THE COMPLETE AIRCRAFT
     %Coeficiente de sustentación y de momentos del avión completo
-    AC.Wing.CL_wf = Parameters.q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CL_wf + Parameters.q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CL_wf;
+    AC.Wing.CL_wf = Parameters.q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CL_wf + ...
+                    Parameters.q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CL_wf;
     AC.Wing.Cm_wf = Parameters.q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CMA / AC.Wing.CMA * AC.Wing1.Cm_ac_wf + ...
                     Parameters.q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CMA / AC.Wing.CMA * AC.Wing2.Cm_ac_wf + ...
-                    Parameters.q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CL_wf * (AC.Weight.x_cg - AC.Wing1.x_ac_wf) + ...
-                    Parameters.q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CL_wf * (AC.Weight.x_cg - AC.Wing2.x_ac_wf);
+                    Parameters.q1_qinf * AC.Wing1.Sw / AC.Wing.Sw * AC.Wing1.CL_wf * (AC.Weight.x_cg - AC.Wing1.x_ac_wf)/ AC.Wing.CMA + ...
+                    Parameters.q2_qinf * AC.Wing2.Sw / AC.Wing.Sw * AC.Wing2.CL_wf * (AC.Weight.x_cg - AC.Wing2.x_ac_wf)/ AC.Wing.CMA;
 
      
     

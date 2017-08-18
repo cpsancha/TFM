@@ -4,17 +4,20 @@ rhos = 1025; %Average Density of Salt Water [kg/m^3]
 BouyR = 1.9; %Bouyancy Reserve [Percent]
 HullR = 1.5; %Hull Displacement [Percent]
 OutR = BouyR - HullR; %Outrigger Displacement [Percent]
-delT = BouyR*AC.Weight.MTOW; %Aircraft Total Displacement on Water [kg]
+ %Aircraft Total Displacement on Water [kg]
 delb = HullR*AC.Weight.MTOW; %Boat Hull Total Displacement [kg]
 del0 = OutR*AC.Weight.MTOW; %Outriggers Total Displacement [kg]
 del1 = del0/2; %Displacement on one Outrigger [kg]
 V = delb./rhos; %Displacement Volume [m^3] Volumen total de hull necesara
 
-K =.08; %0.0675; %Satisfactory Spray
-AC.Hull.Length_Beam  =  mean(loadFields(SP,'Hull.Length')./(loadFields(SP,'Hull.Beam')), 'omitnan');
+K =.085; %0.0675; %Satisfactory Spray
+AC.Hull.Length_Beam  = mean(loadFields(SP,'Hull.Length')./(loadFields(SP,'Hull.Beam')), 'omitnan');
 AC.Hull.Lf_Beam =  mean(loadFields(SP,'Hull.Lf')./(loadFields(SP,'Hull.Beam')), 'omitnan');
  %ya definido a traves de semajantes
-lf_lah = AC.Hull.Length_Beam/AC.Hull.Lf_Beam;
+% lf_lah = AC.Hull.Length_Beam/AC.Hull.Lf_Beam;
+%lf_lah = 2.07;
+
+
 
 %Main dimensions
 AC.Hull.Cv0 = K * AC.Hull.Lf_Beam^2;
@@ -33,9 +36,14 @@ AC.Hull.Height = AC.Hull.Beam*Bhh; %Bow Height [m]
 S = AC.Hull.Beam*Shh; %Step Height [m]
 ch = AC.Hull.Beam*chh; %Chine Flare [m]
 Lc = AC.Hull.Beam*Lch; %Flat Forebody Length [m]
-Vha = (0.45)*AC.Hull.Length*AC.Hull.Beam*AC.Hull.Height; %Actual Volume [m^3]
+AC.Hull.Vha = (0.45)*AC.Hull.Length*AC.Hull.Beam*AC.Hull.Height; %Actual Volume [m^3]
+Vha = AC.Hull.Vha;
 
-
+if Vha >= V
+fprintf('Vha > V = Pass');
+else
+fprintf('Vha < V = Fail');
+end
 %% 
 % [GMS,GMSy,Dras] = Hydrostatics(b,Lh,h,bo,Lo,ho,y,~,b2,bstab,Lstab,dstab,l,bstabWT,LstabWT,dstabWT,VF1,VFWT1, GW, rhos)
 % [GMS,GMSy,Dras] = Hydrostatics(AC.Hull.Beam,AC.Hull.Length,AC.Hull.Height,...
@@ -50,7 +58,7 @@ Vha = (0.45)*AC.Hull.Length*AC.Hull.Beam*AC.Hull.Height; %Actual Volume [m^3]
 %     AC.Wing1.WingSpan,...
 %     0,0,0,0,0,0,0,...
 %     0,0, AC.Weight.MTOW, rhos)
-%%
+%% Stability 
 
 Lh = AC.Hull.Length;
 b = AC.Hull.Beam;
@@ -71,13 +79,16 @@ KBh = Draft*Drah; %Center of Bouyancy [m]
 %%%% METACENTRIC HEIGHT Transverse [x]
 %%% Metacentric Height of Hull
 % KGh = 0.85; %Center of Gravity from keel [m]
-Ka = 1.3;
-KGh = Ka*(h/2); %Center of Gravity from keel [m]
+
+KGh = DP.y_cg; %Center of Gravity from keel [m]
+
+% Ih basado en lh? depende de la constante pero a saber...
 K1 = 0.036; %Proportionality Coefficient
 Ih = K1*Lh*b^3; %Moment of Inertia [m^4]
 BMh = (Ih/V); %Distance from CB to Metacentre [m]
 BGh = KGh - KBh; %Distance from CG to CB [m]
-GMh = BMh - BGh; %Metacentric Height [m]
+GMh = BMh - BGh %Metacentric Height [m]
+
 
 %%%% METACENTRIC HEIGHT LONGITUDINAL [y]
 %%% Metacentric Height of Hull
@@ -104,27 +115,104 @@ fprintf('GMhy = Fail');
 end
 disp(' ')
 
-%%% Righting Moment for Hull
-RMh = delH*sin(theta*(pi/180))*GMh;
+
+theta= 8;
+% M_R = 0.75*AC.Weight.MTOW/CF.lbm2kg*(GMh/CF.ft2m + (AC.Weight.MTOW/CF.lbm2kg)^(1/3))*sin(theta*pi/180);
+% delStabs = M_R /(AC.Wing1.WingSpan/2)
+
+% Esta formula es una mierda.
+k=0.029+0.0005*AC.Wing1.WingSpan
+deltaF = AC.Weight.MTOW/(AC.Wing1.WingSpan/2)*(k*AC.Weight.MTOW^(1/3)+BGh*sin(theta*pi/180)) 
+
+% Lo que hay que hacer es seguir las FAR:
+%Con el flotador totalmente sumergido, el momento de este debe ser 1.5 el
+%momento de las fuerzas desestabilizantes
+
+% %%% Righting Moment for Hull
+RMh = abs(delH*sin(theta*(pi/180))*GMh); %kg m
+M_R = 1.5*RMh; %norma
+delStabs = M_R /(AC.Wing1.WingSpan/2) %Desplazamiento necesario del flotador
+%Sabiendo el desplazamiento, podemos dimensionar, todas las dimensiones son
+%funcion de beam
+C = rhos * KA* 4* Bhh * 0.5; %0.6,por meter otra reduccion de volumen respecto al cubo ideal
+bstabWT = 1*(delStabs/C)^(1/3); 
+LstabWT = 4* bstabWT;
+hstabWT = bstabWT * Bhh;
+
+
+%% Metacentro nuevo caso:
+%Ih
+K1 = 0.036; %Proportionality Coefficient
+Ih = K1*Lh*b^3;
+%ItW
+KA = 0.7;
+AWT = KA*LstabWT*bstabWT;%Area of Load Water Plane WingTip Float [m^2]
+IWT = K1*LstabWT*bstabWT^3;%Moment of Inertia [m^4]
+ItW = 2*(IWT+(AWT*(AC.Wing1.WingSpan/2)^2));%
+
+ITW = Ih + ItW;
+
+
+OutR = BouyR - HullR;
+delO = OutR*AC.Weight.MTOW;
+%%%%% Ver esto
+Vo = delO/rhos;
+% Vo =  2*KA *bStabs*LstabWT*hstabWT;
+%%%%%
+VT = V+Vo;
+ATW = AHull+(2*AWT); %Area of Load Water Plane [m^2]
+DraTW = VT/ATW; %Draught [m]
+KBTW = Draft*DraTW; %Center of Bouyancy [m]
+
+delT = BouyR*AC.Weight.MTOW;
+VS = delT/rhos;
+%%% Metacentric Height of Seaplane Wing Tip Float
+KGSW = DP.y_cg; %Center of Gravity from keel [m]
+% KGSW = CGL + (KGTW/3.5);%Center of Gravity from keel [m]
+ISW = ITW; %Moment of Inertia of Trimaran[m^4]
+BMSW = (ISW/VS); %Distance from CB to Metacentre [m]
+BGSW = KGSW - KBTW; %Distance from CG to CB [m]
+GMSW = BMSW - BGSW %Metacentric Height [m]
+
+%Requisito EEUU
+metacentroEEUU = 0.41*AC.Weight.MTOW^(1/3)
+metacentroUK = 4*(V)^(1/3)
 
 
 
-%% Meter en script de la polar
-%% Flat plate drag area of the Boat Hull
-%Boat Hull Geometry
-%b stands for Boat Hull
-rb = (b/2); %Radius of Boat Hull [m]
-KA = 0.7; %Proportionality Coefficient
-AHull = KA*Lh*b; %Area of Load Water Plane of Hull [m^2]
-Swetb = 0.5*((pi*rb^2)+AHull+(pi*rb*Lh));%Wetted area of Boat Hull [m^2]
-Qb = 1.25; %Interference Factor
-Reb = (V*Lh*rho)/v; %Reynolds Number
-Cfb = 0.455./(log10(Reb)).^2.58;%Friction coefficient
-Amaxb = (pi*(rb/2)^2)/4; %Boat Hull Cross Area [m^2]
-ldb = Lh/sqrt((4/pi)*Amaxb); %Fineness ratio
-Fb = 1+(60/(ldb^3))+(ldb/400); %Boat Hull Form Factor
-fb = Cfb.*Fb.*Qb.*Swetb; %Flat plate drag area [m^2]
-
-
+% 
+% 
+% %% Meter en script de la polar
+% %% Flat plate drag area of the Boat Hull
+% %Boat Hull Geometry
+% %b stands for Boat Hull
+% rb = (b/2); %Radius of Boat Hull [m]
+% KA = 0.7; %Proportionality Coefficient
+% AHull = KA*Lh*b; %Area of Load Water Plane of Hull [m^2]
+% Swetb = 0.5*((pi*rb^2)+AHull+(pi*rb*Lh));%Wetted area of Boat Hull [m^2]
+% Qb = 1.25; %Interference Factor
+% Reb = (V*Lh*rho)/v; %Reynolds Number
+% Cfb = 0.455./(log10(Reb)).^2.58;%Friction coefficient
+% Amaxb = (pi*(rb/2)^2)/4; %Boat Hull Cross Area [m^2]
+% ldb = Lh/sqrt((4/pi)*Amaxb); %Fineness ratio
+% Fb = 1+(60/(ldb^3))+(ldb/400); %Boat Hull Form Factor
+% fb = Cfb.*Fb.*Qb.*Swetb; %Flat plate drag area [m^2]
+%% Flat Plate Drag Area of Floats
+% %Float Geometry
+% %f stands for Float
+% nf = 2; %Number of Outriggers
+% if nf == 0;
+% ff = 0;
+% else
+% ro = (bo/2); %Radius [m]
+% AFloat = KA*Lo*bo; %Area of Load Water Plane Float [m^2]
+% Sexpf = (0.5*pi*ro^2)+AFloat+(pi*ro*Lo);%Float Exposed Area [m^2]
+% Qf = 1.5; %Interference factor
+% gf = Lo/bo; %Effective Fineness ratio
+% Ref = (V*rho*Lo)/v; %Reynolds Number
+% Cff = 0.455./(log10(Ref)).^2.58; %Friction Coefficient
+% Ff = 1+(0.35/gf); %Form Factor
+% ff = Cff.*Ff.*Qf.*Sexpf.*nf; %Floats Drag Area [m^2]
+% end
 
 

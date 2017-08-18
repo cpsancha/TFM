@@ -1,0 +1,844 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\usepackage{changepage}
+
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{0.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Estudio de la configuración alar
+\end_layout
+
+\begin_layout Standard
+A lo largo del capítulo anterior se ha mostrado el proceso seguido hasta
+ lograr realizar un dimensionado inicial de la aeronave, logrando fijar
+ unos valores preliminares para los pesos más relevantes en el diseño, como
+ son el peso máximo al despegue (
+\begin_inset Formula $MTOW$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$MTOW$"
+description "Peso máximo al despegue (Maximum Take-Off Weight) \\nomunit{[$kg$]}"
+
+\end_inset
+
+, peso vacío (
+\begin_inset Formula $EW$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$EW$"
+description "Peso vacío (Empty Weight) \\nomunit{[$kg$]}"
+
+\end_inset
+
+, peso vacío operativo (
+\begin_inset Formula $OEW$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$OEW$"
+description "Peso vacío operativo (Operating Empty Weight) \\nomunit{[$kg$]}"
+
+\end_inset
+
+, peso de la carga de pago (
+\begin_inset Formula $W_{PL}$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$W_{PL}$"
+description "Peso de la carga de pago (Payload Weight) \\nomunit{[$kg$]}"
+
+\end_inset
+
+ y peso del combustible necesario para realizar la misión (
+\begin_inset Formula $W_{F}$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$W_{F}$"
+description "Peso del combustible de la misión (Mission Fuel Weight) \\nomunit{[$kg$]}"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+A su vez, también se han fijado ciertos valores relacionados con la aerodinámica
+ y planta propulsora de la aeronave, como son la superficie alar (
+\begin_inset Formula $S_{w}$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$S_{w}$"
+description "Superficie alar \\nomunit{[$m^2$]}"
+
+\end_inset
+
+, el alargamiento alar (
+\begin_inset Formula $A$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$A$"
+description "Alargamiento alar \\nomunit{[$-$]}"
+
+\end_inset
+
+, el empuje disponible al despegue (
+\begin_inset Formula $T_{TO}$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$T_{TO}$"
+description "Empuje disponible al despegue a nivel de mar \\nomunit{[$N$]}"
+
+\end_inset
+
+, y los coeficientes de sustentación máximos en configuración limpia (
+\begin_inset Formula $C_{L_{max}}$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$C_{L_{max}}$"
+description "Coeficiente de sustentación máximo de la aeronave \\nomunit{[$-$]}"
+
+\end_inset
+
+, en configuración de despegue (
+\begin_inset Formula $C_{L_{max_{TO}}}$
+\end_inset
+
+) y en configuración de aterrizaje (
+\begin_inset Formula $C_{L_{max_{L}}}$
+\end_inset
+
+).
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "S"
+symbol "TO"
+description "Relativo al despegue"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "S"
+symbol "L"
+description "Relativo al aterrizaje"
+
+\end_inset
+
+ Todos estos valores se resumen en la tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Resumen-del-dimensionado"
+
+\end_inset
+
+ por comodidad y servirán de partida para la siguiente fase de diseño, que
+ consiste en la determinación de la configuración de la aeronave y de la
+ planta propulsora.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="5">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $MTOW$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ [kg]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $S_{w}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+[m
+\begin_inset script superscript
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+
+]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $EW$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ [kg]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $A$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+[-]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $OEW$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ [kg]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $T_{TO}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+[kN]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $W_{PL}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ [kg]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C_{L_{max}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+[-]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $W_{F}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ [kg]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C_{L_{max_{TO}}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+[-]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C_{L_{max_{L}}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+[-]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\series bold
+\color red
+ <— METER VALORES
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Resumen de los valores obtenidos en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Dimensionado-Inicial"
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Resumen-del-dimensionado"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para lograr diseñar un avión eficiente, que proporcione las actuaciones
+ deseadas con el menor consumo de combustible posible, la aerodinámica de
+ éste juega un papel esencial, haciendo por tanto indispensable un estudio
+ detallado de ésta.
+ En este capítulo se mostrará el proceso seguido para la elección del perfil
+ de las alas, así como la forma, ubicación y características de éstas.
+\end_layout
+
+\begin_layout Standard
+A la hora de seleccionar una configuración para una aeronave, aparte de
+ los aspectos técnicos, intervienen otros muchos factores, como pueden ser
+ las preferencias personales de la persona encargada del diseño, sus experiencia
+s previas, el feedback que reciba del equipo de marketing, y un largo etcétera
+ que no se van a valorar en el presente estudio, por lo que únicamente nos
+ centraremos en la parte técnica del proceso de selección de la configuración,
+ respetando los requisitos de diseño indicados en el apartado 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Requisitos-de-diseño"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Elección del perfil
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Elección-del-perfil"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La elección del perfil a utilizar en las alas es una de las decisiones más
+ críticas en el diseño de éstas.
+ Dicha decisión se ve determinada por la velocidad de diseño de crucero,
+ el valor de diseño del coeficiente de sustentación, su relación espesor
+ máximo/cuerda (
+\begin_inset Formula $t/c$
+\end_inset
+
+), la modificación de sus propiedades en presencia de suciedad o imperfecciones
+ y la facilidad de construcción entre otros muchos aspectos.
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$t$"
+description "Espesor máximo del perfil aerodinámico \\nomunit{[$m$]}"
+
+\end_inset
+
+ 
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$c$"
+description "Cuerda del perfil aerodinámico \\nomunit{[$m$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\lambda$"
+description "Parámetro de estrechamiento del ala \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\rho$"
+description "Densidad del aire \\nomunit{[$kg/m^3$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$\\text{MAC}$"
+description "Cuerda media aerodinámica del ala (Mean Aerodynamic Chord)\\nomunit{[$m$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$c_g$"
+description "Cuerda media geométrica del ala (Mean Geometric Chord)\\nomunit{[$m$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$M$"
+description "Número de Mach \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$Re$"
+description "Número de Reynolds  \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\varepsilon$"
+description "Ángulo de torsión en una determinada sección del ala  \\nomunit{[$\\degree$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\beta$"
+description "Corrección de compresibilidad de Prandtl-Glauert ($\\beta=\\sqrt{1-M^2}$) \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$q_{\\infty}$"
+description "Presión dinámica sin perturbar ($q_{\\infty}=\\nicefrac{1}{2}\\rho_{\\infty}V_{\\infty}^2=\\nicefrac{1}{2}\\gamma P_{\\infty}M_{\\infty}^2$) \\nomunit{[$Pa$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\gamma$"
+description "Ratio de calores específicos, para el aire $\\gamma=1.4$ \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$E$"
+description "Corrección de la velocidad en el contorno de Jones \\\\ (E=semiperímetro/envergadura) \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Resulta habitual que los fabricantes empleen perfiles optimizados para sus
+ respectivas aeronaves a partir de las series NACA de 4 o 5 dígitos, los
+ cuales son perfiles diseñados y ampliamente ensayados por el Comité Asesor
+ Nacional de Aeronáutica (NACA) de los Estados Unidos durante la década
+ de 1930.
+ Sin embargo, la velocidad de vuelo de nuestra aeronave, ligeramente superior
+ a Mach 0.80 en crucero, pudiendo alcanzar una velocidad máxima de Mach 0.85,
+ hacen desaconsejar el uso de estas familias de perfiles, puesto que aunque
+ la velocidad de la aeronave siga siendo subsónica, el incremento de velocidad
+ del flujo de aire que tiene lugar sobre alas a partir de velocidades de
+ vuelo superiores a Mach 0.70 o 0.75, causa que localmente se alcancen valores
+ sónicos, produciéndose una onda de choque sobre el perfil, con todos los
+ problemas asociados que ésto conlleva.
+\end_layout
+
+\begin_layout Standard
+Para velocidades de vuelo subsónicas pero por encima del valor crítico,
+ se tienen regiones del perfil con flujo subsónico y otras con flujo supersónico
+, lo cual obliga a un diseño inteligente de esta región de flujo mixto mediante
+ técnicas diferentes de las empleadas habitualmente en el caso del vuelo
+ subsónico.
+ Estas técnicas han recibido el nombre de aerodinámica supercrítica.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\end_body
+\end_document

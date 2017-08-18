@@ -20,6 +20,7 @@ classdef hull < handle
         Lf_Beam           double  %forebody ratio
         Cv0               double  %Static load coeficcient
         Height            double  %
+        Vha               double  % Actual volume [m^3]
     end
     
     methods
