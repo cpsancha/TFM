@@ -78,6 +78,7 @@ run DesignParameters.m
 switch ME.MissionType
     case  5 % business jet
         ME.Passengers = 6;
+        ME.HighDensityPassengers = 10;
 %         ME.CabinWeight = 1000; %Other weight to be added in kg
 %         %Mission payload weight in kg:
 %         ME.Payload =  ME.Passengers*(CST.PassengerWeightSI+CST.PassBaggWeightSI)+ME.CabinWeight;
@@ -230,6 +231,9 @@ run C05_weightEstimation.m
 run D05_airplaneDesignParameters.m
 run F05_wingConfiguration.m
 run G05_polarPrediction.m
+run H05_highLiftDevices.m
+run I05_Weights.m
+clear ans
 
 % test_values =[-5,-2.5,0,2.5,5];
 % figure(10)

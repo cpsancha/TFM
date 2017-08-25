@@ -19,21 +19,25 @@
     function F = getWings (incidences,AC, DP, ME, Parameters, AF,plotFlag , W)
 
 AC.Wing1.Incidence = incidences(1);
-DP.Stagger=     incidences(3);
+% DP.Stagger=     incidences(3);
+DP.x_cg =     incidences(3);
 alpha_f=0;
 
 %%
 AC.Wing1.Sw          = AC.Wing.Sw/2;
 AC.Wing1.AspectRatio = AC.Wing.AspectRatio;
 
-
-
-
 %% 3: Obtain derived values from geometry
 AC.Wing1.WingSpan   = sqrt(AC.Wing1.AspectRatio*AC.Wing1.Sw);
 phi = AC.Engine.Position(2)/(AC.Wing1.WingSpan/2); % location of prismoidal section in fraction of semispan 
 AC.Wing1.CMG        = AC.Wing1.WingSpan / AC.Wing1.AspectRatio; %equals to AC.Wing1.Sw/AC.Wing1.WingSpan 
 AC.Wing1.CMA        = AC.Wing1.CMG*(1 + (1+3*phi)/(3*(1-phi))*((1-AC.Wing1.TaperRatio)/((1+phi)/(1-phi)+AC.Wing1.TaperRatio))^2);
+
+AC.Wing.TaperRatio = AC.Wing1.TaperRatio;
+AC.Wing.WingSpan      = sqrt(AC.Wing.AspectRatio*AC.Wing.Sw);
+AC.Wing.CMG           = AC.Wing.WingSpan / AC.Wing.AspectRatio;
+AC.Wing.CMA        = AC.Wing.CMG*(1 + (1+3*phi)/(3*(1-phi))*((1-AC.Wing.TaperRatio)/((1+phi)/(1-phi)+AC.Wing.TaperRatio))^2);
+
 
 
 %Root and tip chord
@@ -217,7 +221,7 @@ for fn = fieldnames(AC.Wing1)'
    AC.Wing2.(fn{1}) = AC.Wing1.(fn{1});
 end
 
-
+DP.Stagger = AC.Fuselage.fusLength-(AC.Wing1.Root_LE + AC.Wing1.RootChord) -2*AC.Wing1.RootChord;
 AC.Wing2.Incidence = incidences(2);
 
 
@@ -262,6 +266,7 @@ Parameters.q2_qinf = 0.85;
 qh_q = Parameters.q2_qinf;
 AC.Wing2.Reynolds = sqrt(ME.Cruise.Speed^2*qh_q).* AC.Wing2.c ./ nu;
 
+
 %% Equations:
         
 
@@ -287,8 +292,27 @@ F(2) = AC.Wing1.Cm_ac_wf + AC.Wing2.Cm_ac_wf*qh_q*Sh_S*ch_c ...
  L1=AC.Wing1.CL_wf*ME.Cruise.q*AC.Wing1.Sw;
  L2=AC.Wing2.CL_wf*ME.Cruise.q*qh_q*AC.Wing2.Sw;
 %  W
- F(3) = 0.7*W-L1;
+%  F(3) = 0.7*W-L1;
 % AC.Wing1.CL_wf/( W/ME.Cruise.q/AC.Wing1.Sw)
+
+%% Global aircraft coefficients
+AC.Wing.CL_alpha_wf = AC.Wing1.CL_alpha_wf*AC.Wing1.Sw/AC.Wing.Sw +...
+                    (1-de_da)*Parameters.q2_qinf*AC.Wing2.CL_alpha_wf*AC.Wing2.Sw/AC.Wing.Sw;
+                                     
+AC.Wing.Cm_alpha = AC.Wing1.CL_alpha_wf * AC.Wing1.Sw/AC.Wing.Sw * (x_cg-x_ac)/AC.Wing.CMA -...
+             (1-de_da) * Parameters.q2_qinf * AC.Wing2.CL_alpha_wf * AC.Wing2.Sw/AC.Wing.Sw *(lh-x_cg) / AC.Wing.CMA
+         
+         
+         % VAlues refered to wing1     
+CL_alpha_global = AC.Wing1.CL_alpha_wf +  (1-de_da)*Parameters.q2_qinf*AC.Wing2.CL_alpha_wf*AC.Wing2.Sw/AC.Wing1.Sw;
+Cm_alpha_global = AC.Wing1.CL_alpha_wf * (x_cg-x_ac)/AC.Wing1.CMA -...
+       (1-de_da) * Parameters.q2_qinf * AC.Wing2.CL_alpha_wf * AC.Wing2.Sw/AC.Wing1.Sw *(lh-x_cg) / AC.Wing1.CMA
+
+   
+         xn1_xcg = (-Cm_alpha_global/CL_alpha_global)*AC.Wing1.CMA;
+         xn2_xcg =(-AC.Wing.Cm_alpha/AC.Wing.CL_alpha_wf)*AC.Wing.CMA;
+         
+F(3) = 0.05 + (Cm_alpha_global/CL_alpha_global);
 
 %% Lift distribution at this CL
 

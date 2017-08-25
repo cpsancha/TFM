@@ -19,6 +19,7 @@ classdef aircraft < handle
         Fuselage     fuselage       % The fuselage and cabin information
         Actuations   actuations     % The actuations of the aircraft
         Hull         hull           % Hull characteristics
+        LandingGear  landingGear    % The landing gear
     end
     
     
@@ -29,16 +30,17 @@ classdef aircraft < handle
     methods
         % Constructor with listeners
         function obj = aircraft()
-            obj.Wing       = wing();   
-            obj.Wing1      = wing();          
-            obj.Wing2      = wing();
-            obj.VTP        = wing();
-            obj.Weight     = weights(obj);
-            obj.Engine     = engines(obj);
-            obj.Payload    = payload();
-            obj.Fuselage   = fuselage();
-            obj.Actuations = actuations();
-            obj.Hull       = hull();
+            obj.Wing        = wing();   
+            obj.Wing1       = wing();          
+            obj.Wing2       = wing();
+            obj.VTP         = wing();
+            obj.Weight      = weights(obj);
+            obj.Engine      = engines(obj);
+            obj.Payload     = payload();
+            obj.Fuselage    = fuselage();
+            obj.Actuations  = actuations();
+            obj.Hull        = hull();
+            obj.LandingGear = landingGear();
         end
         
     end

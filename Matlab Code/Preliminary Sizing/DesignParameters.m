@@ -11,16 +11,16 @@ switch ME.MissionType
     case 5  %5.Business Jets
         
     %% REQUIREMENTS
-        DP.Payload     =  800; %[kg] <-- 6 pax (80+50 each)
+        DP.Payload     =  750; %[kg] <-- 6 pax (80+45 each)
         DP.Range       = 10e3; %[km]
-        DP.MaxSpeed    =  257; %[m/s]  (Mach=0.87)
+        DP.MaxSpeed    =  250; %[m/s]  (Mach=0.85)
         DP.TOFL        = 1200; %[m]    Take-Off Field Length, from similar planes: max-->1972m, min-->956m, mean-->1488m
         DP.LFL         =  800; %[m]    Landing Field Length, from similar planes: max-->1015m, min-->631m, mean-->733m
         
         
     %% PLOTTING OPTIONS
         DP.ShowReportFigures      = false; %Show all the available figures for reports [true] or only the most relevant ones [false]
-        DP.ShowAircraftLayout     = true;  %Show a layout of the aircraft and the wings
+        DP.ShowAircraftLayout     = false;  %Show a layout of the aircraft and the wings
         DP.selectDesignPoint      = false; %Ask user to select design point [true] or use the saved value [false]
         DP.showRoskamRequirements = false; %Show the Take-Off and Landing requirements obtained with Roskam constants [true] or only the SP ones [false]
         
@@ -37,7 +37,7 @@ switch ME.MissionType
         %Cruise
         DP.StallSpeed          =    NaN; %[m/s] -- Cruise Stall Speed
         DP.CruiseAltitude      =   12e3; %[m]
-        DP.CruiseSpeed         =    250; %[m/s] (Mach=0.85)
+        DP.CruiseSpeed         =    243; %[m/s] (875 km/h  Mach=0.825)
         DP.CruiseEfficiency    =     14; %[-] mean(loadFields(SP,'Actuations.L_D'),'omitnan') --> 12.25
         DP.CruiseTSFC          =  0.597; %0.625 %[lbm/(lbf·h)] mean(loadFields(SP,'Engine.TSFC'),'omitnan') --> 0.661
         
@@ -59,25 +59,31 @@ switch ME.MissionType
         
         %Wing - Airfoil
         DP.Wing1_Wing2     = 0.85; %[-] - Parte de la sustentación que se lleva el ala delantera,
-        DP.Incidence_1     = 0;%2.85; %[º] - Degrees of angle of the wing/body incidence of wing 1 at root section
-        DP.Incidence_2     = 0;%1.10; %[º] - Degrees of angle of the wing/body incidence of wing 2 at root section
+        DP.Incidence_1     =    2;%2.85; %[º] - Degrees of angle of the wing/body incidence of wing 1 at root section
+        DP.Incidence_2     =   -2;%1.10; %[º] - Degrees of angle of the wing/body incidence of wing 2 at root section
         DP.WingLoading     =  400; %[kg/m^2] - Default value if selection not active
         DP.AspectRatio     =    8; %[-] - Aspect ratio, from similar planes: max-->9.7166, min-->8.0139, mean-->9.0017
         DP.TaperRatio      =  0.6; %[-]
         DP.Dihedral        =  0.0; %[º]
         DP.TipTwist        = -5.0; %[º] - Positive twist: nose rotated upwards (Wash-in). Negative twist: nose rotated downwards (Wash-out)
-        DP.Stagger         = 6.75; %[m]
+        DP.Stagger         =  4.5; %[m]
         DP.VerticalGap     =    0; %[m]
         DP.Wing1LongPos    = 3.65; %[m] Longitudinal position of the first wing
-        DP.Sweep_14        =   30; %[º] Flecha en la linea 1/4 
+        DP.Sweep_14        = 27.5; %[º] Flecha en la linea 1/4
+        DP.lowSpeedFlag    =false; %Disable function @getAirfoilData and set Clalpha=2*pi 
         DP.CLmax           =  1.2; %Porque si, hay que calcularlo bien... los valores estimados en crucero son muy bajos por ser la velocidad muy alta
         DP.CLmax_TO        =  2.0; %From similar planes: max-->2.3447, min-->1.5414, mean-->2.0622
         DP.CLmax_L         =  2.8; %From similar planes: max-->3.7689, min-->2.2523, mean-->3.0764
         
+        %Flaps
+        DP.cf_c            = 0.35;
+        DP.cle_c           = 0.10;
+        DP.delta_f         =   40; %[deg]
+        
         %Weight
         DP.x_cg            =  9.75; %[m] Posición longitudinal del centro de gravedad, se debe calcular, solo es para que no pete el código.
         DP.y_cg            =     0; %[m] Posición lateral del centro de gravedad.
-        DP.z_cg            =     0; %[m] Posición vertical del centro de gravedad, se debe calcular, solo es para que no pete el código.
+        DP.z_cg            =     1; %[m] Posición vertical del centro de gravedad, se debe calcular, solo es para que no pete el código.
         DP.MLW_MTOW        =  0.85; %From SP: min-->0.7900, max-->0.9267, mean-->0.8753
         DP.MRW_MTOW        = 1.005; %From SP: min-->0.9918, max-->1.0286, mean-->1.0051
         DP.EWnew_EWold     = 0.95;  %Weight reduction of the empty weight as being fully manufatured in composite materials
@@ -90,7 +96,7 @@ switch ME.MissionType
         DP.EngineModel     = 'Snecma Silvercrest 2D';%'Rolls-Royce AE 3007A1E';
         DP.xEngine         = 15;
         DP.yEngine         = 1.40;
-        DP.zEngine         = 0;
+        DP.zEngine         = 2.25;
         DP.Pylon_t_c       = 0.12; %NACA 0012
         DP.Pylon_Swet      = 0.25;
         DP.Pylon_Sweep     =   30; %[º]
@@ -116,7 +122,7 @@ switch ME.MissionType
   
         % VTP
         DP.VTP_X_ac        = 17.0;
-        DP.VTP_AspectRatio = 1.60;
+        DP.VTP_AspectRatio = 1.40;
         DP.VTP_Sweep_LE    = 45.0; %[º] Leading edge VTP sweep
         DP.VTP_Sweep_r     = 25.0; %[º] Rudder sweep
         DP.VTP_Sr_Sv       = 0.30;

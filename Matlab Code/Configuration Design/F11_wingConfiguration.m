@@ -31,7 +31,7 @@ AF.cli   = 0.005; %cl for minimum drag
 
 %% Wing extra parameters
 %Only for Wing1
-AC.Wing1.Root_LE = 4;
+AC.Wing1.Root_LE = 0.9*AC.Fuselage.cabPos- (2.3191 -AC.Engine.Length);
 
 %Common parameters
 
@@ -42,7 +42,7 @@ AC.Wing1.TaperRatio = 0.4;
 % AC.Wing1.TaperRatio = 0.458; % 0.458 %Menor que 0.4, argumentando que el taper ratio "efectivo" es diferente respecto a un ala de simple estrechamiento
 AC.Wing1.Dihedral = 0;
 
-DP.Stagger = 10;
+DP.Stagger = 10; %Sobreescrito al resolver, pero la ecuacion no lo devuelve!
 DP.VerticalGap = 0;
 
 %%
@@ -58,6 +58,9 @@ end
 W = CST.GravitySI*AC.Weight.MTOW*(CruiseFF + CruiseFF*Parameters.fuelFraction(5).value)/2;
 AC.Wing.CLdesign = 2*W/(ME.Cruise.q* AC.Wing.Sw);
 incidences = fsolve(@(incidences)getWings(incidences,AC, DP, ME, Parameters, AF, plotFlag,W), [0.1,0.1,10],options);   
+
+
+DP.x_cg = incidences(3);
 
 
 
@@ -113,7 +116,8 @@ plotFlag = 1;
 getWings(incidences,AC, DP, ME, Parameters, AF, plotFlag, W);
 plotFlag = 0;
 
-
+% 
+run('HullSizing.m')
 run('G11_polarPrediction.m')
 run('H11_highLiftDevices.m')
-
+run('I11_Weights.m')

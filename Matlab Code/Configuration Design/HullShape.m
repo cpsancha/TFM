@@ -72,6 +72,10 @@ figure()
 axis equal
 pcshow([X(:),Y(:),Z(:)]);
 
+title('Final Hull Shape')
+set(gcf,'color','w');
+saveFigure(ME.FiguresFolder,'Final Hull Shape')
+
 malla = [X',Y',Z'];
 save('malla.txt','malla','-ascii')
 %%

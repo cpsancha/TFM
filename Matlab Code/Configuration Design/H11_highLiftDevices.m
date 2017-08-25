@@ -14,6 +14,7 @@ ME.Cruise.Altitude = 0;     % in m
 [~, a, ~, rho] = atmosisa(ME.Cruise.Altitude);
 ME.Cruise.Density = rho;
 Vl = sqrt(2*CST.GravitySI *  AC.Weight.MLW/( ME.Cruise.Density*AC.Wing.Sw * Parameters.CL_max_L));
+ME.Landing.Speed = Vl;
 ME.Cruise.Speed = Vl; 
 ME.Cruise.Mach = ME.Cruise.Speed/a;
 ME.Cruise.beta = sqrt(1-ME.Cruise.Mach^2);
@@ -67,8 +68,43 @@ for i =(index+1):length(AC.Wing1.eta)
    j=j+1;
 end
 
-AC.Wing1.eta_outboard = index+find(Swf1<AC.Wing1.Swf,1,'last');
+AC.Wing1.eta_outboard = AC.Wing1.eta(find(Swf1<AC.Wing1.Swf,1,'last'));
    
+%% Wing 2
+% Hallamos el incremento de sustentación máxima necesaria para el ala
+% trasera
+deltaCLmax = AC.Wing2.CL_wf - AC.Wing2.CLmax;
+
+%% Flap design parameters
+% Valores de los parámetros que proporcionan un incremento de sustentacion maxima
+% , obtenidos tras optimizar:
+delta_f_L = 44.2597;
+cf_c = 0.3297;
+
+%Otros parámetros, leading edge devices:
+cle_c = 1.1;
+
+% Obtención de la superficie de flaps necesaria para proporcionar el
+% incremento de CLmax calculado anteriormente:
+Swf_S = getSwf(deltaCLmax , delta_f_L, cf_c, cle_c, AF.cl_alpha);
+
+%% Obtención del porcentaje de envergadura que corresponde a la superficie de
+%flaps
+AC.Wing2.Swf = Swf_S * AC.Wing2.Sw;
+
+index =find(AC.Wing2.eta<0.5*AC.Fuselage.fusWidth/(AC.Wing2.WingSpan/2),1,'last');
+eta_inboard = AC.Wing2.eta(index);
+AC.Wing2.eta_inboard = eta_inboard;
+
+j=1;
+for i =(index+1):length(AC.Wing2.eta)
+   %integral desde bf/2 hasta b/2
+   integrando = AC.Wing2.c(index:i);
+   Swf1(j) = 2*trapz(AC.Wing2.eta(index:i).*AC.Wing2.WingSpan./2, integrando);
+   j=j+1;
+end
+
+AC.Wing2.eta_outboard = AC.Wing2.eta(find(Swf1<AC.Wing2.Swf,1,'last'));
    
    %% Vuelvo a cargar las condiciones de crucero
 ME.Cruise = cruiseConditions;

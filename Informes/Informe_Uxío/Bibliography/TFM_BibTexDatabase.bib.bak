@@ -1,0 +1,374 @@
+% Encoding: UTF-8
+
+@Book{RoskamI,
+  title     = {Airplane Design: Part I - Preliminary Sizing of Airplanes.},
+  publisher = {University of Kansas},
+  year      = {1985},
+  author    = {Jan Roskam},
+}
+
+@Book{RoskamII,
+  title     = {Airplane Design: Part II - Preliminary Configuration Design and Integration of the Propulsion System.},
+  publisher = {University of Kansas},
+  year      = {1989},
+  author    = {Jan Roskam},
+}
+
+@Book{Raymer1999,
+  title     = {Aircraft Design: A Conceptual Approach.},
+  publisher = {American Institute of Aeronautics and Atronautics (AIAA)},
+  year      = {2006},
+  author    = {Daniel P. Raymer},
+}
+
+@Book{JaneAC1617,
+  title     = {Jane's All the World's Aircraft: Development \& Production 2016/2017: Yearbook},
+  publisher = {IHS Jane's Information Group},
+  year      = {2016-2017},
+  author    = {Bill Gunston},
+  editor    = {Paul Jackson},
+  series    = {Jane's All the World's Aircraft},
+}
+
+@Book{JaneEng1617,
+  title     = {Jane's Aero Engines 2016/2017: Yearbook},
+  publisher = {IHS Jane's Information Group},
+  year      = {2016-2017},
+  author    = {Mark Daly},
+  series    = {Jane's Aero-Engines},
+}
+
+@Book{Torenbeek1982,
+  title     = {Synthesis of Subsonic Airplane Design},
+  publisher = {Delft University Press. Kluwer Academic Publishers},
+  year      = {1982},
+  author    = {Egbert Torenbeek},
+  date      = {1982-09-30},
+  ean       = {9789024727247},
+  pagetotal = {624},
+}
+
+@Book{Nicolai2013,
+  title     = {Fundamentals of Aircraft and Airship Design: Volume II - Airship Design and Case Studies},
+  publisher = {American Institute of Aeronautics and Astronautics (AIAA)},
+  year      = {2013},
+  author    = {Leland M. Nicolai and Grant E. Carichner},
+}
+
+@Book{Torenbeek2013,
+  title     = {Advanced Aircraft Design: Conceptual Design, Analysis and Optimization of Subsonic Civil Airplanes},
+  publisher = {John Wiley \& Sons},
+  year      = {2013},
+  author    = {Egbert Torenbeek},
+  date      = {2013-06-28},
+  ean       = {9781119969303},
+}
+
+@Book{RoskamIII,
+  title     = {Airplane Design: Part III - Layout Design of Cockpit, Fuselage, Wing and Empennage, Cutaways and Inboard Profiles},
+  publisher = {University of Kansas},
+  year      = {1989},
+  author    = {Jan Roskam},
+}
+
+@Book{Nicolai1975,
+  title     = {Fundamentals of Aircraft and Airship Design: Volume I - Aircraft Design},
+  publisher = {American Institute of Aeronautics and Astronautics (AIAA)},
+  year      = {1975},
+  author    = {Leland M. Nicolai and Grant E. Carichner},
+}
+
+@Book{RoskamVI,
+  title     = {Airplane Design: Part VI - Preliminary Calculation of Aerodynamic, Thrust and Power Characteristics},
+  publisher = {University of Kansas},
+  year      = {1990},
+  author    = {Jan Roskam},
+}
+
+@Book{RoskamV,
+  title     = {Airplane Design: Part V - Component Weight Estimation},
+  publisher = {University of Kansas},
+  year      = {1999},
+  author    = {Jan Roskam},
+}
+
+@Article{Ayers1972,
+  author  = {Theodore G. Ayers},
+  title   = {Supercritical Aerodynamics worthwhile over a range of speeds},
+  journal = {Astronautics and Aeronautics (AIAA)},
+  year    = {1972},
+  pages   = {32-36},
+  month   = aug,
+}
+
+@TechReport{Harris1990,
+  author      = {Charles D. Harris},
+  title       = {NASA Supercritical Airfoils},
+  institution = {National Aeronautics and Space Administration (NASA)},
+  year        = {1990},
+  type        = {Technical Report},
+  number      = {2969},
+  address     = {Langley Research Center. Hampton, Virginia},
+}
+
+@Book{Kuchemann1978,
+  title     = {The Aerodynamic Design of Aircraft},
+  publisher = {American Institute of Aeonautics \& Astronautics (AIAA)},
+  year      = {1978},
+  author    = {Dietrich Kuchemann},
+  date      = {2013-07-08},
+  ean       = {9781600869228},
+  pagetotal = {564},
+}
+
+@TechReport{Polhamus1957,
+  author      = {John G. Lowry and Edward C. Polhamus},
+  title       = {A method for predicting lift increments due to flap deflection at low angles of attack in incompressible flow},
+  institution = {National Advisory Committee for Aeronautics (NACA)},
+  year        = {1957},
+  type        = {Technical Report},
+  number      = {3911},
+  address     = {Langley Aeronautical Laboratory. Langley Field, Va.},
+}
+
+@TechReport{Diederich1952,
+  author      = {Franklin W. Diederich},
+  title       = {A simple approximate method for calculating spanwise lift distributions and aerodynamic influence coefficients at subsonic speeds},
+  institution = {National Advisory Committee for Aeronautics (NACA)},
+  year        = {1952},
+  type        = {Technical Note},
+  number      = {2751},
+  address     = {Langley Aeronautical Laboratory. Langley Field, Va.},
+}
+
+@Article{Whitcomb1974,
+  author  = {Richard T. Whitcomb},
+  title   = {Review of NASA supercritical airfoils},
+  journal = {International Council of the Aeronautical Sciences (ICAS)},
+  year    = {1974},
+  number  = {Conference Paper 74-10},
+  month   = aug,
+}
+
+@TechReport{SC-0712,
+  author      = {William G. Johnson and Acquilla S. Hill and Otto Eichmann},
+  title       = {High Reynolds Number Tests of a NASA SC(3)-0712(B) Airfoil in the Langley 0.3-Meter Transonic Cryogenic Tunnel},
+  institution = {National Aeronautics and Space Administration (NASA)},
+  year        = {1985},
+  type        = {Technical Memorandum},
+  number      = {86371},
+  address     = {Langley Research Center. Hampton, Virginia},
+  month       = jun,
+}
+
+@Book{Abbott1959,
+  title     = {Theory of Wing Sections. Including a Summary of Airfoil Data},
+  publisher = {Dover Publications, Inc.},
+  year      = {1959},
+  author    = {Ira H. Abbott and Albert E. Von Doenhoff},
+  address   = {New York},
+}
+
+@Article{Garner1968,
+  author  = {H. C. Garner},
+  title   = {Some Remarks on Vortex Drag and its Spanwise Distribution in Incompressible Flow},
+  journal = {The Aeronautical Journal of the Royal Aeronautical Society (RAeS)},
+  year    = {1968},
+  volume  = {72},
+  number  = {Issue 691},
+  pages   = {623-625},
+  month   = jul,
+}
+
+@TechReport{Anderson1937,
+  author      = {Raymond F. Anderson},
+  title       = {Determination of the characteristics of tapered wings},
+  institution = {National Advisory Committee for Aeronautics (NACA)},
+  year        = {1937},
+  type        = {Technical Report},
+  number      = {572},
+  address     = {Langley Aeronautical Lab.; Langley Field, VA, United States.},
+  month       = jan,
+}
+
+@TechReport{Jones1946,
+  author      = {Robert T. Jones},
+  title       = {Properties of low-aspect-ratio pointed wings at speeds below and above the speed of sound},
+  institution = {National Advisory Committee for Aeronautics (NACA)},
+  year        = {1946},
+  type        = {Technical Report},
+  number      = {835},
+  address     = {Langley Aeronautical Lab.; Langley Field, VA, United States},
+  month       = jan,
+}
+
+@TechReport{Jones1947,
+  author      = {Robert T. Jones},
+  title       = {Wing plan forms for high-speed flight},
+  institution = {National Advisory Committee for Aeronautics (NACA)},
+  year        = {1947},
+  type        = {Technical Report},
+  number      = {863},
+  address     = {Langley Aeronautical Lab.; Langley Field, VA, United States},
+  month       = jan,
+}
+
+@TechReport{Schaufele1967,
+  author      = {Roger D. Schaufele and Ann W. Ebeling},
+  title       = {Aerodynamic Design of the DC-9 Wing and High-Lift System},
+  institution = {SAE International},
+  year        = {1967},
+  type        = {Technical Paper},
+  number      = {670846},
+  month       = feb,
+  doi         = {10.4271/670846},
+}
+
+@Manual{DATCOM1978,
+  title        = {USAF (United States Air Force) Stability and Control DATCOM (Data Compendium)},
+  author       = {R. D. Finck.},
+  organization = {McDonnell Douglas Corporation},
+  address      = {Douglas Aircraft Division Long Beach, California, 90846},
+  month        = apr,
+  year         = {1978},
+  note         = {Accession Number : ADB072483},
+}
+
+@Article{Helmbold1942,
+  author  = {H. B. Helmbold},
+  title   = {Der unverwundene Ellipsenflugel als tragende Flache},
+  journal = {der Deutschen Luftfahrtforschung},
+  year    = {1942},
+  pages   = {I 111 - I 113},
+}
+
+@TechReport{Boppe1987,
+  author      = {Charles W. Boppe},
+  title       = {Aerodynamic Analysis for Aircraft With Nacelles, Pylons, and Winglets at Transonic Speeds},
+  institution = {National Aeronautics and Space Administration (NASA)},
+  year        = {1987},
+  type        = {Contractor Report},
+  number      = {4066},
+  address     = {Grumman Aerospace Corporation. Bethpage, New York},
+  month       = apr,
+  note        = {Contract NAS1-14732},
+}
+
+@TechReport{Pitts1957,
+  author      = {William C. Pitts and Jack N. Nielsen and George E. Kaattari},
+  title       = {Lift and center of pressure of wing-body-tail combinations at subsonic, transonic, and supersonic speeds},
+  institution = {National Advisory Committee for Aeronautics (NACA)},
+  year        = {1957},
+  type        = {Technical Report},
+  number      = {1307},
+  address     = {Ames Aeronautical Lab.; Moffett Field, CA, United States},
+  month       = jan,
+}
+
+@Book{Hoerner1965,
+  title     = {Fluid-Dynamic Drag},
+  publisher = {Published by the Author},
+  year      = {1965},
+  author    = {Sighard F. Hoerner},
+}
+
+@TechReport{Multhopp1942,
+  author      = {H. Multhopp},
+  title       = {Aerodynamics of the Fuselage},
+  institution = {National Advisory Committee for Aeronautics (NACA)},
+  year        = {1942},
+  type        = {Technical Memorandum},
+  number      = {1036},
+  month       = dec,
+}
+
+@TechReport{Munk1924,
+  author      = {Max M. Munk},
+  title       = {The Aerodynamic Forces on Airship Hulls},
+  institution = {National Advisory Committee for Aeronautics (NACA)},
+  year        = {1924},
+  type        = {Technical Report},
+  number      = {184},
+}
+
+@Article{Lennertz1927,
+  author  = {J. Lennertz},
+  title   = {Beitrag zur theoretischen Behandlung des gegenseitigen Einflusses von Tragflache und Rumpf},
+  journal = {Journal of Applied Mathematics and Mechanics / Zeitschrift fur Angewandte Mathematik und Mechanik (ZAMM)},
+  year    = {1927},
+  volume  = {Volume 7},
+  number  = {Issue 4},
+  pages   = {pg. 249-332},
+}
+
+@Misc{MTorres,
+  author       = {Sara Black},
+  title        = {Revolutionary fuselage concept unveiled by MTorres},
+  howpublished = {CompositesWorld},
+  month        = may,
+  year         = {2017},
+  note         = {http://www.compositesworld.com/news/revolutionary-fuselage-concept-unveiled-by-mtorres},
+}
+
+@Manual{DutyRestGuidelines,
+  title        = {Duty/Rest Guidelines for Business Aviation},
+  author       = {Leigh White},
+  organization = {Flight Safety Foundation and National Business Aviation Association (NBAA)},
+  month        = apr,
+  year         = {2014},
+}
+
+@Book{gudmundsson2013general,
+  title     = {General aviation aircraft design: Applied Methods and Procedures},
+  publisher = {Butterworth-Heinemann},
+  year      = {2013},
+  author    = {Gudmundsson, Snorri},
+}
+
+@Book{Lafita,
+  title  = {Técnica del Hidroavión},
+  year   = {1944},
+  author = {Felipe Lafita},
+  editor = {Academia Militar de Ing. Aeronáuticos},
+}
+
+@PhdThesis{canamar2012seaplane,
+  author = {Canamar Leyva, Alan Leonel},
+  title  = {Seaplane conceptual design and sizing},
+  school = {University of Glasgow},
+  year   = {2012},
+}
+
+@Article{1950,
+  author        = {Ernest G. Stout},
+  title         = {Development of High-Speed Water-Based Aircraft},
+  journal       = {Journal of the Aeronautical Sciences},
+  year          = {1950},
+  volume        = {17},
+  number        = {8},
+  pages         = {457--480},
+  month         = aug,
+  __markedentry = {[Uxío:]},
+  comment       = {doi: 10.2514/8.1698},
+  doi           = {10.2514/8.1698},
+  publisher     = {American Institute of Aeronautics and Astronautics},
+  url           = {https://doi.org/10.2514/8.1698},
+}
+
+@Article{parkinson1943design,
+  author = {Parkinson, John B},
+  title  = {Design Criterions for the Dimensions of the Forebody of a Long-range Flying Boat},
+  year   = {1943},
+}
+
+@Book{Tomaszewski1950,
+  title         = {Hydrodynamic Design of Seaplanes Floats},
+  publisher     = {H.M. Stationery Office},
+  year          = {1950},
+  author        = {Tomaszewski, K.M.},
+  series        = {Min. of Supply. Aeronautical Research Council. Current Papers},
+  __markedentry = {[Uxío:6]},
+  url           = {https://books.google.es/books?id=q57htgAACAAJ},
+}
+
+@Comment{jabref-meta: databaseType:bibtex;}

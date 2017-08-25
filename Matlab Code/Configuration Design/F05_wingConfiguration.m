@@ -24,98 +24,65 @@ options = optimoptions('fsolve',...
 %First run, to remove error warnings
 ME = wingsDesign(AC, ME, DP, Parameters, CST, CF);
 
+%Make sure x_ac_2 > x_cg
+solveFlag = false;
+
 %Solve wing incidence and stagger
-[X,~,exitflag,~] = fsolve(@(X)getWingsIncidence(X, AC, ME, DP, Parameters, CST, CF),[DP.Incidence_1, DP.Incidence_2, DP.Stagger],options);
-DP.Incidence_1 = X(1);
-DP.Incidence_2 = X(2);
-DP.Stagger     = X(3);
-if ~isequal(exitflag,1)
-    error('El solver que calcula las incidencias y el stagger no ha logrado converger correctamente. Se debería revisar el resultado.')
-else
-    clear exitflag X options
+while ~solveFlag
+    [X,~,exitflag,~] = fsolve(@(X)getWingsIncidence(X, AC, ME, DP, Parameters, CST, CF),rand(1,3).*10,options);
+    DP.Incidence_1 = X(1);
+    DP.Incidence_2 = X(2);
+    DP.Wing1_Wing2 = X(3);
+    if ~isequal(exitflag,1)
+        error('El solver que calcula las incidencias y el stagger no ha logrado converger correctamente. Se debería revisar el resultado.')
+    else
+        clear exitflag X options
+    end
+    if AC.Wing2.x_ac_wf>DP.x_cg
+        solveFlag = true;
+    end
 end
 
+clear solveFlag
 
 
 %% CALCULATE NECESSARY VTP
-%Volume coefficient = Sv * lv / (Sw * bw)
-% coefVolume = 0.065; 
-
-
-%DEFINE VTP PARAMETERS
-AC.VTP.AspectRatio = DP.VTP_AspectRatio;
-AC.VTP.Sweep_LE    = DP.VTP_Sweep_LE;
-AC.VTP.TaperRatio  = DP.VTP_TaperRatio;
-AC.VTP.t_c         = DP.VTP_t_c;
-%Define airfoil
-AC.VTP.Airfoil.designation = DP.VTP_Airfoil;
-AC.VTP.Airfoil.wantFile    = 0;
-AC.VTP.Airfoil.n           = 30;
-AC.VTP.Airfoil.is_finiteTE = 0;
-AC.VTP.Airfoil.HalfCosineSpacing = 1;
-AC.VTP.Airfoil.Data = naca4gen(AC.VTP.Airfoil);   
-   
-
-%CRITICAL ENGINE CRITERION
-run rudderGraphs;
-lv = DP.VTP_X_ac - AC.Weight.x_cg;
-Ye = AC.Engine.Position(2) - AC.Weight.y_cg;
-kv = 1; %por no ser cola en T
-kdr = interp1(kdr_drmax(:,1),kdr_drmax(:,2),DP.VTP_deltar_max);
-
-%Torenbeek graph 9-23 pag 336
-X_parameter = Ye/lv * (AC.Engine.Thrust*1e3 * DP.CLmax_TO) / ((AC.Weight.MTOW - ME.Payload)*CST.GravitySI);
-Y_parameter = interp1(rudderEstimationGraph(:,1), rudderEstimationGraph(:,2), X_parameter);
-Sv_S = Y_parameter / (kdr*kv*(DP.VTP_Sr_Sv*AC.VTP.AspectRatio*cosd(DP.VTP_Sweep_r))^(1/3));
-S_criticalEngine = Sv_S * AC.Wing.Sw;
-
-
-%STABILITY CRITERION
-k_beta = 0.3*(AC.Weight.x_cg/AC.Fuselage.fusLength) + 0.75*(AC.Fuselage.fusHeight/AC.Fuselage.fusLength) - 0.105;
-Cn_beta_f = -k_beta*((DP.VTP_Svertical*AC.Fuselage.fusLength)/(AC.Wing.Sw*AC.Wing.WingSpan))*...
-             (DP.VTP_h_14/DP.VTP_h_34)^(1/2)*(DP.VTP_b_34/DP.VTP_b_14)^(1/3);
-Cn_beta_i = -0.017; %High wing
-VTP_volumeParameter = interp1(rudderVolumeGraph(:,1), rudderVolumeGraph(:,2), Cn_beta_f+Cn_beta_i);
-S_stability = VTP_volumeParameter*AC.Wing.Sw*AC.Wing.WingSpan/lv;
-S_stability = 0.65 * S_stability; %Relaxation due to FCS
-
-%Decide criterion
-AC.VTP.Sw        = max([S_criticalEngine,S_stability]);  %AREA
-AC.VTP.Swet      = 2*AC.VTP.Sw;                          %WET AREA
-AC.VTP.WingSpan  = sqrt(AC.VTP.Sw * AC.VTP.AspectRatio); %HEIGHT
-AC.VTP.CMG       = AC.VTP.Sw/AC.VTP.WingSpan;            %CMG
-AC.VTP.RootChord = 2*AC.VTP.CMG/(1+AC.VTP.TaperRatio);   %C_r
-AC.VTP.TipChord  = AC.VTP.TaperRatio*AC.VTP.RootChord;   %C_t
-AC.VTP.CMA       = (2/3)*AC.VTP.RootChord*((1+AC.VTP.TaperRatio+AC.VTP.TaperRatio^2)/(1+AC.VTP.TaperRatio)); %CMA
-AC.VTP.CMA_b     = (AC.VTP.WingSpan/3)*((1+2*AC.VTP.TaperRatio)/(1+AC.VTP.TaperRatio));
-AC.VTP.CMA_14    = DP.VTP_X_ac;
-AC.VTP.CMA_LE    = AC.VTP.CMA_14 - AC.VTP.CMA/4;
-AC.VTP.Root_LE   = AC.VTP.CMA_LE - AC.VTP.CMA_b*tand(AC.VTP.Sweep_LE);
-AC.VTP.TipSweep  = AC.VTP.WingSpan * tand(AC.VTP.Sweep_LE);
-AC.VTP.Sweep_14  = atand((AC.VTP.TipSweep+(AC.VTP.TipChord-AC.VTP.RootChord)/4)/AC.VTP.WingSpan);
-AC.VTP.Sweep_12  = atand((AC.VTP.TipSweep+(AC.VTP.TipChord-AC.VTP.RootChord)/2)/AC.VTP.WingSpan);
-AC.VTP.Sweep_RE  = atand((AC.VTP.TipSweep+(AC.VTP.TipChord-AC.VTP.RootChord)/1)/AC.VTP.WingSpan);
+getVTP(AC, ME, DP, Parameters, CST, CF);
 
 
 
-AC.VTP.Airfoil.rootCoordinates.xU = AC.VTP.RootChord .* AC.VTP.Airfoil.Data.xU;
-AC.VTP.Airfoil.rootCoordinates.zU = AC.VTP.RootChord .* AC.VTP.Airfoil.Data.zU;
-AC.VTP.Airfoil.rootCoordinates.xL = AC.VTP.RootChord .* AC.VTP.Airfoil.Data.xL;
-AC.VTP.Airfoil.rootCoordinates.zL = AC.VTP.RootChord .* AC.VTP.Airfoil.Data.zL;
-AC.VTP.Airfoil.tipCoordinates.xU  = AC.VTP.TipChord  .* AC.VTP.Airfoil.Data.xU;
-AC.VTP.Airfoil.tipCoordinates.zU  = AC.VTP.TipChord  .* AC.VTP.Airfoil.Data.zU;
-AC.VTP.Airfoil.tipCoordinates.xL  = AC.VTP.TipChord  .* AC.VTP.Airfoil.Data.xL;
-AC.VTP.Airfoil.tipCoordinates.zL  = AC.VTP.TipChord  .* AC.VTP.Airfoil.Data.zL;
+%% GET SOME COEFFICIENTS GRAPHS
+    alphaRange = linspace(-5,10,25);
+    CLRange    = zeros(1,length(alphaRange));
+    CmRange    = zeros(1,length(alphaRange));
+    for i=1:length(alphaRange)
+        AC.Fuselage.fuselage_AoA = alphaRange(i);
+        ME = wingsDesign(AC, ME, DP, Parameters, CST, CF);
+        CLRange(i) = AC.Wing.CL_wf;
+        CmRange(i) = AC.Wing.Cm_wf;
+    end
+    AC.Wing.CL_alpha_wf = deg2rad(alphaRange)'\CLRange';
+    AC.Wing.Cm_alpha    = deg2rad(alphaRange)'\CmRange';
+  
+if DP.ShowReportFigures    
+    %Show figure
+    figure()
+        yyaxis left
+        plot(alphaRange,CLRange)
+        title('Total aircraft lift and moment coefficients','interpreter','latex')
+        xlabel('Fuselage angle of attack ($\alpha_{f}$) [$^o$]','interpreter','latex')
+        ylabel('Lift coefficient ($C_L$) [-]','interpreter','latex')
+        yyaxis right
+        plot(alphaRange,CmRange)
+        ylabel('Moment coefficient ($C_m$) [-]','interpreter','latex')
+        saveFigure(ME.FiguresFolder,'AircraftCoefficients')
+end
 
-
-
-
-clear lv Ye kdr_drmax rudderEstimationGraph rudderVolumeGraph kv kdr X_parameter Y_parameter Sv_S
-clear k_beta Cn_beta_f Cn_beta_i VTP_volumeParameter S_criticalEngine S_stability
+clear i alphaRange CLRange CmRange
 
 
 %% PLOT LAYOUT
-wingConfigurationPlotting(AC, ME, DP, Parameters, CST, CF)
+wingConfigurationPlotting(AC, ME, DP, Parameters, CST, CF);
    
 
    
@@ -124,26 +91,26 @@ wingConfigurationPlotting(AC, ME, DP, Parameters, CST, CF)
 function [] = wingConfigurationPlotting(AC, ME, DP, Parameters, CST, CF) %#ok<INUSD>
 % Show Divergence Mach depending on sweep
 if DP.ShowReportFigures
-    sweepArray = [15,20,25,30,32.5,35,37.5];
-    t_c = linspace(10,18,5);
+    sweepArray = [15,20,25,27.5,30,32.5,35];
+    t_c = linspace(10,16,5);
     LegendStr = cell(0);
     options = optimoptions('fsolve',...
                            'StepTolerance',1e-9,...
                            'Display','none');
     figure()
     hold on
+    plot(AC.Wing1.Airfoil.t_c*100,AC.Wing1.MachDiv,'o','LineWidth',1.25,'Color',Parameters.Colors(1,:))
+    LegendStr{end+1}='Design Point';
     for i=1:length(sweepArray)
         for j=1:length(t_c)
-            [MachDiv(j),~,exitFlag,~] = fsolve(@(DivergenceMach)getDivergenceMach(DivergenceMach, t_c(j)./100, sweepArray(i),AC.Wing1.CLdesign,'Supercritical'),0.8,options); %#ok<AGROW,SAGROW>
+            [MachDiv(j),~,exitFlag,~] = fsolve(@(DivergenceMach)getDivergenceMach(DivergenceMach, t_c(j)./100, sweepArray(i),AC.Wing1.CLdesign,'Supercritical'),0.8,options); %#ok<AGROW>
             if ~isequal(exitFlag,1)
                 disp('El solver del mach de divergencia al generar la figura no ha logrado converger correctamente. Se debería revisar el resultado.')
             end
         end
-        plot(t_c,MachDiv,'LineWidth',1.25,'Color',Parameters.Colors(i,:))
+        plot(t_c,MachDiv,'LineWidth',1.25,'Color',Parameters.Colors(i+1,:))
         LegendStr{end+1} = ['$\Lambda_{1/4}=',num2str(sweepArray(i)),'^o$']; %#ok<AGROW>
     end
-    plot(AC.Wing1.Airfoil.t_c*100,AC.Wing1.MachDiv,'o','LineWidth',1.25,'Color',Parameters.Colors(i+1,:))
-    LegendStr{end+1}='Design Point';
     title('$M_{dd}\ en\ funcion\ de\ la\ flecha\ y\ el\ espesor\ relativo\ del\ perfil$','interpreter','latex')
     xlabel('$t/c\ [-]$','interpreter','latex')
     ylabel('$M_{dd}\ [-]$','interpreter','latex')
@@ -247,8 +214,8 @@ subplot(3,1,[1 2])
             plot([AC.Wing1.Root_LE+AC.Wing1.RootChord,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord],[ 0, AC.Wing1.WingSpan/2],'r')
             plot([AC.Wing1.Root_LE+AC.Wing1.RootChord,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord],[-0,-AC.Wing1.WingSpan/2],'r')
         %position c/4
-            plot([AC.Wing1.Root_LE+AC.Wing1.RootChord/4,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord/4],[ 0, AC.Wing1.WingSpan/2],'g')
-            plot([AC.Wing1.Root_LE+AC.Wing1.RootChord/4,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord/4],[-0,-AC.Wing1.WingSpan/2],'g')
+            plot([AC.Wing1.Root_LE+AC.Wing1.RootChord/4,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord/4],[ 0, AC.Wing1.WingSpan/2],'y')
+            plot([AC.Wing1.Root_LE+AC.Wing1.RootChord/4,AC.Wing1.Root_LE+AC.Wing1.TipSweep+AC.Wing1.TipChord/4],[-0,-AC.Wing1.WingSpan/2],'y')
         %MAC
             plot([AC.Wing1.CMA_LE,AC.Wing1.CMA_LE+AC.Wing1.CMA],[ AC.Wing1.CMA_b, AC.Wing1.CMA_b],'m')
             plot([AC.Wing1.CMA_LE,AC.Wing1.CMA_LE+AC.Wing1.CMA],[-AC.Wing1.CMA_b,-AC.Wing1.CMA_b],'m')
@@ -266,18 +233,18 @@ subplot(3,1,[1 2])
             plot([AC.Wing2.Root_LE+AC.Wing2.RootChord,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord],[ 0, AC.Wing2.WingSpan/2],'b')
             plot([AC.Wing2.Root_LE+AC.Wing2.RootChord,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord],[-0,-AC.Wing2.WingSpan/2],'b')
         %position c/4
-            plot([AC.Wing2.Root_LE+AC.Wing2.RootChord/4,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord/4],[ 0, AC.Wing2.WingSpan/2],'g')
-            plot([AC.Wing2.Root_LE+AC.Wing2.RootChord/4,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord/4],[-0,-AC.Wing2.WingSpan/2],'g')
+            plot([AC.Wing2.Root_LE+AC.Wing2.RootChord/4,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord/4],[ 0, AC.Wing2.WingSpan/2],'y')
+            plot([AC.Wing2.Root_LE+AC.Wing2.RootChord/4,AC.Wing2.Root_LE+AC.Wing2.TipSweep+AC.Wing2.TipChord/4],[-0,-AC.Wing2.WingSpan/2],'y')
         %MAC
             plot([AC.Wing2.CMA_LE,AC.Wing2.CMA_LE+AC.Wing2.CMA],[ AC.Wing2.CMA_b, AC.Wing2.CMA_b],'m')
             plot([AC.Wing2.CMA_LE,AC.Wing2.CMA_LE+AC.Wing2.CMA],[-AC.Wing2.CMA_b,-AC.Wing2.CMA_b],'m')
     %VTP
         %Root Airfoil
-            plot(AC.VTP.Root_LE+AC.VTP.Airfoil.rootCoordinates.xU,AC.VTP.Airfoil.rootCoordinates.zU,'y')
-            plot(AC.VTP.Root_LE+AC.VTP.Airfoil.rootCoordinates.xL,AC.VTP.Airfoil.rootCoordinates.zL,'y')
+            plot(AC.VTP.Root_LE+AC.VTP.Airfoil.rootCoordinates.xU,AC.VTP.Airfoil.rootCoordinates.zU,'g')
+            plot(AC.VTP.Root_LE+AC.VTP.Airfoil.rootCoordinates.xL,AC.VTP.Airfoil.rootCoordinates.zL,'g')
         %Tip Airfoil
-            plot(AC.VTP.Root_LE+AC.VTP.TipSweep+AC.VTP.Airfoil.tipCoordinates.xU,AC.VTP.Airfoil.tipCoordinates.zU,'y')
-            plot(AC.VTP.Root_LE+AC.VTP.TipSweep+AC.VTP.Airfoil.tipCoordinates.xL,AC.VTP.Airfoil.tipCoordinates.zL,'y')
+            plot(AC.VTP.Root_LE+AC.VTP.TipSweep+AC.VTP.Airfoil.tipCoordinates.xU,AC.VTP.Airfoil.tipCoordinates.zU,'g')
+            plot(AC.VTP.Root_LE+AC.VTP.TipSweep+AC.VTP.Airfoil.tipCoordinates.xL,AC.VTP.Airfoil.tipCoordinates.zL,'g')
     %WEIGHT
         %Center of gravity
             plot(AC.Weight.x_cg,AC.Weight.y_cg,'*')
@@ -321,6 +288,19 @@ subplot(3,1,3)
         plot([AC.Fuselage.ln,AC.Fuselage.fusLength-AC.Fuselage.la],[0,0],'k')
     %VERTICAL AFTERBODY
         plot(XvAft, YvAft,'k')
+     %ENGINES
+        %Engine front
+            plot([ AC.Engine.Position(1)-AC.Engine.Length/2,    AC.Engine.Position(1)-AC.Engine.Length/2],...
+                 [ AC.Engine.Position(3)-AC.Engine.Diameter/2,  AC.Engine.Position(3)+AC.Engine.Diameter/2],'c')
+        %Engine back
+            plot([ AC.Engine.Position(1)+AC.Engine.Length/2,    AC.Engine.Position(1)+AC.Engine.Length/2],...
+                 [ AC.Engine.Position(3)-AC.Engine.Diameter/2,  AC.Engine.Position(3)+AC.Engine.Diameter/2],'c')
+        %Engine up
+            plot([ AC.Engine.Position(1)-AC.Engine.Length/2,    AC.Engine.Position(1)+AC.Engine.Length/2],...
+                 [ AC.Engine.Position(3)+AC.Engine.Diameter/2,  AC.Engine.Position(3)+AC.Engine.Diameter/2],'c')
+        %Engine down
+            plot([ AC.Engine.Position(1)-AC.Engine.Length/2,    AC.Engine.Position(1)+AC.Engine.Length/2],...
+                 [ AC.Engine.Position(3)-AC.Engine.Diameter/2,  AC.Engine.Position(3)-AC.Engine.Diameter/2],'c')
     %VERTICAL VTP
         h_LE = interp1(XvAft(1:18),YvAft(1:18),AC.VTP.Root_LE);
         h_RE = interp1(XvAft(1:18),YvAft(1:18),AC.VTP.Root_LE+AC.VTP.RootChord);
@@ -367,10 +347,87 @@ subplot(3,1,3)
              AC.Fuselage.fusHeight+AC.Wing2.TipChord.*AC.Wing2.Airfoil.Coordinates.zU,'b')
         plot(AC.Wing2.Root_LE + AC.Wing2.TipSweep + AC.Wing2.TipChord.*AC.Wing1.Airfoil.Coordinates.xL,...
              AC.Fuselage.fusHeight+AC.Wing2.TipChord.*AC.Wing2.Airfoil.Coordinates.zL,'b')
+
    
    xlim(XL);
+   saveFigure(ME.FiguresFolder,'AircraftLayout')
    clear XvNose YvNose XvAft YvAft h_LE h_RE RotationMatrix points XL
 end
+end
+
+function [] = getVTP(AC, ME, DP, Parameters, CST, CF) %#ok<INUSL,INUSD>
+
+%DEFINE VTP PARAMETERS
+AC.VTP.AspectRatio = DP.VTP_AspectRatio;
+AC.VTP.Sweep_LE    = DP.VTP_Sweep_LE;
+AC.VTP.TaperRatio  = DP.VTP_TaperRatio;
+AC.VTP.t_c         = DP.VTP_t_c;
+%Define airfoil
+AC.VTP.Airfoil.designation = DP.VTP_Airfoil;
+AC.VTP.Airfoil.wantFile    = 0;
+AC.VTP.Airfoil.n           = 30;
+AC.VTP.Airfoil.is_finiteTE = 0;
+AC.VTP.Airfoil.HalfCosineSpacing = 1;
+AC.VTP.Airfoil.Data = naca4gen(AC.VTP.Airfoil);   
+   
+
+%CRITICAL ENGINE CRITERION
+run rudderGraphs;
+lv = DP.VTP_X_ac - AC.Weight.x_cg;
+Ye = AC.Engine.Position(2) - AC.Weight.y_cg;
+kv = 1; %por no ser cola en T
+kdr = interp1(kdr_drmax(:,1),kdr_drmax(:,2),DP.VTP_deltar_max); %#ok<NODEF>
+
+%Torenbeek graph 9-23 pag 336
+X_parameter = Ye/lv * (AC.Engine.Thrust*1e3 * DP.CLmax_TO) / ((AC.Weight.MTOW - ME.Payload)*CST.GravitySI);
+Y_parameter = interp1(rudderEstimationGraph(:,1), rudderEstimationGraph(:,2), X_parameter); %#ok<NODEF>
+Sv_S = Y_parameter / (kdr*kv*(DP.VTP_Sr_Sv*AC.VTP.AspectRatio*cosd(DP.VTP_Sweep_r))^(1/3));
+S_criticalEngine = Sv_S * AC.Wing.Sw;
+
+
+%STABILITY CRITERION
+k_beta = 0.3*(AC.Weight.x_cg/AC.Fuselage.fusLength) + 0.75*(AC.Fuselage.fusHeight/AC.Fuselage.fusLength) - 0.105;
+Cn_beta_f = -k_beta*((DP.VTP_Svertical*AC.Fuselage.fusLength)/(AC.Wing.Sw*AC.Wing.WingSpan))*...
+             (DP.VTP_h_14/DP.VTP_h_34)^(1/2)*(DP.VTP_b_34/DP.VTP_b_14)^(1/3);
+Cn_beta_i = -0.017; %High wing
+VTP_volumeParameter = interp1(rudderVolumeGraph(:,1), rudderVolumeGraph(:,2), Cn_beta_f+Cn_beta_i); %#ok<NODEF>
+S_stability = VTP_volumeParameter*AC.Wing.Sw*AC.Wing.WingSpan/lv;
+S_stability = 0.55 * S_stability; %Relaxation due to FCS
+
+%Decide criterion
+AC.VTP.Sw        = max([S_criticalEngine,S_stability]);  %AREA
+AC.VTP.Swet      = 2*AC.VTP.Sw;                          %WET AREA
+AC.VTP.WingSpan  = sqrt(AC.VTP.Sw * AC.VTP.AspectRatio); %HEIGHT
+AC.VTP.CMG       = AC.VTP.Sw/AC.VTP.WingSpan;            %CMG
+AC.VTP.RootChord = 2*AC.VTP.CMG/(1+AC.VTP.TaperRatio);   %C_r
+AC.VTP.TipChord  = AC.VTP.TaperRatio*AC.VTP.RootChord;   %C_t
+AC.VTP.CMA       = (2/3)*AC.VTP.RootChord*((1+AC.VTP.TaperRatio+AC.VTP.TaperRatio^2)/(1+AC.VTP.TaperRatio)); %CMA
+AC.VTP.CMA_b     = (AC.VTP.WingSpan/3)*((1+2*AC.VTP.TaperRatio)/(1+AC.VTP.TaperRatio));
+AC.VTP.CMA_14    = DP.VTP_X_ac;
+AC.VTP.CMA_LE    = AC.VTP.CMA_14 - AC.VTP.CMA/4;
+AC.VTP.Root_LE   = AC.VTP.CMA_LE - AC.VTP.CMA_b*tand(AC.VTP.Sweep_LE);
+AC.VTP.TipSweep  = AC.VTP.WingSpan * tand(AC.VTP.Sweep_LE);
+AC.VTP.Sweep_14  = atand((AC.VTP.TipSweep+(AC.VTP.TipChord-AC.VTP.RootChord)/4)/AC.VTP.WingSpan);
+AC.VTP.Sweep_12  = atand((AC.VTP.TipSweep+(AC.VTP.TipChord-AC.VTP.RootChord)/2)/AC.VTP.WingSpan);
+AC.VTP.Sweep_RE  = atand((AC.VTP.TipSweep+(AC.VTP.TipChord-AC.VTP.RootChord)/1)/AC.VTP.WingSpan);
+
+
+
+AC.VTP.Airfoil.rootCoordinates.xU = AC.VTP.RootChord .* AC.VTP.Airfoil.Data.xU;
+AC.VTP.Airfoil.rootCoordinates.zU = AC.VTP.RootChord .* AC.VTP.Airfoil.Data.zU;
+AC.VTP.Airfoil.rootCoordinates.xL = AC.VTP.RootChord .* AC.VTP.Airfoil.Data.xL;
+AC.VTP.Airfoil.rootCoordinates.zL = AC.VTP.RootChord .* AC.VTP.Airfoil.Data.zL;
+AC.VTP.Airfoil.tipCoordinates.xU  = AC.VTP.TipChord  .* AC.VTP.Airfoil.Data.xU;
+AC.VTP.Airfoil.tipCoordinates.zU  = AC.VTP.TipChord  .* AC.VTP.Airfoil.Data.zU;
+AC.VTP.Airfoil.tipCoordinates.xL  = AC.VTP.TipChord  .* AC.VTP.Airfoil.Data.xL;
+AC.VTP.Airfoil.tipCoordinates.zL  = AC.VTP.TipChord  .* AC.VTP.Airfoil.Data.zL;
+
+
+
+
+clear lv Ye kdr_drmax rudderEstimationGraph rudderVolumeGraph kv kdr X_parameter Y_parameter Sv_S
+clear k_beta Cn_beta_f Cn_beta_i VTP_volumeParameter S_criticalEngine S_stability
+
 end
 
 function [Error] = getDivergenceMach(DivergenceMach,t_c_airfoil,Sweep,CLwing,AirfoilType)
@@ -392,7 +449,7 @@ function [Error, ME] = getWingsIncidence(X, AC, ME, DP, Parameters, CST, CF)
   %INPUTS:  
     %X(1) = Wing1 Incidence [º]
     %X(2) = Wing2 Incidence [º]
-    %X(3) = Stagger [m]
+    %X(3) = Wing1_Wing2 [-]
   %OUTPUTS:  
     %Error(1) = LiftCoeff - CL0 [-]
     %Error(2) = MomentCoeff [-]
@@ -401,7 +458,7 @@ function [Error, ME] = getWingsIncidence(X, AC, ME, DP, Parameters, CST, CF)
   %Parse inputs
     DP.Incidence_1 = X(1);
     DP.Incidence_2 = X(2);
-    DP.Stagger     = X(3);
+    DP.Wing1_Wing2 = X(3);
   
   %Run wing's script
     ME = wingsDesign(AC, ME, DP, Parameters, CST, CF);

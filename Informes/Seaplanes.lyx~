@@ -214,5 +214,25 @@ For multi-engine aircraft with wing-mounted engines a lower limit for Sv'
  (9-68) should also be checked
 \end_layout
 
+\begin_layout Section
+ALas iguales
+\end_layout
+
+\begin_layout Standard
+Son iguales por facilidad de fabrcar, pero ojo porque no tienen que aguantar
+ los motores por lo tanto la trasera pesaría menos.
+ Si las construimos las dos para el caso mas crítico, estamos añadiendo
+ peso innecesario al ala trasera.
+\end_layout
+
+\begin_layout Section
+Pesos menor
+\end_layout
+
+\begin_layout Standard
+Los semejantes son anfibios: incluyen landing gear ; el nuestro nope asi
+ que pesa menos.
+\end_layout
+
 \end_body
 \end_document

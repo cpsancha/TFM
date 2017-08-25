@@ -184,7 +184,41 @@ CDS.windshieldsProtuberance(i) = 0.02*CD_S_basic;
     %No se aplica
 %OTHER EFFECTS
     %Meter los porcentajes que dice
- 
+    
+%% Flat plate drag area of the Boat Hull
+%Boat Hull Geometry
+%b stands for Boat Hull
+b =AC.Hull.Beam;
+Lh = AC.Hull.Length;
+rb = (b/2); %Radius of Boat Hull [m]
+KA = 0.7; %Proportionality Coefficient
+AHull = KA*Lh*b; %Area of Load Water Plane of Hull [m^2]
+Swetb = 0.5*((pi*rb^2)+AHull+(pi*rb*Lh));%Wetted area of Boat Hull [m^2]
+Qb = 1.25; %Interference Factor
+Reb = (ME.Cruise.Speed*Lh*ME.Cruise.Density)/nu; %Reynolds Number
+Cfb = 0.455./(log10(Reb)).^2.58;%Friction coefficient
+Amaxb = (pi*(rb/2)^2)/4; %Boat Hull Cross Area [m^2]
+ldb = Lh/sqrt((4/pi)*Amaxb); %Fineness ratio
+Fb = 1+(60/(ldb^3))+(ldb/400); %Boat Hull Form Factor
+CDS.p.Hull(i) = Cfb.*Fb.*Qb.*Swetb; %Flat plate drag area [m^2]
+%% Flat Plate Drag Area of Floats
+% %Float Geometry
+% %f stands for Float
+% nf = 2; %Number of Outriggers
+% if nf == 0;
+% ff = 0;
+% else
+bo = AC.Hull.bstabWT;
+Lo = AC.Hull.LstabWT;
+ro = (bo/2); %Radius [m]
+AFloat = KA*Lo*bo; %Area of Load Water Plane Float [m^2]
+Sexpf = (0.5*pi*ME.Cruise.Density^2)+AFloat+(pi*ME.Cruise.Density*Lo);%Float Exposed Area [m^2]
+Qf = 1.5; %Interference factor
+gf = Lo/bo; %Effective Fineness ratio
+Ref = (ME.Cruise.Speed*Lo*ME.Cruise.Density)/nu; %Reynolds Number
+Cff = 0.455./(log10(Ref)).^2.58; %Friction Coefficient
+Ff = 1+(0.35/gf); %Form Factor
+CDS.p.Floats(i) = Cff.*Ff.*Qf.*Sexpf.*2; %Floats Drag Area [m^2]
  
     
     
@@ -210,6 +244,7 @@ end
                  Parameters.q2_qinf * AC.Wing2.Sw * CD.p.wing2 + ...
                  CDS.p.fuselage + ...
                  CDS.p.nacelles + ...
+                 CDS.p.Hull + CDS.p.Floats + ...
                  CDS.p.VTP;
 
     DS.Interferences =  AC.Wing1.Sw * CD.inter.deltaICDv_1 + ...
@@ -269,9 +304,9 @@ set(gca,'FontSize',10,'FontName','Times new Roman','box','on')
     saveFigure(ME.FiguresFolder,'Total Drag Breakdown')
     
     ax2 = subplot(1,2,2);
-    Plot.Profile = [AC.Wing1.Sw * CD.p.wing1(i), Parameters.q2_qinf * AC.Wing2.Sw * CD.p.wing2(i),  CDS.p.fuselage(i), CDS.p.nacelles(i),...
+    Plot.Profile = [AC.Wing1.Sw * CD.p.wing1(i), Parameters.q2_qinf * AC.Wing2.Sw * CD.p.wing2(i),  CDS.p.fuselage(i), CDS.p.nacelles(i),CDS.p.Hull(i), CDS.p.Floats(i)...
         CDS.p.VTP(i)];
-     labels = {'Front Wing','Rear Wing','Fuselage','Engines','Vertical Tailplane'};
+     labels = {'Front Wing','Rear Wing','Fuselage','Engines','Hull','Floats','Vertical Tailplane'};
      pie3(ax2,[Plot.Profile],labels)
      title(ax2,'Profile Drag')
      

@@ -120,7 +120,7 @@ Aterrizaje con reservas de combustible para haber aguantado 30 minutos más
 \begin_inset Float figure
 wide false
 sideways false
-status open
+status collapsed
 
 \begin_layout Plain Layout
 \align center
@@ -185,6 +185,10 @@ T/W=\frac{W}{S}\frac{1}{Cl_{max_{TO}}TOP_{25}\sigma}
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
 
 \end_layout
 

@@ -1,0 +1,1550 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\usepackage{changepage}
+
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{0.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Dimensionado del casco principal y flotadores
+\end_layout
+
+\begin_layout Standard
+El estudio del casco principal del hidroavión constituye uno de los puntos
+ claves del diseño preliminar de la aeronave.
+ No se trata simplemente de un elemento añadido, sino que toda la operación
+ de la aeronave queda condicionada por el diseño hidrodinámico y la capacidad
+ de proveer a la aeronave de flotabilidad y estabilidad estática y dinámica
+ .
+ Como cabe esperar, el diseño hidrodinámico tendrá una repercusiones importantes
+ en la elección del punto de diseño y establecerá requisitos determinantes
+ en las dimensiones del fuselaje para asegurar la flotabilidad.
+\end_layout
+
+\begin_layout Standard
+A continuación se resumen las caracterísitcas a enfatizar durante el diseño
+ del hidroavión 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "gudmundsson2013general"
+
+\end_inset
+
+.
+ Las más complejas serán estudiadas en detalle para garantizar su cumplimiento.
+\end_layout
+
+\begin_layout Enumerate
+Operaciones a baja velocidad:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+La aeronave debe ser estanca.
+\end_layout
+
+\begin_layout Enumerate
+La aeronave debe poseer estabilidad hidrostática longitudinal y transversal.
+\end_layout
+
+\begin_layout Enumerate
+La aeronave debe disponer de medios para el control en agua cuando las fuerzas
+ aerodinámicas sean bajas o despreciables, a través de 
+\begin_inset Quotes eld
+\end_inset
+
+water rudders
+\begin_inset Quotes erd
+\end_inset
+
+ y/o situando el rudder en la estela de las hélices.
+\end_layout
+
+\begin_layout Enumerate
+El casco debe permitir que la aeronave pueda ser varada.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Operaciones a alta velocidad:
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+El casco debe ser capaz de soportar impactos con pequeños objetos en flotación.
+\end_layout
+
+\begin_layout Enumerate
+Debe protegerse a la célula aerodinámica y en especial a la planta propulsiva
+ del 
+\begin_inset Quotes eld
+\end_inset
+
+spray
+\begin_inset Quotes erd
+\end_inset
+
+ del agua.
+\end_layout
+
+\begin_layout Enumerate
+La aeronave debe ser controlable en todo el rango de velocidades, desde
+ el reposo hasta el despegue.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Despegue
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+La aeronave debe despegar en menos de 60 segundos.
+\end_layout
+
+\begin_layout Enumerate
+La distancia de despegue debe ser inferior a 10000
+\begin_inset Formula $\unit{ft}$
+\end_inset
+
+ para hidroaviones de gran tamaño, y preferiblemente inferior a 5000
+\begin_inset Formula $\unit{ft}$
+\end_inset
+
+ (
+\begin_inset Formula $1524\unit{m}$
+\end_inset
+
+).
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Crucero
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+La aeronave debe presentar la mínima resistencia aerodinámica para maximizar
+ su utilidad.
+\end_layout
+
+\end_deeper
+\begin_layout Enumerate
+Aterrizaje
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+Debe ser posible aterrizar la aeronave sin fuerzas de impacto excesivas.
+\end_layout
+
+\begin_layout Enumerate
+No se debe generar 
+\begin_inset Quotes eld
+\end_inset
+
+spray
+\begin_inset Quotes erd
+\end_inset
+
+ excesivo durante el contacto con el agua.
+\end_layout
+
+\begin_layout Enumerate
+La aeronave debe ser controlable en todo el rango de velocidades, desde
+ el contacto con el agua hasta el reposo.
+\end_layout
+
+\begin_layout Enumerate
+El diseño de la cabina debe proveer al piloto de visibilidad para poder
+ considerar la altura sobre el agua.
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+Siguiendo estas recomendaciones y la normativa aplicable a hidroaviones
+ recogida en las FAR (14 CFR Part 1, 61 y 91), se sigue el siguiente procedimien
+to de diseño:
+\end_layout
+
+\begin_layout Section
+Diseño del flotador principal
+\end_layout
+
+\begin_layout Standard
+En primer lugar debe asegurarse que el casco es capaz de mantener la aeronave
+ a flote en reposo.
+ Basta con aplicar el principio de Arquímedes, donde el volumen 
+\begin_inset Formula $V$
+\end_inset
+
+ necesario para mantener a flote la aeronave se calcula en función del desplazam
+iento en reposo 
+\begin_inset Formula $\Delta_{0}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+V=\frac{\Delta_{0}}{\omega}=45.47\unit{m^{3}}\label{eq:Arquimedes}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Donde 
+\begin_inset Formula $\omega$
+\end_inset
+
+es la densidad del agua salada y 
+\begin_inset Formula $\Delta_{0}$
+\end_inset
+
+ incluye un factor de reserva del 100%.
+ 
+\end_layout
+
+\begin_layout Standard
+En general, el parámetro principal de diseño es la manga o anchura máxima
+ del casco, 
+\begin_inset Formula $b_{h}$
+\end_inset
+
+.
+ En la referencia 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "1950"
+
+\end_inset
+
+ se recopilan resultados de varios autores y se establece el criterio de
+ selección de 
+\series bold
+
+\begin_inset Formula $b_{h}$
+\end_inset
+
+
+\series default
+ en función de los parámetros anteriores:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+b_{h}=\sqrt[3]{\frac{\Delta_{0}}{C_{\Delta_{0}}\omega}}\label{eq: manga}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Donde 
+\begin_inset Formula $C_{\Delta_{0}}$
+\end_inset
+
+ es el coeficiente de carga estática.
+ 
+\end_layout
+
+\begin_layout Standard
+Como consecuencia del alta densidad del agua y las altas presiones resultantes,
+ se libera energía en los límites de la superficie, creando violentas turbulenci
+as en forma de olas y 
+\begin_inset Quotes eld
+\end_inset
+
+spray
+\begin_inset Quotes erd
+\end_inset
+
+ que deben ser controladas.
+ A través de una correlación de los cascos de hidravión existentes, se establece
+ una relación empírica representada en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:hull beam selection"
+
+\end_inset
+
+ entre 
+\begin_inset Formula $C_{\Delta_{0}}$
+\end_inset
+
+ y la esbeltez del casco (cociente entre su longitud total y la manga 
+\begin_inset Formula $\nicefrac{L_{h}}{b_{h}}$
+\end_inset
+
+).
+ Aviones con características de 
+\begin_inset Quotes eld
+\end_inset
+
+spray
+\begin_inset Quotes erd
+\end_inset
+
+ similares se encuentran en la misma recta del gráfico y presentan un mismo
+ valor de la constante 
+\begin_inset Formula $K_{2}$
+\end_inset
+
+.
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/hullChart.JPG
+	width 50page%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Gráfica de selección de 
+\begin_inset Formula $b_{h}$
+\end_inset
+
+ dadas la esbeltez del casco y coeficiente de carga estática para diferentes
+ valores de 
+\begin_inset Formula $K_{2}$
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:hull beam selection"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Puesto que el 
+\begin_inset Quotes eld
+\end_inset
+
+spray
+\begin_inset Quotes erd
+\end_inset
+
+ es la característica principal que influye en la carga que puede ser transporta
+da y esta influencia es predominante a bajas velocidades, se asume que la
+ longitud del cuerpo de proa es la que más afecta en el cociente 
+\begin_inset Formula $\nicefrac{L_{h}}{b_{h}}$
+\end_inset
+
+.
+ En 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "parkinson1943design"
+
+\end_inset
+
+ se establece por lo tanto el criterio de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:hull beam selection"
+
+\end_inset
+
+ en términos de 
+\begin_inset Formula $L_{f}$
+\end_inset
+
+, dando lugar a los siguiente valores para la constante 
+\begin_inset Formula $K$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Spray excesivo
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0975
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Fuerte, pero aceptable para sobrecarga
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0825
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Satisfactorio para operación habitual
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0675
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Spray extremadamente ligero
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.0525
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Valores de la constante 
+\begin_inset Formula $K$
+\end_inset
+
+ en función de las características de 
+\begin_inset Quotes eld
+\end_inset
+
+spray
+\begin_inset Quotes erd
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Se escoge el valor de 
+\begin_inset Formula $k=0.08$
+\end_inset
+
+ por estar dimensionando para el caso de carga con reserva del 100%.
+ La fórmula de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:hull beam selection"
+
+\end_inset
+
+ obtiene la siguiente forma:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+C_{\Delta_{0}}=K\left(\frac{L_{f}}{b_{h}}\right)^{2}\label{eq: desplazamiento 0}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El parámetro 
+\begin_inset Formula $\nicefrac{L_{f}}{b_{h}}$
+\end_inset
+
+ se escoge basándose en los aviones semejantes, tomando un valor de 
+\begin_inset Formula $\nicefrac{L_{f}}{b_{h}}=4.2$
+\end_inset
+
+.
+ A través de la ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq: desplazamiento 0"
+
+\end_inset
+
+ se obtiene el coeficiente de desplazamiento y con éste, la manga al introducirl
+o en la ecuación
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq: manga"
+
+\end_inset
+
+, con un valor final de 
+\begin_inset Formula $b_{h}=2.88$
+\end_inset
+
+m.
+ Para fijar el valor de la esbeltez del casco, hay que considerar la estrecha
+ relación que existe entre la esbeltez del casco y la del fuselaje.
+ El valor de esbeltez adoptado es 
+\begin_inset Formula $\nicefrac{L_{h}}{b_{h}}=8.6$
+\end_inset
+
+, lo que da lugar a una longitud de casco de 
+\begin_inset Formula $L_{h}=24.75$
+\end_inset
+
+m.
+ A partir de estos parámetros y de relaciones empíricas se obtienen el resto
+ de dimensiones características del casco, recogidas en el cuadro 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab hull parameters"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Una vez determinados los parámetros del casco, hay que obtener la superficie
+ exterior del mismo para poder proceder con el diseño.
+ Para ello se emplean las curvas parametrizadas proporcionadas en la referencia
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Tomaszewski1950"
+
+\end_inset
+
+, particularizadas con los parámetros obtenidos (figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Gráficos-para-el"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/hullDimensions.png
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Gráficos para el trazado del casco 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Gráficos-para-el"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Una vez completamente definida la forma del casco principal, se puede obtener
+ su volumen efectivo y con la ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Arquimedes"
+
+\end_inset
+
+ se comprueba que el volumen efectivo del casco contenido bajo la línea
+ de flotación es mayor que el necesario para mantener a flote la aeronave:
+\begin_inset Formula 
+\[
+V_{eff}=56.61\unit{m^{3}}>45.47\unit{m^{3}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+De no cumplirse esta condición, habría que modificar los parámetros anteriores
+ hasta llegar a una configuración satisfactoria.
+\end_layout
+
+\begin_layout Section
+Estabilidad hidrostática
+\end_layout
+
+\begin_layout Standard
+La estabilidad hidrotática se refiere a la tendencia del casco a volver
+ a su actitud en reposo tras sufrir una perturbación.
+ El casco debe poseer estabilidad en ambos ejes (transversal y longitudinal).
+ Para su cálculo es necesario definir una serie de conceptos (centro de
+ flotadura, metacentro y altura metacéntrica) y calcularlos para el casco
+ de la aeronave.
+\end_layout
+
+\begin_layout Subsection
+Centro de flotadura
+\end_layout
+
+\begin_layout Standard
+Se trata del centroide de las fuerzas de presión hidrostáticas actuando
+ sobre la parte sumergida del casco.
+\end_layout
+
+\begin_layout Subsection
+Metacentro
+\end_layout
+
+\begin_layout Standard
+Se trata de un punto imaginario cuya posición determinará la estabilidad
+ del casco.
+ Considerando la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Fundamentos-de-estabilidad hidrostatica"
+
+\end_inset
+
+, la cual muestra una sección transversal del casco, incialmente en reposo
+ (izquierda) y luego perturbada de tal forma que se inclina un ángulo 
+\begin_inset Formula $\theta$
+\end_inset
+
+ (derecha).
+ La rotación desplaza el centro de flotadura lateralmente, una distancia
+ 
+\begin_inset Formula $\Delta y$
+\end_inset
+
+ respecto a la posición de reposo y genera un momento en el proceso, cuya
+ magnitud es:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+M=W\Delta y=\omega\theta\int_{A}y^{2}dA=\omega\theta I_{zz},
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+donde 
+\begin_inset Formula $A$
+\end_inset
+
+ corresponde al área de la sección e 
+\begin_inset Formula $I_{zz}$
+\end_inset
+
+ al momento de inercia de la sección sumergida.
+ El desarrollo de esta expresión se encuentra en la referencia 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Lafita"
+
+\end_inset
+
+, cuya validez se limita a ángulos 
+\begin_inset Formula $\theta$
+\end_inset
+
+ pequeños.
+\end_layout
+
+\begin_layout Standard
+La intersección de la vertical a través del centro de flotadura desplazado
+ con la línea que une el centro de gravedad y el centro de flotadura en
+ la situación de reposo determina el metacentro.
+ Si el metacentro se encuentra por encima del centro de gravedad, su valor
+ es positivo.
+ Esto significa que el casco tiene tendencia a volver a la situación de
+ reposo por si mismo.
+ Por el contrario, un valor negativo implica que el casco es inestable y
+ una perturbación provocará que rote hasta encontrar otra posición de equilibrio
+ (boca abajo).
+ A través de la figura también se aprecia que a partir de valores grandes
+ de 
+\begin_inset Formula $\theta$
+\end_inset
+
+, el brazo 
+\begin_inset Formula $\Delta y$
+\end_inset
+
+ empieza a acortarse de nuevo: el metacentro puede acabar bajo el centro
+ de gravedad y el casco volverse inestable.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Metacentro.JPG
+	width 80text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Fundamentos de estabilidad hidrostática.
+ 
+\begin_inset Formula $CB$
+\end_inset
+
+ corresponde al centro de flotadura de la sección.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Fundamentos-de-estabilidad hidrostatica"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En la referencia también se deriva la siguiente expresión, que permite obtener
+ 
+\begin_inset Formula $\Delta y$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\Delta y=\omega\theta\frac{I_{zz}}{W}=\theta\frac{I_{zz}}{V}\approx\left(h_{CB}+h_{MC}\right)\theta,
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+donde 
+\begin_inset Formula $V$
+\end_inset
+
+corresponde al volumen sumergido, 
+\begin_inset Formula $h_{CB}$
+\end_inset
+
+ es la distancia entre el centro de flotadura y el de gravedad y 
+\begin_inset Formula $h_{MC}$
+\end_inset
+
+ es la distancia entre el metacentro y el centro de gravedad.
+ Combinando las expresiones anteriores, se puede obtener la altura metacéntrica
+ y por lo tanto, una expresión que permite estudiar la estabilidad del casco.
+\begin_inset Formula 
+\[
+h_{MC}=\frac{\Delta y}{\theta}-h_{CB}=\frac{I_{zz}}{V}-h_{CB}.
+\]
+
+\end_inset
+
+Se observa que para aumentar la estabilidad del casco interesa que 
+\begin_inset Formula $h_{CB}$
+\end_inset
+
+ sea lo menor posible, lo que es equivalente a bajar la posición del centro
+ de gravedad del avión completo.
+ Este requisito entra en conflicto con la disposición geométrica del resto
+ de elementos del avión, como es la doble alta y la situación de los motores,
+ que deben estar los más alejados del agua posible y provocan una posición
+ alta del centro de gravedad.
+ Considerando únicamente el casco central, la altura metacéntrica es negativa
+ y el avión es hidrostáticamente inestable.
+\end_layout
+
+\begin_layout Standard
+Es por tanto necesaria la incorporación de nuevos elementos para garantizar
+ la estabilidad, como son los flotadores laterales.
+\end_layout
+
+\begin_layout Standard
+El procedimiento anterior se aplica también a estabilidad longitudinal,
+ donde cabe destacar que el casco es estable.
+ Esto se debe a que el momento de inercia de la sección es, en esta dirección,
+ proporcional al cubo de la longitud del casco en lugar de la manga, lo
+ que da lugar a una altura metacéntrica positiva.
+\end_layout
+
+\begin_layout Section
+Flotadores laterales
+\end_layout
+
+\begin_layout Standard
+A continuación se expondrá el proceso de dimensionado de los flotadores
+ laterales, de tal forma que aumenten la estabilidad hidrostática del avión
+ completo y se calculará la altura metacéntrica del conjunto.
+\end_layout
+
+\begin_layout Standard
+Siguiendo la normativa, se especifica que el momento estabilizante proporcionado
+ por un flotador lateral al encontrarse completamente sumergido debe ser
+ como mínimo 1.5 veces el momento desestabilizante del casco principal.
+ Se calcula en primer lugar el momento desestabilizante 
+\begin_inset Formula $M_{des}$
+\end_inset
+
+ producido por el casco principal en el caso de inclinación máxima, correspondie
+nte a un ángulo de balance de 
+\begin_inset Formula $\theta=8\text{º}$
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Lafita"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+M_{des}=\Delta_{0}sin(\theta)h_{MC}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+M_{est}=1.5Mdes=\Delta_{est}\,y_{est}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+donde 
+\begin_inset Formula $M_{es}$
+\end_inset
+
+ es el momento estabilizante producido por un flotador lateral al estar
+ complemente sumergido, 
+\begin_inset Formula $\Delta_{est}$
+\end_inset
+
+ es el desplazamiento del flotador en esa condición e 
+\begin_inset Formula $y_{est}$
+\end_inset
+
+ es el brazo del momento producido por el flotador, que corresponde a la
+ distancia del flotador respecto al plano de simetría del avión por ser
+ 
+\begin_inset Formula $\theta$
+\end_inset
+
+ relativamente pequeño.
+ Colocando el flotador lo más cerca posible de la punta del ala, queda determina
+do el desplazamiento que debe proporcionar.
+ 
+\end_layout
+
+\begin_layout Standard
+Siendo el desplazamiento función del volumen sumergido (en este caso, la
+ totalidad del flotador) y todas las dimensiones del flotador expresadas
+ en función de la manga, se calcula la manga del flotador lateral.
+\end_layout
+
+\begin_layout Standard
+Cabe destacar que al tratarse de un diseño ala-tándem, la envergadura de
+ cada una de las alas será menor que la de un único ala en un avión convencional.
+ Esto provoca que el flotador no pueda ser colocado tan alejado del centro
+ de gravedad como ocurre en los aviones semejantes.
+ Al limitar el brazo del momento, se requiere sobredimensionar el flotador
+ para proporcionar un mismo momento estabilizante.
+\end_layout
+
+\begin_layout Section
+Cargas en el aterrizzaje
+\end_layout
+
+\begin_layout Standard
+En CFR Part 25, §25.527 se define el factor de carga límite de la reacción
+ con el agua durante el aterrizaje 
+\begin_inset Formula $n_{w}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+n_{w}=\frac{C_{1}V_{so}^{2}}{\sqrt[3]{tan^{2}\beta\,W}},
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Donde intervienen:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $n_{w}$
+\end_inset
+
+: factor de carga de la reacción con el agua (fuerza de reacción dividida
+ entre el peso del avión).
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $C_{1}$
+\end_inset
+
+: constante empírica derivada de la operación de hidroaviones, toma el valor
+ de 0.012.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $V_{so}$
+\end_inset
+
+: Velocidad de entrada en pérdida en configuración de aterrizaje (en knots).
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\beta$
+\end_inset
+
+: deadrise angle de la sección.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $W$
+\end_inset
+
+: peso de aterrizaje de diseño, en libras.
+\end_layout
+
+\begin_layout Standard
+Para la aeronave en cuestión, el factor de carga límite toma un valor de
+ 
+\begin_inset Formula $n_{w}=4.5$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Cabe ahora determinar las cargas a las que será sometida la aeronave durante
+ el aterrizaje y cerciorarse de que el valor de 
+\begin_inset Formula $\beta$
+\end_inset
+
+ escogido impide que se sobrepase el factor de carga límite.
+ Para ello se calcula la presión en el casco de la siguiente manera:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+P=C_{4}\frac{K_{2}V_{so}^{2}}{tan(\beta)}\,\,(\unit{psi)},
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Donde 
+\begin_inset Formula $C_{4}=0.078C_{1}$
+\end_inset
+
+ y 
+\begin_inset Formula $K_{2}$
+\end_inset
+
+ es un factor que depende de la sección del casco a considerar, cuyo valor
+ se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:K2-Hull-station"
+
+\end_inset
+
+..
+ Para el cálculo de la reacción es necesario definir un área de contacto
+ durante el aterrizaje.
+ Tomando el caso más restrictivo entre los que se detallan en la referencia
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Lafita"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+F=\int P(x)b_{x}(x)dx=\int C_{4}\frac{K_{2}(x)V_{so}^{2}}{tan(\beta(x))}b_{x}(x)dx,
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Donde 
+\begin_inset Formula $b_{x}(x)$
+\end_inset
+
+ representa la longitud del fondo para una sección 
+\begin_inset Formula $x$
+\end_inset
+
+ del casco.
+ Hay que tener en cuenta que 
+\begin_inset Formula $\beta$
+\end_inset
+
+ varía ligeramente a lo largo del casco.
+ Integrando la expresión anterior, se obtiene el factor de carga de la reacción
+ con el agua:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+n=\frac{F}{W}=4.3<4.5
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/K2 bottom pressures.JPG
+	width 60text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $K_{2}$
+\end_inset
+
+ Hull station weighing factor
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:K2-Hull-station"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Se comprueba que el ángulo 
+\begin_inset Formula $\beta$
+\end_inset
+
+ seleccionado, de valor medio 
+\begin_inset Formula $\beta=25\text{º}$
+\end_inset
+
+, permite que el contacto con el agua no sea brusco y por lo tanto no se
+ alcance el factor de carga límite especificado.
+ 
+\end_layout
+
+\begin_layout Standard
+Conocer las reacciones a las que se somete cada sección del casco permitirán
+ en un futuro realizar un dimensionado estructural preciso del mismo.
+\end_layout
+
+\begin_layout Section
+Alternative
+\end_layout
+
+\begin_layout Standard
+Se propone la posibilidad de un diseño donde se sustituya el estabilizador
+ vertical por dos estabilizadores verticales situados en el ala trasera,
+ de tal forma que queden situados en la estela de los motores del ala delantera.
+ De esta forma se mejoraría la controlabilidad de la aeronave en el agua
+ a bajas velocidades.
+ El estudio de esta modificación afectaría múltiples campos (distribución
+ de sustentación en el ala trasera, dimensionado estructural, peso global,
+ estabilidad lateral-direccional) y complicaría el diseño de la aeronave,
+ ya de por sí no convencional.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Parámetro
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Descripción
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Valor
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Parámetros del casco principal
+\begin_inset CommandInset label
+LatexCommand label
+name "tab hull parameters"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

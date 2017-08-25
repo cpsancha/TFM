@@ -139,6 +139,10 @@ bstabWT = 1*(delStabs/C)^(1/3);
 LstabWT = 4* bstabWT;
 hstabWT = bstabWT * Bhh;
 
+AC.Hull.bstabWT = bstabWT;
+AC.Hull.LstabWT = LstabWT;
+AC.Hull.hstabWT = hstabWT;
+
 
 %% Metacentro nuevo caso:
 %Ih
@@ -178,41 +182,17 @@ GMSW = BMSW - BGSW %Metacentric Height [m]
 metacentroEEUU = 0.41*AC.Weight.MTOW^(1/3)
 metacentroUK = 4*(V)^(1/3)
 
+%% Water Reaction
+Vso = ME.Landing.Speed/CF.kts2ms; 
+C1 = 0.012;
+W = (AC.Weight.EW/CF.lbm2kg);
+AC.Hull.Beta = 25;
+nw_lim = (C1 * Vso^2)/((tan(AC.Hull.Beta*pi/180))^2*W)^(1/3)
 
+K2 = 0.75;
+C4 =0.078*C1;
+P = C4 * K2 * Vso^2/(tan(AC.Hull.Beta*pi/180));
+Area = AC.Hull.Beam*AC.Hull.Beam;%0.125*AHull;% AC.Hull.Beam*AC.Hull.Beam
+F=P*(Area/CF.in2m^2)
 
-% 
-% 
-% %% Meter en script de la polar
-% %% Flat plate drag area of the Boat Hull
-% %Boat Hull Geometry
-% %b stands for Boat Hull
-% rb = (b/2); %Radius of Boat Hull [m]
-% KA = 0.7; %Proportionality Coefficient
-% AHull = KA*Lh*b; %Area of Load Water Plane of Hull [m^2]
-% Swetb = 0.5*((pi*rb^2)+AHull+(pi*rb*Lh));%Wetted area of Boat Hull [m^2]
-% Qb = 1.25; %Interference Factor
-% Reb = (V*Lh*rho)/v; %Reynolds Number
-% Cfb = 0.455./(log10(Reb)).^2.58;%Friction coefficient
-% Amaxb = (pi*(rb/2)^2)/4; %Boat Hull Cross Area [m^2]
-% ldb = Lh/sqrt((4/pi)*Amaxb); %Fineness ratio
-% Fb = 1+(60/(ldb^3))+(ldb/400); %Boat Hull Form Factor
-% fb = Cfb.*Fb.*Qb.*Swetb; %Flat plate drag area [m^2]
-%% Flat Plate Drag Area of Floats
-% %Float Geometry
-% %f stands for Float
-% nf = 2; %Number of Outriggers
-% if nf == 0;
-% ff = 0;
-% else
-% ro = (bo/2); %Radius [m]
-% AFloat = KA*Lo*bo; %Area of Load Water Plane Float [m^2]
-% Sexpf = (0.5*pi*ro^2)+AFloat+(pi*ro*Lo);%Float Exposed Area [m^2]
-% Qf = 1.5; %Interference factor
-% gf = Lo/bo; %Effective Fineness ratio
-% Ref = (V*rho*Lo)/v; %Reynolds Number
-% Cff = 0.455./(log10(Ref)).^2.58; %Friction Coefficient
-% Ff = 1+(0.35/gf); %Form Factor
-% ff = Cff.*Ff.*Qf.*Sexpf.*nf; %Floats Drag Area [m^2]
-% end
-
-
+nw2 = F/W

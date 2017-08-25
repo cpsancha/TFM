@@ -41,6 +41,10 @@ function ME = wingsDesign(AC, ME, DP, Parameters, CST, CF) %#ok<INUSD>
     AC.Wing1.Sw          = AC.Wing.Sw/2;
     AC.Wing2.Sw          = AC.Wing.Sw/2;
     
+%Wet Surface
+    AC.Wing1.Swet        = 2*AC.Wing1.Sw;
+    AC.Wing2.Swet        = 2*AC.Wing2.Sw;
+    
 %Aspect Ratio
     AC.Wing1.AspectRatio = AC.Wing.AspectRatio;
     AC.Wing2.AspectRatio = AC.Wing.AspectRatio;
@@ -177,22 +181,37 @@ function ME = wingsDesign(AC, ME, DP, Parameters, CST, CF) %#ok<INUSD>
         clear exitflag1 exitflag2 exitflag3 exitflag4 options
     end
 
-
-    
-    
+%         AC.Wing1.Reynolds  = sqrt(DP.CruiseSpeed^2*Parameters.q1_qinf) * AC.Wing1.CMA / nu;
+%         AC.Wing2.Reynolds  = sqrt(DP.CruiseSpeed^2*Parameters.q2_qinf) * AC.Wing2.CMA / nu;
     
 %% LIFTING PROPERTIES OF AIRFOIL SECTIONS
-%Wing1
-    [AC.Wing1.Airfoil.Cl_alpha,...
-     AC.Wing1.Airfoil.alpha_zeroLift,...
-     AC.Wing1.Airfoil.Cm_ac,...
-     AC.Wing1.Airfoil.Polar,~,~,~] = getAirfoilData(CruiseMach1*cosd(AC.Wing1.Sweep_12),AC.Wing1.Reynolds,Parameters.Colors,ME.FiguresFolder,false);
-%Wing2
-    [AC.Wing2.Airfoil.Cl_alpha,...
-     AC.Wing2.Airfoil.alpha_zeroLift,...
-     AC.Wing2.Airfoil.Cm_ac,...
-     AC.Wing2.Airfoil.Polar,~,~,~] = getAirfoilData(CruiseMach2*cosd(AC.Wing2.Sweep_12),AC.Wing2.Reynolds,Parameters.Colors,ME.FiguresFolder,false);
-
+if DP.lowSpeedFlag
+        LowSpeedMach = 0.5001;
+        LowSpeed     = LowSpeedMach*a;
+        
+     %Wing1
+        [AC.Wing1.Airfoil.Cl_alpha,...
+         AC.Wing1.Airfoil.alpha_zeroLift,...
+         AC.Wing1.Airfoil.Cm_ac,...
+         AC.Wing1.Airfoil.Polar,~,~,~] = getAirfoilData(sqrt(LowSpeed^2*Parameters.q1_qinf)/a*cosd(AC.Wing1.Sweep_12),sqrt(LowSpeed^2*Parameters.q1_qinf)*AC.Wing1.CMA/nu,Parameters.Colors,ME.FiguresFolder,false);
+    %Wing2
+        [AC.Wing2.Airfoil.Cl_alpha,...
+         AC.Wing2.Airfoil.alpha_zeroLift,...
+         AC.Wing2.Airfoil.Cm_ac,...
+         AC.Wing2.Airfoil.Polar,~,~,~] = getAirfoilData(sqrt(LowSpeed^2*Parameters.q1_qinf)/a*cosd(AC.Wing2.Sweep_12),sqrt(LowSpeed^2*Parameters.q2_qinf)*AC.Wing2.CMA/nu,Parameters.Colors,ME.FiguresFolder,false);  
+     clear LowSpeed LowSpeedMach
+else
+    %Wing1
+        [AC.Wing1.Airfoil.Cl_alpha,...
+         AC.Wing1.Airfoil.alpha_zeroLift,...
+         AC.Wing1.Airfoil.Cm_ac,...
+         AC.Wing1.Airfoil.Polar,~,~,~] = getAirfoilData(CruiseMach1*cosd(AC.Wing1.Sweep_12),AC.Wing1.Reynolds,Parameters.Colors,ME.FiguresFolder,false);
+    %Wing2
+        [AC.Wing2.Airfoil.Cl_alpha,...
+         AC.Wing2.Airfoil.alpha_zeroLift,...
+         AC.Wing2.Airfoil.Cm_ac,...
+         AC.Wing2.Airfoil.Polar,~,~,~] = getAirfoilData(CruiseMach2*cosd(AC.Wing2.Sweep_12),AC.Wing2.Reynolds,Parameters.Colors,ME.FiguresFolder,false);
+end
 
 
 %% WING LIFT AND LIFT DISTRIBUTIONS
@@ -376,8 +395,8 @@ function ME = wingsDesign(AC, ME, DP, Parameters, CST, CF) %#ok<INUSD>
         warning('AC:notDefinedCoG','Hay que poner bien la posición del centro de gravedad para los coeficientes de momentos')
     end
     
-    AC.Wing1.Cm_w = AC.Wing1.Cm_ac_w + AC.Wing1.CL_w * ((AC.Weight.x_cg - AC.Wing1.CMA_14)/AC.Wing1.CMA);
-    AC.Wing2.Cm_w = AC.Wing2.Cm_ac_w + AC.Wing2.CL_w * ((AC.Weight.x_cg - AC.Wing2.CMA_14)/AC.Wing2.CMA);
+    AC.Wing1.Cm_w = AC.Wing1.Cm_ac_w + AC.Wing1.CL_w * ((AC.Weight.x_cg - AC.Wing1.x_ac_w)/AC.Wing1.CMA);
+    AC.Wing2.Cm_w = AC.Wing2.Cm_ac_w + AC.Wing2.CL_w * ((AC.Weight.x_cg - AC.Wing2.x_ac_w)/AC.Wing2.CMA);
     
     
 
@@ -431,10 +450,7 @@ function ME = wingsDesign(AC, ME, DP, Parameters, CST, CF) %#ok<INUSD>
 %Efect on the aerodynamic center for rear fuselage located nacelles
     deltaNac_1 = -2.5*AC.Engine.Number*AC.Engine.Diameter^2*AC.Engine.Length/(AC.Wing1.Sw*AC.Wing1.CMA*AC.Wing1.CL_alpha_wf);
     deltaNac_2 = -2.5*AC.Engine.Number*AC.Engine.Diameter^2*AC.Engine.Length/(AC.Wing2.Sw*AC.Wing2.CMA*AC.Wing2.CL_alpha_wf);
-    
-    AC.Wing1.x_ac_wf = AC.Wing1.x_ac_wf + deltaNac_1;
-    AC.Wing2.x_ac_wf = AC.Wing2.x_ac_wf + deltaNac_2;
-    
+    if isempty(deltaNac_1) || isempty(deltaNac_2); error('No hay suficientes datos de ese motor'); end
     
     
 %% WING/FUSELAGE INTERFERENCE CORRECTION TO PITCHING MOMENT
@@ -451,8 +467,8 @@ function ME = wingsDesign(AC, ME, DP, Parameters, CST, CF) %#ok<INUSD>
                  (AC.Wing2.WingSpan-AC.Fuselage.fusWidth)/(AC.Wing2.WingSpan+2.15*AC.Fuselage.fusWidth) * tand(AC.Wing2.Sweep_14);
 
 %Aerodynamic center    
-    AC.Wing1.x_ac_wf = AC.Wing1.x_ac_w + deltaF1ac_1 + deltaF2ac_1; 
-    AC.Wing2.x_ac_wf = AC.Wing2.x_ac_w + deltaF1ac_2 + deltaF2ac_2; 
+    AC.Wing1.x_ac_wf = AC.Wing1.x_ac_w + deltaF1ac_1 + deltaF2ac_1 + deltaNac_1; 
+    AC.Wing2.x_ac_wf = AC.Wing2.x_ac_w + deltaF1ac_2 + deltaF2ac_2 + deltaNac_2; 
 
 %Fuselage contribution to the pitching moment (from Munk's Theory, Ref: E-33)
     CL0_1 = AC.Wing1.CL_alpha_wf * deg2rad(0 - twist_0lift_1*AC.Wing1.TipTwist + (KII_1/KI_1) * ...

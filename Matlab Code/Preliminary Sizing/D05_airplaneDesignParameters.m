@@ -104,7 +104,7 @@ if DP.ShowReportFigures
     plot(DP.TOFL,TOP25R*CF.lbf2N/CST.GravitySI/(CF.ft2m^2),'+','LineWidth',2,'Color',Parameters.Colors(3,:))
     plot(DP.TOFL,TOP25,'o','LineWidth',2,'Color',Parameters.Colors(4,:))
     xlabel('Take-Off Field Length (TOFL) [m]','Interpreter','latex');
-    ylabel('Take-Off Parameter (TOP) [kg/m^2]','Interpreter','latex');
+    ylabel('Take-Off Parameter (TOP) [kg/$m^{2}$]','Interpreter','latex');
     h = findobj(gca,'Type','line');
     legend([h(4),h(2),h(1)],{'Similar Planes','Roskam Method','Similar Planes Method'},'Location','southeast')
     legend('boxoff')

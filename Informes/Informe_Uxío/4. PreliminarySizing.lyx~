@@ -1,0 +1,440 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\usepackage{changepage}
+
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{0.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+\begin_inset CommandInset label
+LatexCommand label
+name "chap:Dimensionado-Inicial"
+
+\end_inset
+
+Dimensionado Inicial
+\end_layout
+
+\begin_layout Standard
+A lo largo de este capítulo y en los sucesivos, se abordará el diseño preliminar
+ de una aeronave que cumpla las especificaciones de la misión definida en
+ el apartado 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Especificación-Mision"
+
+\end_inset
+
+.
+ A su vez, este diseño se deberá realizar cumpliendo en la medida de lo
+ posible los requisitos establecidos en el apartado 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Requisitos-de-diseño"
+
+\end_inset
+
+, o en el caso de que ésto no sea posible, se deberá razonar y explicar
+ las razones que llevan a ello.
+ 
+\end_layout
+
+\begin_layout Standard
+El proceso de diseño que se ha seguido para lograr la completa definición
+ preliminar de la aeronave es similar al mostrado por Roskam en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "RoskamI"
+
+\end_inset
+
+ y en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "RoskamII"
+
+\end_inset
+
+, donde se realiza una primera fase de dimensionado general de la aeronave,
+ en la que se calculan, a partir de las especificaciones de la misión que
+ debe ser capaz de realizar y de las normativas de certificación aplicables,
+ los parámetros másicos, propulsivos y aerodinámicos más relevantes para
+ la correcta definición de las actuaciones de punto.
+\end_layout
+
+\begin_layout Standard
+A continuación se realiza una segunda fase de diseño más detallado, aunque
+ todavía muy preliminar, en la que se trata a la aeronave como un sólido
+ en vez de como una masa puntual y se fija la configuración, geometría,
+ planta propulsora y distribución de masas de la aeronave y se puede realizar
+ por tanto un cálculo más preciso de las actuaciones.
+ En este capítulo se explicará la primera fase.
+ 
+\end_layout
+
+\begin_layout Standard
+Para ello, 
+\end_layout
+
+\begin_layout Section
+Estimación de pesos
+\end_layout
+
+\begin_layout Subsection
+Método de Roskam
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/EW_MTOW_Correlation.eps
+	width 90text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Figura
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/MTOW definition.eps
+	width 90text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Figura
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Método de Torenbeek
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/Torenbeek_fuselage_EW.eps
+	width 90text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Figura
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/Torenbeek_FuelFraction.eps
+	width 90text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Figura
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Método de alpha
+\end_layout
+
+\begin_layout Section
+Parámetros de diseño de la aeronave
+\end_layout
+
+\begin_layout Subsection
+Requisito de despegue 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/TOP25.eps
+	width 90text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Figura
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Requisito de aterrizaje
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/Vapprox.eps
+	width 90text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Figura
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Requisitos de ascenso
+\end_layout
+
+\begin_layout Subsubsection
+Ascenso en despegue
+\end_layout
+
+\begin_layout Subsubsection
+Ascenso tras aterrizaje frustrado
+\end_layout
+
+\begin_layout Subsection
+Requisito de velocidad de crucero
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Requisito-de-velocidad-crucero"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Requisito de entrada en pérdida
+\end_layout
+
+\begin_layout Subsection
+Determinación del punto de diseño
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/DesignPoint.eps
+	width 90text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Figura
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Selección de la planta propulsora
+\end_layout
+
+\end_body
+\end_document

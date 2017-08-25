@@ -120,12 +120,12 @@ Aterrizaje con reservas de combustible para haber aguantado 30 minutos más
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename Imagenes/reservas.png
+	filename ImagenesUtiles/reservas.png
 	width 80text%
 
 \end_inset

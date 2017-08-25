@@ -35,7 +35,9 @@ classdef wing < handle
         Cm_wf           double  %[double] Coefficient of pitching moment, taking into acount the fuselage interference [-]
         Cm_ac_w         double  %[double] Coefficient of pitching moment in the aerodynamic center [-]
         Cm_ac_wf        double  %[double] Coefficient of pitching moment in the aerodynamic center, taking into acount the fuselage [-]
+        Cm_alpha        double  % Derivative of pitching moment with respect to alpha
         deltaCLdeltaE   double  %[double] Additional CL due to the elevator deflection [-]
+        deltaCLdeltaF   double  %[double] Additional CL due to the flaps deflection [-]
         Dihedral        double  %[double] Dihedral of the wing [º]
         E               double  %[double] Jones velocity correction [-]
         eta             double  %[double] Adimensionalized spanwise coordinate [-]

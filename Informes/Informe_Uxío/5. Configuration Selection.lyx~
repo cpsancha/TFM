@@ -1,0 +1,6192 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\usepackage{changepage}
+
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{0.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Estudio de la configuración alar
+\end_layout
+
+\begin_layout Standard
+A lo largo del capítulo anterior se ha mostrado el proceso seguido hasta
+ lograr realizar un dimensionado inicial de la aeronave, logrando fijar
+ unos valores preliminares para los pesos más relevantes en el diseño, como
+ son el peso máximo al despegue (
+\begin_inset Formula $MTOW$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$MTOW$"
+description "Peso máximo al despegue (Maximum Take-Off Weight) \\nomunit{[$kg$]}"
+
+\end_inset
+
+, peso vacío (
+\begin_inset Formula $EW$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$EW$"
+description "Peso vacío (Empty Weight) \\nomunit{[$kg$]}"
+
+\end_inset
+
+, peso vacío operativo (
+\begin_inset Formula $OEW$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$OEW$"
+description "Peso vacío operativo (Operating Empty Weight) \\nomunit{[$kg$]}"
+
+\end_inset
+
+, peso de la carga de pago (
+\begin_inset Formula $W_{PL}$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$W_{PL}$"
+description "Peso de la carga de pago (Payload Weight) \\nomunit{[$kg$]}"
+
+\end_inset
+
+ y peso del combustible necesario para realizar la misión (
+\begin_inset Formula $W_{F}$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$W_{F}$"
+description "Peso del combustible de la misión (Mission Fuel Weight) \\nomunit{[$kg$]}"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+A su vez, también se han fijado ciertos valores relacionados con la aerodinámica
+ y planta propulsora de la aeronave, como son la superficie alar (
+\begin_inset Formula $S_{w}$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$S_{w}$"
+description "Superficie alar \\nomunit{[$m^2$]}"
+
+\end_inset
+
+, el alargamiento alar (
+\begin_inset Formula $A$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$A$"
+description "Alargamiento alar \\nomunit{[$-$]}"
+
+\end_inset
+
+, el empuje disponible al despegue (
+\begin_inset Formula $T_{TO}$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$T_{TO}$"
+description "Empuje disponible al despegue a nivel de mar \\nomunit{[$N$]}"
+
+\end_inset
+
+, y los coeficientes de sustentación máximos en configuración limpia (
+\begin_inset Formula $C_{L_{max}}$
+\end_inset
+
+)
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$C_{L_{max}}$"
+description "Coeficiente de sustentación máximo de la aeronave \\nomunit{[$-$]}"
+
+\end_inset
+
+, en configuración de despegue (
+\begin_inset Formula $C_{L_{max_{TO}}}$
+\end_inset
+
+) y en configuración de aterrizaje (
+\begin_inset Formula $C_{L_{max_{L}}}$
+\end_inset
+
+).
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "S"
+symbol "TO"
+description "Relativo al despegue"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "S"
+symbol "L"
+description "Relativo al aterrizaje"
+
+\end_inset
+
+ Todos estos valores se resumen en la tabla 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Resumen-del-dimensionado"
+
+\end_inset
+
+ por comodidad y servirán de partida para la siguiente fase de diseño, que
+ consiste en la determinación de la configuración de la aeronave y de la
+ planta propulsora.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="5">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $MTOW$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ [kg]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $S_{w}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+[m
+\begin_inset script superscript
+
+\begin_layout Plain Layout
+2
+\end_layout
+
+\end_inset
+
+]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $EW$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ [kg]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $A$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+[-]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $OEW$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ [kg]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $T_{TO}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+[kN]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $W_{PL}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ [kg]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C_{L_{max}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+[-]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $W_{F}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ [kg]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C_{L_{max_{TO}}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+[-]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C_{L_{max_{L}}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+[-]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\series bold
+\color red
+ <— METER VALORES
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Resumen de los valores obtenidos en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Dimensionado-Inicial"
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Resumen-del-dimensionado"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para lograr diseñar un avión eficiente, que proporcione las actuaciones
+ deseadas con el menor consumo de combustible posible, la aerodinámica de
+ éste juega un papel esencial, haciendo por tanto indispensable un estudio
+ detallado de ésta.
+ En este capítulo se mostrará el proceso seguido para la elección del perfil
+ de las alas, así como la forma, ubicación y características de éstas.
+\end_layout
+
+\begin_layout Standard
+A la hora de seleccionar una configuración para una aeronave, aparte de
+ los aspectos técnicos, intervienen otros muchos factores, como pueden ser
+ las preferencias personales de la persona encargada del diseño, sus experiencia
+s previas, el feedback que reciba del equipo de marketing, y un largo etcétera
+ que no se van a valorar en el presente estudio, por lo que únicamente nos
+ centraremos en la parte técnica del proceso de selección de la configuración,
+ respetando los requisitos de diseño indicados en el apartado 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Requisitos-de-diseño"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Elección del perfil
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Elección-del-perfil"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La elección del perfil a utilizar en las alas es una de las decisiones más
+ críticas en el diseño de éstas.
+ Dicha decisión se ve determinada por la velocidad de diseño de crucero,
+ el valor de diseño del coeficiente de sustentación, su relación espesor
+ máximo/cuerda (
+\begin_inset Formula $t/c$
+\end_inset
+
+), la modificación de sus propiedades en presencia de suciedad o imperfecciones
+ y la facilidad de construcción entre otros muchos aspectos.
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$t$"
+description "Espesor máximo del perfil aerodinámico \\nomunit{[$m$]}"
+
+\end_inset
+
+ 
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$c$"
+description "Cuerda del perfil aerodinámico \\nomunit{[$m$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\lambda$"
+description "Parámetro de estrechamiento del ala \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\rho$"
+description "Densidad del aire \\nomunit{[$kg/m^3$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$MAC$"
+description "Cuerda media aerodinámica del ala (Mean Aerodynamic Chord)\\nomunit{[$m$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$c_g$"
+description "Cuerda media geométrica del ala (Mean Geometric Chord)\\nomunit{[$m$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$M$"
+description "Número de Mach \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$Re$"
+description "Número de Reynolds  \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\varepsilon$"
+description "Ángulo de torsión en una determinada sección del ala  \\nomunit{[$\\degree$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\beta$"
+description "Corrección de compresibilidad de Prandtl-Glauert ($\\beta=\\sqrt{1-M^2}$) \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$q_{\\infty}$"
+description "Presión dinámica sin perturbar ($q_{\\infty}=\\nicefrac{1}{2}\\rho_{\\infty}V_{\\infty}^2=\\nicefrac{1}{2}\\gamma P_{\\infty}M_{\\infty}^2$) \\nomunit{[$Pa$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\gamma$"
+description "Ratio de calores específicos, para el aire $\\gamma=1.4$ \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$E$"
+description "Corrección de la velocidad en el contorno de Jones \\\\ (E=semiperímetro/envergadura) \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Resulta habitual que los fabricantes empleen perfiles optimizados para sus
+ respectivas aeronaves a partir de las series NACA de 4 o 5 dígitos, los
+ cuales son perfiles diseñados y ampliamente ensayados por el Comité Asesor
+ Nacional de Aeronáutica (NACA) de los Estados Unidos durante la década
+ de 1930.
+ Sin embargo, la velocidad de vuelo de nuestra aeronave, ligeramente superior
+ a Mach 0.80 en crucero, pudiendo alcanzar una velocidad máxima de Mach 0.85,
+ hacen desaconsejar el uso de estas familias de perfiles, puesto que aunque
+ la velocidad de la aeronave siga siendo subsónica, el incremento de velocidad
+ del flujo de aire que tiene lugar sobre alas a partir de velocidades de
+ vuelo superiores a Mach 0.70 o 0.75, causa que localmente se alcancen valores
+ sónicos, produciéndose una onda de choque sobre el perfil, con todos los
+ problemas asociados que ésto conlleva.
+\end_layout
+
+\begin_layout Standard
+Para velocidades de vuelo subsónicas pero por encima del valor crítico,
+ se tienen regiones del perfil con flujo subsónico y otras con flujo supersónico
+, lo cual obliga a un diseño inteligente de esta región de flujo mixto mediante
+ técnicas diferentes de las empleadas habitualmente en el caso del vuelo
+ subsónico.
+ Estas técnicas han recibido el nombre de aerodinámica supercrítica.
+\end_layout
+
+\begin_layout Standard
+En el vuelo a números de Mach supercríticos, una amplia región del flujo
+ sobre los perfiles se encuentra en régimen supersónico, la cual se representa
+ en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Flujo-y-distribución-supercritico"
+
+\end_inset
+
+ por la zona sombreada.
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$C_p$"
+description "Coeficiente de presiones del perfil, $\\frac{p-p_\\infty}{q_\\infty}$ \\nomunit{[$-$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "S"
+symbol "$\\infty$"
+description "Relativo a las condiciones del flujo no perturbado corriente arriba"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\nu$"
+description "Viscosidad cinemática \\nomunit{[$\\frac{m^2}{s}$]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\mu$"
+description "Viscosidad dinámica \\nomunit{[$\\frac{N\\cdot s}{m^2}$]}"
+
+\end_inset
+
+ Esta región de flujo supersónico por lo general termina en una onda de
+ choque, que provoca una gran pérdida de energía en el fluido y por tanto
+ un aumento de la resistencia.
+ A su vez, la onda de choque conlleva asociado un gradiente de presión positiva
+ en la superficie del perfil que puede provocar la separación de la capa
+ límite lo que produciría otro gran aumento de la resistencia, un importante
+ buffet y problemas de estabilidad y control.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Supercritical_Airfoil.JPG
+	width 90text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Flujo y distribución de presiones alrededor de un perfil convencional y
+ alrededor de un perfil supercrítico.
+ Ref: 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Harris1990"
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Flujo-y-distribución-supercritico"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para tratar de minimizar estos efectos, durante las décadas de 1960 y 1970,
+ la NASA desarrolló las bases de los denominados perfiles supercríticos,
+ los cuales buscaban lograr un buen comportamiento en régimen transónico,
+ a la vez que mantenían unas propiedades aceptables a bajas velocidades.
+ Estos perfiles buscan lograr un flujo supersónico local con una posterior
+ recompresión isentrópica y se caracterizan por una forma peculiar con un
+ gran radio de curvatura en el borde de ataque, junto con una parte superior
+ prácticamente sin curvatura, o muy reducida, y una gran curvatura en el
+ borde de salida.
+\end_layout
+
+\begin_layout Standard
+Como se puede observar en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Flujo-y-distribución-supercritico"
+
+\end_inset
+
+, y se explica en detalle en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Harris1990"
+
+\end_inset
+
+, en el caso de los perfiles convencionales, el aire con poca energía de
+ la capa límite no es capaz de vencer el incremento de presión que tiene
+ lugar en la onda de choque al verse forzado a recuperar la presión subcrítica,
+ por lo que se desprende.
+ En cambio, en el caso de los perfiles supercríticos, la forma plana de
+ su parte superior (extradós) reduce tanto la extensión como la fuerza de
+ la onda de choque, así como el gradiente positivo de presiones a través
+ de ésta, lo que conlleva una importante reducción de la resistencia.
+ A su vez, la mayor curvatura del borde de salida logra compensar la falta
+ de sustentación producida por esta falta de curvatura en la zona intermedia,
+ logrando aumentar el Mach de divergencia.
+\end_layout
+
+\begin_layout Standard
+Numerosos estudios se han realizado en torno a esta familia de perfiles,
+ es de destacar el análisis llevado a cabo por R.
+ T.
+ Whitcomb en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Whitcomb1974"
+
+\end_inset
+
+ y el estudio desarrollado por T.
+ G.
+ Ayers en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Ayers1972"
+
+\end_inset
+
+.
+ En este segundo, se ensayaron dos North American T-2C, uno de ellos con
+ su geometría original (perfil convencional con un espesor del 12%) y otro
+ al que se le añadió madera de balsa y fibra de carbono al ala hasta lograr
+ proporcionar la geometría de un perfil supercrítico con un espesor del
+ 17%, ensayándose juntos ambos aviones.
+ Los principales resultados de este estudio se muestran en las figuras 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:CL_supercritico"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Mcruise_supercritico"
+
+\end_inset
+
+.
+ En la primera de ellas se observa que a bajas velocidades el perfil supercrític
+o proporciona mayores valores del coeficiente de sustentación, y en la segunda
+ se representa la doble ventaja de sustituir los perfiles convencionales
+ por perfiles supercríticos, ya que permiten, o bien mantener constante
+ el valor del ratio 
+\begin_inset Formula $t/c$
+\end_inset
+
+ y aumentar el Mach de crucero hasta un 15%, o bien mantener la velocidad
+ de crucero constante y aumentar el ratio 
+\begin_inset Formula $t/c$
+\end_inset
+
+ hasta un 42% (aunque se cree que este valor es incluso conservador), o
+ por supuesto cualquier combinación intermedia de ellas.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "49text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Supercritical_Airfoil_Lift_Characteristics.JPG
+	width 90text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Coeficiente de sustentación de un perfil convencional y un supercrítico
+ a baja velocidad.
+ Ref: 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Ayers1972"
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:CL_supercritico"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "49text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/Two_Uses_Supercritical_Airfoil.JPG
+	width 100text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Dos diferentes ventajas de los perfiles supercríticos.
+ Ref: 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Ayers1972"
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Mcruise_supercritico"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En base a todos los argumentos presentados, queda sobradamente justificada
+ la decisión de usar un perfil supercrítico para nuestra aeronave, que proporcio
+ne el coeficiente de sustentación de diseño necesario para el vuelo en crucero,
+ con la mínima resistencia y el máximo espesor en relación a la cuerda para
+ facilitar la construcción de las alas y almacenar el mayor combustible
+ posible.
+ Para ello se ha acudido a 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Harris1990"
+
+\end_inset
+
+, donde se muestran numerosos perfiles ensayados.
+\end_layout
+
+\begin_layout Standard
+El perfil deseado debe reunir varias características contradictorias entre
+ ellas, por un lado, se busca que tenga una relación de espesor relativamente
+ alta, puesto que esto permite aumentar el 
+\begin_inset Formula $C_{l_{max}}$
+\end_inset
+
+, aumentar los beneficios de los dispositivos hipersustentadores que se
+ añadan posteriormente, reducir el peso estructural para un mismo momento
+ flector en el encastre y aumentar el volumen de combustible alojado en
+ las alas.
+ Sin embargo, el espesor del perfil, la flecha del ala y el Mach de divergencia
+ del ala se encuentran relacionados, por lo que un perfil demasiado grueso,
+ ocasionará que el Mach de divergencia del ala (
+\begin_inset Formula $M_{dd}$
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$M_{dd}$"
+description "Mach de divergencia del ala/perfil (Drag Divergence Mach)\\nomunit{[-]}"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "A"
+symbol "$M_{cr}$"
+description "Mach crítico del ala/perfil \\nomunit{[-]}"
+
+\end_inset
+
+) sea demasiado bajo para poder volar a la velocidad de diseño establecida
+ en los requisitos de la aeronave, y aunque el Mach de divergencia puede
+ aumentarse proporcionando flecha al ala, ésto conlleva a una disminución
+ del 
+\begin_inset Formula $C_{l_{max}}$
+\end_inset
+
+ efectivo y a otra serie de problemas que se estudiarán más adelante, por
+ lo que tampoco es una solución ideal y se debe buscar una solución de compromis
+o.
+\end_layout
+
+\begin_layout Standard
+En base a los razonamientos anteriores, inicialmente se había seleccionado
+ un perfil NASA SC(2)-0714, el cual tiene un ratio de espesor del 14% y
+ ha sido ampliamente ensayado, tanto a altos como a bajos número de Reynolds,
+ por lo que se encuentran disponible abundantes datos experimentales que
+ mejoran la exactitud de los sucesivos cálculos frente a aproximaciones
+ basadas en métodos de paneles como pueden ser los obtenidos con un software
+ del estilo de XFOIL.
+ 
+\end_layout
+
+\begin_layout Standard
+Sin embargo, pronto se comprobó que debido a su espesor, para obtener un
+ 
+\begin_inset Formula $M_{dd}$
+\end_inset
+
+ aceptable con este perfil era necesario dotar de una flecha excesiva a
+ las alas, por lo que se rectificó y el perfil escogido finalmente y con
+ el que se han realizado todos los cálculos sucesivos es un NASA SC(3)-0712,
+ donde el término SC(3) hace referencia a la tercera fase de diseño de los
+ perfiles supercríticos de la NASA, finalizada en 1979, el 07 hace referencia
+ al coeficiente de sustentación de diseño multiplicado por 10 y el 12 hace
+ referencia al ratio de espesor multiplicado por 100.
+ Un esquema de este perfil se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:SC(3)-0712-Coordinates"
+
+\end_inset
+
+, sus coordenadas se incluyen en el apéndice 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Medidas-Fuselaje"
+
+\end_inset
+
+ y sus características más relevantes se resumen en el cuadro 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Perfil-NASA-SC(3)-0712"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{figure*}[h]
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "75text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Figs/SC(2)-0712.JPG
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:SC(3)-0712-Coordinates"
+
+\end_inset
+
+Perfil supercrítico NASA SC(3)-0712
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "24text%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="2">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C_{l_{design}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.7
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C_{l_{max}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.7
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $M_{dd}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.77
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $t/c$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+12%
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Perfil-NASA-SC(3)-0712"
+
+\end_inset
+
+Perfil NASA SC(3)-0712
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{figure*}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Este perfil también fue ensayado por la NASA dentro del programa Advanced
+ Technology Airfoil Tests (ATAT) en la década de los años ochenta a diferentes
+ velocidades y a un significativo rango de números de Reynolds.
+ Todos los datos de estos ensayos se pueden consultar en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "SC-0712"
+
+\end_inset
+
+, desde donde se han digitalizado el coeficiente de sustentación para diferentes
+ ángulos de ataque del perfil, y el coeficiente de resistencia y de momentos
+ en función del coeficiente de sustentación, para cada combinación de Mach
+ y Reynolds, que se muestran en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Datos-experimentales-SC0712"
+
+\end_inset
+
+ y entre los que se interpolará para obtener los valores correspondientes
+ a nuestra condición de vuelo.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/SC(3)-0712(B) - Cl_alpha.eps
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/SC(3)-0712(B) - Cl_Cd.eps
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/SC(3)-0712(B) - Cl_Cm.eps
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Datos experimentales para el perfil SC(3)-0712 digitalizados desde 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "SC-0712"
+
+\end_inset
+
+ para varios números de Mach y de Reynolds
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Datos-experimentales-SC0712"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Determinación de algunos parámetros geométricos
+\end_layout
+
+\begin_layout Standard
+Para la configuración alar, se ha decidido que las características geométricas
+ de ambas alas sean similares, de esta forma se pretende facilitar el proceso
+ de fabricación de la aeronave, siendo únicamente diferente el montaje de
+ éstas, ya que el ángulo de incidencia del ala con el fuselaje sí que será
+ diferente, así como la configuración de los dispositivos hipersustentadores
+ y superficies de control.
+\end_layout
+
+\begin_layout Standard
+A su vez, dado que los motores no irán sujetos a las alas y por tanto éstas
+ no tendrán que soportar una elevada carga puntual que requiera de una mayor
+ cuerda hasta la sección en la que se produjese esta unión, ni tampoco se
+ replegará el tren de aterrizaje en el interior del ala debido a que la
+ configuración es de ala alta, se ha optado por un diseño de estrechamiento
+ constante, sin presentar un quiebro en el borde de ataque como es habitual
+ en otras aeronaves donde las dos razones anteriores sí que se cumplen.
+ 
+\end_layout
+
+\begin_layout Standard
+A continuación se mostrarán los valores de diseño para los principales parámetro
+s geométricos de ambas alas, véase, la flecha, el alargamiento, el estrechamient
+o y la torsión, así como un breve estudio mostrando las principales razones
+ que han motivado cada decisión.
+\end_layout
+
+\begin_layout Subsection
+Flecha
+\end_layout
+
+\begin_layout Standard
+Se denomina dotar de flecha a un ala al adelantar o retrasar (lo más habitual)
+ el ala un determinado ángulo, denominado ángulo de flecha, 
+\begin_inset Formula $\Lambda$
+\end_inset
+
+, respecto a la proyección perpendicular al plano de simetría del avión
+ de la sección en la raíz en la que se esté midiendo la flecha.
+ Dependiendo de la elección del punto en el que se mida la flecha, se puede
+ hablar de flecha de borde de ataque, 
+\begin_inset Formula $\Lambda_{LE}$
+\end_inset
+
+, flecha de borde de salida, 
+\begin_inset Formula $\Lambda_{RE}$
+\end_inset
+
+, flecha en la linea un cuarto de la cuerda, 
+\begin_inset Formula $\Lambda_{\nicefrac{1}{4}}$
+\end_inset
+
+, o flecha en la mitad de la cuerda, 
+\begin_inset Formula $\Lambda_{\nicefrac{1}{2}}$
+\end_inset
+
+.
+ Si no se especifica ningún subíndice, se sobreentiende que nos referimos
+ a la flecha en la línea un cuarto de la cuerda.
+\end_layout
+
+\begin_layout Standard
+Dotar al ala de flecha permite retrasar los efectos del la compresibilidad
+ a velocidades mayores.
+ Para estudiar este fenómeno en 1945 se desarrolló la teoría de la flecha
+ de ala simplificada (
+\begin_inset Quotes eld
+\end_inset
+
+Simple Wing Sweep Theory
+\begin_inset Quotes erd
+\end_inset
+
+), cuyo principal contribuyente fue Robert T.
+ Jones con los estudios presentados en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Jones1946"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Jones1947"
+
+\end_inset
+
+.
+ Esta teoría asume que el ala es infinita en envergadura y que las distribucione
+s de presiones existentes sobre el ala se deben únicamente a la componente
+ de la velocidad del flujo perpendicular al borde de ataque (
+\begin_inset Formula $M_{n}=M_{\infty}\cos\Lambda$
+\end_inset
+
+), y por tanto desprecia los efectos tridimensionales que tienen lugar en
+ la punta del ala y junto al fuselaje como se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Teoría-de-flecha-simplificada"
+
+\end_inset
+
+.
+ De esta sencilla teoría se pueden extraer las siguientes relaciones que
+ se cumplen con un alto grado de precisión:
+\begin_inset Wrap figure
+lines 15
+placement r
+overhang 0in
+width "42text%"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Figs/SweepWing.JPG
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Teoría simplificada para un ala infinita y otra de alto alargamiento.
+ [Ref.
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Torenbeek1982"
+
+\end_inset
+
+]
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Teoría-de-flecha-simplificada"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-1.5em}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+El espesor relativo y el ángulo de ataque efectivo de la sección normal
+ son mayores que los de la sección en dirección de la corriente por un factor
+ 
+\begin_inset Formula $1/\cos\Lambda$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+El coeficiente de sustentación del ala, 
+\begin_inset Formula $C_{L}$
+\end_inset
+
+, es igual a 
+\begin_inset Formula $C_{l}\left(\cos\Lambda\right)^{2}$
+\end_inset
+
+, donde 
+\begin_inset Formula $C_{l}$
+\end_inset
+
+ es el coeficiente de sustentación de la sección normal al borde de ataque.
+\end_layout
+
+\begin_layout Itemize
+El Mach crítico del ala es 
+\begin_inset Formula $M_{cr}/\cos\Lambda$
+\end_inset
+
+ donde 
+\begin_inset Formula $M_{cr}$
+\end_inset
+
+ es el Mach crítico de la sección normal al borde de ataque con el coeficiente
+ de sustentación 
+\begin_inset Formula $C_{l}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Debido a nuestra elevada velocidad de vuelo, 
+\series bold
+\color red
+Mach 0.85
+\series default
+\color inherit
+, y al significativo espesor del perfil seleccionado, es necesario dotar
+ a la aeronave de una flecha considerable que permita situar el 
+\begin_inset Formula $M_{dd}$
+\end_inset
+
+ por encima del valor de crucero.
+ Sin embargo, como ya se explicó en la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Elección-del-perfil"
+
+\end_inset
+
+, la flecha del ala trae asociada una disminución del 
+\begin_inset Formula $C_{l_{max}}$
+\end_inset
+
+ y del 
+\begin_inset Formula $C_{l_{\alpha}}$
+\end_inset
+
+, así como otros problemas estructurales, por lo que ésta no debe ser excesiva,
+ debiéndose buscar de nuevo una solución de compromiso.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/SweepDecision.eps
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Mach de divergencia del ala en función de la flecha en la linea 1/4 y del
+ espesor relativo del perfil
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Mach-de-divergencia"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La selección del perfil es por tanto una decisión conjunta con la decisión
+ de la flecha del ala.
+ En la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Mach-de-divergencia"
+
+\end_inset
+
+ se muestran los valores del Mach de divergencia en función del espesor
+ y la flecha para la familia de perfiles supercríticos con un 
+\begin_inset Formula $C_{l}$
+\end_inset
+
+ de diseño de 0.7, puesto que previamente a la selección del perfil y de
+ la flecha se ha comprobado que con este valor del coeficiente de sustentación,
+ al calcular el coeficiente de sustentación efectivo del perfil, se sigue
+ obteniendo un valor suficientemente elevado para el crucero sin prácticamente
+ ángulo de ataque, lo que proporcionará una menor resistencia.
+\end_layout
+
+\begin_layout Standard
+La obtención de estos valores del Mach de divergencia se explica en el apartado
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Estudio-del-Mach-Divergencia"
+
+\end_inset
+
+, por lo que únicamente falta concluir que, en vista de la gráfica anterior,
+ para un perfil con un espesor del 12%, se ha decidido utilizar una flecha
+ de 30º para la línea 1/4 de la cuerda, siendo la misma para las dos alas.
+\end_layout
+
+\begin_layout Standard
+A partir de este dato, es inmediato conocer las flechas en otras secciones,
+ ya que:
+\begin_inset Formula 
+\[
+\tan\Lambda_{2}=\tan\Lambda_{1}+\frac{4}{A}\frac{1-\lambda}{1+\lambda}\left(e_{1}-e_{2}\right)
+\]
+
+\end_inset
+
+donde 
+\begin_inset Formula $e_{\text{1}}$
+\end_inset
+
+ y 
+\begin_inset Formula $e_{2}$
+\end_inset
+
+ son las fracciones de la cuerda en las que se definen las respectivas flechas
+ 
+\begin_inset Formula $\Lambda_{1}$
+\end_inset
+
+ y 
+\begin_inset Formula $\Lambda_{2}$
+\end_inset
+
+.
+ Teniéndose por tanto:
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "S"
+symbol "LE"
+description "Relativo al borde de ataque (Leading Edge) "
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "S"
+symbol "RE"
+description "Relativo al borde de salida (Rear Edge) "
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="10">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Lambda_{\nicefrac{1}{4}}=30.00\degree$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Lambda_{LE}=31.32\degree$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Lambda_{\nicefrac{1}{2}}=28.64\degree$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Lambda_{RE}=25.81\degree$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Alargamiento
+\end_layout
+
+\begin_layout Standard
+El siguiente parámetro que define la forma en planta de las alas es el alargamie
+nto, también conocido como 
+\begin_inset Quotes eld
+\end_inset
+
+Aspect Ratio
+\begin_inset Quotes erd
+\end_inset
+
+, el cual relaciona la envergadura alar con la cuerda media geométrica y
+ viene definido por:
+\begin_inset Formula 
+\begin{equation}
+A=\frac{b}{c_{g}}=\frac{b^{2}}{S_{w}}\label{eq:alargamiento}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Valores elevados de alargamiento permiten una mayor eficiencia y una menor
+ resistencia inducida, por lo que resultan altamente beneficiosos de cara
+ a las actuaciones, sin embargo, también proporcionan un mayor momento flector
+ en el encastre, especialmente cuando la aeronave se encuentra en tierra,
+ lo que obliga a hacer las estructuras más resistentes y por tanto más pesadas.
+ 
+\end_layout
+
+\begin_layout Standard
+En esta fase inicial de diseño, basándonos en los conocimientos adquiridos
+ y en los aviones de similares actuaciones al nuestro, se ha decidido selecciona
+r un 
+\series bold
+\color red
+alargamiento de 8
+\series default
+\color inherit
+, el cual se encuentra en el rango del de nuestros aviones semejantes que
+ es en torno a 8-10.
+ Sin embargo, como en nuestro caso existen dos alas iguales, la superficie
+ total se tiene que repartir entre ambas, por lo que la envergadura de éstas
+ será menor que la de los semejantes, ya que:
+\begin_inset Formula 
+\[
+b_{1,2}=\sqrt{A\frac{S_{w}}{2}}=\frac{b}{\sqrt{2}}
+\]
+
+\end_inset
+
+ donde 
+\begin_inset Formula $b_{1,2}$
+\end_inset
+
+ representa la envergadura de las alas de nuestra aeronave, y 
+\begin_inset Formula $b$
+\end_inset
+
+ la envergadura de una aeronave convencional con la misma superficie alar
+ total y el mismo alargamiento.
+\end_layout
+
+\begin_layout Subsection
+Estrechamiento
+\end_layout
+
+\begin_layout Standard
+El estrechamiento, también conocido como 
+\begin_inset Quotes eld
+\end_inset
+
+Taper Ratio
+\begin_inset Quotes erd
+\end_inset
+
+, es un parámetro adimensional que define la relación entre las cuerdas
+ en la punta y en el encastre con el fuselaje.
+\begin_inset Formula 
+\[
+\lambda=\frac{c_{t}}{c_{r}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Normalmente los aviones tienen una mayor cuerda en la raíz que en la punta
+ y esto es así principalmente por una cuestión estructural, ya que tener
+ una mayor cuerda en el encastre, y por tanto un mayor espesor, permite
+ disminuir el momento flector del ala frente a al de un ala sin estrechamiento,
+ así como soportarlo mejor debido a la mayor sección, permitiendo por tanto,
+ para una misma superficie alar, construir un ala más ligera.
+\end_layout
+
+\begin_layout Standard
+Sin embargo esta disminución de cuerda en la punta trae asociados otros
+ problemas que se deben estudiar, ya que al hacer más pequeña la cuerda
+ en la punta, aunque la distribución de sustentación en la punta de las
+ alas sea menor que en el resto del ala, se encuentra repartida sobre menos
+ cuerda, por lo que el resultado son mayores valores locales del coeficiente
+ de sustentación, lo cual produce puede provocar la entrada en pérdida del
+ ala por la punta.
+ 
+\end_layout
+
+\begin_layout Standard
+Esto es especialmente peligroso y no puede ser permitido, ya que en la punta
+ de las alas es donde se encuentran las superficies de control de la aeronave,
+ por lo que de ser éstas las primeras en entrar en pérdida, la aeronave
+ se quedaría en una situación muy peligrosa y sin control lateral para salir
+ de ella, lo cual como es de esperar, no está permitido por las autoridades
+ de certificación de la aeronavegabilidad.
+ Una forma de paliar en parte este efecto es dotar de torsión al ala, lo
+ cual se verá a más adelante.
+\end_layout
+
+\begin_layout Standard
+Teniendo en cuenta todo lo anterior, en primera aproximación, un valor ideal
+ de estrechamiento será aquel que permita el mínimo momento flector salvaguardan
+do que la entrada en pérdida del ala se encuentre lo suficientemente alejada
+ de las superficies de control.
+ Un criterio propuesto por Torenbeek para garantizar que el control no se
+ ve afectado en las primeras fases de la entrada en pérdida es que quede
+ un margen de como mínimo 0.1 en el valor local del coeficiente de sustentación
+ en la posición más interior de los alerones hasta el 
+\begin_inset Formula $C_{l_{max}}$
+\end_inset
+
+ del perfil.
+ 
+\end_layout
+
+\begin_layout Standard
+En la sección 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Cálculo-de-la-distribucion-sustentacion"
+
+\end_inset
+
+ se estudia la distribución de sustentación sobre el ala y el punto de entrada
+ en pérdida, por lo que suponiendo que los alerones llegan hasta un 70%
+ de la envergadura, lo cual es un valor habitual y esperable, se ha elegido
+ el mínimo estrechamiento que cumple la condición anterior con un significativo
+ margen y sitúa el punto de entrada en pérdida en una posición inferior
+ al 60% de la envergadura, resultando en:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="1">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $\lambda=0.6$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Torsión
+\end_layout
+
+\begin_layout Standard
+La torsión (
+\begin_inset Formula $\varepsilon$
+\end_inset
+
+) es el ángulo de incidencia de una determinada sección del ala respecto
+ al de la sección de la raíz, definiéndose positivo cuando el extremo del
+ ala apunta hacia arriba (washin) y negativo si por el contrario apunta
+ hacia abajo (washout).
+ 
+\end_layout
+
+\begin_layout Standard
+Como se ha indicado en el apartado anterior, proporcionando una torsión
+ negativa a las alas, denominada washout, podemos aliviar parte del problema
+ de entrada en pérdida por la punta, moviendo este punto hacia el interior
+ a medida que aumenta la torsión.
+ Sin embargo esto tampoco resulta ideal, ya que al aumentar la torsión se
+ reduce la eficacia del ala, disminuyendo la sustentación total que ésta
+ produce y requiriendo de un mayor ángulo de ataque del fuselaje, o una
+ mayor incidencia, para lograr la misma sustentación.
+\end_layout
+
+\begin_layout Standard
+En nuestro caso se ha determinado dotar a las alas de una torsión geométrica
+ negativa lineal, de forma que esta aumenta linealmente desde la raíz, hasta
+ la punta,
+\begin_inset Formula 
+\[
+\varepsilon=\eta\,\varepsilon_{t}
+\]
+
+\end_inset
+
+donde 
+\begin_inset Formula $\eta$
+\end_inset
+
+ es la coordenada adimensional en la envergadura (
+\begin_inset Formula $\eta=\frac{y}{\nicefrac{b}{2}}$
+\end_inset
+
+) y 
+\begin_inset Formula $\varepsilon_{t}$
+\end_inset
+
+ la torsión en la punta del ala, la cual permite determinar inequívocamente
+ la torsión geométrica del ala, y cuyo valor se ha establecido en 
+\series bold
+\color red
+
+\begin_inset Formula $\varepsilon_{t}=-5\degree$
+\end_inset
+
+
+\series default
+\color inherit
+.
+\end_layout
+
+\begin_layout Subsection
+Otros parámetros geométricos
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begingroup 
+\backslash
+setlength
+\backslash
+intextsep{0pt}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Wrap figure
+lines 0
+placement r
+overhang 0in
+width "50text%"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Figs/RandomWing.jpg
+	width 47text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Ala de simple estrechamiento
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+Con la definición de los parámetros anteriores, y tras haber determinado
+ que las alas contarán con la misma superficie y forma, que no contarán
+ con diedro debido al propio efecto de diedro que genera la flecha alar
+ y el elevado valor de esta última, y que serán de simple estrechamiento
+ sin presentar quiebros en su geometría, se pueden calcular el resto de
+ parámetros que posibilitan la determinación inequívoca de estas.
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "G"
+symbol "$\\Gamma$"
+description "Ángulo de diedro de las alas \\nomunit{[\\degree]}"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+endgroup
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En primer lugar, la cuerda en función de la envergadura, la cuerda media
+ geométrica y la cuerda media aerodinámica vienen determinadas por:
+\begin_inset Formula 
+\[
+\begin{array}{ccccc}
+c(y)=\frac{2S_{w}}{\left(1+\lambda\right)b}\left[1-\frac{2\left(1-\lambda\right)}{b}\left|y\right|\right] &  & c_{g}=c_{r}\frac{1+\lambda}{2} &  & \text{MAC}=\frac{2}{3}c_{r}\frac{\lambda^{2}+\lambda+1}{\lambda+1}\end{array}
+\]
+
+\end_inset
+
+así como la coordenadas longitudinal respecto del borde de ataque en la
+ raíz y lateral respecto al plano de simetría de esta última por:
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+x_{\text{MAC}}=\frac{b}{6}\frac{1+2\lambda}{1+\lambda}\tan\Lambda_{LE} &  & y_{\text{MAC}}=\frac{b}{6}\frac{1+2\lambda}{1+\lambda}\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por último, la envergadura alar se puede calcular a partir de la superficie
+ y el alargamiento con la ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:alargamiento"
+
+\end_inset
+
+.
+ Un resumen de todos los parámetros de nuestras alas se muestra a continuación
+ en el cuadro 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Parámetros-geométricos-de-las-alas"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="7">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $A=8$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $S_{w}=35.48\,[m^{2}]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $c_{g}=2.11\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $\Lambda_{LE}=31.32\degree$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $\lambda=0.6$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $b=16.85\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $\text{MAC}=2.15\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $\Lambda_{RE}=25.81\degree$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $\varepsilon_{t}=-5\degree$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $c_{r}=2.63\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $x_{\text{MAC}}=2.35\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $\Lambda_{\nicefrac{1}{4}}=30.00\degree$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $\Gamma=0\degree$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $c_{t}=1.58\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $y_{\text{MAC}}=3.86\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+\color red
+\begin_inset Formula $\Lambda_{\nicefrac{1}{2}}=28.64\degree$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Parámetros geométricos de las alas
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Parámetros-geométricos-de-las-alas"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Estudio del Mach de divergencia
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Estudio-del-Mach-Divergencia"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como ya se ha introducido cuando se ha hablado de la flecha del ala, existe
+ una estrecha relación entre el valor de ésta, el tipo y espesor relativo
+ del perfil usado y el Mach de divergencia de la aeronave, por lo que un
+ estudio de éste último es necesario para poder escoger un valor correcto
+ de los otros dos parámetros que nos permitan volar a la velocidad de crucero
+ deseada sin experimentar un excesivo aumento de la resistencia que penalice
+ fuertemente las actuaciones de la aeronave.
+\end_layout
+
+\begin_layout Standard
+La relación entre el espesor del perfil, la flecha del ala y el Mach de
+ divergencia para secciones simétricas sin producir sustentación se muestra
+ en el capítulo 7 de 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Torenbeek1982"
+
+\end_inset
+
+, y se deduce de aplicar la corrección por compresibilidad de Prandtl-Glauert
+ a la ecuación de Bernoulli y proporcionando un valor para la velocidad
+ local tal que 
+\begin_inset Formula $M=1$
+\end_inset
+
+, resultando en la siguiente ecuación:
+\begin_inset Formula 
+\begin{equation}
+\nicefrac{t}{c}=0.30\left\{ \left[1-\left\{ \frac{5+M^{2}}{5+\left(M^{*}\right)^{2}}\right\} ^{3.5}\right]\frac{\sqrt{1-M^{2}}}{M^{2}}\right\} ^{\nicefrac{2}{3}}\label{eq:t_c_airfoil}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El factor 
+\begin_inset Formula $M^{*}$
+\end_inset
+
+ que aparece en esta ecuación carece de sentido físico y únicamente trata
+ de representar el grado de sofisticación empleado en obtener flujo supercrítico
+ en la condición de diseño.
+ Valores recomendados para este parámetro, y con los que se obtienen buenos
+ resultados, son los siguientes:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-1.5em}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $M^{*}=1.0$
+\end_inset
+
+ Para perfiles convencionales, con valores máximos de 
+\begin_inset Formula $t/c$
+\end_inset
+
+ en posiciones cercanas al 
+\begin_inset Formula $0.3c$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $M^{*}=1.05$
+\end_inset
+
+ Para perfiles de alta velocidad (peaky), con tecnología de 1960-1970.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $M^{*}=1.12-1.15$
+\end_inset
+
+ Para perfiles supercríticos.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-1.0em}
+\end_layout
+
+\end_inset
+
+Para tener en cuenta los efectos de la curvatura y la producción de sustentación
+, una buena aproximación es reducir el valor de 
+\begin_inset Formula $M^{*}$
+\end_inset
+
+ en 0.25 veces el valor del 
+\begin_inset Formula $C_{l}$
+\end_inset
+
+ de diseño.
+ A su vez, para tener en cuenta los efectos de la flecha del ala, se deben
+ sustituir en la ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:t_c_airfoil"
+
+\end_inset
+
+ el valor del Mach por el Mach efectivo que ven los perfiles, que será el
+ Mach de vuelo proyectado en dirección perpendicular al borde de ataque,
+ (
+\begin_inset Formula $M\rightarrow M\cos\left(\Lambda_{\nicefrac{1}{4}}\right)$
+\end_inset
+
+) y el ratio de espesor por el ratio de espesor efectivo del ala (
+\begin_inset Formula $\nicefrac{t}{c}\rightarrow\overline{\nicefrac{t}{c}}\left(\cos\left(\Lambda_{\nicefrac{1}{4}}\right)\right)^{-1}$
+\end_inset
+
+), ya que debido a la flecha se modifica la cuerda que 
+\begin_inset Quotes eld
+\end_inset
+
+ve
+\begin_inset Quotes erd
+\end_inset
+
+ el flujo, resultando en:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-1cm}{-1cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\overline{\nicefrac{t}{c}}=\frac{0.30}{M}\left\{ \left(M\cos\Lambda_{\nicefrac{1}{4}}\right)^{-1}-M\cos\Lambda_{\nicefrac{1}{4}}\right\} ^{\nicefrac{1}{3}}\left\{ 1-\left[\frac{5+\left(M\cos\Lambda_{\nicefrac{1}{4}}\right)^{2}}{5+\left(M^{*}\right)^{2}}\right]^{3.5}\right\} ^{\nicefrac{2}{3}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Resolviendo numéricamente esta ecuación, con un valor de 
+\begin_inset Formula $M^{*}=0.15-0.25C_{l}$
+\end_inset
+
+, o lo que es lo mismo, 
+\begin_inset Formula $M^{*}=0.15-0.25C_{L}\left(\cos\left(\Lambda_{\nicefrac{1}{4}}\right)\right)^{-2}$
+\end_inset
+
+, se obtiene un Mach de divergencia para el ala de: 
+\begin_inset Formula 
+\[
+{\color{red}M_{dd}=0.863}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como se puede comprobar al compararlo con el 
+\begin_inset Formula $M_{dd}$
+\end_inset
+
+ del perfil aislado presentado en el cuadro 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Perfil-NASA-SC(3)-0712"
+
+\end_inset
+
+, dotar a las alas de flecha nos permite obtener un 
+\begin_inset Formula $M_{dd}$
+\end_inset
+
+ significativamente más elevado.
+ El valor del Mach de divergencia que se deba obtener depende de la cantidad
+ de resistencia debida a la compresibilidad que el diseñador esté dispuesto
+ a aceptar en el vuelo en régimen de crucero y en el vuelo a alta velocidad,
+ siendo habitual que el Mach de divergencia sea igual o ligeramente inferior
+ al Mach de vuelo en régimen de alta velocidad.
+\end_layout
+
+\begin_layout Standard
+En nuestro caso, se puede comprobar que esto se cumple, puesto que tras
+ realizar varias pruebas y comprobaciones, con los parámetros de espesor
+ del ala y flecha escogidos finalmente, junto con las velocidades de diseño
+ de la aeronave determinadas por los requisitos de la misión, se obtiene
+ un 
+\begin_inset Formula $M_{dd}$
+\end_inset
+
+ superior al 
+\begin_inset Formula $M_{cruise}$
+\end_inset
+
+ y ligeramente inferior al 
+\begin_inset Formula $M_{high-speed}$
+\end_inset
+
+.
+\begin_inset Formula 
+\[
+{\color{red}0.847<0.863<0.87}\,\,\rightarrow\,\,M_{cruise}<M_{dd}<M_{high-speed}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Determinación de la sustentación
+\end_layout
+
+\begin_layout Standard
+Tras haber definido completamente las alas, y antes de poder empezar a calcular
+ la sustentación que éstas proporcionan, es necesario determinar las característ
+icas del perfil para la condición de vuelo en la que se quiera calcular
+ la sustentación, que en nuestro caso será para un punto intermedio del
+ vuelo de crucero.
+\end_layout
+
+\begin_layout Standard
+Existen numerosos métodos para estimar las características aerodinámicas
+ de un perfil en función de su geometría, como por ejemplo el que presenta
+ Torenbeek en el apéndice E-3 de 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Torenbeek1982"
+
+\end_inset
+
+, sin embargo, aprovechando que tenemos los datos experimentales del perfil
+ empleado para múltiples condiciones de vuelo similares a las de nuestro
+ crucero, ensayadas para Reynolds mayores y menores que el nuestro, y lo
+ mismo para los números de Mach, se hará uso de dichos datos puesto que
+ presentan un grado de fiabilidad mucho mayor que los resultados de cualquier
+ método genérico.
+\end_layout
+
+\begin_layout Standard
+Para ello, en primer lugar se deberá determinar el número de Reynolds caracterís
+tico de la condición de vuelo (
+\begin_inset Formula $Re=\nicefrac{V_{cruise}\,L}{\nu}$
+\end_inset
+
+), donde como longitud característica se ha elegido la cuerda media aerodinámica
+ y la viscosidad dinámica se ha calculado a la altura de crucero, así como
+ también se deberá calcular el Mach efectivo que experimenta cada ala, es
+ decir, el número de Mach proyectado en la dirección perpendicular al borde
+ de ataque, ya que éste será el que 
+\begin_inset Quotes eld
+\end_inset
+
+vea
+\begin_inset Quotes erd
+\end_inset
+
+ el perfil.
+\end_layout
+
+\begin_layout Standard
+Sin embargo, aquí empiezan a diferenciarse ambas alas, puesto que aunque
+ geométricamente sean iguales, la simple presencia del ala delantera frena
+ la corriente de aire y la desvía respecto a la corriente no perturbada,
+ efecto conocido como deflexión de estela.
+ Este segundo efecto se estudiará más adelante, puesto que ahora únicamente
+ nos interesa lo que se desacelera.
+ Para ello, Torenbeek relaciona las presiones dinámicas del ala y de la
+ cola de un avión convencional frente a la corriente sin perturbar, lo cual
+ se ha equiparado a las existentes en el ala delantera y trasera de nuestro
+ avión, resultando los siguientes ratios:
+\begin_inset Formula 
+\begin{equation}
+\begin{array}{ccc}
+\frac{q_{1}}{q_{\infty}}=1 & \,\,\,\,\, & \frac{q_{2}}{q_{\infty}}0.85\end{array}\label{eq:q1_q2}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $q_{1}$
+\end_inset
+
+ es la presión dinámica del ala delantera, 
+\begin_inset Formula $q_{2}$
+\end_inset
+
+ la del ala trasera y 
+\begin_inset Formula $q_{\infty}$
+\end_inset
+
+ la de la corriente sin perturbar.
+\end_layout
+
+\begin_layout Standard
+A partir de estos valores, y suponiendo que la densidad del aire no cambia,
+ es decir, que el ala delantera no introduce efectos de compresibilidad
+ adicionales en la corriente, se puede obtener la velocidad de la corriente
+ que llega a cada una de las alas, siendo
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+V_{1}=\sqrt{\frac{q_{1}}{q_{\infty}}\,V_{cruise}^{2}} & \,\,\,\,\, & V_{2}=\sqrt{\frac{q_{2}}{q_{\infty}}\,V_{cruise}^{2}}\end{array}
+\]
+
+\end_inset
+
+y obteniéndose los siguientes valores para el Reynolds y el Mach normal
+ al borde de ataque de cada una de las alas:
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+Re_{1}=11.75e6 & \,\,\,\,\, & M_{n_{1}}=0.734\\
+Re_{2}=10.83e6 & \,\,\,\,\, & M_{n_{2}}=0.677
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Con estos valores se interpolará en las gráficas mostradas en la figura
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Datos-experimentales-SC0712"
+
+\end_inset
+
+, pudiéndose obtener los datos necesarios, como son la pendiente de la curva
+ de sustentación (
+\begin_inset Formula $C_{l_{\alpha}}$
+\end_inset
+
+), el ángulo de ataque para sustentación nula (
+\begin_inset Formula $\alpha_{l_{0}}$
+\end_inset
+
+) y el coeficiente de momentos en el centro aerodinámico (
+\begin_inset Formula $C_{m_{ac}}$
+\end_inset
+
+), que toman los siguientes valores:
+\begin_inset Formula 
+\[
+\begin{array}{ccccc}
+C_{l_{\alpha_{1}}}=8.43\,[1/rad] &  & \alpha_{l_{0_{1}}}=-3.47\degree &  & C_{m_{ac_{1}}}=-0.1392\\
+C_{l_{\alpha_{2}}}=7.61\,[1/rad] &  & \alpha_{l_{0_{2}}}=-3.58\degree &  & C_{m_{ac_{2}}}=-0.1271
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Cálculo de la pendiente de la curva de sustentación
+\end_layout
+
+\begin_layout Standard
+El primer paso para calcular la sustentación es determinar la pendiente
+ de la curva de sustentación.
+ Este valor, aparte de estar relacionado con la pendiente de la curva de
+ sustentación del perfil, también depende del alargamiento alar y la flecha
+ de nuestras alas, así como del Mach de vuelo.
+ 
+\end_layout
+
+\begin_layout Standard
+El primero en proporcionar un método sencillo, a la vez que sorprendentemente
+ preciso, para estimar este valor fue E.
+ Polhamus en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Polhamus1957"
+
+\end_inset
+
+, donde expuso unas posibles modificaciones a la ecuación de Helmbold [Ref.
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Helmbold1942"
+
+\end_inset
+
+] para tener en consideración los efectos de la flecha (
+\begin_inset Formula $C_{l_{\alpha}}\rightarrow C_{l_{\alpha}}\cos\Lambda$
+\end_inset
+
+) y del número de Mach a través de la corrección de Prandtl-Glauert tridimension
+al, resultando:
+\begin_inset Formula 
+\[
+C_{L_{\alpha}}=\frac{C_{l_{\alpha}}\,A}{\frac{C_{l_{\alpha}}}{\pi}+\sqrt{\left(\frac{C_{l_{\alpha}}}{\pi}\right)^{2}+\left(\frac{A}{\cos\Lambda_{\nicefrac{1}{2}}}\right)^{2}-\left(A\,M\right)^{2}}}
+\]
+
+\end_inset
+
+donde al utilizarse la flecha en la linea un medio de la cuerda permite
+ que sea válida para cualquier forma en planta de las alas, y donde el número
+ de Mach a introducir es el de la corriente que llega al ala, sin proyectarlo
+ en dirección perpendicular al borde de ataque del ala.
+\end_layout
+
+\begin_layout Standard
+Un método alternativo y que proporciona resultados similares es el detallado
+ en el apartado 4.1.3.2 de las DATCOM de la Fuerza Aérea de los Estados Unidos
+ 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "DATCOM1978"
+
+\end_inset
+
+, donde para alas subsónicas con simple alargamiento se propone calcular
+ la pendiente de la curva de sustentación como:
+\begin_inset Formula 
+\[
+C_{L_{\alpha}}=\frac{2\,\pi\,A}{2+\sqrt{\frac{A^{2}\beta^{2}}{k^{2}}\left(1+\frac{\tan^{2}\Lambda_{\nicefrac{1}{2}}}{\beta^{2}}\right)+4}}
+\]
+
+\end_inset
+
+siendo 
+\begin_inset Formula $\beta$
+\end_inset
+
+ la corrección de compresibilidad de Prandtl-Glauert (
+\begin_inset Formula $\beta=\sqrt{1-M^{2}}$
+\end_inset
+
+), y 
+\begin_inset Formula $k$
+\end_inset
+
+ el ratio de la curva de sustentación bidimensional (por radian) al número
+ de Mach apropiado frente a 
+\begin_inset Formula $2\pi/\beta$
+\end_inset
+
+, (
+\begin_inset Formula $k=\nicefrac{\left(C_{l_{\alpha}}\right)_{M}}{\left(2\pi/\beta\right)}$
+\end_inset
+
+), donde a su vez 
+\begin_inset Formula $\left(C_{l_{\alpha}}\right)_{M}=\nicefrac{C_{l_{\alpha}}}{\beta}$
+\end_inset
+
+, por lo que finalmente, 
+\begin_inset Formula $k=\nicefrac{C_{l_{\alpha}}}{2\pi}$
+\end_inset
+
+.
+ Los resultados de ambos métodos son similares y se muestran a continuación:
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+{\color{red}C_{L_{\alpha_{1}}}=7.29\,[1/rad]} & {\color{red}\,\,\,\,\,} & {\color{red}C_{L_{\alpha_{2}}}=6.49\,[1/rad]}\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Cálculo de la distribución de sustentación sobre el ala y su valor máximo
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Cálculo-de-la-distribucion-sustentacion"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como ya se ha introducido al hablar del parámetro de estrechamiento, debemos
+ conocer la forma de la distribución de sustentación sobre el ala, no solo
+ para calcular el coeficiente de sustentación de ésta y posteriormente la
+ resistencia y momentos, sino también para conocer la coordenada en la envergadu
+ra en la que primero se produce la entrada en pérdida del ala y garantizar
+ de esta forma que dicho punto se encuentra en una posición tal que las
+ superficies de control no sean las primeras en quedarse sin sustentar,
+ perdiendo por tanto el control de la aeronave.
+\end_layout
+
+\begin_layout Standard
+Para ello, la sustentación se puede dividir en dos contribuciones, la sustentaci
+ón adicional, debida a la forma en planta del ala sin torsión, y la sustentación
+ básica, debida a la torsión del ala, siendo sus respectivos coeficientes
+ adimensionales:
+\begin_inset Formula 
+\[
+C_{l}=C_{l_{a}}+C_{l_{b}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El primero en proponer esta división fue Anderson en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Anderson1937"
+
+\end_inset
+
+, donde relacionaba estos coeficientes con sus propios coeficientes adimensional
+es mediante:
+\begin_inset Formula 
+\begin{equation}
+\begin{array}{ccc}
+L_{a}=\frac{C_{l_{a}}}{C_{L}}\frac{c}{c_{g}} & \,\,\,\,\, & L_{b}=\frac{C_{l_{b}}\,E}{C_{l_{\alpha}}\,\varepsilon_{t}}\frac{c}{c_{g}}\end{array}\label{eq:Cla-Clb}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $C_{L}$
+\end_inset
+
+ es el coeficiente de sustentación del ala, desconocido por el momento,
+ 
+\begin_inset Formula $E$
+\end_inset
+
+ es el parámetro de Jones que corrije la velocidad en el contorno, y se
+ calcula como el cociente del semiperímetro entre la envergadura, y 
+\begin_inset Formula $\varepsilon_{t}$
+\end_inset
+
+ debe introducirse en radianes ya que así está calculado 
+\begin_inset Formula $C_{l_{\alpha}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Para estimar la sustentación adicional, se propone el método semiempírico
+ de Diederich, mostrado en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Diederich1952"
+
+\end_inset
+
+, el cual proporciona resultados satisfactorios para una gran variedad de
+ geometrías diferentes, sin importar la forma en planta, siempre y cuando
+ la linea un cuarto de la cuerda sea aproximadamente recta, como así es
+ el caso, permitiendo expresar el parámetro adimensional de Anderson relativo
+ a la sustentación adicional como:
+\begin_inset Formula 
+\[
+L_{a}=C_{1}\frac{c}{c_{g}}+C_{2}\frac{4}{\pi}\sqrt{1-\eta^{2}}+C_{3}\,f
+\]
+
+\end_inset
+
+donde los coeficientes 
+\begin_inset Formula $C_{1}$
+\end_inset
+
+, 
+\begin_inset Formula $C_{2}$
+\end_inset
+
+, 
+\begin_inset Formula $C_{3}$
+\end_inset
+
+ y 
+\begin_inset Formula $f$
+\end_inset
+
+ se pueden obtener de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:CoeficientesC1C2C3f"
+
+\end_inset
+
+, en la cual el parámetro 
+\begin_inset Formula $F$
+\end_inset
+
+ es el denominado parámetro de forma en planta y viene determinado por 
+\begin_inset Formula $F=\nicefrac{\left(2\pi A\right)}{\left(C_{l_{\alpha}}\cos\Lambda_{\nicefrac{1}{4}}\right)}$
+\end_inset
+
+ y el parámetro 
+\begin_inset Formula $\Lambda_{e}$
+\end_inset
+
+ es la denominada flecha efectiva del ala, también expresada en la bibliografía
+ como 
+\begin_inset Formula $\Lambda_{\beta}$
+\end_inset
+
+, la cual se relaciona con la flecha en la línea un cuarto de la cuerda
+ a través de 
+\begin_inset Formula $\tan\Lambda_{e}=\tan\Lambda_{\beta}=\nicefrac{\tan\Lambda_{\nicefrac{1}{4}}}{\beta}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{adjustwidth}{-1cm}{-1cm}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/C1C2C3.JPG
+	width 60text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/LiftDistribution.JPG
+	width 50text%
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{adjustwidth}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Coeficientes 
+\begin_inset Formula $C_{1}$
+\end_inset
+
+, 
+\begin_inset Formula $C_{2}$
+\end_inset
+
+, 
+\begin_inset Formula $C_{3}$
+\end_inset
+
+ y 
+\begin_inset Formula $f$
+\end_inset
+
+ , obtenidos de 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Diederich1952"
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:CoeficientesC1C2C3f"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Una vez conocida la sustentación adicional para cada posición en la envergadura,
+ la sustentación básica adimensional de cada una de ellas se puede calcular
+ también a partir del método planteado por Dirichlet como:
+\begin_inset Formula 
+\begin{equation}
+L_{b}=L_{a}\,\beta\,E\,k_{0}\,k_{1}\,\cos\Lambda_{\beta}\left(\frac{\varepsilon}{\varepsilon_{t}}+\alpha_{0_{l}}\right)\label{eq:Sustentacion-basica}
+\end{equation}
+
+\end_inset
+
+donde en el caso de alas de estrechamiento simple el parámetro de Jones
+ se puede aproximar como:
+\begin_inset Formula 
+\[
+E=1+\frac{2\,\lambda}{A\left(1+\lambda\right)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Los parámetros 
+\begin_inset Formula $k_{0}$
+\end_inset
+
+ y 
+\begin_inset Formula $k_{1}$
+\end_inset
+
+ se pueden obtener de la gráfica de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Parámetros-k0-k1"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/C4_k0_k1.JPG
+	width 70text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Parámetros 
+\begin_inset Formula $k_{0}$
+\end_inset
+
+ y 
+\begin_inset Formula $k_{1}$
+\end_inset
+
+, obtenidos de 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Diederich1952"
+
+\end_inset
+
+
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Parámetros-k0-k1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Por último, el parámetro 
+\begin_inset Formula $\alpha_{0_{l}}$
+\end_inset
+
+ de la ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Sustentacion-basica"
+
+\end_inset
+
+ es el ángulo de torsión aerodinámica existente en la sección en la que
+ 
+\begin_inset Formula $C_{l_{b}}=0$
+\end_inset
+
+, suponiendo una torsión en la punta de de un grado respecto a la sección
+ situada en el encastre, el cual se puede calcular realizando una integración
+ numérica a lo largo de la envergadura, de la forma:
+\begin_inset Formula 
+\[
+\alpha_{0_{l}}=-\int_{0}^{1}\frac{\varepsilon}{\varepsilon_{t}}\,L_{a}\,d\eta
+\]
+
+\end_inset
+
+Una vez conocemos los parámetros adimensionales de sustentación de Anderson,
+ se calcularán los coeficientes de sustentación.
+ Para obtener 
+\begin_inset Formula $C_{l_{b}}$
+\end_inset
+
+ no tenemos ningún problema y es directa su obtención a partir de la ecuación
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Cla-Clb"
+
+\end_inset
+
+, sin embargo, al calcular 
+\begin_inset Formula $C_{l_{a}}$
+\end_inset
+
+ queda en función del coeficiente de sustentación del ala, cuya obtención
+ se verá en el siguiente apartado, por lo que, como era de esperar, la distribuc
+ión de sustentación del ala, resultante de sumar la distribución adicional
+ y la distribución básica, depende del coeficiente de sustentación global
+ del ala, y va cambiando en función de la condición de vuelo.
+\end_layout
+
+\begin_layout Standard
+Para calcular el coeficiente de sustentación máximo del ala y la coordenada
+ a lo largo de la envergadura en la que primero se alcanza este valor, se
+ puede seguir el planeamiento propuesto por Abbot y Von Doenhoff en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Abbott1959"
+
+\end_inset
+
+, en el que se considera que el coeficiente de sustentación máximo del ala
+ es aquel que ésta proporciona cuando la primera de sus secciones entra
+ en pérdida, lo cual se produce cuando alcanza el valor del 
+\begin_inset Formula $C_{l_{max}}$
+\end_inset
+
+ del perfil teniendo en cuenta la flecha, o lo que es lo mismo, 
+\begin_inset Formula $C_{l_{max}}\cos\Lambda_{\nicefrac{1}{4}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Una sencilla forma de calcular este valor, es calcular la distribución de
+ sustentación adicional para un coeficiente de sustentación 
+\begin_inset Formula $C_{L}=1$
+\end_inset
+
+ y a continuación determinar el mínimo valor que multiplicado por dicha
+ distribución de sustentación adicional y sumada a la básica consiga que
+ en una de las secciones se alcance el valor máximo del 
+\begin_inset Formula $C_{l}$
+\end_inset
+
+ del perfil en dicha sección.
+ Este razonamiento puede ser fácilmente expresado en notación matemática
+ simplemente buscando el mínimo del siguiente ratio:
+\begin_inset Formula 
+\[
+C_{L_{max}}=\min\left(\frac{C_{l_{max}}\cos\Lambda_{\nicefrac{1}{4}}-C_{l_{b}}}{C_{l_{a}\,at\,C_{L}=1}}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Resultando en los siguientes valores de coeficientes de sustentación máximos
+ de cada ala:
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+C_{L_{max_{1}}}=1.293 & \,\,\,\,\, & C_{L_{max_{2}}}=1.326\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A continuación se muestran en las figuras 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Distribucción-de-sustentación_1"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Distribucción-de-sustentación_2"
+
+\end_inset
+
+ las distribuciones de sustentación adicional, la básica y la total para
+ el 
+\begin_inset Formula $C_{L_{max}}$
+\end_inset
+
+ de cada ala, así como la adicional relativa a 
+\begin_inset Formula $C_{L}=1$
+\end_inset
+
+ y el punto en el que primero se produce la entrada en pérdida en cada una
+ de ellas.
+\end_layout
+
+\begin_layout Standard
+Como se puede ver, al ser diferente el Mach de la corriente que recibe cada
+ ala, existe una diferencia en el comportamiento de los perfiles que se
+ manifiesta en una diferente distribución de sustentación pudiendo alcanzar
+ diferentes valores de 
+\begin_inset Formula $C_{L}$
+\end_inset
+
+ cada una antes de que se produzca la pérdida.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/SpanwiseLiftDistribution_1.eps
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Distribución de sustentación sobre el ala delantera
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Distribucción-de-sustentación_1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/SpanwiseLiftDistribution_2.eps
+	width 75text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Distribución de sustentación sobre el ala trasera
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Distribucción-de-sustentación_2"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+El ala que nos interesa es la delantera por una doble razón, en primer lugar,
+ porque en ella será donde van situados los alerones y es por tanto en la
+ que hay que garantizar que su entrada en pérdida no les afecta directamente,
+ y en segundo lugar, porque al soportar ella la mayor parte de la sustentación
+ para que pueda existir equilibrio de momentos sin la necesidad de posicionar
+ el centro de gravedad excesivamente retrasado, será la que tenga un coeficiente
+ de sustentación mucho mayor de ambas en todas las fases del vuelo.
+\end_layout
+
+\begin_layout Standard
+Ésto se debe a que, aunque la trasera tiene una geometría similar a la delantera
+, se posicionará con un ángulo de incidencia con el fuselaje mucho menor
+ que la delantera, sustentando menos y por tanto con un 
+\begin_inset Formula $C_{L}$
+\end_inset
+
+ muy alejado de los valores de entrada en pérdida.
+ El cálculo exacto de la incidencia de cada ala, así como la separación
+ entre ellas, para que se cumpla el equilibrio de fuerzas y de momentos
+ en crucero sin necesidad de deflectar el elevador se estudiará en el apartado
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Determinación-de-la-incidencia"
+
+\end_inset
+
+, una vez se hayan calculado los coeficientes de sustentación y momentos
+ del avión completo.
+\end_layout
+
+\begin_layout Standard
+Para poder modificar la posición del punto de entrada en pérdida de las
+ alas, mostrado en las figuras 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Distribucción-de-sustentación_1"
+
+\end_inset
+
+ y 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Distribucción-de-sustentación_2"
+
+\end_inset
+
+ con un círculo, los parámetros más influyentes son la torsión del ala y
+ el estrechamiento, por lo que se ha tenido que buscar una combinación de
+ éstos parámetros que proporcione la máxima sustentación posible, al mismo
+ tiempo que sitúa la entrada en pérdida del ala delantera en una posición
+ inferior al 60% de la semienvergadura.
+\end_layout
+
+\begin_layout Subsection
+Cálculo del coeficiente de sustentación del ala
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Cálculo-del-coeficiente-sustentacion"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Llegados a este punto, ya se conocen todos los datos necesarios para conocer
+ el coeficiente de sustentación del ala en la zona lineal de la curva de
+ sustentación, pudiéndose calcular como:
+\begin_inset Formula 
+\begin{equation}
+C_{L_{\text{w}}}=C_{L_{\alpha}}\,\left[\alpha_{r}-\left(\alpha_{l_{0}}\right)_{r}-\alpha_{0_{l}}\,\varepsilon_{t}\right]\label{eq:C_L_w}
+\end{equation}
+
+\end_inset
+
+donde 
+\begin_inset Formula $\alpha_{r}$
+\end_inset
+
+ es el ángulo de ataque de la sección del ala en la raíz, 
+\begin_inset Formula $\left(\alpha_{l_{0}}\right)_{r}$
+\end_inset
+
+ el ángulo de sustentación nula del perfil en la raíz y el último término
+ del corchete representa la contribución de la torsión.
+ Hay que recordar que todos éstos ángulos se deben convertir a radiantes
+ antes de multiplicarlos por 
+\begin_inset Formula $C_{L_{\alpha}}$
+\end_inset
+
+ para que las unidades sean coherentes.
+\end_layout
+
+\begin_layout Standard
+A partir de ésta expresión es inmediato obtener el ángulo ataque en la raíz
+ que proporciona sustentación nula al ala completa, resultando:
+\begin_inset Formula 
+\[
+\left(\alpha_{L_{0}}\right)_{r}=\left(\alpha_{l_{0}}\right)_{r}+\alpha_{0_{l}}\,\varepsilon_{t}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La obtención del ángulo de ataque en la raíz será ligeramente diferente
+ para ambas alas, ya que la delantera se encuentra con una corriente no
+ perturbada, de forma que el ángulo de ataque es simplemente la suma del
+ ángulo de ataque del fuselaje y la incidencia del ala respecto al fuselaje.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Wrap figure
+lines 7
+placement r
+overhang 0in
+width "52text%"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-1.5em}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/r-m-parameters.JPG
+	width 50text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Parámetros-r-m"
+
+\end_inset
+
+Parámetros 
+\begin_inset Formula $r$
+\end_inset
+
+ y 
+\begin_inset Formula $m$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Sin embargo, la presencia de este ala delantera perturba la corriente, provocand
+o una modificación de la trayectoria de la corriente tras ella comparada
+ con la corriente sin perturbar que reduce el ángulo de ataque efectivo
+ del ala trasera.
+ A esta modificación de la trayectoria introducida por el ala delantera
+ se la denomina deflexión de estela y es lo suficientemente importante como
+ para que tenga que ser tenida en cuenta al calcular el ángulo de ataque
+ del segundo ala.
+\end_layout
+
+\begin_layout Standard
+Para estimar este ángulo de deflexión de estela, Torenbeek propone la siguiente
+ expresión para aproximar el gradiente de deflexión de estela en función
+ del ángulo de ataque del ala:
+\begin_inset Formula 
+\[
+\frac{d\varepsilon}{d\alpha}=1.75\,\frac{C_{L_{\alpha}}}{\pi A\left(\lambda\,r\right)^{0.25}\left(1+\left|m\right|\right)}
+\]
+
+\end_inset
+
+donde los parámetros aerodinámicos son los correspondientes al ala perturbadora,
+ y los parámetros 
+\begin_inset Formula $r$
+\end_inset
+
+ y 
+\begin_inset Formula $m$
+\end_inset
+
+ son dos relaciones geométricas tal y como se muestra en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Parámetros-r-m"
+
+\end_inset
+
+.
+ A su vez, Torenbeek advierte de que la presencia de los motores en la parte
+ posterior del fuselaje también afecta a este parámetro causando una disminución
+ de aproximadamente un 10% en el término 
+\begin_inset Formula $\left(1-\nicefrac{d\varepsilon}{d\alpha}\right)$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Una vez tenido en cuenta este efecto, se pueden calcular los coeficientes
+ de sustentación de ambas alas:
+\begin_inset Formula 
+\[
+\begin{array}{c}
+C_{L_{\text{w}_{1}}}=C_{L_{\alpha_{\text{w}_{1}}}}\left(\alpha_{f}+i_{w_{1}}-\left(\alpha_{l_{0}}\right)_{r_{1}}-\alpha_{0_{l_{1}}}\,\varepsilon_{t_{1}}\right)\\
+\\
+C_{L_{\text{w}_{2}}}=C_{L_{\alpha_{\text{w}_{2}}}}\left(0.9\,\alpha_{f}\left(1-\frac{d\varepsilon}{d\alpha}\right)+i_{w_{2}}-\left(\alpha_{l_{0}}\right)_{r_{2}}-\alpha_{0_{l_{2}}}\,\varepsilon_{t_{2}}\right)
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Determinación de los momentos sobre la aeronave
+\end_layout
+
+\begin_layout Standard
+Como resulta habitual en los tratados de aerodinámica, para el cálculo de
+ los momentos se ha supuesto que toda la sustentación de las alas se encuentra
+ aplicada en el centro aerodinámico de éstas, de forma que el coeficiente
+ total de momentos de cada ala es la suma del propio coeficiente de momentos
+ en el centro aerodinámico, el cual es independiente de la sustentación,
+ y los momentos producidos por la sustentación, siendo el brazo la distancia
+ entre el centro aerodinámico y el centro de gravedad de la aeronave.
+\begin_inset Formula 
+\begin{equation}
+C_{m_{\text{w}}}=C_{m_{ac_{\text{w}}}}+C_{L_{\text{w}}}\,\frac{x_{cg}-x_{ac}}{\text{MAC}}\label{eq:Cm_w}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para el cálculo del coeficiente de momentos en el centro aerodinámico del
+ ala completa se puede recurrir a calcular por separado la contribución
+ debida a la curvatura de los perfiles utilizados, que denominaremos contribució
+n básica, y la contribución de la torsión del ala a lo largo de la envergadura.
+\begin_inset Formula 
+\[
+C_{m_{ac_{\text{w}}}}=\left(C_{m_{ac}}\right)_{basic}+\Delta\varepsilon C_{m_{ac}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La primera de estas componentes se puede obtener integrando numéricamente
+ la distribución de curvaturas a lo largo de la envergadura, para ello,
+ el coeficiente de momentos en el centro aerodinámico de los perfiles se
+ ha obtenido de los datos experimentales presentados en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Datos-experimentales-SC0712"
+
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+\left(C_{m_{ac}}\right)_{basic}=\frac{2}{S\,\text{MAC}}\,\int_{0}^{\nicefrac{b}{2}}C_{m_{ac}}\,c^{2}\,dy
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La segunda contribución, debida a la torsión, se puede obtener a partir
+ de la distribución de sustentación básica obtenida en el apartado 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Cálculo-de-la-distribucion-sustentacion"
+
+\end_inset
+
+, de la forma:
+\begin_inset Formula 
+\[
+\Delta\varepsilon\,C_{m_{ac}}=-\frac{2}{S\,\text{MAC}}\,\int_{0}^{\nicefrac{b}{2}}C_{l_{b}}\,c\,y\,\tan\Lambda_{ac}\,dy
+\]
+
+\end_inset
+
+ esta expresión se puede simplificar si se asume que todos los centros aerodinám
+icos de los perfiles se encuentran en un cuarto de la cuerda, resultando:
+\begin_inset Formula 
+\[
+\Delta\varepsilon\,C_{m_{ac}}=-\frac{1}{2}\,A\,\frac{c_{g}}{\text{MAC}}\,\tan\Lambda_{\nicefrac{1}{4}}\int_{0}^{1}C_{l_{b}}\,\frac{c}{c_{g}}\,\eta\,d\eta
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En la ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Cm_w"
+
+\end_inset
+
+ aparece la posición longitudinal del centro de gravedad de la aeronave,
+ el cual es un dato desconocido en esta etapa del diseño en la que ni siquiera
+ se ha definido la ubicación de la alas, ni gran parte de las características
+ de éstas.
+ 
+\end_layout
+
+\begin_layout Standard
+Sin embargo, debemos recordar que el proceso de diseño de una aeronave no
+ se trata de un proceso lineal, sino de uno iterativo, por lo tanto se deberá
+ escoger un valor aproximado para la posición del centro de gravedad basado
+ en el criterio y buen ojo del diseñador a partir del dimensionado del fuselaje
+ realizado en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Diseño-del-fuselaje"
+
+\end_inset
+
+.
+ Por supuesto, este valor tendrá un alto grado de error y deberá ser posteriorme
+nte sustituido por el valor del centro de gravedad que se estimará en el
+ capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Predicción-de-pesos"
+
+\end_inset
+
+, una vez que se hayan definido las alas en su totalidad.
+\end_layout
+
+\begin_layout Standard
+Este cambio se verá reflejado en el cálculo de los momentos que aparecen
+ sobre la aeronave, debiéndose calcular de nuevo, con el valor del centro
+ de gravedad actualizado, los parámetros de las alas que se vean afectados
+ por los momentos, repitiendo este procedimiento hasta que el cambio en
+ las características de éstas sea despreciable.
+\end_layout
+
+\begin_layout Section
+Correcciones a la sustentación
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Correcciones-a-la-sustentacion"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Wrap figure
+lines 11
+placement o
+overhang 0in
+width "52text%"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-1em}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/Lift_Interferences.JPG
+	width 50text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Efectos-del-fuselaje"
+
+\end_inset
+
+Efectos del fuselaje
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+En los apartados anteriores se ha supuesto que las alas se encontraban aisladas,
+ sin considerar los efectos debidos a la existencia de un fuselaje.
+ Aunque nos encontremos en una fase de diseño preliminar, donde un cierto
+ error en los cálculos resulta admisible, los efectos de éste son tan significat
+ivos que es necesario incluir una serie de correcciones al coeficiente de
+ sustentación calculado en el apartado 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Cálculo-del-coeficiente-sustentacion"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Los principales efectos en la sustentación ocasionados por la presencia
+ del fuselaje y su interferencia en las alas se muestran en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Efectos-del-fuselaje"
+
+\end_inset
+
+ y son:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-1em}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+El fuselaje sustenta, siendo positiva la sustentación de la parte delantera
+ del fuselaje y negativa la de la trasera.
+ Sin embargo, al ser mayor la contribución del morro, aporta una contribución
+ positiva a la sustentación global.
+\end_layout
+
+\begin_layout Itemize
+El flujo cruzado existente, perpendicular al fuselaje, produce un incremento
+ del ángulo de ataque efectivo de las secciones cercanas al encastre y por
+ tanto de la sustentación de éstas.
+\end_layout
+
+\begin_layout Itemize
+\noindent
+\align block
+La simple presencia de las alas, produce un incremento de sustentación del
+ fuselaje.
+ Sin embargo este incremento sigue siendo bastante menor que la sustentación
+ que se produciría si en vez del fuselaje, las alas llegasen hasta el plano
+ de simetría del avión.
+ 
+\end_layout
+
+\begin_layout Itemize
+\noindent
+\align block
+Existe una contribución a la sustentación debido a la diferencia del comportamie
+nto del flujo en función de la posición vertical de las alas, dependiendo
+ de si son altas, bajas o medias.
+\end_layout
+
+\begin_layout Standard
+Todas estas contribuciones se pueden agrupar para obtener un nuevo coeficiente
+ de sustentación para las alas que tenga en cuenta la presencia del fuselaje,
+ siendo éste:
+\begin_inset Formula 
+\begin{equation}
+C_{L_{\text{wf}}}=\left(C_{L_{\alpha}}\right)_{\text{wf}}\left\{ \left(\alpha_{f}-\alpha_{0_{l}}\varepsilon_{t}\right)+\frac{K_{II}}{K_{I}}\left[i_{w}-\left(\alpha_{l_{0}}\right)_{r}\right]\right\} +\Delta_{z}C_{L}\label{eq:C_L_wf}
+\end{equation}
+
+\end_inset
+
+donde para calcular los nuevos parámetros que aparecen se ha utilizado el
+ método propuesto en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Pitts1957"
+
+\end_inset
+
+ para fuselajes casi cilíndricos, siendo éstos:
+\begin_inset Formula 
+\[
+\left(C_{L_{\alpha}}\right)_{\text{wf}}=K_{I}\,C_{L_{\alpha_{\text{w}}}}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+K_{I}=\left(1+2.15\,\frac{b_{f}}{b}\right)\,\frac{S_{net}}{S}+\frac{\pi}{2\,C_{L_{\text{w}_{\alpha}}}}\frac{b_{f}^{2}}{S}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+K_{II}=\left(1+0.7\,\frac{b_{f}}{b}\right)\,\frac{S_{net}}{S}
+\]
+
+\end_inset
+
+siendo la superficie neta la resultante de restar a la superficie alar,
+ la proyección en planta del fuselaje que quedaría sobre ésta.
+\end_layout
+
+\begin_layout Standard
+En la ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:C_L_wf"
+
+\end_inset
+
+ aparece un último término dependiente de la posición vertical del ala.
+ Para estimarlo, Hoerner en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Hoerner1965"
+
+\end_inset
+
+ propone la siguiente relación para el caso de ala alta:
+\begin_inset Formula 
+\[
+\Delta_{z}\,C_{L}\,\frac{S}{c_{r}\,b_{f}}=-0.1
+\]
+
+\end_inset
+
+de donde es inmediata su obtención, siendo el parámetro 
+\begin_inset Formula $b_{f}$
+\end_inset
+
+ la anchura del fuselaje en su parte cilíndrica.
+\end_layout
+
+\begin_layout Standard
+Para el caso del ala trasera se debe modificar la ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:C_L_wf"
+
+\end_inset
+
+, al igual que se ha hecho con la 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:C_L_w"
+
+\end_inset
+
+ para incluir el efecto de la deflexión de estela en la segunda ala, resultando
+ por tanto:
+\begin_inset Formula 
+\[
+C_{L_{\text{wf}}}=\left(C_{L_{\alpha}}\right)_{\text{wf}}\left\{ 0.9\,\alpha_{f}\left(1-\frac{d\varepsilon}{d\alpha}\right)-\alpha_{0_{l}}\varepsilon_{t}+\frac{K_{II}}{K_{I}}\left[i_{w}-\left(\alpha_{l_{0}}\right)_{r}\right]\right\} +\Delta_{z}C_{L}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Correcciones a los momentos
+\end_layout
+
+\begin_layout Standard
+Al igual que se ha necesitado incorporar las respectivas correcciones a
+ la sustentación debido a la presencia del fuselaje, hay que realizar una
+ labor similar con los momentos, ya que las diferencias debidas al fuselaje
+ no son despreciables, y para ello, se incorporarán correcciones tanto a
+ la posición del centro aerodinámico del ala completa con el efecto del
+ fuselaje, como al propio coeficiente de momentos en el centro aerodinámico.
+\end_layout
+
+\begin_layout Standard
+La posición adimensional del nuevo centro aerodinámico se puede expresar
+ como:
+\begin_inset Formula 
+\[
+\left(\frac{x_{ac}}{\text{MAC}}\right)_{\text{wf}}=\left(\frac{x_{ac}}{\text{MAC}}\right)_{\text{w}}+\frac{\Delta_{f1}\,x_{ac}}{\text{MAC}}+\frac{\Delta_{f2}\,x_{ac}}{\text{MAC}}+\frac{\Delta_{n}\,x_{ac}}{\text{MAC}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La primera corrección, 
+\begin_inset Formula $\Delta_{f1}\,x_{ac}$
+\end_inset
+
+, se debe al momento de cabeceo producido por la sustentación de las secciones
+ de fuselaje por delante y por detrás del ala, en especial, por el morro
+ del avión.
+ Una aproximación de este fenómeno basada en datos experimentales se puede
+ obtener como:
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "S"
+symbol "N"
+description "Relativo a la parte delantera del fuselaje (Nose)"
+
+\end_inset
+
+
+\begin_inset CommandInset nomenclature
+LatexCommand nomenclature
+prefix "S"
+symbol "A"
+description "Relativo a la parte trasera del fuselaje (Afterbody)"
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\frac{\Delta_{f1}\,x_{ac}}{\text{MAC}}=-\frac{1.8}{\left(C_{L_{\alpha}}\right)_{\text{wf}}}\,\frac{b_{f}\,h_{f}\,l_{\text{fn}}}{S\,\text{MAC}}
+\]
+
+\end_inset
+
+ donde 
+\begin_inset Formula $l_{\text{nf}}$
+\end_inset
+
+ es la distancia longitudinal desde el morro del avión al borde de ataque
+ de la unión del ala con el fuselaje.
+\end_layout
+
+\begin_layout Standard
+La segunda corrección del centro aerodinámico, 
+\begin_inset Formula $\Delta_{f2}\,x_{ac}$
+\end_inset
+
+, representa las pérdidas de sustentación de la región del fuselaje, y se
+ valor se puede estimar a partir del método proporcionado por las DATCOM,
+ resultando:
+\begin_inset Formula 
+\[
+\frac{\Delta_{f2}\,x_{ac}}{\text{MAC}}=\frac{0.273}{1+\lambda}\,\frac{b_{f}\,c_{g}\,\left(b-b_{f}\right)}{\left(\text{MAC}\right)^{2}\,\left(b+2.15\,b_{f}\right)}\,\tan\Lambda_{\nicefrac{1}{4}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La tercera, y última, corrección de la posición del centro aerodinámico
+ se debe a la influencia de los motores.
+ Esta contribución resulta difícil de estimar, pero una primera aproximación
+ podría ser la proporcionada por:
+\begin_inset Formula 
+\[
+\frac{\Delta_{n}\,x_{ac}}{\text{MAC}}=\sum k_{n}\,\frac{b_{n}^{2}\,l_{n}}{S\,\text{MAC}\,\left(C_{L_{\alpha}}\right)_{\text{wf}}}
+\]
+
+\end_inset
+
+ donde el parámetro 
+\begin_inset Formula $k_{n}=-2.5$
+\end_inset
+
+ para los motores montados en la sección posterior del fuselaje, 
+\begin_inset Formula $b_{n}$
+\end_inset
+
+ y 
+\begin_inset Formula $l_{n}$
+\end_inset
+
+ son respectivamente el ancho y largo de los motores, y la contribución
+ se debe calcular y sumar para cada uno de los motores que se tenga.
+\end_layout
+
+\begin_layout Standard
+Para estimar la modificación del coeficiente de momentos del conjunto ala/fusela
+je en el centro aerodinámico, se puede expresar el nuevo coeficiente como:
+\begin_inset Formula 
+\[
+\left(C_{m_{ac}}\right)_{\text{wf}}=\left(C_{m_{ac}}\right)_{\text{w}}+\Delta_{f}\,C_{m_{ac}}
+\]
+
+\end_inset
+
+ donde la contribución del fuselaje se puede estimar gracias a la teoría
+ desarrollada por Munk en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Munk1924"
+
+\end_inset
+
+, donde para fuselajes casi cilíndricos:
+\begin_inset Formula 
+\[
+\Delta_{f}\,C_{m_{ac}}=-1.8\,\left(1-\frac{2.5\,b_{f}}{l_{f}}\right)\,\frac{\pi\,b_{f}\,h_{f}\,l_{f}}{4\,S\,\text{MAC}}\,\frac{C_{L_{0}}}{\left(C_{L_{\alpha}}\right)_{\text{wf}}}
+\]
+
+\end_inset
+
+ donde 
+\begin_inset Formula $C_{L_{0}}$
+\end_inset
+
+ es el coeficiente de sustentación para 
+\begin_inset Formula $\alpha_{f}=0$
+\end_inset
+
+.
+ Resultando finalmente el coeficiente de momentos aerodinámicos:
+\begin_inset Formula 
+\[
+\left(C_{m}\right)_{\text{wf}}=\left(C_{m_{ac}}\right)_{\text{wf}}+C_{L_{\text{wf}}}\,\frac{x_{cg}-\left(x_{ac}\right)_{\text{wf}}}{\text{CMA}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Cálculo de la sustentación del avión completo
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Cálculo-de-la-sustentacion-avion-completo"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Llegados a este punto, se puede conocer los coeficientes de sustentación,
+ los coeficientes de momentos y la posición del centro aerodinámico de ambas
+ alas en función del ángulo de ataque del fuselaje, de la incidencia de
+ cada ala y de la posición éstas, ya que como se ha comentado antes, la
+ posición del centro de gravedad se supondrá conocida.
+\end_layout
+
+\begin_layout Standard
+Hasta ahora, los coeficientes de cada ala se han adimensionalizado con las
+ magnitudes representativas de dicha ala, sin embargo, para calcular los
+ coeficientes de sustentación y de momentos globales de la aeronave, es
+ necesario definir cuáles serán las magnitudes que se usarán.
+ 
+\end_layout
+
+\begin_layout Standard
+Esta decisión, en principio, queda en manos del diseñador ya que no afecta
+ al cálculo, sin embargo, para tratar de mantener los valores de los coeficiente
+s en unos rangos en los que sea factible su comparación directa con los
+ de otras aeronaves de geometría convencional, se ha decidido utilizar la
+ superficie total del avión obtenida del punto de diseño, es decir, la suma
+ de las dos alas, y la cuerda media aerodinámica resultante de dicha superficie
+ con los valores de alargamiento y estrechamiento de las alas, cuyos valores
+ se muestran a continuación:
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.25em}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+S_{w}=65.19\,[m^{2}] & \,\,\,\,\, & \text{MAC}=2.91\,[m]\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-1em}
+\end_layout
+
+\end_inset
+
+A su vez, es necesario recordar la diferencia de presiones dinámicas entre
+ las alas, tal y como se muestra en la ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:q1_q2"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Con todo lo anterior presente, se puede expresar el coeficiente de momentos
+ global de la aeronave como:
+\begin_inset Formula 
+\[
+C_{L}=\frac{q_{1}}{q_{\infty}}\,\frac{S_{w_{1}}}{S_{w}}\,C_{L_{\text{wf}_{1}}}+\frac{q_{2}}{q_{\infty}}\,\frac{S_{w_{2}}}{S_{w}}\,C_{L_{\text{wf}_{2}}}
+\]
+
+\end_inset
+
+ y el coeficiente de momentos global como:
+\begin_inset Formula 
+\[
+\begin{array}{c}
+C_{m}=\frac{q_{1}}{q_{\infty}}\,\frac{S_{w_{1}}}{S_{w}}\,\frac{\text{MAC}_{1}}{\text{MAC}}\,\left(C_{m_{ac_{1}}}\right)_{\text{wf}}+\frac{q_{2}}{q_{\infty}}\,\frac{S_{w_{2}}}{S_{w}}\,\frac{\text{MAC}_{2}}{\text{MAC}}\,\left(C_{m_{ac_{2}}}\right)_{\text{wf}}+\\
+\\
+\,\,\,\,\,+\frac{q_{1}}{q_{\infty}}\,\frac{S_{w_{1}}}{S_{w}}\,\frac{x_{cg}-\left(x_{ac_{1}}\right)_{\text{wf}}}{\text{MAC}}\,C_{L_{\text{wf}_{1}}}+\frac{q_{2}}{q_{\infty}}\,\frac{S_{w_{2}}}{S_{w}}\,\frac{x_{cg}-\left(x_{ac_{2}}\right)_{\text{wf}}}{\text{MAC}}\,C_{L_{\text{wf}_{2}}}
+\end{array}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Determinación de la incidencia de las alas y del stagger
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Determinación-de-la-incidencia"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Llegados a este punto, se dispone de los datos necesarios para tomar una
+ decisión que nos permita establecer la posición longitudinal de cada ala,
+ así como el ángulo de incidencia de éstas con el fuselaje.
+\end_layout
+
+\begin_layout Standard
+Como los momentos propios de ambas alas son a picar y se ha decidido que
+ una de las alas se encuentre por delante del centro de gravedad y la otra
+ por detrás, ya que si fuesen las dos por delante obligaría a situarlas
+ muy juntas existiendo unos efectos de interferencia que no se sabrían predecir
+ con las teorías potenciales disponibles en esta fase de diseño, la única
+ opción para que exista igualdad de momentos, es que la delantera sustente
+ más o se encuentre mucho más alejada del centro de gravedad que la trasera
+ o una combinación de ambos efectos.
+\end_layout
+
+\begin_layout Standard
+Por tanto, para el ala delantera se ha escogido la posición más adelantada
+ posible sin que dicho ala se introduzca en la cabina de los pilotos, donde
+ presentaría un mayor problema su instalación por la cantidad de equipos
+ electrónicos y sistemas existentes, fijando la posición de su borde de
+ ataque en la raíz en una distancia respecto del morro de 
+\begin_inset Formula $x_{r_{LE_{1}}}=3.65\,[m]$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Para establecer la incidencia de las alas y el stagger, se ha decidido,
+ para tratar de reducir la resistencia aerodinámica en crucero y por tanto
+ mejorar la eficiencia y disminuir el consumo, seleccionar la combinación
+ de estos parámetros que permita el vuelo en una condición característica
+ de crucero sin necesidad de realizar ninguna deflexión del elevador, donde
+ se ha considerado que una condición característica de crucero es un vuelo
+ a velocidad de largo alcance y altura de crucero de diseño, con la carga
+ de pago de diseño y la mitad del peso máximo de combustible.
+\end_layout
+
+\begin_layout Standard
+Esta decisión de diseño se puede transformar en un un sistema no lineal
+ de tres ecuaciones que proporcione 
+\begin_inset Formula $i_{w_{1}}$
+\end_inset
+
+, 
+\begin_inset Formula $i_{w_{2}}$
+\end_inset
+
+ y el stagger, donde por un lado se tiene que cumplir el equilibrio de fuerzas
+ (peso igual a sustentación), el equilibrio de momentos (momento total resultant
+e respecto al centro de gravedad nulo) y para acabar de definir el sistema
+ se tiene que incluir una relación entre las sustentaciones de cada ala,
+ 
+\begin_inset Formula $\nicefrac{C_{L_{1}}}{C_{L_{2}}}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+A priori, este último dato resulta desconocido y únicamente se puede garantizar
+ que la sustentación de la delantera será mayor, pero no se sabe cual es
+ la relación exacta.
+ Al resolver el sistema para varios valores posibles de éste parámetro,
+ 
+\begin_inset Formula $\nicefrac{C_{L_{1}}}{C_{L_{2}}}\in[0.60,\,0.90]$
+\end_inset
+
+, se ha podido comprobar que las alas quedaban excesivamente juntas para
+ los valores más pequeños, habiéndose seleccionado por tanto un valor que
+ proporcionase una separación como mínimo de una cuerda entre ambas alas,
+ siendo el valor escogido 
+\begin_inset Formula $\nicefrac{C_{L_{1}}}{C_{L_{2}}}=0.85$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Sin embargo, la separación entre las alas es altamente dependiente de la
+ posición del centro de gravedad, que recordemos que en esta etapa todavía
+ se ha tomado un valor estimado en torno a la mitad de la aeronave, pero
+ no se ha calculado con precisión, por lo que todos estos pasos se deberán
+ realizar de nuevo cuando éste se calcule, pudiendo requerir un cambio en
+ el valor de la relación de sustentación entre las alas.
+\end_layout
+
+\begin_layout Standard
+Para finalizar, se muestran los valores de las incidencias y del stagger
+ obtenidos:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="5">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $i_{w_{1}}=2.96\,\degree$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $i_{w_{2}}=2.08\,\degree$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Stagger
+\begin_inset space ~
+\end_inset
+
+=
+\begin_inset space ~
+\end_inset
+
+3.023
+\begin_inset space ~
+\end_inset
+
+m
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/AircraftCoefficients.eps
+	width 78text%
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Coeficientes de sustentación y momentos de la aeronave
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Coeficientes-de-sustentación-momentos"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En el apartado 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Cálculo-de-la-sustentacion-avion-completo"
+
+\end_inset
+
+ se habían expresado los coeficientes de sustentación y momentos del avión
+ completo, suponiendo que no existe deflexión de flaps ni elevador, en función
+ de cinco parámetros, véase, la posición longitudinal de las alas, la incidencia
+ de éstas y el ángulo de ataque del fuselaje, sin embargo, una vez fijados
+ los cuatro primeros, ya se pueden calcular los coeficientes de sustentación
+ y momentos del avión completo en función del ángulo de ataque, los cuales
+ se muestran en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Coeficientes-de-sustentación-momentos"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+Dimensionado del estabilizador vertical (VTP)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Wrap figure
+lines 11
+placement r
+overhang 0in
+width "42text%"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-1.00em}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/VTP.JPG
+	width 40text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Esquema del VTP
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+En función de los parámetros alares escogidos, los motores, y la posición
+ supuesta del centro de gravedad, se puede realizar un primer dimensionado
+ del estabilizador vertical.
+\end_layout
+
+\begin_layout Standard
+Para ello, se considerá al VTP, como un semiala más, también con flecha
+ y alargamiento simple, de tal forma que se supondrá que su centro aerodinámico
+ se encuentra en la posición un cuarto de la cuerda media aerodinámica y
+ se elegirán de forma iterativa los parámetros geométricos que permitan
+ definirlo con exactitud y que proporcionen unos momentos suficientes para
+ cumplir los requisitos de maniobrabilidad, sin incurrir en un excesivo
+ aumento de la resistencia por un dimensionado excesivo.
+\end_layout
+
+\begin_layout Standard
+Realizar un preciso diseño del estabilizador vertical resulta altamente
+ complejo debido a la dificultad intrínseca de calcular las características
+ aerodinámicas lateral-direccionales, así como lo altamente afectadas que
+ se ven éstas por la perturbación del flujo que producen las alas y el fuselaje,
+ sin embargo, existen una serie de aspectos comprobados que se deben tener
+ en cuenta al realizar el diseño:
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.5em}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+El estabilizador no puede entrar en pérdida tras una deflexión brusca del
+ timón o tras el fallo de un motor.
+\end_layout
+
+\begin_layout Itemize
+Tras el fallo del motor más crítico, el avión tiene que seguir pudiendo
+ ser controlable.
+\end_layout
+
+\begin_layout Itemize
+Tiene que ser posible aterrizar con un viento cruzado de 55 km/h (30 kts).
+\end_layout
+
+\begin_layout Itemize
+El avión tiene que tener una correcta estabilidad lateral-direccional.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vspace{-0.5em}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En la mayoría de los casos, los dos requisitos más exigentes y que por tanto
+ limitan el dimensionado del VTP son el control con fallo del motor crítico
+ y el disponer de una adecuada estabilidad lateral-direccional, siendo el
+ primero de ellos normalmente más restrictivo en el caso de que los motores
+ se encuentren alojados en las alas y el segundo para los aviones en los
+ que los motores se encuentran en el fuselaje o cerca de éste, habiéndose
+ calculado en nuestro caso ambos requisitos y escogiendo el más restrictivo.
+\end_layout
+
+\begin_layout Standard
+En primer lugar se han seleccionado una serie de parámetros geométricos
+ en función de aviones semejantes, como son el alargamiento 
+\begin_inset Formula $A_{v}=\nicefrac{h_{v}^{2}}{S_{v}}$
+\end_inset
+
+, el estrechamiento, la flecha del borde de ataque, el perfil, la flecha
+ de la charnela del timón o la relación del área de éste comparada con la
+ del VTP completo.
+ A su vez, también se ha definido el brazo de momentos, es decir la posición
+ del centro aerodinámico del VTP, tratando de que éste sea el máximo posible
+ y otros parámetros que son intrínsecamente nulos por la función del VTP,
+ como el diedro o la incidencia.
+ Todos estos parámetros se muestran en el siguiente cuadro:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="5">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $A_{v}=1.40\,\,[-]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\text{Airfoil}=\text{NACA}\,0015$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $l_{v}=17.0\,\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\lambda_{v}=0.40\,\,[-]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Lambda_{v_{LE}}=45.0\,\,[\degree]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\delta_{r_{max}}=35.0\,\,[\degree]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\nicefrac{S_{r}}{S_{v}}=0.30\,\,[-]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\Lambda_{r}=25.0\,\,[\degree]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $i_{v}=\Gamma_{v}=0\,\,[\degree]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Parámetros de diseño del estabilizador vertical
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Parámetros-de-diseño-VTP"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para realizar un cálculo preliminar del área mínima necesaria de estabilizador
+ vertical para mantener el control en el caso de fallo del motor crítico,
+ se propone en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Torenbeek1982"
+
+\end_inset
+
+ la regresión experimental mostrada en la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Criterio-de-fallo-motor"
+
+\end_inset
+
+ (derecha).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename Figs/rudderDeflection.JPG
+	width 37text%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figs/rudderArea.JPG
+	width 62text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Criterio de fallo del motor crítico para dimensionar el VTP
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Criterio-de-fallo-motor"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para obtener el parámetro del eje horizontal, el valor de 
+\begin_inset Formula $k_{\delta_{r}}$
+\end_inset
+
+ se puede obtener de la gráfica de la parte izquierda para un timón simple,
+ el parámetro 
+\begin_inset Formula $k_{v}$
+\end_inset
+
+ vale 
+\begin_inset Formula $1.0$
+\end_inset
+
+ en nuestro caso, 
+\begin_inset Formula $\Delta T_{e}$
+\end_inset
+
+ es la variación de empuje debida al fallo del motor, siendo en nuestro
+ caso el empuje que proporciona un motor en despegue, y el parámetro 
+\begin_inset Formula $Y_{e}$
+\end_inset
+
+ la distancia respecto del plano de simetría del avión del motor que ha
+ fallado, pudiéndose despejar 
+\begin_inset Formula $\nicefrac{S_{v}}{S}$
+\end_inset
+
+ en función de éstos parámetros y por tanto, el área del estabilizador vertical,
+ resultando: 
+\begin_inset Formula $S_{v}=5.66\,m^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+En el caso del dimensionado de la superficie de estabilizador vertical para
+ obtener una adecuada estabilidad lateral-dimensional, la derivada de estabilida
+d más determinante es la de momento de guiñada a ángulo de resbalamiento,
+ 
+\begin_inset Formula $C_{n_{\beta}}$
+\end_inset
+
+, cuyas principales contribuciones provienen del fuselaje, 
+\begin_inset Formula $C_{n_{\beta_{f}}}$
+\end_inset
+
+, y de la posición relativa de las alas respecto de éste, 
+\begin_inset Formula $C_{n_{\beta_{i}}}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+La contribución del fuselaje a esta derivada se puede estimar a partir del
+ área de la aeronave proyectada en el plano de simetría, 
+\begin_inset Formula $S_{fs}$
+\end_inset
+
+, las alturas del fuselaje en las posiciones un cuarto y tres cuartos del
+ fuselaje, 
+\begin_inset Formula $h_{f_{1}}$
+\end_inset
+
+ y 
+\begin_inset Formula $h_{f_{2}}$
+\end_inset
+
+, y las anchuras del fuselaje también en estos puntos, 
+\begin_inset Formula $b_{f_{1}}$
+\end_inset
+
+ y 
+\begin_inset Formula $b_{f_{2}}$
+\end_inset
+
+.
+ Todas estas magnitudes se representan en la figura 9-25 de 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Torenbeek1982"
+
+\end_inset
+
+ y se encuentran medidas para nuestra aeronave en en apéndice 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Medidas-Fuselaje"
+
+\end_inset
+
+.
+\begin_inset Formula 
+\[
+C_{n_{\beta_{f}}}=-k_{\beta}\,\frac{S_{fs}\,l_{f}}{S\,b}\left(\frac{h_{f_{1}}}{h_{f_{2}}}\right)^{\nicefrac{1}{2}}\left(\frac{b_{f_{2}}}{b_{f_{1}}}\right)^{\nicefrac{1}{3}}
+\]
+
+\end_inset
+
+donde:
+\begin_inset Formula 
+\[
+k_{\beta}=0.3\,\frac{l_{cg}}{l_{f}}+0.75\,\frac{h_{f_{max}}}{l_{f}}-0.105
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+La contribución de las alas depende únicamente de la posición de éstas,
+ siendo la contribución para un ala alta de: 
+\begin_inset Formula $C_{n_{\beta_{i}}}=-0.017$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figs/rudderVolume.JPG
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Coeficiente de volumen del estabilizador vertical
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Coeficiente-de-volumen"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Con estas dos contribuciones, se puede entrar a la regresión experimental
+ de la figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Coeficiente-de-volumen"
+
+\end_inset
+
+ y obtener una aproximación de lo que debería valer el coeficiente de volumen
+ de nuestro estabilizador, a partir del cual se puede despejar el área mínima
+ que debería tener el VTP en función de este segundo requisito de estabilidad,
+ resultando.
+ 
+\begin_inset Formula $S_{v}=12.80\,m^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Sin embargo, este último requisito se puede relajar en parte gracias a la
+ incorporación de los sistemas de aumento de la estabilidad (FCS), permitiendo
+ por tanto tener la suficiente estabilidad con hasta un 45% menos de superficie
+ respecto al valor obtenido de la forma anterior, por lo que el valor resultante
+ es de 
+\begin_inset Formula $S_{v}=7.04\,m^{2}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Como era de esperar, ya que nuestro avión tiene los motores cerca del fuselaje,
+ el requisito más restrictivo es el segundo, seleccionándose este área y
+ pudiendo finalmente obtener el resto de características aerodinámicas del
+ VTP, mostradas en el cuadro 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Características-aerodinámicas-del-VTP"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="3" columns="7">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color red
+\begin_inset Formula $S_{v}=7.04\,\,[m^{2}]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color red
+\begin_inset Formula $h_{v}=3.14\,\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color red
+\begin_inset Formula $c_{r_{v}}=3.20\,\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color red
+\begin_inset Formula $\Lambda_{\nicefrac{1}{4}}=40.26\,\,[\degree]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color red
+\begin_inset Formula $CMA_{v}=2.38\,\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color red
+\begin_inset Formula $h_{ac_{v}}=1.35\,\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color red
+\begin_inset Formula $c_{t_{v}}=1.28\,\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color red
+\begin_inset Formula $\Lambda_{\nicefrac{1}{2}}=34.76\,\,[\degree]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color red
+\begin_inset Formula $CMG_{v}=2.24\,\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color red
+\begin_inset Formula $x_{r_{LE}}=15.06\,\,[m]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color red
+\begin_inset Formula $S_{r}=2.11\,\,[m^{2}]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\color red
+\begin_inset Formula $\Lambda_{RE}=21.19\,\,[\degree]$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Características aerodinámicas del VTP
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Características-aerodinámicas-del-VTP"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

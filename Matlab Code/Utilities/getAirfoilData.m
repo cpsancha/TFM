@@ -135,14 +135,14 @@ end
     lowMachUpReFit  = polyfit(deg2rad(Cn_alpha( lowMachUpReIndex,4)),Cn_alpha( lowMachUpReIndex,3),1);
     upMachLowReFit  = polyfit(deg2rad(Cn_alpha( upMachLowReIndex,4)),Cn_alpha( upMachLowReIndex,3),1);
     upMachUpReFit   = polyfit(deg2rad(Cn_alpha(  upMachUpReIndex,4)),Cn_alpha(  upMachUpReIndex,3),1);
-    %Cl_alpha    
-        lowMach_Cl_alpha = interp1([lowMachLowRe,lowMachUpRe],[lowMachLowReFit(1),lowMachUpReFit(1)],desiredReynolds);
-        upMach_Cl_alpha  = interp1([ upMachLowRe, upMachUpRe],[ upMachLowReFit(1), upMachUpReFit(1)],desiredReynolds);
-        Cl_alpha = interp1([lowMach,upMach],[lowMach_Cl_alpha,upMach_Cl_alpha],desiredMach); 
+    %Cl_alpha
+        lowMach_Cl_alpha = interp1([lowMachLowRe,lowMachUpRe],[lowMachLowReFit(1),lowMachUpReFit(1)],desiredReynolds,'linear','extrap');
+        upMach_Cl_alpha  = interp1([ upMachLowRe, upMachUpRe],[ upMachLowReFit(1), upMachUpReFit(1)],desiredReynolds,'linear','extrap');
+        Cl_alpha = interp1([lowMach,upMach],[lowMach_Cl_alpha,upMach_Cl_alpha],desiredMach,'linear','extrap'); 
     %alpha_zeroLift    
-        lowMach_alpha_zeroLift = interp1([lowMachLowRe,lowMachUpRe],[rad2deg(-lowMachLowReFit(2)/lowMachLowReFit(1)),rad2deg(-lowMachUpReFit(2)/lowMachUpReFit(1))],desiredReynolds);
-        upMach_alpha_zeroLift  = interp1([ upMachLowRe, upMachUpRe],[rad2deg(- upMachLowReFit(2)/ upMachLowReFit(1)),rad2deg(- upMachUpReFit(2)/ upMachUpReFit(1))],desiredReynolds);
-        alpha_zeroLift = interp1([lowMach,upMach],[lowMach_alpha_zeroLift, upMach_alpha_zeroLift],desiredMach); 
+        lowMach_alpha_zeroLift = interp1([lowMachLowRe,lowMachUpRe],[rad2deg(-lowMachLowReFit(2)/lowMachLowReFit(1)),rad2deg(-lowMachUpReFit(2)/lowMachUpReFit(1))],desiredReynolds,'linear','extrap');
+        upMach_alpha_zeroLift  = interp1([ upMachLowRe, upMachUpRe],[rad2deg(- upMachLowReFit(2)/ upMachLowReFit(1)),rad2deg(- upMachUpReFit(2)/ upMachUpReFit(1))],desiredReynolds,'linear','extrap');
+        alpha_zeroLift = interp1([lowMach,upMach],[lowMach_alpha_zeroLift, upMach_alpha_zeroLift],desiredMach,'linear','extrap'); 
 
 
 %AERODYNAMIC CENTER MOMENTUM COEFFICIENT
@@ -152,9 +152,9 @@ end
     lowMachUpReCm_ac  = mean(Cn_Cm( lowMachUpReIndex,4));
     upMachLowReCm_ac  = mean(Cn_Cm( upMachLowReIndex,4));
     upMachUpReCm_ac   = mean(Cn_Cm(  upMachUpReIndex,4));
-    lowMach_Cm_ac = interp1([lowMachLowRe,lowMachUpRe],[lowMachLowReCm_ac,lowMachUpReCm_ac],desiredReynolds);
-    upMach_Cm_ac  = interp1([ upMachLowRe, upMachUpRe],[ upMachLowReCm_ac, upMachUpReCm_ac],desiredReynolds);
-    Cm_ac = interp1([lowMach,upMach],[lowMach_Cm_ac,upMach_Cm_ac],desiredMach); 
+    lowMach_Cm_ac = interp1([lowMachLowRe,lowMachUpRe],[lowMachLowReCm_ac,lowMachUpReCm_ac],desiredReynolds,'linear','extrap');
+    upMach_Cm_ac  = interp1([ upMachLowRe, upMachUpRe],[ upMachLowReCm_ac, upMachUpReCm_ac],desiredReynolds,'linear','extrap');
+    Cm_ac = interp1([lowMach,upMach],[lowMach_Cm_ac,upMach_Cm_ac],desiredMach,'linear','extrap'); 
         
     
 %POLAR
@@ -165,9 +165,9 @@ end
     LowMachUpRePolar  = interp1(Cn_Cd( lowMachUpReIndex,3),Cn_Cd( lowMachUpReIndex,4),cl);
     UpMachLowRePolar  = interp1(Cn_Cd( upMachLowReIndex,3),Cn_Cd( upMachLowReIndex,4),cl);
     UpMachUpRePolar   = interp1(Cn_Cd(  upMachUpReIndex,3),Cn_Cd(  upMachUpReIndex,4),cl);
-    LowMachPolar = interp1([lowMachLowRe,lowMachUpRe],[LowMachLowRePolar;LowMachUpRePolar],desiredReynolds);
-    UpMachPolar  = interp1([ upMachLowRe, upMachUpRe],[ UpMachLowRePolar; UpMachUpRePolar],desiredReynolds);
-    Polar = [cl;interp1([lowMach,upMach],[LowMachPolar;UpMachPolar],desiredMach)];
+    LowMachPolar = interp1([lowMachLowRe,lowMachUpRe],[LowMachLowRePolar;LowMachUpRePolar],desiredReynolds,'linear','extrap');
+    UpMachPolar  = interp1([ upMachLowRe, upMachUpRe],[ UpMachLowRePolar; UpMachUpRePolar],desiredReynolds,'linear','extrap');
+    Polar = [cl;interp1([lowMach,upMach],[LowMachPolar;UpMachPolar],desiredMach,'linear','extrap')];
 %     varnames = who('Cd_Cn*');
 %     values = cellfun(@eval, varnames, 'UniformOutput', false);
 %     figure()
@@ -248,25 +248,24 @@ function [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex,..
 
     MachArray = unique(dataArray(:,1));
     [~,MachIndex] = min(abs(MachArray-desiredMach));
-    if desiredMach>MachArray(MachIndex)
+    if desiredMach>=MachArray(MachIndex)
         if MachIndex == length(MachArray)
-            lowMach = MachArray(MachIndex);
-            upMach  = MachArray(MachIndex);
+            lowMach = MachArray(length(MachArray)-1);
+            upMach  = MachArray(length(MachArray));
         else
             lowMach = MachArray(MachIndex);
             upMach  = MachArray(MachIndex+1);
         end
     elseif desiredMach<MachArray(MachIndex)
         if MachIndex == 1
-            lowMach = MachArray(MachIndex);
-            upMach  = MachArray(MachIndex);
+            lowMach = MachArray(1);
+            upMach  = MachArray(2);
         else
             lowMach = MachArray(MachIndex-1);
             upMach  = MachArray(MachIndex);
         end
     else
-        lowMach = MachArray(MachIndex);
-        upMach  = MachArray(MachIndex);
+        error('Algo raro pasa')
     end
 
 
@@ -279,46 +278,44 @@ function [lowMachLowReIndex,lowMachUpReIndex,upMachLowReIndex,upMachUpReIndex,..
     [~,lowMachReIndex] = min(abs(lowMachReArray-desiredReynolds));
     [~, upMachReIndex] = min(abs( upMachReArray-desiredReynolds));
 
-    if desiredReynolds>lowMachReArray(lowMachReIndex)
+    if desiredReynolds>=lowMachReArray(lowMachReIndex)
         if lowMachReIndex == length(lowMachReArray)
-            lowMachLowRe = lowMachReArray(lowMachReIndex);
-            lowMachUpRe  = lowMachReArray(lowMachReIndex);
+            lowMachLowRe = lowMachReArray(length(lowMachReArray)-1);
+            lowMachUpRe  = lowMachReArray(length(lowMachReArray));
         else
             lowMachLowRe = lowMachReArray(lowMachReIndex);
             lowMachUpRe  = lowMachReArray(lowMachReIndex+1);
         end
     elseif desiredReynolds<lowMachReArray(lowMachReIndex)
         if lowMachReIndex == 1
-            lowMachLowRe = lowMachReArray(lowMachReIndex);
-            lowMachUpRe  = lowMachReArray(lowMachReIndex);
+            lowMachLowRe = lowMachReArray(1);
+            lowMachUpRe  = lowMachReArray(2);
         else
             lowMachLowRe = lowMachReArray(lowMachReIndex-1);
             lowMachUpRe  = lowMachReArray(lowMachReIndex);
         end
     else
-        lowMachLowRe = lowMachReArray(lowMachReIndex);
-        lowMachUpRe  = lowMachReArray(lowMachReIndex);
+        error('Algo raro pasa')
     end
 
     if desiredReynolds>upMachReArray(upMachReIndex)
         if upMachReIndex == length(upMachReArray)
-            upMachLowRe = upMachReArray(upMachReIndex);
-            upMachUpRe  = upMachReArray(upMachReIndex);
+            upMachLowRe = upMachReArray(length(upMachReArray)-1);
+            upMachUpRe  = upMachReArray(length(upMachReArray));
         else
             upMachLowRe = upMachReArray(upMachReIndex);
             upMachUpRe  = upMachReArray(upMachReIndex+1);
         end
     elseif desiredReynolds<upMachReArray(upMachReIndex)
         if upMachReIndex == 1
-            upMachLowRe = upMachReArray(upMachReIndex);
-            upMachUpRe  = upMachReArray(upMachReIndex);
+            upMachLowRe = upMachReArray(1);
+            upMachUpRe  = upMachReArray(2);
         else
             upMachLowRe = upMachReArray(upMachReIndex-1);
             upMachUpRe  = upMachReArray(upMachReIndex);
         end
     else
-        upMachLowRe = upMachReArray(upMachReIndex);
-        upMachUpRe  = upMachReArray(upMachReIndex);
+        error('Algo raro pasa')
     end
 
 

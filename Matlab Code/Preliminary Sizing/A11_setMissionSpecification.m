@@ -17,7 +17,7 @@ ME.MissionType = 11; % Flying boats, amphibious, float airplanes
 
 %% IMPORT CONSTANTS
 CST = importConstants();
-
+CST.fuelDensity = 0.82; %kg/l
 
 %% DEFINE FIGURES FOLDER AND POSITION
 switch ME.MissionType
@@ -212,8 +212,8 @@ AC = aircraft();
 %         af=ac(1+0.05)
 %         lc = 
 %         lf = lc +(af*4)
-        AC.Fuselage.fusLength  = 12.13+ME.Cargo.Volume/2.332;% A=3.286m^2: cilindric section; %Area form Catia
-        AC.Fuselage.fusWidth   = 1.1*2.15;
+        AC.Fuselage.fusLength  = 24.7490;% 12.13+ME.Cargo.Volume/2.332;% A=3.286m^2: cilindric section; %Area form Catia
+        AC.Fuselage.fusWidth   = 2.8797;%1.1*2.15;
         AC.Fuselage.fusHeight  = 1.1*2.734517;
         AC.Fuselage.Volume     = AC.Fuselage.fusHeight*AC.Fuselage.fusWidth * AC.Fuselage.fusLength;
         AC.Fuselage.frontArea  = 3.286;
@@ -223,6 +223,13 @@ AC = aircraft();
         AC.Fuselage.A_I        = (AC.Fuselage.fusLength - AC.Fuselage.la )* AC.Fuselage.fusWidth;
         AC.Fuselage.A_II       = AC.Fuselage.la*AC.Fuselage.fusWidth/2;
         AC.Fuselage.beta       = 17; % grados
+        AC.Fuselage.cabLength  = 0.5 * AC.Fuselage.fusLength;
+        AC.Fuselage.cabWidth   = 0.95 * AC.Fuselage.fusWidth;
+        AC.Fuselage.cabVolume  = AC.Fuselage.cabLength*3.286;
+        ME.Cargo.Length = ME.Cargo.Volume/2.332;
+        ME.Cargo.FloorArea = ME.Cargo.Length* AC.Fuselage.fusWidth;
+        AC.Fuselage.cabinFrac  = 0.1;
+        AC.Fuselage.cabPos = 0.8*AC.Fuselage.ln; 
 
         %% CG position
         DP.x_cg = 10;

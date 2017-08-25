@@ -21,6 +21,9 @@ classdef hull < handle
         Cv0               double  %Static load coeficcient
         Height            double  %
         Vha               double  % Actual volume [m^3]
+        bstabWT           double
+        LstabWT           double
+        hstabWT           double
     end
     
     methods

@@ -565,6 +565,9 @@ filename "3. Fuselage.lyx"
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
 filename "4. PreliminarySizing.lyx"
@@ -605,66 +608,10 @@ filename "7. WeightsPrediction.lyx"
 \end_layout
 
 \begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-titleformat{
-\backslash
-chapter}{
-\backslash
-Huge
-\backslash
-bfseries}{
-\backslash
-thechapter}{0pt}{
-\backslash
-raggedright}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
 bibfiles "Bibliography/TFM_BibTexDatabase"
 options "plainnat"
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-titleformat{
-\backslash
-chapter}{
-\backslash
-Huge
-\backslash
-bfseries}{Apéndice
-\backslash
- 
-\backslash
-thechapter}{0pt}{.
-\backslash
- 
-\backslash
-raggedright}
-\end_layout
 
 \end_inset
 
@@ -686,9 +633,19 @@ begin{appendices}
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
 \begin_inset CommandInset include
 LatexCommand include
-filename "A1. AirfoilCoordinates.lyx"
+filename "A. AirfoilCoordinates.lyx"
+
+\end_inset
+
+
+\begin_inset CommandInset include
+LatexCommand include
+filename "B. FuselageMeasures.lyx"
 
 \end_inset
 
