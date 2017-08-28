@@ -71,6 +71,7 @@ classdef wing < handle
         WingSpan        double  %[double] Span of the wing [m]
         x_ac_w          double  %[double] Longitudinal position of the aerodynamic center of the wing [m]
         x_ac_wf         double  %[double] Longitudinal position of the aerodynamic center of the wing, taking into acount the fuselage interference [m]
+        deltaE_deltaAlpha double %Deflexión de estela
     end
     
     methods

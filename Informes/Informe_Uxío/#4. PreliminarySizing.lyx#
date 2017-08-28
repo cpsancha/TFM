@@ -1,0 +1,198 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass PhDThesisLyX
+\begin_preamble
+\usepackage{tocloft}    % tocloft for table of contents style
+\usepackage[compact]{titlesec}  % titlesec for title section layout
+\usepackage{changepage}
+
+% Main matter
+\setlength{\parindent}{2em}
+\setlength{\parskip}{1em}
+\titleformat{\chapter}{\Huge\bfseries}{\chaptername\ \thechapter}{0pt}{\vskip 0.05em \raggedright}%
+\titlespacing{\chapter}{0em}{0em}{0.5em}
+\titlespacing{\section}{0em}{1em}{-0.5em}
+\titlespacing{\subsection}{0em}{0em}{-0.5em}
+%\titlespacing{<command>}{<left>}{<before-sep>}{<after-sep>}[<right>]
+\end_preamble
+\options a4paper,12pt,oneside,print,authoryear,times
+\use_default_options false
+\maintain_unincluded_children false
+\language spanish
+\language_package babel
+\inputencoding auto
+\fontencoding global
+\font_roman "lmodern" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command bibtex
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine natbib
+\cite_engine_type numerical
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 3cm
+\topmargin 3cm
+\rightmargin 2.5cm
+\bottommargin 3cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Punto de diseño
+\end_layout
+
+\begin_layout Standard
+
+\color red
+Asegurar que la aeronave puede despegar o aterrizar en una distancia especificad
+a puede no parecer relevante desde el momento en que no es necesaria una
+ pista asfaltada.
+ Este sería el caso si se operara únicamente en mar abierto, pero las zonas
+ costeras están a menudo congestionadas y se asume que la aeronave será
+ operada dentro de áreas con límites, donde el tráfico marítimo está restringido.
+\end_layout
+
+\begin_layout Standard
+
+\color red
+Incluso de no existir estas restricciones físicas, el despegue puede resultar
+ una fase incómoda para los pasajeros, por tanto reducir su duración sirve
+ para asegurar el confort de los pasajeros.
+\end_layout
+
+\begin_layout Section
+Parámetros de diseño de la aeronave
+\end_layout
+
+\begin_layout Subsection
+Requisito de despegue 
+\end_layout
+
+\begin_layout Standard
+Las operaciones en agua representan un requisito condicionante para la operación
+ de la aeronave.
+ Los requisitos relativos a flotabilidad, hidroestabilidad y cargas en aterrizaj
+e se desarrollan en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Dimensionado-del-casco"
+
+\end_inset
+
+ y se garantizan a través de un correcto dimensionado del casco, mientras
+ que en la determinación de la distancia de despegue existe una estrecha
+ relación entre la planta propulsora, la célula aerodinámica y el casco.
+ Por este motivo es necesario abordar su estudio en este punto del proceso
+ de diseño.
+\end_layout
+
+\begin_layout Standard
+Para aeronaves convencionales, despegando desde una pista pavimentada, la
+ distancia de despegue es función lineal del parámetro de despegue (TOP):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+S_{TO}=A\,TOP=A\frac{\nicefrac{MTOW}{S}}{}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Requisito de aterrizaje
+\end_layout
+
+\begin_layout Standard
+Con respecto a la distancia de aterrizaje en agua, no se considera una restricci
+ón de diseño, puesto que la alta resistencia hidrodinámica asegura que las
+ distancias de aterrizaje serán menores que las de despegue.
+\end_layout
+
+\begin_layout Subsection
+Requisitos de ascenso
+\end_layout
+
+\begin_layout Subsubsection
+Ascenso en despegue
+\end_layout
+
+\begin_layout Subsubsection
+Ascenso tras aterrizaje frustrado
+\end_layout
+
+\begin_layout Subsection
+Requisito de velocidad de crucero
+\end_layout
+
+\begin_layout Subsection
+Requisito de entrada en pérdida
+\end_layout
+
+\begin_layout Subsection
+Determinación del punto de diseño
+\end_layout
+
+\begin_layout Section
+Selección de la planta propulsora
+\end_layout
+
+\end_body
+\end_document

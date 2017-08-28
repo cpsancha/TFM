@@ -319,7 +319,7 @@ switch ME.MissionType
         % [X] 2*Snecma Silvercrest --> Dassault Falcon 5X
         Parameters.EngineOptions(3).Model    = 'Snecma Silvercrest 2D';
         Parameters.EngineOptions(3).Thrust   =  45.1; %[kN] at sea level (50.9kN)
-        Parameters.EngineOptions(3).Weight   =  1040; %[kg] dry weight
+        Parameters.EngineOptions(3).Weight   =  750; %[kg] dry weight
         Parameters.EngineOptions(3).TSFC     = 0.597; %[lb/(lbf·h)] at cruise 0.95*0.628
         Parameters.EngineOptions(3).Diameter = 1.080; %[m]
         Parameters.EngineOptions(3).Length   = 1.900; %[m]

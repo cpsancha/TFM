@@ -20,7 +20,7 @@ switch ME.MissionType
         
     %% PLOTTING OPTIONS
         DP.ShowReportFigures      = false; %Show all the available figures for reports [true] or only the most relevant ones [false]
-        DP.ShowAircraftLayout     = false;  %Show a layout of the aircraft and the wings
+        DP.ShowAircraftLayout     = true;  %Show a layout of the aircraft and the wings
         DP.selectDesignPoint      = false; %Ask user to select design point [true] or use the saved value [false]
         DP.showRoskamRequirements = false; %Show the Take-Off and Landing requirements obtained with Roskam constants [true] or only the SP ones [false]
         
@@ -66,7 +66,7 @@ switch ME.MissionType
         DP.TaperRatio      =  0.6; %[-]
         DP.Dihedral        =  0.0; %[º]
         DP.TipTwist        = -5.0; %[º] - Positive twist: nose rotated upwards (Wash-in). Negative twist: nose rotated downwards (Wash-out)
-        DP.Stagger         =  4.5; %[m]
+        DP.Stagger         =  7.0; %[m]
         DP.VerticalGap     =    0; %[m]
         DP.Wing1LongPos    = 3.65; %[m] Longitudinal position of the first wing
         DP.Sweep_14        = 27.5; %[º] Flecha en la linea 1/4
@@ -81,7 +81,11 @@ switch ME.MissionType
         DP.delta_f         =   40; %[deg]
         
         %Weight
-        DP.x_cg            =  9.75; %[m] Posición longitudinal del centro de gravedad, se debe calcular, solo es para que no pete el código.
+        DP.chooseWeights   =  true;
+        DP.EW              =  8950; %[kg]
+        DP.MTOW            = 20655; %[kg]
+        DP.MFW             = 10650; %[kg]
+        DP.x_cg            = 10.30; %[m] Posición longitudinal del centro de gravedad, se debe calcular, solo es para que no pete el código.
         DP.y_cg            =     0; %[m] Posición lateral del centro de gravedad.
         DP.z_cg            =     1; %[m] Posición vertical del centro de gravedad, se debe calcular, solo es para que no pete el código.
         DP.MLW_MTOW        =  0.85; %From SP: min-->0.7900, max-->0.9267, mean-->0.8753
@@ -94,7 +98,7 @@ switch ME.MissionType
         %Engines
         DP.EngineNumber    = 2;
         DP.EngineModel     = 'Snecma Silvercrest 2D';%'Rolls-Royce AE 3007A1E';
-        DP.xEngine         = 15;
+        DP.xEngine         =   14;
         DP.yEngine         = 1.40;
         DP.zEngine         = 2.25;
         DP.Pylon_t_c       = 0.12; %NACA 0012
@@ -110,14 +114,20 @@ switch ME.MissionType
         DP.fusHeight      = 2.735; %[m]
         DP.fusLength      =  18.6; %[m] Total length
         DP.cabLength      = 8.575; %[m] Length of the cabin including the gallery and lavatory,  Gallery: 1.48m   Cabin: 5.05m
+        DP.cabHeight      =  2.00; %[m]
+        DP.cabWidth       =  2.25; %[m]
+        DP.galleryLength  =  1.48; %[m]
+        DP.lavatoryLength = 2.045; %[m]
         DP.ln             = 3.625; %[m] Length of the nose
         DP.la             = DP.fusLength-DP.ln-DP.cabLength; %[m]
         DP.frontArea      = pi*DP.fusWidth*DP.fusHeight/4;   %[m^2]
         DP.totalFusVolume =     DP.frontArea*DP.fusLength;   %[m^3]
-        DP.Swet           = pi/2*(DP.fusWidth+DP.fusHeight)*DP.fusLength; %[m^2] Exterior wet surface
-        DP.A_I            = 28.13; %[m^2]
-        DP.A_II           = 11.09; %[m^2]
-        DP.tailConeAngle  =    17; %[º]
+        DP.Swet           = 120.57; %[m^2] Exterior wet surface
+        DP.A_I            =  28.13; %[m^2]
+        DP.A_II           =  11.09; %[m^2]
+        DP.tailConeAngle  =     17; %[º]
+        DP.depositsArea   =  0.754; %[m^2]
+        DP.depositsUsage  =   0.80; %Percentage of usage of the deposits for fuel
          
   
         % VTP
@@ -135,6 +145,11 @@ switch ME.MissionType
         DP.VTP_h_14        = 2.30;
         DP.VTP_h_34        = 2.28;
         DP.VTP_Svertical   = 36.476;
+        
+        
+        % Undercarriage
+        DP.UnderCarriageNose =  4; %[m]
+        DP.UnderCarriageMain = 12; %[m]
         
         
         

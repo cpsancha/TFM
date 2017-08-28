@@ -19,7 +19,7 @@
  %% Airfoil characteristics
 %  % Get Reynolds number at each chord location: (para qué?)0
 %  [~,~,~,~,nu,~] = atmos(ME.Cruise.Altitude);
-%  Reynolds = ME.Cruise.Speed .* c / nu;
+%  Reynolds = ME.Cruise.Speed .* AC.Wing1.c / nu;
 
  
 AF.cl_alpha =1*(180/pi)*(0.991-0.15)/(8-0); %1/rad,  NACA 63A210 pag 557 theory of wing sections
@@ -28,6 +28,13 @@ AF.cl_max = 1.41;
 AF.c_mac = -0.25;
 AF.t_c   = 0.1;
 AF.cli   = 0.005; %cl for minimum drag
+
+AF.cl_alpha =1*(180/pi)*(1.25-0.41)/(8-0); %1/rad,  NACA 63A210 pag 539 theory of wing sections
+AF.alpha_l0 = -4*pi/180;
+AF.cl_max = 1.6;
+AF.c_mac = -0.11;
+AF.t_c   = 0.15;
+AF.cli   = 0.4; %cl for minimum drag
 
 %% Wing extra parameters
 %Only for Wing1
@@ -69,7 +76,7 @@ DP.x_cg = incidences(3);
 coefVolume = 0.065; % From similar planes, NOT USED
 
 
-lv = AC.Fuselage.fusLength - DP.x_cg; %Posicion aproximada
+lv = 21.8+2.93- DP.x_cg;%CATIA; AC.Fuselage.fusLength ; %Posicion aproximada
 Ye = AC.Engine.Position(2);
 Sr_S = 0.25;
 AC.VTP.AspectRatio   = 1.9;
@@ -111,13 +118,15 @@ AC.VTP.Airfoil.HalfCosineSpacing=1;
 AC.VTP.Airfoil.is_finiteTE=0;
 AC.VTP.Airfoil.Points = naca4gen(AC.VTP.Airfoil);
 
+tand(AC.VTP.Sweep_12)*AC.VTP.WingSpan+AC.VTP.RootChord*0.5-AC.VTP.TipChord*0.5;
+
 %% Call function again for plotting
 plotFlag = 1;
 getWings(incidences,AC, DP, ME, Parameters, AF, plotFlag, W);
 plotFlag = 0;
 
 % 
-run('HullSizing.m')
-run('G11_polarPrediction.m')
-run('H11_highLiftDevices.m')
-run('I11_Weights.m')
+% run('HullSizing.m')
+% run('G11_polarPrediction.m')
+% run('H11_highLiftDevices.m')
+% run('I11_Weights.m')

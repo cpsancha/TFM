@@ -121,7 +121,7 @@ function ME = wingsDesign(AC, ME, DP, Parameters, CST, CF) %#ok<INUSD>
     tauWing = 1;
     AC.Wing1.fuelVolume = 0.54*AC.Wing1.Sw^2/AC.Wing1.WingSpan*AC.Wing1.Airfoil.t_c*((1+sqrt(tauWing)*AC.Wing1.TaperRatio+tauWing*...
                           AC.Wing1.TaperRatio^2)/(1+AC.Wing1.TaperRatio)^2);
-    AC.Wing1.fuelVolume = 0.54*AC.Wing2.Sw^2/AC.Wing2.WingSpan*AC.Wing2.Airfoil.t_c*((1+sqrt(tauWing)*AC.Wing2.TaperRatio+tauWing*...
+    AC.Wing2.fuelVolume = 0.54*AC.Wing2.Sw^2/AC.Wing2.WingSpan*AC.Wing2.Airfoil.t_c*((1+sqrt(tauWing)*AC.Wing2.TaperRatio+tauWing*...
                           AC.Wing2.TaperRatio^2)/(1+AC.Wing2.TaperRatio)^2);
 
 %Distance from Root_LE to Tip_LE
@@ -362,12 +362,12 @@ end
     r = DP.Stagger / (AC.Wing1.WingSpan/2);
     m = DP.VerticalGap / (AC.Wing1.WingSpan/2);
 %Downwash gradient
-    deltaE_deltaAlpha = 1.75 * (AC.Wing1.CL_alpha_w/(pi*AC.Wing1.AspectRatio*(AC.Wing1.TaperRatio*r)^0.25*(1+abs(m))));
-    %1-deltaE_deltaAlpa = 0.9*(1-deltaE_deltaAlpha) <-- 10% reduction acording to Torenbeek E-10.1
+    AC.Wing2.deltaE_deltaAlpha = 1.75 * (AC.Wing1.CL_alpha_w/(pi*AC.Wing1.AspectRatio*(AC.Wing1.TaperRatio*r)^0.25*(1+abs(m))));
+    %1-deltaE_deltaAlpa = 0.9*(1-AC.Wing2.deltaE_deltaAlpha) <-- 10% reduction acording to Torenbeek E-10.1
 
 %Lift Coefficient in the linear range
     AC.Wing1.CL_w = AC.Wing1.CL_alpha_w * deg2rad(AC.Wing1.Incidence+AC.Fuselage.fuselage_AoA-AC.Wing1.Airfoil.alpha_zeroLift-twist_0lift_1*AC.Wing1.TipTwist);
-    AC.Wing2.CL_w = AC.Wing2.CL_alpha_w * deg2rad(AC.Wing2.Incidence+AC.Fuselage.fuselage_AoA*0.9*(1-deltaE_deltaAlpha)-...
+    AC.Wing2.CL_w = AC.Wing2.CL_alpha_w * deg2rad(AC.Wing2.Incidence+AC.Fuselage.fuselage_AoA*0.9*(1-AC.Wing2.deltaE_deltaAlpha)-...
                     AC.Wing2.Airfoil.alpha_zeroLift-twist_0lift_2*AC.Wing2.TipTwist)+AC.Wing2.deltaCLdeltaE; 
     
 
@@ -420,13 +420,13 @@ end
     AC.Wing2.CL_alpha_wf = KI_2 * AC.Wing2.CL_alpha_w;
     
 %Downwash gradient
-    deltaE_deltaAlpha = 1.75 * (AC.Wing1.CL_alpha_wf/(pi*AC.Wing1.AspectRatio*(AC.Wing1.TaperRatio*r)^0.25*(1+abs(m))));
-    %1-deltaE_deltaAlpa = 0.9*(1-deltaE_deltaAlpha) <-- 10% reduction acording to Torenbeek E-10.1
+    AC.Wing2.deltaE_deltaAlpha = 1.75 * (AC.Wing1.CL_alpha_wf/(pi*AC.Wing1.AspectRatio*(AC.Wing1.TaperRatio*r)^0.25*(1+abs(m))));
+    %1-deltaE_deltaAlpa = 0.9*(1-AC.Wing2.deltaE_deltaAlpha) <-- 10% reduction acording to Torenbeek E-10.1
     
 %Lift coefficient taking into acount the fuselage interference
     AC.Wing1.CL_wf = AC.Wing1.CL_alpha_wf * deg2rad(AC.Fuselage.fuselage_AoA - twist_0lift_1*AC.Wing1.TipTwist + (KII_1/KI_1) * ...
                     (AC.Wing1.Incidence - AC.Wing1.Airfoil.alpha_zeroLift)) + deltazCL_1;
-    AC.Wing2.CL_wf = AC.Wing2.CL_alpha_wf * deg2rad(AC.Fuselage.fuselage_AoA*0.9*(1-deltaE_deltaAlpha) - twist_0lift_2*AC.Wing2.TipTwist + ...
+    AC.Wing2.CL_wf = AC.Wing2.CL_alpha_wf * deg2rad(AC.Fuselage.fuselage_AoA*0.9*(1-AC.Wing2.deltaE_deltaAlpha) - twist_0lift_2*AC.Wing2.TipTwist + ...
                     (KII_2/KI_2) * (AC.Wing2.Incidence - AC.Wing2.Airfoil.alpha_zeroLift)) + deltazCL_2 + AC.Wing2.deltaCLdeltaE;
     
 
@@ -513,7 +513,7 @@ clear C1x C2x C3x C4x C1y C2y C3y C4y f0x f0y f30x f30y f_low f_hight Twist1 Twi
 clear C1_1 C1_2 C2_1 C2_2 C3_1 C3_2 f1 f2 C4_1 C4_2 CL_wing1 CL_wing2 Clb1 Clb2
 clear La1 La2 Lb1 Lb2 twist_0lift_1 twist_0lift_2 Cl1 Cl2 y1 y2 Cla1 Cla2 Beta1 Beta2
 clear Cm_ac_basic1 Cm_ac_basic2 deltaEpsilonCm_ac1 deltaEpsilonCm_ac2 Cm_ac_w1 Cm_ac_w2
-clear KI_1 KI_2 KII_1 KII_2 deltazCL_1 deltazCL_2 deltaNac_1 deltaNac_2 deltaE_deltaAlpha m r
+clear KI_1 KI_2 KII_1 KII_2 deltazCL_1 deltazCL_2 deltaNac_1 deltaNac_2 AC.Wing2.deltaE_deltaAlpha m r
 
 
 end

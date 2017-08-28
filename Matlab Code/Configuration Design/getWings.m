@@ -226,7 +226,7 @@ AC.Wing2.Incidence = incidences(2);
 
 
 
-AC.Wing2.Root_LE = AC.Wing1.Root_LE + AC.Wing1.RootChord + DP.Stagger;
+AC.Wing2.Root_LE = 21.8-AC.Wing1.RootChord;%CATIA  AC.Wing1.Root_LE + AC.Wing1.RootChord + DP.Stagger;
 
 
 AC.Wing2.Snet = AC.Wing2.Sw - AC.Wing2.RootChord * AC.Fuselage.fusWidth;
@@ -303,7 +303,7 @@ AC.Wing.Cm_alpha = AC.Wing1.CL_alpha_wf * AC.Wing1.Sw/AC.Wing.Sw * (x_cg-x_ac)/A
              (1-de_da) * Parameters.q2_qinf * AC.Wing2.CL_alpha_wf * AC.Wing2.Sw/AC.Wing.Sw *(lh-x_cg) / AC.Wing.CMA
          
          
-         % VAlues refered to wing1     
+         % Values refered to wing1     
 CL_alpha_global = AC.Wing1.CL_alpha_wf +  (1-de_da)*Parameters.q2_qinf*AC.Wing2.CL_alpha_wf*AC.Wing2.Sw/AC.Wing1.Sw;
 Cm_alpha_global = AC.Wing1.CL_alpha_wf * (x_cg-x_ac)/AC.Wing1.CMA -...
        (1-de_da) * Parameters.q2_qinf * AC.Wing2.CL_alpha_wf * AC.Wing2.Sw/AC.Wing1.Sw *(lh-x_cg) / AC.Wing1.CMA

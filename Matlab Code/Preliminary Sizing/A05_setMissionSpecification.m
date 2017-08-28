@@ -18,6 +18,8 @@ ME.MissionType = 5 ; % Business Jets
 
 %% IMPORT CONSTANTS
 CST = importConstants();
+CST.fuelDensity = 0.820; %kg/l jet A-1
+CST.fuelDensitySI = CST.fuelDensity*1e3; %kg/m^3
 
 
 %% DEFINE FIGURES FOLDER AND POSITION
@@ -39,6 +41,9 @@ ME.errorList=cell(0);
     CF.m2ft     = 3.28084;
     CF.ft2m     = 0.3048;
     CF.sm2m     = 1609.3; %Static miles to m
+%volume
+    CF.l2m3     = 1/1e3;
+    CF.m32l     = 1e3;
 %speed
     CF.mph2ms   = 0.44704;
     CF.kts2ms   = 0.514444;

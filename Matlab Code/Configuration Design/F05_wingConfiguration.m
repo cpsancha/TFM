@@ -36,7 +36,7 @@ while ~solveFlag
     if ~isequal(exitflag,1)
         error('El solver que calcula las incidencias y el stagger no ha logrado converger correctamente. Se debería revisar el resultado.')
     else
-        clear exitflag X options
+        clear exitflag X
     end
     if AC.Wing2.x_ac_wf>DP.x_cg
         solveFlag = true;
@@ -84,6 +84,16 @@ clear i alphaRange CLRange CmRange
 %% PLOT LAYOUT
 wingConfigurationPlotting(AC, ME, DP, Parameters, CST, CF);
    
+
+
+%% GET STICK-FIXED NEUTRAL POINT
+[AC.Weight.x_n,~,exitflag,~] = fsolve(@(Xn)getNeutralPoint(Xn, AC, ME, DP, Parameters, CST, CF),DP.x_cg,options);
+if ~isequal(exitflag,1)
+    error('El solver que calcula las incidencias y el stagger no ha logrado converger correctamente. Se debería revisar el resultado.')
+else
+    clear exitflag options
+end
+
 
    
     
@@ -443,6 +453,20 @@ function [Error] = getDivergenceMach(DivergenceMach,t_c_airfoil,Sweep,CLwing,Air
                        ((1/(DivergenceMach*cosd(Sweep))-DivergenceMach*cosd(Sweep))^(1/3)) * ...
                        ((1-((5+(DivergenceMach*cosd(Sweep))^2)/(5+Mstar^2))^3.5)^(2/3));
     Error = t_c_airfoil - maximum_t_c_wing / cosd(Sweep);
+end
+
+function [Error] = getNeutralPoint(Xn, AC, ME, DP, Parameters, CST, CF)
+
+    AC.Fuselage.fuselage_AoA = 0;
+    AC.Wing2.deltaCLdeltaE   = 0;
+    
+    %Run wing's script
+    wingsDesign(AC, ME, DP, Parameters, CST, CF);
+    
+    Error = Parameters.q1_qinf*AC.Wing1.Sw/AC.Wing.Sw*(Xn-AC.Wing1.x_ac_wf)/AC.Wing.CMA*AC.Wing1.CL_alpha_wf + ...
+            Parameters.q2_qinf*AC.Wing2.Sw/AC.Wing.Sw*(Xn-AC.Wing2.x_ac_wf)/AC.Wing.CMA*AC.Wing2.CL_alpha_wf * ...
+            (1-AC.Wing2.deltaE_deltaAlpha);
+    
 end
 
 function [Error, ME] = getWingsIncidence(X, AC, ME, DP, Parameters, CST, CF)

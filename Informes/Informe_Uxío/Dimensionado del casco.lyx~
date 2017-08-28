@@ -1082,10 +1082,74 @@ donde
 
  relativamente pequeño.
  Colocando el flotador lo más cerca posible de la punta del ala, queda determina
-do el desplazamiento del mismo.
- Siendo el desplazamiento función del volumen sumergido (en este caso, la
+do el desplazamiento que debe proporcionar.
+ 
+\end_layout
+
+\begin_layout Standard
+Siendo el desplazamiento función del volumen sumergido (en este caso, la
  totalidad del flotador) y todas las dimensiones del flotador expresadas
  en función de la manga, se calcula la manga del flotador lateral.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+l_{est}=4b_{est}=;\,h_{est}=0.65b_{est}\longrightarrow V_{est}=f(b_{est},l_{est},h_{est})=f(b_{est})=\frac{\Delta_{est}}{\omega}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+b_{est}=f(\Delta_{est})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Donde 
+\begin_inset Formula $b_{est}$
+\end_inset
+
+, 
+\begin_inset Formula $l_{est}$
+\end_inset
+
+, y 
+\begin_inset Formula $h_{est}$
+\end_inset
+
+ corresponden a la manga, longitud y altura del flotador lateral respectivamente.
+ Una vez dimensionados, hay que recalcular la altura metacéntrica y comprobar
+ la estabilidad.
+ Para ello se modifica adecuadamente el momento de inercia de la sección
+ y el volumen sumergido, añadiendo los términos correspondientes a los flotadore
+s laterales:
+\begin_inset Formula 
+\[
+\Delta I_{zz_{est}}=I_{zz_{est}}+A_{est}y_{est}^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Con esta modificación se alcanza un valor positivo de altura metacéntrica
+ de 
+\begin_inset Formula $3.27$
+\end_inset
+
+m.
 \end_layout
 
 \begin_layout Standard
@@ -1095,6 +1159,54 @@ Cabe destacar que al tratarse de un diseño ala-tándem, la envergadura de
  de gravedad como ocurre en los aviones semejantes.
  Al limitar el brazo del momento, se requiere sobredimensionar el flotador
  para proporcionar un mismo momento estabilizante.
+ Según la referencia 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Lafita"
+
+\end_inset
+
+ existen recomendaciones de alturas metacéntricas proporcionadas por el
+ antiguo Ministerio del Aire inglés, tales que se recomienda una altura
+ metacéntrica transversal mayor de 
+\begin_inset Formula $4\sqrt[3]{V}=13.23$
+\end_inset
+
+m (
+\begin_inset Formula $V:$
+\end_inset
+
+ volumen sumergido en 
+\begin_inset Formula $\unit{m^{3}}$
+\end_inset
+
+).
+ En EEUU, se adoptan los valores de 
+\begin_inset Formula $0.41\sqrt[3]{W}=11.94$
+\end_inset
+
+m (
+\begin_inset Formula $W:$
+\end_inset
+
+ desplazamiento en kg).
+\end_layout
+
+\begin_layout Standard
+Los valores considerados por estas recomendaciones se consideran demasiado
+ conservativos para la actualidad 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "canamar2012seaplane"
+
+\end_inset
+
+, pero podrían ser obtenidos en este diseño multiplicando las dimensiones
+ principales de los flotadores por una constante 
+\begin_inset Formula $C=1.9$
+\end_inset
+
+, lo cual penalizaría considerablemente la eficiencia en crucero de la aeronave.
 \end_layout
 
 \begin_layout Section
@@ -1342,7 +1454,14 @@ Se propone la posibilidad de un diseño donde se sustituya el estabilizador
  de tal forma que queden situados en la estela de los motores del ala delantera.
  De esta forma se mejoraría la controlabilidad de la aeronave en el agua
  a bajas velocidades.
- El estudio de esta modificación afectaría múltiples campos (distribución
+ Dependiendo de su envergadura, podrían utilizarse para unir los flotadores
+ laterales al ala trasera, de tal forma que no sería necesario utilizar
+ soportes explícitamente destinados a este efecto con la consiguiente mejora
+ aerodinámica.
+\end_layout
+
+\begin_layout Standard
+El estudio de esta modificación afectaría múltiples campos (distribución
  de sustentación en el ala trasera, dimensionado estructural, peso global,
  estabilidad lateral-direccional) y complicaría el diseño de la aeronave,
  ya de por sí no convencional.
@@ -1352,13 +1471,13 @@ Se propone la posibilidad de un diseño donde se sustituya el estabilizador
 \begin_inset Float table
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Tabular
-<lyxtabular version="3" rows="4" columns="4">
+<lyxtabular version="3" rows="13" columns="3">
 <features tabularvalignment="middle">
-<column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -1376,15 +1495,6 @@ Parámetro
 \begin_inset Text
 
 \begin_layout Plain Layout
-Descripción
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
 Valor
 \end_layout
 
@@ -1394,7 +1504,7 @@ Valor
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Descripción
 \end_layout
 
 \end_inset
@@ -1405,6 +1515,9 @@ Valor
 \begin_inset Text
 
 \begin_layout Plain Layout
+\begin_inset Formula $b_{h}$
+\end_inset
+
 
 \end_layout
 
@@ -1414,16 +1527,7 @@ Valor
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
+2.88m
 \end_layout
 
 \end_inset
@@ -1432,7 +1536,7 @@ Valor
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Anchura máxima del casco principal, manga
 \end_layout
 
 \end_inset
@@ -1443,6 +1547,9 @@ Valor
 \begin_inset Text
 
 \begin_layout Plain Layout
+\begin_inset Formula $L_{h}$
+\end_inset
+
 
 \end_layout
 
@@ -1452,16 +1559,7 @@ Valor
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
+24.75m
 \end_layout
 
 \end_inset
@@ -1470,7 +1568,292 @@ Valor
 \begin_inset Text
 
 \begin_layout Plain Layout
+Longitud del casco
+\end_layout
 
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $L_{f}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+12.15m
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Longitud del cuerpo de proa
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $L_{a}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+12.59m
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Longitud del cuerpo de popa
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\beta$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+25º
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Ángulo de enquillamiento (deadrise angle)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $L_{h}/b_{h}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8.59
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Esbeltez
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C_{v_{0}}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.51
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Coeficiente de carga estática
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $h$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1.87m
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Altura máxima del casco
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+V
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+45.47m
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Volumen sumergido total
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $b_{est}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.56m
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Manga de los flotadores laterales
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $L_{est}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2.35m
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Longitud de los flotadores laterales
 \end_layout
 
 \end_inset
@@ -1481,6 +1864,9 @@ Valor
 \begin_inset Text
 
 \begin_layout Plain Layout
+\begin_inset Formula $h_{est}$
+\end_inset
+
 
 \end_layout
 
@@ -1490,16 +1876,7 @@ Valor
 \begin_inset Text
 
 \begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
+0.38m
 \end_layout
 
 \end_inset
@@ -1508,7 +1885,7 @@ Valor
 \begin_inset Text
 
 \begin_layout Plain Layout
-
+Altura de los flotadores laterales
 \end_layout
 
 \end_inset
@@ -1522,7 +1899,7 @@ Valor
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Parámetros del casco principal
+Parámetros del casco principal y flotadores
 \begin_inset CommandInset label
 LatexCommand label
 name "tab hull parameters"

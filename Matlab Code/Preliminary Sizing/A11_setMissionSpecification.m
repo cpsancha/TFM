@@ -214,22 +214,22 @@ AC = aircraft();
 %         lf = lc +(af*4)
         AC.Fuselage.fusLength  = 24.7490;% 12.13+ME.Cargo.Volume/2.332;% A=3.286m^2: cilindric section; %Area form Catia
         AC.Fuselage.fusWidth   = 2.8797;%1.1*2.15;
-        AC.Fuselage.fusHeight  = 1.1*2.734517;
-        AC.Fuselage.Volume     = AC.Fuselage.fusHeight*AC.Fuselage.fusWidth * AC.Fuselage.fusLength;
-        AC.Fuselage.frontArea  = 3.286;
-        AC.Fuselage.la         = 0.2*AC.Fuselage.fusLength;
-        AC.Fuselage.ln         = 0.3*AC.Fuselage.fusLength;
-        AC.Fuselage.Swet       = pi*(AC.Fuselage.fusHeight+AC.Fuselage.fusWidth)/2 * AC.Fuselage.fusLength;
-        AC.Fuselage.A_I        = (AC.Fuselage.fusLength - AC.Fuselage.la )* AC.Fuselage.fusWidth;
-        AC.Fuselage.A_II       = AC.Fuselage.la*AC.Fuselage.fusWidth/2;
-        AC.Fuselage.beta       = 17; % grados
-        AC.Fuselage.cabLength  = 0.5 * AC.Fuselage.fusLength;
+        AC.Fuselage.fusHeight  = 3;
+        AC.Fuselage.Volume     = AC.Fuselage.fusHeight*AC.Fuselage.fusWidth * AC.Fuselage.fusLength*0.8; % !!!!!!
+        AC.Fuselage.frontArea  = 6.684;
+        AC.Fuselage.la         = 11.78;
+        AC.Fuselage.ln         = 3.169;
+        AC.Fuselage.Swet       = 2*(1.797+2.053+25.564+26.313+1.212)+60.77; %60.77 es la parte relativa al hull
+        AC.Fuselage.A_I        = 4.752;
+        AC.Fuselage.A_II       = 22.116;
+        AC.Fuselage.beta       = 6.095; % grados
+        AC.Fuselage.cabLength  = 8.505;
         AC.Fuselage.cabWidth   = 0.95 * AC.Fuselage.fusWidth;
         AC.Fuselage.cabVolume  = AC.Fuselage.cabLength*3.286;
         ME.Cargo.Length = ME.Cargo.Volume/2.332;
         ME.Cargo.FloorArea = ME.Cargo.Length* AC.Fuselage.fusWidth;
-        AC.Fuselage.cabinFrac  = 0.1;
-        AC.Fuselage.cabPos = 0.8*AC.Fuselage.ln; 
+        AC.Fuselage.cabinFrac  = (3.169+1.48)/AC.Fuselage.fusLength;
+        AC.Fuselage.cabPos = AC.Fuselage.ln+1.48; 
 
         %% CG position
         DP.x_cg = 10;

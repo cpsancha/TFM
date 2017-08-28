@@ -15,7 +15,7 @@ AC.Hull.Length_Beam  = mean(loadFields(SP,'Hull.Length')./(loadFields(SP,'Hull.B
 AC.Hull.Lf_Beam =  mean(loadFields(SP,'Hull.Lf')./(loadFields(SP,'Hull.Beam')), 'omitnan');
  %ya definido a traves de semajantes
 % lf_lah = AC.Hull.Length_Beam/AC.Hull.Lf_Beam;
-%lf_lah = 2.07;
+%lf_lah = 2.07;ac.
 
 
 
@@ -135,7 +135,7 @@ delStabs = M_R /(AC.Wing1.WingSpan/2) %Desplazamiento necesario del flotador
 %Sabiendo el desplazamiento, podemos dimensionar, todas las dimensiones son
 %funcion de beam
 C = rhos * KA* 4* Bhh * 0.5; %0.6,por meter otra reduccion de volumen respecto al cubo ideal
-bstabWT = 1*(delStabs/C)^(1/3); 
+bstabWT = (delStabs/C)^(1/3); 
 LstabWT = 4* bstabWT;
 hstabWT = bstabWT * Bhh;
 
@@ -152,7 +152,7 @@ Ih = K1*Lh*b^3;
 KA = 0.7;
 AWT = KA*LstabWT*bstabWT;%Area of Load Water Plane WingTip Float [m^2]
 IWT = K1*LstabWT*bstabWT^3;%Moment of Inertia [m^4]
-ItW = 2*(IWT+(AWT*(AC.Wing1.WingSpan/2)^2));%
+ItW =2*(IWT+(AWT*(AC.Wing1.WingSpan/2)^2));%
 
 ITW = Ih + ItW;
 
@@ -182,17 +182,19 @@ GMSW = BMSW - BGSW %Metacentric Height [m]
 metacentroEEUU = 0.41*AC.Weight.MTOW^(1/3)
 metacentroUK = 4*(V)^(1/3)
 
-%% Water Reaction
-Vso = ME.Landing.Speed/CF.kts2ms; 
-C1 = 0.012;
-W = (AC.Weight.EW/CF.lbm2kg);
-AC.Hull.Beta = 25;
-nw_lim = (C1 * Vso^2)/((tan(AC.Hull.Beta*pi/180))^2*W)^(1/3)
-
-K2 = 0.75;
-C4 =0.078*C1;
-P = C4 * K2 * Vso^2/(tan(AC.Hull.Beta*pi/180));
-Area = AC.Hull.Beam*AC.Hull.Beam;%0.125*AHull;% AC.Hull.Beam*AC.Hull.Beam
-F=P*(Area/CF.in2m^2)
-
-nw2 = F/W
+% %% Water Reaction
+% Vl = sqrt(2*CST.GravitySI *  AC.Weight.MLW/( ME.Cruise.Density*AC.Wing.Sw * Parameters.CL_max_L));
+% ME.Landing.Speed = Vl;
+% Vso = ME.Landing.Speed/CF.kts2ms; 
+% C1 = 0.012;
+% W = (AC.Weight.EW/CF.lbm2kg);
+% AC.Hull.Beta = 25;
+% nw_lim = (C1 * Vso^2)/((tan(AC.Hull.Beta*pi/180))^2*W)^(1/3)
+% 
+% K2 = 0.75;
+% C4 =0.078*C1;
+% P = C4 * K2 * Vso^2/(tan(AC.Hull.Beta*pi/180));
+% Area = AC.Hull.Beam*AC.Hull.Beam;%0.125*AHull;% AC.Hull.Beam*AC.Hull.Beam
+% F=P*(Area/CF.in2m^2)
+% 
+% nw2 = F/W

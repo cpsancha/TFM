@@ -20,7 +20,7 @@ classdef weights < handle
         x_cg     double    %[double]  X-Coordinate of the gravity center of the plane, from the plane nose
         y_cg     double    %[double]  Y-Coordinate of the gravity center of the plane, from the simetry plane
         z_cg     double    %[double]  Z-Coordinate of the gravity center of the plane
-
+        x_n      double    %[double]  Neutral point of the aircraft
     end
     
     

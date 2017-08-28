@@ -682,6 +682,174 @@ name "sec:Elección-del-perfil"
 \end_layout
 
 \begin_layout Standard
+La elección del perfil presenta un
+\end_layout
+
+\begin_layout Standard
+c.
+ The NACA 6-series ("laminar flow") of wing sections is the outcome of a
+ succession of attempts to design airfoils by (approximate) theoretical
+ methods, aimed at achieving low profile drag in a limited range of lift
+ coefficients: the Ii sag" or "bucket" in the low-drag range.
+ The laminar boundary layer over the forward part of the section is stabilized
+ by avoiding pressure peaks, keeping the local velocities low and applying
+ a favorable pressure gradient over the forward part of the upper surface.
+ The extent of laminar layer is limited by the separation of the turbulent
+ boundary layer over the rear part.
+ The low supervelocities on these airfoils also favor the attainment of
+ a high critical Mach number.
+\end_layout
+
+\begin_layout Standard
+The profile drag, although very low under ideal conditions, is sensitive
+ to surface roughness, excrescences and contaminations.
+ Special structures are therefore needed to maintain the laminar flow, and
+ on practical wing constructions of transport aircraft the potentially large
+ extent of laminar layer will not normally be realized.
+\end_layout
+
+\begin_layout Standard
+A modification to the standard series is the A-series (Ref.
+ 7-52) in which the sharp trailing edge angle is replaced by a larger one,
+ resulting from straight contours which run from 80 percent chord backwards.
+\end_layout
+
+\begin_layout Subsection
+Digitos
+\end_layout
+
+\begin_layout Standard
+c.
+ NtUmbering System.
+ The NACA 6-series wing sections are usually designated by a six-digit number
+ together with a statement showing the type of mean line used.
+ For example, in the designation NACA 65,3-218, a == 0.5, the 6 is the series
+ designation.
+ The 5 denotes the chordwise position of minimum pressure in tenths of the
+ chord behind the leading edge for the basic symmetrical section at zero
+ lift.
+ The 3 following the commaives the range of lift coefficient in tenths above
+ and below the design lift oefficient in which favorable pressure gradients
+ exist on both surfaces.
+ 'he 2 following the dash gives the design lift coefficient in tenths.
+ The .LSt two digits indicate the thickness of the lying section in per cent
+ of the horde The designation a = 0.5 shows the type of mean line used.
+ When he mean-line designation is not given, it is understood that the uniformoa
+d mean line (a = 1.0) has been used
+\end_layout
+
+\begin_layout Standard
+LOCATION OF MAXIMUM THICKNESS: the further back this point is chosen, the
+ lower the minimum profile drag (of smooth profiles) and the higher the
+ critical Mach number at the design c~.
+ This works out at the expense of c~-max and profile drag at high lift.
+ For these reasons, the 63- and 64sections are the most popular amongst
+ the 6-series airfoils.
+\end_layout
+
+\begin_layout Standard
+THICKNES RATIOThe favorable trend of low induced drag of a high aspect ratio
+ wing is partly cancelled out by a profile drag increment if the thickness
+ ratio is allowed to increase in proportion to A.
+ Maximum lift is also affected by the thickness ratio, as shown by Fig.
+ 7-9.
+ The trend for basic wing sections is readily explained by recalling that
+ for thin wings the leading edge type of stall dominates, while for thick
+ sections the trailing edge stall is predominan, standard NACA airfoil sections
+ is achieved for thickness ratios of 12 to 15 percent chord, where a combined
+ stall will be observed
+\end_layout
+
+\begin_layout Standard
+A thickness ratio of between 15 and 20 percent is in the interest of good
+ performance when using relatively simple trailing-edge high-lift devices
+ and provides adequate room for retracting the undercarriage.
+ Thickness ratios above 20 percent m~y show diminishing returns due to the
+ increasing profile drag and the relatively low maximum lift and this, in
+ turn, limits the aspect ratio to a maximum of approximately 13 for cantilever
+ wings
+\end_layout
+
+\begin_layout Standard
+Puesto que las alas no proporcionarán la misma sustentación durante el crucero
+ equilibrado del avión, si se otorga máxima prioridad al criterio de elección
+ del perfil a establecer 
+\begin_inset Formula $C_{D}$
+\end_inset
+
+ mínimo para el 
+\begin_inset Formula $C_{L}$
+\end_inset
+
+de diseño, habría que utilizar secciones diferentes en cada ala.
+ Como existen otro factores implicados que han llevado a utilizar la misma
+ configuración en ambas alas, es necesario establecer una solución de compromiso
+ entre ambas alas para que la resistencia sea mínima.
+\end_layout
+
+\begin_layout Standard
+El rango de coeficientes de sustentación para el crucero se encuentra comprendid
+o entre 
+\begin_inset Formula $C_{L}=\left[0.33,\,\,\,0.43\right]$
+\end_inset
+
+ , (
+\begin_inset Formula $C_{L_{design}}=0.6687)$
+\end_inset
+
+lo que corresponde a los siguientes rango de sustentación para el ala delantera
+ y trasera:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+C_{L_{front}}=[0.56,\,\,\,0.68]
+\]
+
+\end_inset
+
+0.5695 design
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+C_{L_{rear}}=[0.15,\,\,\,0.22]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+0.1167 design
+\end_layout
+
+\begin_layout Standard
+Suponiendo distribucion 70-30
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $C_{l_{1}}=CL*0.7*S/S1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+CL2=CL*0.3*S/S2*1/0.85
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 La elección del perfil a utilizar en las alas es una de las decisiones más
  críticas en el diseño de éstas.
  Dicha decisión se ve determinada por la velocidad de diseño de crucero,

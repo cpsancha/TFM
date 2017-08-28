@@ -187,11 +187,14 @@ clear gof indexFus indexPar MFW_MTOW_ac_old MFW_MTOW_ac_new parametro_ac_old par
 
 
 % Define more AC weights;
-%     AC.Weight.MTOW = mean([MTOW.newRoskam,MTOW.newTorenbeek]);
+if DP.chooseWeights
+    AC.Weight.MTOW = DP.MTOW;
+    AC.Weight.EW   = DP.EW;
+    AC.Weight.MFW  = DP.MFW;
+else
     AC.Weight.MTOW = MTOW.newTorenbeek + 0.25 * (MTOW.newRoskam - MTOW.newTorenbeek);
-    %AC.Weight.EW   = mean([EW.newRoskam,EW.newTorenbeek]);
-    %AC.Weight.MFW  = mean([MFW.newRoskam,MFW.newTorenbeek]);
     [~, AC.Weight.MTOW, AC.Weight.EW, AC.Weight.MFW] = getRoskamWeights( AC.Weight.MTOW, ME, CST, CF, Parameters, 'EW_new');
+end
     AC.Weight.MRW  = DP.MRW_MTOW * AC.Weight.MTOW;
     AC.Weight.MLW  = DP.MLW_MTOW * AC.Weight.MTOW;
     AC.Weight.TUL  = AC.Weight.MFW + ME.Payload;
@@ -210,6 +213,8 @@ disp(['  Selected:  MTOW=',num2str(AC.Weight.MTOW),'   EW=',num2str(AC.Weight.EW
     AC.Fuselage.fuselage_AoA = DP.fuselage_AoA;
     AC.Fuselage.Volume       = DP.totalFusVolume;
     AC.Fuselage.cabLength    = DP.cabLength;
+    AC.Fuselage.cabHeight    = DP.cabHeight;
+    AC.Fuselage.cabWidth     = DP.cabWidth;
     AC.Fuselage.ln           = DP.ln;
     AC.Fuselage.la           = DP.la;
     AC.Fuselage.frontArea    = DP.frontArea;
@@ -217,7 +222,9 @@ disp(['  Selected:  MTOW=',num2str(AC.Weight.MTOW),'   EW=',num2str(AC.Weight.EW
     AC.Fuselage.A_I          = DP.A_I;
     AC.Fuselage.A_II         = DP.A_II;
     AC.Fuselage.beta         = DP.tailConeAngle;
-
+    AC.Fuselage.galleryLength    = DP.galleryLength;
+    AC.Fuselage.lavatoryLength   = DP.lavatoryLength;
+    AC.Fuselage.passengersLength = DP.cabLength-DP.galleryLength-DP.lavatoryLength;
 
 
 clear MTOW EW MFW

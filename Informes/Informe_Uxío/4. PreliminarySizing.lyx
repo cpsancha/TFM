@@ -92,208 +92,11 @@
 \begin_body
 
 \begin_layout Chapter
-\begin_inset CommandInset label
-LatexCommand label
-name "chap:Dimensionado-Inicial"
-
-\end_inset
-
-Dimensionado Inicial
+Punto de diseño
 \end_layout
 
 \begin_layout Standard
-A lo largo de este capítulo y en los sucesivos, se abordará el diseño preliminar
- de una aeronave que cumpla las especificaciones de la misión definida en
- el apartado 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:Especificación-Mision"
-
-\end_inset
-
-.
- A su vez, este diseño se deberá realizar cumpliendo en la medida de lo
- posible los requisitos establecidos en el apartado 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:Requisitos-de-diseño"
-
-\end_inset
-
-, o en el caso de que ésto no sea posible, se deberá razonar y explicar
- las razones que llevan a ello.
- 
-\end_layout
-
-\begin_layout Standard
-El proceso de diseño que se ha seguido para lograr la completa definición
- preliminar de la aeronave es similar al mostrado por Roskam en 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "RoskamI"
-
-\end_inset
-
- y en 
-\begin_inset CommandInset citation
-LatexCommand citep
-key "RoskamII"
-
-\end_inset
-
-, donde se realiza una primera fase de dimensionado general de la aeronave,
- en la que se calculan, a partir de las especificaciones de la misión que
- debe ser capaz de realizar y de las normativas de certificación aplicables,
- los parámetros másicos, propulsivos y aerodinámicos más relevantes para
- la correcta definición de las actuaciones de punto.
-\end_layout
-
-\begin_layout Standard
-A continuación se realiza una segunda fase de diseño más detallado, aunque
- todavía muy preliminar, en la que se trata a la aeronave como un sólido
- en vez de como una masa puntual y se fija la configuración, geometría,
- planta propulsora y distribución de masas de la aeronave y se puede realizar
- por tanto un cálculo más preciso de las actuaciones.
- En este capítulo se explicará la primera fase.
- 
-\end_layout
-
-\begin_layout Standard
-Para ello, 
-\end_layout
-
-\begin_layout Section
-Estimación de pesos
-\end_layout
-
-\begin_layout Subsection
-Método de Roskam
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/EW_MTOW_Correlation.eps
-	width 90text%
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Figura
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/MTOW definition.eps
-	width 90text%
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Figura
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Método de Torenbeek
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/Torenbeek_fuselage_EW.eps
-	width 90text%
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Figura
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/Torenbeek_FuelFraction.eps
-	width 90text%
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Figura
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Método de alpha
+La finalidad de este capítulo 
 \end_layout
 
 \begin_layout Section
@@ -305,34 +108,21 @@ Requisito de despegue
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/TOP25.eps
-	width 90text%
+Las operaciones en agua representan un requisito condicionante para la operación
+ de la aeronave.
+ Los requisitos relativos a flotabilidad, hidroestabilidad y cargas en aterrizaj
+e se desarrollan en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Dimensionado-del-casco"
 
 \end_inset
 
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Figura
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
+ y se garantizan a través de un correcto dimensionado del casco, mientras
+ que en la determinación de la distancia de despegue existe una estrecha
+ relación entre la planta propulsora, la célula aerodinámica y el casco.
+ Por este motivo es necesario abordar su estudio en este punto del proceso
+ de diseño.
 \end_layout
 
 \begin_layout Subsection
@@ -384,13 +174,6 @@ Ascenso tras aterrizaje frustrado
 
 \begin_layout Subsection
 Requisito de velocidad de crucero
-\begin_inset CommandInset label
-LatexCommand label
-name "subsec:Requisito-de-velocidad-crucero"
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsection
@@ -399,37 +182,6 @@ Requisito de entrada en pérdida
 
 \begin_layout Subsection
 Determinación del punto de diseño
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/DesignPoint.eps
-	width 90text%
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Figura
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section

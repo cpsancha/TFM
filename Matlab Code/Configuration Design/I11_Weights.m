@@ -122,6 +122,7 @@ XCG.Total = (XCG.fuselage*WE.fuselage + XCG.Hull*WE.Hull + XCG.TipFloats*WE.TipF
 function [F,WE] = getFinalWeight(x,AC,ME,CST,CF,AF,delta_f_L)
 AC.Weight.MTOW = x(1);
 AC.Weight.EW = x(2);
+
 %% Getting the limit load
 %Suponiendo todo el combustible en las alas
 Wdes = (AC.Weight.MTOW-AC.Weight.FW)*CST.GravitySI;
@@ -136,6 +137,7 @@ Wdes = (AC.Weight.MTOW-AC.Weight.FW)*CST.GravitySI;
 mu = 2*(Wdes/AC.Wing.Sw)/(ME.Cruise.Density*AC.Wing1.CL_alpha_wf*AC.Wing1.CMA*CST.GravitySI);
 kg = 0.88*mu/(5.3+mu);
 [~, asound, P, ~] = atmosisa(ME.Cruise.Altitude);
+[~, ~, ~, rho0] = atmosisa(0);
 V_EAS =  correctairspeed(ME.Cruise.Speed, asound, P, 'TAS', 'EAS');
     if ME.Cruise.Altitude*CF.m2ft<20000
     U_EAS = 50*CF.ft2m;
@@ -240,7 +242,7 @@ k_b = 1; % no hay struts
 
 %Basic Weight:
 W_w_basic = constant*k_no*k_taper*k_e*k_uc*k_st*...
-    (k_b*n_ult*(Wdes-0.8 *WE.Wing1))^0.55+...
+    (k_b*n_ult*(Wdes-0.8 *WE.Wing1))^0.55*...
     AC.Wing1.WingSpan^1.675*AF.t_c^(-0.45)*(cos(AC.Wing1.Sweep_12*pi/180))^(-1.325); %OJO!!!! El "+" de la linea anterior es un "*"
 
 %High lift devices:
@@ -249,7 +251,7 @@ bfs = 2*(AC.Wing1.eta_outboard-AC.Wing1.eta_inboard)*AC.Wing1.WingSpan/2;
 W_tef = AC.Wing1.Swf*2.706*kf*(AC.Wing1.Swf*bfs)^(3/16)*...
     ((1.8*ME.Landing.Speed/100)^2*sin(delta_f_L*pi/180)/AF.t_c)^(3/4);
 %Spoilers:
-W_sp = 12.2*AC.Wing1.Sw;
+W_sp = 0.015*W_w_basic; 
 
 % Total Weight:
 WE.Wing1 = W_w_basic + 1.2*(W_tef+W_sp);
@@ -274,7 +276,7 @@ k_b = 1; % no hay struts
 
 %Basic Weight:
 W_w_basic = constant*k_no*k_taper*k_e*k_uc*k_st*...
-    (k_b*n_ult*(Wdes-0.8*WE.Wing2))^0.55+...
+    (k_b*n_ult*(Wdes-0.8*WE.Wing2))^0.55*...
     AC.Wing2.WingSpan^1.675*AF.t_c^(-0.45)*(cos(AC.Wing2.Sweep_12*pi/180))^(-1.325);
 
 %High lift devices:
@@ -283,7 +285,7 @@ bfs = 2*(AC.Wing2.eta_outboard-AC.Wing2.eta_inboard)*AC.Wing2.WingSpan/2;
 W_tef = AC.Wing2.Swf*2.706*kf*(AC.Wing2.Swf*bfs)^(3/16)*...
     ((1.8*ME.Landing.Speed/100)^2*sin(delta_f_L*pi/180)/AF.t_c)^(3/4);
 %Spoilers:
-W_sp = 12.2*AC.Wing2.Sw;
+W_sp = 0.015*W_w_basic;
 
 % Total Weight:
 WE.Wing2 = W_w_basic + 1.2*(W_tef+W_sp);
