@@ -188,7 +188,7 @@ clear gof indexFus indexPar MFW_MTOW_ac_old MFW_MTOW_ac_new parametro_ac_old par
 
 % Define more AC weights;
 if DP.chooseWeights
-    AC.Weight.MTOW = DP.MTOW;
+    AC.Weight.MTOW = (DP.EW + DP.MFW + ME.Payload + ME.CrewWeight)/(1-0.005);
     AC.Weight.EW   = DP.EW;
     AC.Weight.MFW  = DP.MFW;
 else
@@ -200,10 +200,14 @@ end
     AC.Weight.TUL  = AC.Weight.MFW + ME.Payload;
     AC.Weight.OEW  = AC.Weight.EW + 0.005*AC.Weight.MTOW + ME.CrewWeight;
     AC.Weight.BOW  = AC.Weight.OEW;
+    AC.Weight.MZFW = AC.Weight.MTOW - AC.Weight.MFW;
+    AC.Weight.MPL  = DP.maxPayload;
+    
+numFormat = '%08.2f';
 disp( 'ESTIMACIÓN DE PESOS:')    
-disp(['  Torenbeek: MTOW=',num2str(MTOW.newTorenbeek),'   EW=',num2str(EW.newTorenbeek),'   MFW=',num2str(MFW.newTorenbeek)])
-disp(['  Roskam:    MTOW=',num2str(MTOW.newRoskam),'   EW=',num2str(EW.newRoskam),'   MFW=',num2str(MFW.newRoskam)])
-disp(['  Selected:  MTOW=',num2str(AC.Weight.MTOW),'   EW=',num2str(AC.Weight.EW),'   MFW=',num2str(AC.Weight.MFW)])    
+disp(['  Torenbeek:  MTOW=',num2str(MTOW.newTorenbeek,numFormat),'   EW=',num2str(EW.newTorenbeek,numFormat),'   MFW=',num2str(MFW.newTorenbeek,numFormat)])
+disp(['  Roskam:     MTOW=',num2str(MTOW.newRoskam,numFormat),'   EW=',num2str(EW.newRoskam,numFormat),'   MFW=',num2str(MFW.newRoskam,numFormat)])
+disp(['  Selected:   MTOW=',num2str(AC.Weight.MTOW,numFormat),'   EW=',num2str(AC.Weight.EW,numFormat),'   MFW=',num2str(AC.Weight.MFW,numFormat)])    
 
 
 %Define AC fuselage
@@ -227,7 +231,7 @@ disp(['  Selected:  MTOW=',num2str(AC.Weight.MTOW),'   EW=',num2str(AC.Weight.EW
     AC.Fuselage.passengersLength = DP.cabLength-DP.galleryLength-DP.lavatoryLength;
 
 
-clear MTOW EW MFW
+clear MTOW EW MFW numFormat
 
 %% USEFUL FUNCTIONS DEFINITION:
 function [ F, W_TO_guess, W_E, W_F, W_E_tent] = getRoskamWeights( x, ME, CST, CF, Parameters, W_E_Str )

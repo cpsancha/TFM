@@ -230,16 +230,6 @@ end
 % clear index vcruise i
 
 
-%% CONTINUE...
-run B_loadParameters.m
-run C05_weightEstimation.m
-run D05_airplaneDesignParameters.m
-run F05_wingConfiguration.m
-run G05_polarPrediction.m
-run H05_highLiftDevices.m
-run I05_Weights.m
-clear ans
-
 % test_values =[-5,-2.5,0,2.5,5];
 % figure(10)
 % hold on

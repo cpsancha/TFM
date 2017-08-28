@@ -149,6 +149,9 @@ WE.tailFuel     = AC.Weight.MFW - WE.wing1Fuel - WE.wing2Fuel - WE.depositsFuel;
 totalFuelVolume = AC.Weight.MFW/CST.fuelDensitySI;   %[m^3]
 fusFuelVolume   = WE.depositsFuel/CST.fuelDensitySI; %[m^3]
 tailFuelVolume  = WE.tailFuel/CST.fuelDensitySI;     %[m^3]
+if tailFuelVolume > 0.5*DP.tailVolume
+    warning('Demasiado combustible en la cola')
+end
 
 
 % TOTAL WEIGHT
@@ -160,11 +163,12 @@ WE.Furnishing  = WE.flightDeck + WE.passengerSeats + WE.galleyProvisions + WE.to
 WE.Operational = WE.crewProvisions + WE.passCabSupplies + WE.waterToiletChemicals + ...
                  WE.safetyEquipment + WE.residualFuel;
 WE.OEW         = WE.Airframe + WE.Propulsion + WE.Equipment + WE.Operational;
-WE.EW          = WE.OEW-WE.crewProvisions;
+WE.EW          = WE.OEW - WE.crewProvisions - WE.residualFuel;
 WE.MTOW        = WE.OEW + WE.Payload + AC.Weight.MFW;
-disp(['  Calculated: MTOW=',num2str(WE.MTOW),'  EW=',num2str(WE.EW)])
 
-
+numFormat = '%08.2f';
+disp(['  Calculated: MTOW=',num2str(WE.MTOW,numFormat),'   EW=',num2str(WE.EW,numFormat),'   MFW=',num2str(AC.Weight.MFW,numFormat)])
+clear numFormat
 
 
 
@@ -230,15 +234,41 @@ XCG.MTOW = (XCG.OEW*WE.OEW + XCG.Payload*ME.Payload + XCG.Fuel*AC.Weight.MFW)/(W
             
 %ON FLIGHT
 XCG.FLIGHT = (XCG.OEW*WE.OEW + XCG.Payload*ME.Payload + XCG.Fuel*AC.Weight.MFW/2)/(WE.OEW+WE.Payload+AC.Weight.MFW/2);
-    
-disp(['Xn=',num2str(AC.Weight.x_n),'  Xcg_OEW=',num2str(XCG.OEW),'  Xcg_MTOW=',num2str(XCG.MTOW),'  Xcg_FLIGHT=',num2str(XCG.FLIGHT)])
 
+disp(' ')
+disp('ESTIMACIÓN DEL CENTRO DE GRAVEDAD')
+disp(['  Xn=',num2str(AC.Weight.x_n),'  Xcg_OEW=',num2str(XCG.OEW),'  Xcg_MTOW=',num2str(XCG.MTOW),'  Xcg_FLIGHT=',num2str(XCG.FLIGHT)])
+
+
+
+
+%% OBTAIN CORRECT XCG ON FLIGHT
+% backupFlag = [DP.ShowReportFigures, DP.ShowAircraftLayout];
+% DP.ShowReportFigures  = false;
+% DP.ShowAircraftLayout = false;
+% [X,~,exitFlag,~]=fsolve(@(X)setCorrectCoG(X, AC, CF, CST, DP, ME, Parameters, SP, WE, XCG),[DP.x_cg,DP.EW,DP.MTOW],options);
+% checkExitFlag(exitFlag);
+% DP.x_cg          = X(1);
+% DP.EW            = X(2); %[kg]
+% DP.MTOW          = X(3); %[kg]
+% DP.chooseWeights = true;
+% DP.ShowReportFigures  = backupFlag(1);
+% DP.ShowAircraftLayout = backupFlag(2);
+
+
+%% SHOW FIGURES
 if DP.ShowReportFigures
     plotReportFigures(ME, WE, XCG);
 end
 
+
+
+%% CLEAR WORKSPACE
 clear A B C D options k_pg k_thr lt asound rho P V_D V_D_EAS Vapp_SP VStall_L SwetNacelles
 clear SCautopilot SCcockpit SCsystems n_ult exitFlag k_apu k_wapu labels X k_ieg R_D W_DE Pel cabVol
+clear fusFuelVolume tailFuelVolume totalFuelVolume backupFlag
+
+
 
 %% USEFUL FUNCTIONS
 function [] = checkExitFlag(exitFlag)
@@ -482,3 +512,36 @@ TotalWeight = W_w_basic + 1.2*(1.15*W_tef+W_sp);
 
 Error = TotalWeight-EstimatedTotalWeight;
 end
+
+% function [Error] = setCorrectCoG(X, AC, CF, CST, DP, ME, Parameters, SP, WE, XCG) %#ok<INUSL>
+% 
+% clc
+% %Set new values
+%     DP.x_cg          = X(1);
+%     DP.chooseWeights = true;
+%     DP.EW            = X(2); %[kg]
+%     DP.MTOW          = X(3); %[kg]
+%     
+% %Run again the scripts
+%     run C05_weightEstimation.m
+%     run D05_airplaneDesignParameters.m
+%     run F05_wingConfiguration.m
+%     run G05_polarPrediction.m
+%     run H05_highLiftDevices.m
+%     run I05_Weights.m
+%  
+% %Get errors
+%     Error(1) = (DP.x_cg - XCG.FLIGHT)/1e1;
+%     Error(2) = (DP.EW - WE.EW)/1e4;
+%     Error(3) = (DP.MTOW - WE.MTOW)/1e4;
+%     
+% 
+% 
+% end
+
+
+
+
+
+
+

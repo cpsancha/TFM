@@ -96,7 +96,22 @@ Punto de diseño
 \end_layout
 
 \begin_layout Standard
-La finalidad de este capítulo 
+
+\color red
+Asegurar que la aeronave puede despegar o aterrizar en una distancia especificad
+a puede no parecer relevante desde el momento en que no es necesaria una
+ pista asfaltada.
+ Este sería el caso si se operara únicamente en mar abierto, pero las zonas
+ costeras están a menudo congestionadas y se asume que la aeronave será
+ operada dentro de áreas con límites, donde el tráfico marítimo está restringido.
+\end_layout
+
+\begin_layout Standard
+
+\color red
+Incluso de no existir estas restricciones físicas, el despegue puede resultar
+ una fase incómoda para los pasajeros, por tanto reducir su duración sirve
+ para asegurar el confort de los pasajeros.
 \end_layout
 
 \begin_layout Section
@@ -110,13 +125,200 @@ Requisito de despegue
 \begin_layout Standard
 Las operaciones en agua representan un requisito condicionante para la operación
  de la aeronave.
- Los requisitos relativos a flotabilidad, hidroestabilidad, cargas en aterrizaje
- se desarrollan en el capítulo .
+ Los requisitos relativos a flotabilidad, hidroestabilidad y cargas en aterrizaj
+e se desarrollan en el capítulo 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "chap:Dimensionado-del-casco"
+
+\end_inset
+
+ y se garantizan a través de un correcto dimensionado del casco, mientras
+ que en la determinación de la distancia de despegue existe una estrecha
+ relación entre la planta propulsora, la célula aerodinámica y el casco.
+ Por este motivo es necesario abordar su estudio en este punto del proceso
+ de diseño.
 \end_layout
 
 \begin_layout Standard
-Puesto que menores distancias de despegue permitirán a la aeronave despegar
- desde un 
+Para aeronaves convencionales, despegando desde una pista pavimentada, la
+ distancia de despegue es función lineal del parámetro de despegue (TOP):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+S_{TO}=A\,TOP=A\frac{\nicefrac{W_{TO}}{S}}{\sigma C_{L_{max_{TO}}}\nicefrac{T_{TO}}{W_{TO}}}\label{eq:Take off restriction land}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para hallar la distancia de despegue en agua, se seguirá el procedimiento
+ descrito en la referencia 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "levispotential"
+
+\end_inset
+
+.
+ Este procedimiento se basa en el descrito en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Torenbeek1982"
+
+\end_inset
+
+, donde la distancia de despegue en tierra se halla de manera más detallada:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+S_{TO}=\frac{9.34\cdot10^{-4}\nicefrac{W_{TO}}{S}}{\rho C_{L_{max_{TO}}}\left(\nicefrac{\bar{T}}{W_{TO}}-\mu\right)-0.72C_{D_{0}}}+\frac{h_{OBS}}{\tan\left(0.9\nicefrac{\bar{T}}{W_{TO}}-0.3/\sqrt{A}\right)}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Aplicando esta ecuación con valores de 
+\begin_inset Formula $\mu=[0.15$
+\end_inset
+
+- 0.25] , se obtienen razonables de resistencia hidrodinámica media.
+ Sin embargo, es necesario relacionar de manera directa los valores del
+ parámetro 
+\begin_inset Formula $\mu$
+\end_inset
+
+ con los parámetros de diseño actuales del casco.
+\end_layout
+
+\begin_layout Standard
+La distancia recorrida en la superficie del agua para acelerar hasta la
+ velocidad de rotación 
+\begin_inset Formula $V_{R}$
+\end_inset
+
+ se define como:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+S_{TOW}=\frac{1}{2g}\intop_{0}^{V_{R}}\frac{dV^{2}}{a/g}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Considerando el sumatorio de fuerzas sobre la aeronave, la aceleración instantán
+ea a una velocidad 
+\begin_inset Formula $V$
+\end_inset
+
+ viene dada por:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{a}{g}=\frac{T}{W}-\frac{R}{\Delta}-\frac{\rho V^{2}}{2}\left(\frac{C_{D_{0}}+\frac{C_{L}^{2}}{4Ae}-C_{L}\frac{R}{\Delta}}{\nicefrac{W}{S}}\right),
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+donde 
+\begin_inset Formula $\nicefrac{R}{\Delta}$
+\end_inset
+
+ es el cociente entre la resistencia hidrodinámica del casco y el desplazamiento
+, definido como:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\Delta=W-\frac{1}{2}\rho V^{2}S\,C_{L}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Los resultados de los tests hidrodinámicos se presentan en forma de gráficas
+ donde se relaciona la resistencia 
+\begin_inset Formula $R$
+\end_inset
+
+ al ángulo de trimado equilibrado con el coeficiente de velocidad 
+\begin_inset Formula $C_{V}$
+\end_inset
+
+, para un rango de coeficientes de carga 
+\begin_inset Formula $C_{\Delta}$
+\end_inset
+
+.
+ Es necesario utilizar variables adimensionalizadas para relacionar la resistenc
+ia con la velocidad, peso y tamaño del casco de tal forma que se mantenga
+ la semejanza dinámica y geométrica al utilizar datos de modelos a escala.
+ 
+\end_layout
+
+\begin_layout Standard
+Utilizando la ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Take off restriction land"
+
+\end_inset
+
+, se establece un requisito entre la carga alar y el empuje al despegue.
+ Es necesario establecer este requisito en términos de potencia al despegue.
+ Para relacionar
+\begin_inset Formula $\nicefrac{T_{TO}}{W_{TO}}$
+\end_inset
+
+ con 
+\begin_inset Formula $\nicefrac{P_{TO}}{W_{TO}}$
+\end_inset
+
+ se utiliza la figura 3.8 de 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "RoskamI"
+
+\end_inset
+
+, de tal forma que:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{P_{TO}}{W_{TO}}=\frac{T_{TO}}{W_{TO}}\cdot57.8069\,\,[\unitfrac{W}{N}]
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -124,34 +326,9 @@ Requisito de aterrizaje
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/Vapprox.eps
-	width 90text%
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Figura
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
+Con respecto a la distancia de aterrizaje en agua, no se considera una restricci
+ón de diseño, puesto que la alta resistencia hidrodinámica asegura que las
+ distancias de aterrizaje serán menores que las de despegue.
 \end_layout
 
 \begin_layout Subsection
@@ -168,13 +345,6 @@ Ascenso tras aterrizaje frustrado
 
 \begin_layout Subsection
 Requisito de velocidad de crucero
-\begin_inset CommandInset label
-LatexCommand label
-name "subsec:Requisito-de-velocidad-crucero"
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsection
@@ -183,37 +353,6 @@ Requisito de entrada en pérdida
 
 \begin_layout Subsection
 Determinación del punto de diseño
-\end_layout
-
-\begin_layout Standard
-\begin_inset Float figure
-wide false
-sideways false
-status collapsed
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/DesignPoint.eps
-	width 90text%
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Figura
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section

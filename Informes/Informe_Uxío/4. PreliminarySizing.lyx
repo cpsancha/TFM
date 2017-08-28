@@ -96,7 +96,22 @@ Punto de diseño
 \end_layout
 
 \begin_layout Standard
-La finalidad de este capítulo 
+
+\color red
+Asegurar que la aeronave puede despegar o aterrizar en una distancia especificad
+a puede no parecer relevante desde el momento en que no es necesaria una
+ pista asfaltada.
+ Este sería el caso si se operara únicamente en mar abierto, pero las zonas
+ costeras están a menudo congestionadas y se asume que la aeronave será
+ operada dentro de áreas con límites, donde el tráfico marítimo está restringido.
+\end_layout
+
+\begin_layout Standard
+
+\color red
+Incluso de no existir estas restricciones físicas, el despegue puede resultar
+ una fase incómoda para los pasajeros, por tanto reducir su duración sirve
+ para asegurar el confort de los pasajeros.
 \end_layout
 
 \begin_layout Section
@@ -125,21 +140,449 @@ reference "chap:Dimensionado-del-casco"
  de diseño.
 \end_layout
 
-\begin_layout Subsection
-Requisito de aterrizaje
+\begin_layout Standard
+Para aeronaves convencionales, despegando desde una pista pavimentada, la
+ distancia de despegue es función lineal del parámetro de despegue (TOP):
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
+\begin_inset Formula 
+\begin{equation}
+S_{TO}=A\,TOP=A\frac{\nicefrac{W_{TO}}{S}}{\sigma C_{L_{max_{TO}}}\nicefrac{T_{TO}}{W_{TO}}}\label{eq:Take off restriction land}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Para hallar la distancia de despegue en agua, se seguirá el procedimiento
+ descrito en la referencia 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "levispotential"
+
+\end_inset
+
+.
+ Este procedimiento se basa en el descrito en 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "Torenbeek1982"
+
+\end_inset
+
+, donde la distancia de despegue en tierra se halla de manera más detallada:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+S_{TO}=\frac{9.34\cdot10^{-4}\nicefrac{W_{TO}}{S}}{\rho C_{L_{max_{TO}}}\left(\nicefrac{\bar{T}}{W_{TO}}-\mu\right)-0.72C_{D_{0}}}+\frac{h_{OBS}}{\tan\left(0.9\nicefrac{\bar{T}}{W_{TO}}-0.3/\sqrt{A}\right)}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Aplicando esta ecuación con valores de 
+\begin_inset Formula $\mu=[0.15$
+\end_inset
+
+- 0.25] , se obtienen razonables de resistencia hidrodinámica media.
+ Sin embargo, es necesario relacionar de manera directa los valores del
+ parámetro 
+\begin_inset Formula $\mu$
+\end_inset
+
+ con los parámetros de diseño actuales del casco.
+\end_layout
+
+\begin_layout Standard
+La distancia recorrida en la superficie del agua para acelerar hasta la
+ velocidad de rotación 
+\begin_inset Formula $V_{R}$
+\end_inset
+
+ se define como:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+S_{TOW}=\frac{1}{2g}\intop_{0}^{V_{R}}\frac{dV^{2}}{a/g}.
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Considerando el sumatorio de fuerzas sobre la aeronave, la aceleración instantán
+ea a una velocidad 
+\begin_inset Formula $V$
+\end_inset
+
+ viene dada por:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{a}{g}=\frac{T}{W}-\frac{R}{\Delta}-\frac{\rho V^{2}}{2}\left(\frac{C_{D_{0}}+\frac{C_{L}^{2}}{4Ae}-C_{L}\frac{R}{\Delta}}{\nicefrac{W}{S}}\right),
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+donde 
+\begin_inset Formula $\nicefrac{R}{\Delta}$
+\end_inset
+
+ es el cociente entre la resistencia hidrodinámica del casco y el desplazamiento
+, definido como:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\Delta=W-\frac{1}{2}\rho V^{2}S\,C_{L}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Los resultados de los tests hidrodinámicos se presentan en forma de gráficas
+ donde se relaciona la resistencia 
+\begin_inset Formula $R$
+\end_inset
+
+ al ángulo de trimado equilibrado con el coeficiente de velocidad 
+\begin_inset Formula $C_{V}$
+\end_inset
+
+, para un rango de coeficientes de carga 
+\begin_inset Formula $C_{\Delta}$
+\end_inset
+
+.
+ Es necesario utilizar variables adimensionalizadas para relacionar la resistenc
+ia con la velocidad, peso y tamaño del casco de tal forma que se mantenga
+ la semejanza dinámica y geométrica al utilizar datos de modelos a escala.
+ 
+\end_layout
+
+\begin_layout Standard
+El coeficiente de carga, dado por:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+C_{\Delta}=\frac{W-\frac{1}{2}\rho V^{2}S\,}{g\rho b_{h}^{3}},
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+donde 
+\begin_inset Formula $b_{h}$
+\end_inset
+
+ es la anchura máxima del casco, es el cociente entre la carga del casco
+ y su tamaño.
+ Es una medida del calado del casco y por tanto de la resistencia en el
+ régimen de bajas velocidades, mientras que a altas velocidades indica la
+ sustentación hidrodinámica y por tanto la resistencia inducida por la sustentac
+ión.
+\end_layout
+
+\begin_layout Standard
+El coeficiente de velocidad, dado por:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+C_{V}=\frac{V}{\sqrt{g\,b_{h}}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+es una variación del número de Froude, un número adimensional usado para
+ comparar las fuerzas inerciales con las gravitacionales, lo cual asegura
+ semejanza entre la formación de olas.
+ La necesidad de mantener 
+\begin_inset Formula $C_{V}$
+\end_inset
+
+ y 
+\begin_inset Formula $C_{\Delta}$
+\end_inset
+
+ constantes a lo largo de las escalas provoca que el número de Reynolds
+ no se mantenga constante, generando una sobrepredicción en las componentes
+ de fricción de la resistencia hidrodinámica.
+\end_layout
+
+\begin_layout Standard
+Usando el modelo anterior se simulan En la referencia se simulan blablabalba
+\end_layout
+
+\begin_layout Standard
+Para establecer una relación empírica entre los parámetros del casco y la
+ distancia de despega se analizan estadísticamente los resultados para poder
+ determinar cuáles son los de mayor influencia.
+ Además del coeficiente de carga, el ángulo de enquillamiento 
+\begin_inset Formula $\beta$
+\end_inset
+
+ (ángulo formado por las intersecciones del fondo del casco con un plano
+ perpendicular al de simetría) y el cociente entre la longitud del cuerpo
+ de proa 
+\begin_inset Formula $l_{f}$
+\end_inset
+
+ y 
+\begin_inset Formula $b_{h}$
+\end_inset
+
+ son los parámetros que mayor influencia tienen.
+\end_layout
+
+\begin_layout Standard
+Basado en estas observaciones, el modelo de la referencia 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "levispotential"
+
+\end_inset
+
+ se resume en la siguiente ecuación:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{\nicefrac{W_{TO}}{S}}{S_{TOW}}=\rho C_{L_{max_{TO}}}\left[a_{1}\frac{\bar{T}}{W_{TO}}+a_{2}\left(\frac{\bar{T}}{W_{TO}}\right)^{2}+a_{3}\frac{L_{h}}{b_{h}}+a_{4}\frac{1}{\cos\left(\beta\right)}+a_{5}C_{\Delta_{0}}+a_{6}\right]+a_{7}\rho C_{D_{0}}+a_{8}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+cuyos valores para las constantes se encuentra en el siguietne cuadro:
+\begin_inset Float table
+placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \align center
-\begin_inset Graphics
-	filename C:/Users/sork9/Dropbox/MTorres/Matlab Code/5_Figures/Vapprox.eps
-	width 90text%
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $a_{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+12.54183
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $a_{5}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-0.10521
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $a_{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-6.77017
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $a_{6}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-1.42082
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $a_{3}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.08270
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $a_{7}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-3.73432
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $a_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-0.90283
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $a_{8}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.28393
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
 
 \end_inset
 
@@ -147,7 +590,7 @@ status collapsed
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Figura
+Constantes para la estimación de distancia de despegue en agua
 \end_layout
 
 \end_inset
@@ -155,9 +598,62 @@ Figura
 
 \end_layout
 
+\begin_layout Plain Layout
+
+\end_layout
+
 \end_inset
 
 
+\end_layout
+
+\begin_layout Standard
+Utilizando la ecuación 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Take off restriction land"
+
+\end_inset
+
+, se establece un requisito entre la carga alar y el empuje al despegue.
+ Es necesario establecer este requisito en términos de potencia al despegue.
+ Para relacionar
+\begin_inset Formula $\nicefrac{T_{TO}}{W_{TO}}$
+\end_inset
+
+ con 
+\begin_inset Formula $\nicefrac{P_{TO}}{W_{TO}}$
+\end_inset
+
+ se utiliza la figura 3.8 de 
+\begin_inset CommandInset citation
+LatexCommand citep
+key "RoskamI"
+
+\end_inset
+
+, de tal forma que:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\frac{P_{TO}}{W_{TO}}=\frac{T_{TO}}{W_{TO}}\cdot57.8069\,\,[\unitfrac{W}{N}]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Requisito de aterrizaje
+\end_layout
+
+\begin_layout Standard
+Con respecto a la distancia de aterrizaje en agua, no se considera una restricci
+ón de diseño, puesto que la alta resistencia hidrodinámica asegura que las
+ distancias de aterrizaje serán menores que las de despegue.
 \end_layout
 
 \begin_layout Subsection

@@ -1,7 +1,7 @@
 %% AIRCRAFT POLAR --> Torenbeek Apendice F
 
 %Define range of weights to calculate polar
-AircraftWeight = linspace(AC.Weight.EW, AC.Weight.MTOW, 5);
+AircraftWeight = linspace(AC.Weight.EW, AC.Weight.MTOW, 50);
 
 options = optimoptions('fsolve',...
                        'StepTolerance',1e-9,...

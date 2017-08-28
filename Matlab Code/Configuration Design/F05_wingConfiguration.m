@@ -405,7 +405,7 @@ S_stability = VTP_volumeParameter*AC.Wing.Sw*AC.Wing.WingSpan/lv;
 S_stability = 0.55 * S_stability; %Relaxation due to FCS
 
 %Decide criterion
-AC.VTP.Sw        = max([S_criticalEngine,S_stability]);  %AREA
+AC.VTP.Sw        = 0.75*max([S_criticalEngine,S_stability]);  %AREA
 AC.VTP.Swet      = 2*AC.VTP.Sw;                          %WET AREA
 AC.VTP.WingSpan  = sqrt(AC.VTP.Sw * AC.VTP.AspectRatio); %HEIGHT
 AC.VTP.CMG       = AC.VTP.Sw/AC.VTP.WingSpan;            %CMG

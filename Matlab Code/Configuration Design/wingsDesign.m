@@ -390,11 +390,12 @@ end
     AC.Weight.y_cg = DP.y_cg;
     AC.Weight.z_cg = DP.z_cg;
     
+    if ~DP.xcgFsolveFlag
     if ~ismember('AC:notDefinedCoG',ME.errorList)
         ME.errorList{end+1} = 'AC:notDefinedCoG';
         warning('AC:notDefinedCoG','Hay que poner bien la posición del centro de gravedad para los coeficientes de momentos')
     end
-    
+    end
     AC.Wing1.Cm_w = AC.Wing1.Cm_ac_w + AC.Wing1.CL_w * ((AC.Weight.x_cg - AC.Wing1.x_ac_w)/AC.Wing1.CMA);
     AC.Wing2.Cm_w = AC.Wing2.Cm_ac_w + AC.Wing2.CL_w * ((AC.Weight.x_cg - AC.Wing2.x_ac_w)/AC.Wing2.CMA);
     

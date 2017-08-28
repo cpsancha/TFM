@@ -12,6 +12,7 @@ switch ME.MissionType
         
     %% REQUIREMENTS
         DP.Payload     =  750; %[kg] <-- 6 pax (80+45 each)
+        DP.maxPayload  = 1750; %[kg]
         DP.Range       = 10e3; %[km]
         DP.MaxSpeed    =  250; %[m/s]  (Mach=0.85)
         DP.TOFL        = 1200; %[m]    Take-Off Field Length, from similar planes: max-->1972m, min-->956m, mean-->1488m
@@ -19,7 +20,7 @@ switch ME.MissionType
         
         
     %% PLOTTING OPTIONS
-        DP.ShowReportFigures      = false; %Show all the available figures for reports [true] or only the most relevant ones [false]
+        DP.ShowReportFigures      = true; %Show all the available figures for reports [true] or only the most relevant ones [false]
         DP.ShowAircraftLayout     = true;  %Show a layout of the aircraft and the wings
         DP.selectDesignPoint      = false; %Ask user to select design point [true] or use the saved value [false]
         DP.showRoskamRequirements = false; %Show the Take-Off and Landing requirements obtained with Roskam constants [true] or only the SP ones [false]
@@ -39,7 +40,7 @@ switch ME.MissionType
         DP.CruiseAltitude      =   12e3; %[m]
         DP.CruiseSpeed         =    243; %[m/s] (875 km/h  Mach=0.825)
         DP.CruiseEfficiency    =     14; %[-] mean(loadFields(SP,'Actuations.L_D'),'omitnan') --> 12.25
-        DP.CruiseTSFC          =  0.597; %0.625 %[lbm/(lbf·h)] mean(loadFields(SP,'Engine.TSFC'),'omitnan') --> 0.661
+        DP.CruiseTSFC          =  0.594; %0.625 %[lbm/(lbf·h)] mean(loadFields(SP,'Engine.TSFC'),'omitnan') --> 0.661
         
         %Loiter
         DP.LoiterTime          =  30*60;  %[s]
@@ -82,10 +83,10 @@ switch ME.MissionType
         
         %Weight
         DP.chooseWeights   =  true;
-        DP.EW              =  8950; %[kg]
-        DP.MTOW            = 20655; %[kg]
-        DP.MFW             = 10650; %[kg]
-        DP.x_cg            = 10.30; %[m] Posición longitudinal del centro de gravedad, se debe calcular, solo es para que no pete el código.
+        DP.EW              = 09640; %[kg]
+        DP.MFW             = 13475; %[kg]
+        DP.xcgFsolveFlag   =  true;
+        DP.x_cg            =10.808; %[m] Posición longitudinal del centro de gravedad, se debe calcular, solo es para que no pete el código.
         DP.y_cg            =     0; %[m] Posición lateral del centro de gravedad.
         DP.z_cg            =     1; %[m] Posición vertical del centro de gravedad, se debe calcular, solo es para que no pete el código.
         DP.MLW_MTOW        =  0.85; %From SP: min-->0.7900, max-->0.9267, mean-->0.8753
@@ -98,9 +99,9 @@ switch ME.MissionType
         %Engines
         DP.EngineNumber    = 2;
         DP.EngineModel     = 'Snecma Silvercrest 2D';%'Rolls-Royce AE 3007A1E';
-        DP.xEngine         =   14;
-        DP.yEngine         = 1.40;
-        DP.zEngine         = 2.25;
+        DP.xEngine         = 15.0;
+        DP.yEngine         = 2.05;
+        DP.zEngine         = 1.75;
         DP.Pylon_t_c       = 0.12; %NACA 0012
         DP.Pylon_Swet      = 0.25;
         DP.Pylon_Sweep     =   30; %[º]
@@ -127,13 +128,14 @@ switch ME.MissionType
         DP.A_II           =  11.09; %[m^2]
         DP.tailConeAngle  =     17; %[º]
         DP.depositsArea   =  0.754; %[m^2]
-        DP.depositsUsage  =   0.80; %Percentage of usage of the deposits for fuel
+        DP.depositsUsage  =   0.75; %Percentage of usage of the deposits for fuel
+        DP.tailVolume     = 17.121; %[m^3]
          
   
         % VTP
-        DP.VTP_X_ac        = 17.0;
+        DP.VTP_X_ac        = 16.9;
         DP.VTP_AspectRatio = 1.40;
-        DP.VTP_Sweep_LE    = 45.0; %[º] Leading edge VTP sweep
+        DP.VTP_Sweep_LE    = 48.0; %[º] Leading edge VTP sweep
         DP.VTP_Sweep_r     = 25.0; %[º] Rudder sweep
         DP.VTP_Sr_Sv       = 0.30;
         DP.VTP_TaperRatio  = 0.40;
@@ -148,8 +150,8 @@ switch ME.MissionType
         
         
         % Undercarriage
-        DP.UnderCarriageNose =  4; %[m]
-        DP.UnderCarriageMain = 12; %[m]
+        DP.UnderCarriageNose = 3.5; %[m]
+        DP.UnderCarriageMain =  12; %[m]
         
         
         
